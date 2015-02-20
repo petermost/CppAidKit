@@ -15,24 +15,5 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include <pera_software/aidkit/AidKit.hpp>
 
-#include <pera_software/aidkit/qt/AidKit.hpp>
-#include <QDialog>
-
-namespace pera_software {
-	namespace aidkit {
-		namespace qt {
-
-			class AIDKIT_EXPORT AboutDialog : public QDialog {
-				Q_OBJECT
-				public:
-					explicit AboutDialog(QWidget *parent = 0);
-
-				signals:
-
-				public slots:
-			};
-		}
-	}
-}

@@ -15,5 +15,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <pera_software/aidkit/qt/AidKit.hpp>
+#pragma once
 
+#include <pera_software/aidkit/AidKit.hpp>
+#include <QApplication>
+
+namespace pera_software {
+	namespace company {
+
+		class AIDKIT_EXPORT Application : public QApplication {
+			Q_OBJECT
+			public:
+				Application( int &argc, char *argv[] );
+
+			signals:
+
+			public slots:
+
+		};
+	}
+}

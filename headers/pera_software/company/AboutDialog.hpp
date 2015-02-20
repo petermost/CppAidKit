@@ -17,28 +17,20 @@
 
 #pragma once
 
-#include <pera_software/aidkit/qt/AidKit.hpp>
-#include <QHash>
-
-class QIcon;
-class QString;
+#include <pera_software/aidkit/AidKit.hpp>
+#include <QDialog>
 
 namespace pera_software {
-	namespace aidkit {
-		namespace qt {
+	namespace company {
 
-			class AIDKIT_EXPORT Images {
-				public:
-					static const QString PERAIcon;
-					static const QString PERALogo;
+		class AIDKIT_EXPORT AboutDialog : public QDialog {
+			Q_OBJECT
+			public:
+				explicit AboutDialog(QWidget *parent = 0);
 
-					const QIcon &operator[]( const QString &iconName );
+			signals:
 
-				private:
-					QHash< QString, QIcon > icons_;
-			};
-			extern AIDKIT_EXPORT class Images Images;
-		}
+			public slots:
+		};
 	}
 }
-

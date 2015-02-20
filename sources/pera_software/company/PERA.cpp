@@ -15,26 +15,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <pera_software/aidkit/qt/Images.hpp>
-#include <QIcon>
-#include <QFile>
+#include <pera_software/company/PERA.hpp>
+#include <QUrl>
+#include <QString>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software { namespace company {
 
-const QString Images::PERAIcon( ":/images/pera_software/Icon.png" );
-const QString Images::PERALogo( ":/images/pera_software/Logo.png" );
+const QString PERA::NAME( "PERA Software Solutions" );
+const QString PERA::FULL_NAME( "PERA Software Solutions GmbH" );
 
+const QString PERA::DOMAIN_NAME( "PERA-Software.com" );
+const QString PERA::FULL_DOMAIN_NAME( "http://www.PERA-Software.com" );
 
-const QIcon &Images::operator[]( const QString &iconName )
-{
-	auto it = icons_.find( iconName );
-	if ( it == icons_.end() ) {
-		Q_ASSERT( QFile::exists( iconName ));
-		it = icons_.insert( iconName, QIcon( iconName ));
-	}
-	return it.value();
-}
+const QString PERA::ICON_NAME( ":/company/Icon.png" );
+const QString PERA::LOGO_NAME( ":/company/Logo.png" );
 
-class Images Images;
-
-} } }
+} }

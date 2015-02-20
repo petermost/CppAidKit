@@ -16,12 +16,14 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include <pera_software/aidkit/qt/MainWindow.hpp>
-#include <pera_software/aidkit/qt/AboutDialog.hpp>
-#include <pera_software/aidkit/qt/Images.hpp>
-#include <QApplication>
+#include <pera_software/company/PERA.hpp>
+#include <pera_software/company/AboutDialog.hpp>
 #include <QSettings>
+#include <QApplication>
 
 namespace pera_software { namespace aidkit { namespace qt {
+
+using namespace company;
 
 const QString GROUP_NAME( "MainWindow" );
 const QString SIZE_KEY( "size" );
@@ -33,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
 	setWindowTitle( QString( "%1 - (c) by %2 - %3" ).arg( QApplication::applicationName() )
 		.arg( QApplication::organizationName() ).arg( QApplication::organizationDomain() ));
 
-	setWindowIcon( Images[ Images::PERAIcon ] );
+	setWindowIcon( QIcon( PERA::ICON_NAME ));
 }
 
 

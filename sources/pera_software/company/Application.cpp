@@ -15,25 +15,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include <pera_software/company/Application.hpp>
+#include <pera_software/company/PERA.hpp>
+#include <QSettings>
 
-#include <pera_software/aidkit/qt/AidKit.hpp>
-#include <QApplication>
+namespace pera_software { namespace company {
 
-namespace pera_software {
-	namespace aidkit {
-		namespace qt {
 
-			class AIDKIT_EXPORT Application : public QApplication {
-				Q_OBJECT
-				public:
-					Application( int &argc, char *argv[] );
+Application::Application(int &argc, char *argv[])
+	: QApplication( argc, argv )
+{
+	setOrganizationName( PERA::NAME );
+	setOrganizationDomain( PERA::DOMAIN_NAME );
 
-				signals:
-
-				public slots:
-
-			};
-		}
-	}
+	QSettings::setDefaultFormat( QSettings::IniFormat );
 }
+
+} }

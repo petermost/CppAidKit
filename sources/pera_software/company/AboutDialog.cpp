@@ -15,30 +15,30 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <pera_software/aidkit/qt/AboutDialog.hpp>
-#include <pera_software/aidkit/qt/Images.hpp>
-#include <QPixmap>
+#include <pera_software/company/AboutDialog.hpp>
+#include <pera_software/company/PERA.hpp>
+#include <QFile>
 #include <QLabel>
+#include <QPixmap>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QDialogButtonBox>
-#include <QFile>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software { namespace company {
 
-AboutDialog::AboutDialog(QWidget *parent)
-	: QDialog(parent)
+AboutDialog::AboutDialog( QWidget *parent )
+	: QDialog( parent )
 {
-	auto peraLogo = new QLabel;
+	QLabel *peraLogo = new QLabel;
 	peraLogo->setAlignment( Qt::AlignHCenter );
-	Q_ASSERT( QFile::exists( Images::PERALogo ));
-	peraLogo->setPixmap( QPixmap( Images::PERALogo ));
+	Q_ASSERT( QFile::exists( PERA::LOGO_NAME ));
+	peraLogo->setPixmap( QPixmap( PERA::LOGO_NAME ));
 
 	auto peraUrl = new QLabel;
 	peraUrl->setOpenExternalLinks( true );
 	peraUrl->setAlignment( Qt::AlignHCenter );
-	peraUrl->setText( "<a href=\"http://www.PERA-Software.com\">PERA Software Solutions GmbH</a>" );
+	peraUrl->setText( QString( "<a href=\"%1\">%2</a>" ).arg( PERA::FULL_DOMAIN_NAME ).arg( PERA::FULL_NAME ));
 
 	auto buttons = new QDialogButtonBox( QDialogButtonBox::Ok );
 	connect( buttons, &QDialogButtonBox::accepted, this, &QDialog::accept );
@@ -51,4 +51,4 @@ AboutDialog::AboutDialog(QWidget *parent)
 	setLayout( layout );
 }
 
-} } }
+} }

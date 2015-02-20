@@ -26,29 +26,29 @@ QT       += widgets testlib
 DEFINES += AIDKIT_LIBRARY_BUILD
 
 HEADERS +=\
-    headers/pera_software/aidkit/qt/Images.hpp \
-    headers/pera_software/aidkit/qt/AboutDialog.hpp \
-    headers/pera_software/aidkit/qt/MainWindow.hpp \
-    headers/pera_software/aidkit/qt/Application.hpp \
-    headers/pera_software/aidkit/qt/AidKit.hpp
+	headers/pera_software/aidkit/AidKit.hpp \
+	headers/pera_software/aidkit/qt/MainWindow.hpp \
+	headers/pera_software/company/PERA.hpp \
+	headers/pera_software/company/AboutDialog.hpp \
+	headers/pera_software/company/Application.hpp
 
 SOURCES += \
-    sources/pera_software/aidkit/qt/AboutDialog.cpp \
-    sources/pera_software/aidkit/qt/Images.cpp \
-    sources/pera_software/aidkit/qt/MainWindow.cpp \
-    sources/pera_software/aidkit/qt/Application.cpp \
-    sources/pera_software/aidkit/qt/AidKit.cpp
+	sources/pera_software/aidkit/AidKit.cpp \
+	sources/pera_software/aidkit/qt/MainWindow.cpp \
+	sources/pera_software/company/PERA.cpp \
+	sources/pera_software/company/AboutDialog.cpp \
+	sources/pera_software/company/Application.cpp
 
 RESOURCES += \
-    AidKitImages.qrc
+	resources/pera_software/Resources.qrc
 
 INCLUDEPATH += ./headers
 
 unix {
-    target.path = /usr/lib
-    INSTALLS += target
+	target.path = /usr/lib
+	INSTALLS += target
 }
 
 OTHER_FILES += \
-    lgpl.txt
+	lgpl.txt
 
