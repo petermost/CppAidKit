@@ -18,7 +18,6 @@
 cmake_minimum_required( VERSION 3.0 )
 set( CMAKE_WARN_DEPRECATED ON )
 set( CMAKE_VERBOSE_MAKEFILE ON )
-
 if ( NOT CMAKE_BUILD_TYPE )
 	set( CMAKE_BUILD_TYPE debug )
 endif()
@@ -27,9 +26,13 @@ project( AidKit )
 
 ############################# Setup Qt5 usage #################################
 # See: http://doc.qt.io/qt-5/cmake-manual.html
+#
+# For AUTOMOC to work we also have to include the headers in the add_library() call!
+# set( CMAKE_AUTOMOC ON )
+#
+# This is needed when a cpp-file includes the generated moc file.
+# set( CMAKE_INCLUDE_CURRENT_DIR ON )
 
-set( CMAKE_AUTOMOC ON )
-set( CMAKE_INCLUDE_CURRENT_DIR ON )
 find_package( Qt5Widgets )
 
 ############################# Setup AidKit ####################################
@@ -50,10 +53,14 @@ set( SOURCES
 	sources/pera_software/company/AboutDialog.cpp
 	sources/pera_software/company/Application.cpp
 )
+qt5_wrap_cpp( MOC_SOURCES ${HEADERS})
+
 qt5_add_resources( RESOURCES
 	resources/pera_software/Resources.qrc
 )
-add_library( AidKit SHARED ${HEADERS} ${SOURCES} ${RESOURCES})
+add_library( AidKit SHARED ${SOURCES} ${MOC_SOURCES} ${RESOURCES})
 add_definitions( -DAIDKIT_LIBRARY_BUILD )
 include_directories( headers/ )
+
 target_link_libraries( AidKit Qt5::Widgets )
+
