@@ -22,16 +22,17 @@
 
 namespace pera_software {
 	namespace company {
+		namespace qt {
 
-		class AIDKIT_EXPORT Application : public QApplication {
-			Q_OBJECT
-			public:
-				Application( int &argc, char *argv[] );
+			class AIDKIT_EXPORT Application : public QApplication {
+				Q_OBJECT
+				public:
+					Application( int &argc, char *argv[] );
 
-			signals:
+				signals:
 
-			public slots:
-
-		};
+				public slots:
+			};
+		}
 	}
 }

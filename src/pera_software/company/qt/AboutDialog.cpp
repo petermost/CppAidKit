@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <pera_software/company/AboutDialog.hpp>
+#include "AboutDialog.hpp"
 #include <pera_software/company/PERA.hpp>
 #include <QFile>
 #include <QLabel>
@@ -25,7 +25,7 @@
 #include <QPushButton>
 #include <QDialogButtonBox>
 
-namespace pera_software { namespace company {
+namespace pera_software { namespace company { namespace qt {
 
 AboutDialog::AboutDialog( QWidget *parent )
 	: QDialog( parent )
@@ -51,4 +51,4 @@ AboutDialog::AboutDialog( QWidget *parent )
 	setLayout( layout );
 }
 
-} }
+} } }

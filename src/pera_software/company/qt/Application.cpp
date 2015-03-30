@@ -15,11 +15,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <pera_software/company/Application.hpp>
+#include "Application.hpp"
 #include <pera_software/company/PERA.hpp>
 #include <QSettings>
 
-namespace pera_software { namespace company {
+namespace pera_software { namespace company { namespace qt {
 
 
 Application::Application(int &argc, char *argv[])
@@ -31,4 +31,4 @@ Application::Application(int &argc, char *argv[])
 	QSettings::setDefaultFormat( QSettings::IniFormat );
 }
 
-} }
+} } }

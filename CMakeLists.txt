@@ -16,13 +16,26 @@
 # along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 cmake_minimum_required( VERSION 3.0 )
+project( AidKit )
+
 set( CMAKE_WARN_DEPRECATED ON )
-set( CMAKE_VERBOSE_MAKEFILE ON )
+
 if ( NOT CMAKE_BUILD_TYPE )
+	message( "Enabling debug build" )
 	set( CMAKE_BUILD_TYPE debug )
 endif()
 
-project( AidKit )
+if ( NOT CMAKE_VERBOSE_MAKEFILE )
+	message( "Enabling verbose makefile" )
+	set( CMAKE_VERBOSE_MAKEFILE TRUE )
+endif()
+
+if ( UNIX )
+	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.4.1/5.4/gcc_64/lib/cmake" )
+elseif( WIN32 )
+	message( "Set path to windows qt directory!" )
+	set( CMAKE_PREFIX_PATH "c:/Qt5.4.1/5.4/" )
+endif()
 
 ############################# Setup Qt5 usage #################################
 # See: http://doc.qt.io/qt-5/cmake-manual.html
@@ -40,24 +53,24 @@ find_package( Qt5Widgets )
 add_compile_options( -std=c++14 -w -Wall -Wextra -pedantic )
 
 set( HEADERS
-	sources/pera_software/aidkit/AidKit.hpp
-	sources/pera_software/company/PERA.hpp
+	src/pera_software/aidkit/AidKit.hpp
+	src/pera_software/company/PERA.hpp
 )
 
 set( SOURCES
-	sources/pera_software/aidkit/AidKit.cpp
-	sources/pera_software/company/PERA.cpp
+	src/pera_software/aidkit/AidKit.cpp
+	src/pera_software/company/PERA.cpp
 )
 
 set( QT_HEADERS
-	sources/pera_software/aidkit/qt/MainWindow.hpp
-	sources/pera_software/company/AboutDialog.hpp
-	sources/pera_software/company/Application.hpp
+	src/pera_software/company/qt/MainWindow.hpp
+	src/pera_software/company/qt/AboutDialog.hpp
+	src/pera_software/company/qt/Application.hpp
 )
 set( QT_SOURCES
-	sources/pera_software/aidkit/qt/MainWindow.cpp
-	sources/pera_software/company/AboutDialog.cpp
-	sources/pera_software/company/Application.cpp
+	src/pera_software/company/qt/MainWindow.cpp
+	src/pera_software/company/qt/AboutDialog.cpp
+	src/pera_software/company/qt/Application.cpp
 )
 qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})
 
@@ -65,8 +78,7 @@ qt5_add_resources( QT_RESOURCES
 	resources/pera_software/Resources.qrc
 )
 add_library( AidKit SHARED ${SOURCES} ${QT_SOURCES} ${MOC_SOURCES} ${QT_RESOURCES})
-add_definitions( -DAIDKIT_LIBRARY_BUILD )
-include_directories( sources/ )
+include_directories( src/ )
 
 target_link_libraries( AidKit Qt5::Widgets )
 

@@ -15,15 +15,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <pera_software/aidkit/qt/MainWindow.hpp>
+#include "MainWindow.hpp"
+#include "AboutDialog.hpp"
 #include <pera_software/company/PERA.hpp>
-#include <pera_software/company/AboutDialog.hpp>
 #include <QSettings>
 #include <QApplication>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software { namespace company { namespace qt {
 
-using namespace company;
+using namespace pera_software::company::qt;
+using namespace pera_software::company;
 
 const QString GROUP_NAME( "MainWindow" );
 const QString SIZE_KEY( "size" );

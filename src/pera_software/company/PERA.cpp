@@ -15,12 +15,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include <pera_software/company/PERA.hpp>
+#include <QUrl>
+#include <QString>
 
-#include <QtCore/qglobal.h>
+namespace pera_software { namespace company {
 
-#if defined( AIDKIT_LIBRARY_BUILD )
-#  define AIDKIT_EXPORT Q_DECL_EXPORT
-#else
-#  define AIDKIT_EXPORT Q_DECL_IMPORT
-#endif
+const QString PERA::NAME( QStringLiteral( "PERA Software Solutions" ));
+const QString PERA::FULL_NAME( QStringLiteral( "PERA Software Solutions GmbH" ));
+
+const QString PERA::DOMAIN_NAME( QStringLiteral( "PERA-Software.com" ));
+const QString PERA::FULL_DOMAIN_NAME( QStringLiteral( "http://www.PERA-Software.com" ));
+
+const QString PERA::ICON_NAME( QStringLiteral( ":/company/Icon.png" ));
+const QString PERA::LOGO_NAME( QStringLiteral( ":/company/Logo.png" ));
+
+} }

@@ -18,34 +18,21 @@
 #pragma once
 
 #include <pera_software/aidkit/AidKit.hpp>
-#include <QMainWindow>
-
-class QSettings;
+#include <QDialog>
 
 namespace pera_software {
-	namespace aidkit {
+	namespace company {
 		namespace qt {
 
-			class AIDKIT_EXPORT MainWindow : public QMainWindow {
+			class AIDKIT_EXPORT AboutDialog : public QDialog {
 				Q_OBJECT
 				public:
-					MainWindow(QWidget *parent = 0);
+					explicit AboutDialog(QWidget *parent = 0);
+
+				signals:
 
 				public slots:
-					void aboutPERA();
-
-				protected:
-					virtual void doReadSettings( QSettings *settings ) = 0;
-					virtual void doWriteSettings( QSettings *settings ) const = 0;
-
-					virtual void showEvent(QShowEvent *showEvent) override;
-					virtual void closeEvent(QCloseEvent *closeEvent) override;
-
-				private:
-					virtual void readSettings( QSettings *settings );
-					virtual void writeSettings( QSettings *settings ) const;
 			};
 		}
 	}
 }
-
