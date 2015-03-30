@@ -40,27 +40,33 @@ find_package( Qt5Widgets )
 add_compile_options( -std=c++14 -w -Wall -Wextra -pedantic )
 
 set( HEADERS
-	headers/pera_software/aidkit/AidKit.hpp
-	headers/pera_software/aidkit/qt/MainWindow.hpp
-	headers/pera_software/company/PERA.hpp
-	headers/pera_software/company/AboutDialog.hpp
-	headers/pera_software/company/Application.hpp
+	sources/pera_software/aidkit/AidKit.hpp
+	sources/pera_software/company/PERA.hpp
 )
+
 set( SOURCES
 	sources/pera_software/aidkit/AidKit.cpp
-	sources/pera_software/aidkit/qt/MainWindow.cpp
 	sources/pera_software/company/PERA.cpp
+)
+
+set( QT_HEADERS
+	sources/pera_software/aidkit/qt/MainWindow.hpp
+	sources/pera_software/company/AboutDialog.hpp
+	sources/pera_software/company/Application.hpp
+)
+set( QT_SOURCES
+	sources/pera_software/aidkit/qt/MainWindow.cpp
 	sources/pera_software/company/AboutDialog.cpp
 	sources/pera_software/company/Application.cpp
 )
-qt5_wrap_cpp( MOC_SOURCES ${HEADERS})
+qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})
 
-qt5_add_resources( RESOURCES
+qt5_add_resources( QT_RESOURCES
 	resources/pera_software/Resources.qrc
 )
-add_library( AidKit SHARED ${SOURCES} ${MOC_SOURCES} ${RESOURCES})
+add_library( AidKit SHARED ${SOURCES} ${QT_SOURCES} ${MOC_SOURCES} ${QT_RESOURCES})
 add_definitions( -DAIDKIT_LIBRARY_BUILD )
-include_directories( headers/ )
+include_directories( sources/ )
 
 target_link_libraries( AidKit Qt5::Widgets )
 
