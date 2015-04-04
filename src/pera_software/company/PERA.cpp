@@ -15,19 +15,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <pera_software/company/PERA.hpp>
-#include <QUrl>
-#include <QString>
+#include "PERA.hpp"
 
 namespace pera_software { namespace company {
 
-const QString PERA::NAME( QStringLiteral( "PERA Software Solutions" ));
-const QString PERA::FULL_NAME( QStringLiteral( "PERA Software Solutions GmbH" ));
+const char PERA::NAME[] = "PERA Software Solutions";
+const char PERA::FULL_NAME[] = "PERA Software Solutions GmbH";
 
-const QString PERA::DOMAIN_NAME( QStringLiteral( "PERA-Software.com" ));
-const QString PERA::FULL_DOMAIN_NAME( QStringLiteral( "http://www.PERA-Software.com" ));
+const char PERA::DOMAIN_NAME[] = "PERA-Software.com";
+const char PERA::FULL_DOMAIN_NAME[] = "http://www.PERA-Software.com";
 
-const QString PERA::ICON_NAME( QStringLiteral( ":/company/Icon.png" ));
-const QString PERA::LOGO_NAME( QStringLiteral( ":/company/Logo.png" ));
+const char PERA::ICON_NAME[] = ":/company/Icon.png";
+const char PERA::LOGO_NAME[] = ":/company/Logo.png";
 
 } }

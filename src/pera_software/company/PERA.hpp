@@ -19,21 +19,19 @@
 
 #include <pera_software/aidkit/AidKit.hpp>
 
-class QString;
-
 namespace pera_software {
 	namespace company {
 
 		class AIDKIT_EXPORT PERA {
 			public:
-				static const QString NAME;
-				static const QString FULL_NAME;
+				static const char NAME[];
+				static const char FULL_NAME[];
 
-				static const QString DOMAIN_NAME;
-				static const QString FULL_DOMAIN_NAME;
+				static const char DOMAIN_NAME[];
+				static const char FULL_DOMAIN_NAME[];
 
-				static const QString ICON_NAME;
-				static const QString LOGO_NAME;
+				static const char ICON_NAME[];
+				static const char LOGO_NAME[];
 		};
 	}
 }

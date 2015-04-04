@@ -63,11 +63,13 @@ set( SOURCES
 )
 
 set( QT_HEADERS
+	src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
 	src/pera_software/company/qt/MainWindow.hpp
 	src/pera_software/company/qt/AboutDialog.hpp
 	src/pera_software/company/qt/Application.hpp
 )
 set( QT_SOURCES
+	src/pera_software/aidkit/qt/core/DirectoryGuide.cpp
 	src/pera_software/company/qt/MainWindow.cpp
 	src/pera_software/company/qt/AboutDialog.cpp
 	src/pera_software/company/qt/Application.cpp
