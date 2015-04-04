@@ -64,12 +64,14 @@ set( SOURCES
 
 set( QT_HEADERS
 	src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
+	src/pera_software/aidkit/qt/widgets/QuitAction.hpp
 	src/pera_software/company/qt/MainWindow.hpp
 	src/pera_software/company/qt/AboutDialog.hpp
 	src/pera_software/company/qt/Application.hpp
 )
 set( QT_SOURCES
 	src/pera_software/aidkit/qt/core/DirectoryGuide.cpp
+	src/pera_software/aidkit/qt/widgets/QuitAction.cpp
 	src/pera_software/company/qt/MainWindow.cpp
 	src/pera_software/company/qt/AboutDialog.cpp
 	src/pera_software/company/qt/Application.cpp
@@ -77,7 +79,8 @@ set( QT_SOURCES
 qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})
 
 qt5_add_resources( QT_RESOURCES
-	resources/pera_software/Resources.qrc
+	resources/pera_software/aidkit/AidKitResources.qrc
+	resources/pera_software/company/CompanyResources.qrc
 )
 add_library( AidKit SHARED ${SOURCES} ${QT_SOURCES} ${MOC_SOURCES} ${QT_RESOURCES})
 include_directories( src/ )

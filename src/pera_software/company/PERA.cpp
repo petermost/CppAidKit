@@ -25,7 +25,7 @@ const char PERA::FULL_NAME[] = "PERA Software Solutions GmbH";
 const char PERA::DOMAIN_NAME[] = "PERA-Software.com";
 const char PERA::FULL_DOMAIN_NAME[] = "http://www.PERA-Software.com";
 
-const char PERA::ICON_NAME[] = ":/company/Icon.png";
-const char PERA::LOGO_NAME[] = ":/company/Logo.png";
+const char PERA::ICON_NAME[] = ":/Icon.png";
+const char PERA::LOGO_NAME[] = ":/Logo.png";
 
 } }

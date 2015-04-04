@@ -24,3 +24,13 @@
 #else
 	#define AIDKIT_EXPORT Q_DECL_IMPORT
 #endif
+
+namespace pera_software {
+	namespace aidkit {
+
+		class AIDKIT_EXPORT AidKit {
+			public:
+				static const char QUIT_ICON_NAME[];
+		};
+	}
+}

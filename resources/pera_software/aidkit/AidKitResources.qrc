@@ -19,8 +19,6 @@ along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 <RCC>
 	<qresource>
-		<file>company/Icon.ico</file>
-		<file>company/Icon.png</file>
-		<file>company/Logo.png</file>
+		<file>system-shutdown-16x16.png</file>
 	</qresource>
 </RCC>
