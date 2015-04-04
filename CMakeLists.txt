@@ -52,11 +52,14 @@ find_package( Qt5Widgets )
 
 add_compile_options( -std=c++14 -w -Wall -Wextra -pedantic )
 
+set( OTHER_FILES
+	lgpl.txt
+)
+
 set( HEADERS
 	src/pera_software/aidkit/AidKit.hpp
 	src/pera_software/company/PERA.hpp
 )
-
 set( SOURCES
 	src/pera_software/aidkit/AidKit.cpp
 	src/pera_software/company/PERA.cpp
