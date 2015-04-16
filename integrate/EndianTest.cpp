@@ -5,7 +5,6 @@
 
 #pragma managed
 
-namespace RohdeSchwarz { namespace IO {
 
 using namespace Testing;
 using namespace NUnit::Framework;
@@ -84,4 +83,3 @@ public ref struct EndianTest
 	}
 };
 
-} }

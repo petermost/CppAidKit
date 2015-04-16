@@ -5,10 +5,6 @@
 #include <boost/static_assert.hpp>
 #include <boost/detail/endian.hpp>
 
-namespace RohdeSchwarz 
-{ 
-	namespace IO 
-	{
 		// Only Window-8 defines a htonll/ntohll, so we define our own:
 
 		inline unsigned long long htonll( unsigned long long value )
@@ -118,6 +114,3 @@ namespace RohdeSchwarz
 
 				return ByteSwapper< sizeof( T )>::ntoh( value );
 			}
-
-	}
-}
