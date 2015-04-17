@@ -87,11 +87,15 @@ static const wchar_t *make_mode_string( File::open_mode mode )
 
 void File::open( const path &fileName, open_mode mode )
 {
-	// We don't bind the deleter to File::close to prevent exceptions from the destructor.
+	FILE *file;
 
-	mFile = shared_ptr< FILE >( _wfopen( fileName.c_str(), make_mode_string( mode )), _fclose_nolock );
-	if ( mFile )
+	if (( file = _wfopen( fileName.c_str(), make_mode_string( mode ))) != nullptr )
+	{
+		// We don't bind the deleter to File::close to prevent exceptions from the destructor.
+
+		mFile = shared_ptr< FILE >( file, _fclose_nolock );
 		mName = fileName;
+	}
 	else
 	{
 		if ( errno == ENOENT )
@@ -100,6 +104,7 @@ void File::open( const path &fileName, open_mode mode )
 			BOOST_THROW_EXCEPTION( FileException::LastError() );
 	}
 }
+
 
 void File::close()
 {
