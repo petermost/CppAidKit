@@ -17,22 +17,26 @@
 
 #pragma once
 
-// TODO: Remove Qt dependency.
-
-#include <QtCore/qglobal.h>
-
-#if defined( AidKit_EXPORTS ) // Will be defined by cmake
-	#define AIDKIT_EXPORT Q_DECL_EXPORT
-#else
-	#define AIDKIT_EXPORT Q_DECL_IMPORT
-#endif
+#include <exception>
+#include <string>
+#include <pera_software/aidkit/AidKit.hpp>
 
 namespace pera_software {
 	namespace aidkit {
 
-		class AIDKIT_EXPORT AidKit {
-			public:
-				static const char QUIT_ICON_NAME[];
-		};
+			class AIDKIT_EXPORT Exception : public std::exception {
+				public:
+					Exception() noexcept;
+
+					Exception( const std::string &what );
+
+					virtual ~Exception() noexcept;
+
+					virtual const char *what() const noexcept override;
+
+				private:
+					std::string what_;
+			};
+
 	}
 }

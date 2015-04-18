@@ -15,24 +15,26 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "Exception.hpp"
 
-// TODO: Remove Qt dependency.
+namespace pera_software { namespace aidkit {
 
-#include <QtCore/qglobal.h>
-
-#if defined( AidKit_EXPORTS ) // Will be defined by cmake
-	#define AIDKIT_EXPORT Q_DECL_EXPORT
-#else
-	#define AIDKIT_EXPORT Q_DECL_IMPORT
-#endif
-
-namespace pera_software {
-	namespace aidkit {
-
-		class AIDKIT_EXPORT AidKit {
-			public:
-				static const char QUIT_ICON_NAME[];
-		};
-	}
+Exception::Exception() noexcept
+{
 }
+
+Exception::Exception( const std::string &what )
+	: what_( what )
+{
+}
+
+Exception::~Exception() noexcept
+{
+}
+
+const char *Exception::what() const noexcept
+{
+	return what_.c_str();
+}
+
+} }
