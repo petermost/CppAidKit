@@ -1,4 +1,4 @@
-// Copyright 2014 Peter Most, PERA Software Solutions GmbH
+// Copyright 2015 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,22 +15,30 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "ErrNoException.hpp"
+#include <cstring>
 
-#include <exception>
-#include <string>
-#include <pera_software/aidkit/AidKit.hpp>
+namespace pera_software { namespace aidkit { namespace io {
 
-namespace pera_software {
-	namespace aidkit {
+using namespace std;
 
-			class AIDKIT_EXPORT Exception : public std::exception {
-				public:
-					Exception() noexcept;
-
-					virtual ~Exception() noexcept;
-
-					virtual const char *what() const noexcept = 0;
-			};
-	}
+ErrNoException ErrNoException::LastError()
+{
+	return ErrNoException( errno );
 }
+
+ErrNoException::ErrNoException( int errNo, const string &errorMessage )
+{
+	errNo_ = errNo;
+	if ( !errorMessage.empty() )
+		errorMessage_ = errorMessage;
+	else
+		errorMessage_ = strerror( errNo );
+}
+
+const char *ErrNoException::what() const noexcept
+{
+	return errorMessage_.c_str();
+}
+
+} } }

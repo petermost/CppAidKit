@@ -59,10 +59,14 @@ set( OTHER_FILES
 set( HEADERS
 	src/pera_software/aidkit/AidKit.hpp
 	src/pera_software/company/PERA.hpp
+	src/pera_software/aidkit/Exception.hpp
+	src/pera_software/aidkit/io/ErrNoException.hpp
 )
 set( SOURCES
 	src/pera_software/aidkit/AidKit.cpp
 	src/pera_software/company/PERA.cpp
+	src/pera_software/aidkit/Exception.cpp
+	src/pera_software/aidkit/io/ErrNoException.cpp
 )
 
 set( QT_HEADERS
