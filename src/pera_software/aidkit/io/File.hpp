@@ -106,11 +106,21 @@ namespace pera_software {
 							return c;
 					}
 
-					int get()
+					int getc()
 					{
 						int c;
 
 						if (( c = AIDKIT_UNLOCKED_GETC( file_.get() )) == EOF && error() )
+							throw FileException::lastError();
+						else
+							return c;
+					}
+
+					wint_t getwc()
+					{
+						wint_t c;
+
+						if (( c = AIDKIT_UNLOCKED_GETWC( file_.get() )) == WEOF && error() )
 							throw FileException::lastError();
 						else
 							return c;
@@ -170,10 +180,14 @@ namespace pera_software {
 					void clear_error();
 
 					bool error() const
-						{ return AIDKIT_UNLOCKED_FERROR( file_.get() ) != 0; }
+					{
+						return AIDKIT_UNLOCKED_FERROR( file_.get() ) != 0;
+					}
 
 					bool eof() const
-						{ return AIDKIT_UNLOCKED_FEOF( file_.get() ) != 0; }
+					{
+						return AIDKIT_UNLOCKED_FEOF( file_.get() ) != 0;
+					}
 
 					const std::string &name() const;
 

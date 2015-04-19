@@ -23,6 +23,7 @@
 	#define AIDKIT_UNLOCKED_PUTC     putc_unlocked
 	#define AIDKIT_UNLOCKED_PUTWC    putwc_unlocked
 	#define AIDKIT_UNLOCKED_GETC     getc_unlocked
+	#define AIDKIT_UNLOCKED_GETWC    getwc_unlocked
 	#define AIDKIT_UNLOCKED_FWRITE   fwrite_unlocked
 	#define AIDKIT_UNLOCKED_FREAD    fread_unlocked
 	#define AIDKIT_UNLOCKED_FPUTS    fputs_unlocked
