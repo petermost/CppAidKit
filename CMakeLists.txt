@@ -55,7 +55,7 @@ if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 	add_definitions( -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC )
 endif()
 
-add_compile_options( -std=c++14 -w -Wall -Wextra -pedantic )
+add_compile_options( -std=c++14 -w -Wall -Wextra -Wpedantic )
 
 set( OTHER_FILES
 	lgpl.txt
