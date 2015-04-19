@@ -35,13 +35,13 @@
 
 	// Missing unlocked functions:
 
-	#define AIDKIT_UNLOCKED_FOPEN   ::fopen
-	#define AIDKIT_UNLOCKED_FCLOSE  ::fclose
-	#define AIDKIT_UNLOCKED_FTELL   ::ftell
-	#define AIDKIT_UNLOCKED_FSEEK   ::fseek
-	#define AIDKIT_UNLOCKED_REWIND  ::rewind
-	#define AIDKIT_UNLOCKED_FGETPOS ::fgetpos
-	#define AIDKIT_UNLOCKED_FSETPOS ::fsetpos
+	#define AIDKIT_UNLOCKED_FOPEN   ::std::fopen
+	#define AIDKIT_UNLOCKED_FCLOSE  ::std::fclose
+	#define AIDKIT_UNLOCKED_FTELL   ::std::ftell
+	#define AIDKIT_UNLOCKED_FSEEK   ::std::fseek
+	#define AIDKIT_UNLOCKED_REWIND  ::std::rewind
+	#define AIDKIT_UNLOCKED_FGETPOS ::std::fgetpos
+	#define AIDKIT_UNLOCKED_FSETPOS ::std::fsetpos
 
 #elif defined( AIDKIT_WINDOWS )
 	#define AIDKIT_UNLOCKED_PUTC   _putc_nolock
@@ -56,7 +56,7 @@
 
 	// Missing unlocked functions:
 
-	#define AIDKIT_UNLOCKED_FOPEN   ::fopen
+	#define AIDKIT_UNLOCKED_FOPEN   ::std::fopen
 
 #else
 	#error Missing unlocked file functions!

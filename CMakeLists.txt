@@ -22,7 +22,7 @@ set( CMAKE_WARN_DEPRECATED ON )
 
 if ( NOT CMAKE_BUILD_TYPE )
 	message( "Enabling debug build" )
-	set( CMAKE_BUILD_TYPE debug )
+	set( CMAKE_BUILD_TYPE Debug )
 endif()
 
 if ( NOT CMAKE_VERBOSE_MAKEFILE )
@@ -49,6 +49,11 @@ endif()
 find_package( Qt5Widgets )
 
 ############################# Setup AidKit ####################################
+
+if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+	message( "Enabling libstdc++ debug" )
+	add_definitions( -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC )
+endif()
 
 add_compile_options( -std=c++14 -w -Wall -Wextra -pedantic )
 
