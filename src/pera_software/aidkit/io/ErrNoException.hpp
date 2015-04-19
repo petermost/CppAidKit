@@ -26,8 +26,7 @@ namespace pera_software {
 	namespace aidkit {
 		namespace io {
 
-			class AIDKIT_EXPORT ErrNoException : public Exception
-			{
+			class AIDKIT_EXPORT ErrNoException : public Exception {
 				public:
 					static ErrNoException LastError();
 
@@ -44,18 +43,14 @@ namespace pera_software {
 			};
 
 			template < typename T >
-				class ErrNoExceptionTemplate : public ErrNoException
-				{
+				class ErrNoExceptionTemplate : public ErrNoException {
 					public:
-						static ErrNoExceptionTemplate LastError()
-						{
-							return ErrNoExceptionTemplate( errno );
-						}
+						static ErrNoExceptionTemplate lastError()
+							{ return ErrNoExceptionTemplate( errno ); }
 
 						ErrNoExceptionTemplate( int errNo = 0, const std::string &errorMessage = "" )
 							: ErrNoException( errNo, errorMessage )
-						{
-						}
+							{ }
 				};
 		}
 	}
