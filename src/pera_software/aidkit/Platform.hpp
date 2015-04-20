@@ -36,3 +36,16 @@
 #else
 	#error Can't determine operating system!
 #endif
+
+// Determine the compiler:
+
+#if defined( _MSC_VER )
+	#define AIDKIT_MSVC
+#elif defined( __GNUC__ )
+	#define AIDKIT_GCC
+	#if defined( __MINGW32__ ) || defined( __MINGW64__ )
+		#define AIDKIT_MINGW
+	#endif
+#else
+	#error "Can't determine compiler!"
+#endif

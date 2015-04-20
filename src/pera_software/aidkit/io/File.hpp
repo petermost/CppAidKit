@@ -30,6 +30,8 @@ namespace pera_software {
 
 			typedef ErrNoExceptionTemplate< class File > FileException;
 
+			// TODO: Rename FileNotFoundException to file_no_found_exception.
+
 			class AIDKIT_EXPORT FileNotFoundException : public FileException {
 				public:
 					FileNotFoundException( const std::string &fileName );
@@ -41,11 +43,16 @@ namespace pera_software {
 			};
 
 
+			// TODO: Check whether EndOfFileException is used.
+			// TODO: Rename EndOfFileException to end_of_file_exception.
+
 			class AIDKIT_EXPORT EndOfFileException : public FileException {
 				public:
 					EndOfFileException();
 			};
 
+
+			// TODO: Rename File to file.
 
 			class AIDKIT_EXPORT File {
 				public:

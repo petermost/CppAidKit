@@ -17,7 +17,7 @@
 
 #pragma once
 
-// TODO: Remove Qt dependency.
+// TODO: Remove Qt dependency for Q_DECL_EXPORT/Q_DECL_IMPORT.
 
 #include <QtCore/qglobal.h>
 

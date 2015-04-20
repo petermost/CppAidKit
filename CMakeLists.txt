@@ -33,8 +33,7 @@ endif()
 if ( UNIX )
 	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.4.1/5.4/gcc_64/lib/cmake" )
 elseif( WIN32 )
-	message( "Set path to windows qt directory!" )
-	set( CMAKE_PREFIX_PATH "c:/Qt5.4.1/5.4/" )
+	set( CMAKE_PREFIX_PATH "C:/Qt/Qt5/5.4/mingw491_32/lib/cmake" )
 endif()
 
 ############################# Setup Qt5 usage #################################
