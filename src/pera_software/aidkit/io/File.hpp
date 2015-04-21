@@ -18,7 +18,7 @@
 #pragma once
 
 #include <pera_software/aidkit/AidKit.hpp>
-#include "ErrNoException.hpp"
+#include "file_exception.hpp"
 #include "UnlockedFile.hpp"
 #include <memory>
 #include <string>
@@ -27,30 +27,6 @@
 namespace pera_software {
 	namespace aidkit {
 		namespace io {
-
-			typedef ErrNoExceptionTemplate< class File > FileException;
-
-			// TODO: Rename FileNotFoundException to file_no_found_exception.
-
-			class AIDKIT_EXPORT FileNotFoundException : public FileException {
-				public:
-					FileNotFoundException( const std::string &fileName );
-
-					const std::string &fileName() const;
-
-				private:
-					std::string fileName_;
-			};
-
-
-			// TODO: Check whether EndOfFileException is used.
-			// TODO: Rename EndOfFileException to end_of_file_exception.
-
-			class AIDKIT_EXPORT EndOfFileException : public FileException {
-				public:
-					EndOfFileException();
-			};
-
 
 			// TODO: Rename File to file.
 
@@ -95,16 +71,14 @@ namespace pera_software {
 
 					// Write/Read characters:
 
-					int put( int c )
-					{
+					int put( int c ) {
 						if (( c = AIDKIT_UNLOCKED_PUTC( c, file_.get() )) == EOF && error() )
 							throw FileException::lastError();
 						else
 							return c;
 					}
 
-					wint_t put( wchar_t c )
-					{
+					wint_t put( wchar_t c ) {
 						wint_t result;
 
 						if (( result = AIDKIT_UNLOCKED_PUTWC( c, file_.get() )) == WEOF && error() )
@@ -113,8 +87,7 @@ namespace pera_software {
 							return c;
 					}
 
-					int getc()
-					{
+					int getc() {
 						int c;
 
 						if (( c = AIDKIT_UNLOCKED_GETC( file_.get() )) == EOF && error() )
@@ -123,8 +96,7 @@ namespace pera_software {
 							return c;
 					}
 
-					wint_t getwc()
-					{
+					wint_t getwc() {
 						wint_t c;
 
 						if (( c = AIDKIT_UNLOCKED_GETWC( file_.get() )) == WEOF && error() )
@@ -141,8 +113,7 @@ namespace pera_software {
 					int print( const char format[], ... );
 					int print( const wchar_t format[], ... );
 
-					size_t write( const void *buffer, size_t size, size_t count )
-					{
+					size_t write( const void *buffer, size_t size, size_t count ) {
 						size_t writeCount;
 
 						if (( writeCount = AIDKIT_UNLOCKED_FWRITE( buffer, size, count, file_.get() )) < count && error() )
@@ -153,13 +124,11 @@ namespace pera_software {
 
 					// Write/Read binary data:
 
-					size_t write( const void *buffer, size_t size )
-					{
+					size_t write( const void *buffer, size_t size ) {
 						return write( buffer, 1, size );
 					}
 
-					size_t read( void *buffer, size_t size, size_t count )
-					{
+					size_t read( void *buffer, size_t size, size_t count ) {
 						size_t readCount;
 
 						if (( readCount = AIDKIT_UNLOCKED_FREAD( buffer, size, count, file_.get() )) < count && error() )
@@ -168,8 +137,7 @@ namespace pera_software {
 							return readCount;
 					}
 
-					size_t read( void *buffer, size_t size )
-					{
+					size_t read( void *buffer, size_t size ) {
 						return read( buffer, 1, size );
 					}
 
@@ -186,13 +154,11 @@ namespace pera_software {
 
 					void clear_error();
 
-					bool error() const
-					{
+					bool error() const {
 						return AIDKIT_UNLOCKED_FERROR( file_.get() ) != 0;
 					}
 
-					bool eof() const
-					{
+					bool eof() const {
 						return AIDKIT_UNLOCKED_FEOF( file_.get() ) != 0;
 					}
 

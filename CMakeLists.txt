@@ -66,6 +66,7 @@ set( HEADERS
 	src/pera_software/aidkit/Platform.hpp
 	src/pera_software/aidkit/Exception.hpp
 	src/pera_software/aidkit/io/File.hpp
+	src/pera_software/aidkit/io/file_exception.hpp
 	src/pera_software/aidkit/io/UnlockedFile.hpp
 	src/pera_software/aidkit/io/ErrNoException.hpp
 )
@@ -75,6 +76,7 @@ set( SOURCES
 	src/pera_software/aidkit/Platform.cpp
 	src/pera_software/aidkit/Exception.cpp
 	src/pera_software/aidkit/io/File.cpp
+	src/pera_software/aidkit/io/file_exception.cpp
 	src/pera_software/aidkit/io/UnlockedFile.cpp
 	src/pera_software/aidkit/io/ErrNoException.cpp
 )
