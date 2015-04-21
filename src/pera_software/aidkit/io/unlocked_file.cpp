@@ -15,54 +15,53 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "File.hpp"
+#include "unlocked_file.hpp"
 #include <cerrno>
 #include <cstdarg>
-#include "file_exception.hpp"
 
 namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;
 
 
-file::file() {
+unlocked_file::unlocked_file() {
 }
 
 
-file::file( shared_ptr< FILE > file ) {
+unlocked_file::unlocked_file( shared_ptr< FILE > file ) {
 	if ( file )
 		file_ = file;
 	else
 		throw file_exception( EINVAL );
 }
 
-file::file( const string &fileName, open_mode mode ) {
+unlocked_file::unlocked_file( const string &fileName, open_mode mode ) {
 	open( fileName, mode );
 }
 
 
-file::~file() {
+unlocked_file::~unlocked_file() {
 }
 
 
-static const char *make_mode_string( file::open_mode mode ) {
+static const char *make_mode_string( unlocked_file::open_mode mode ) {
 	switch ( mode ) {
-		case file::open_mode::read:
+		case unlocked_file::open_mode::read:
 			return "rb";
 
-		case file::open_mode::write:
+		case unlocked_file::open_mode::write:
 			return "wb";
 
-		case file::open_mode::append:
+		case unlocked_file::open_mode::append:
 			return "ab";
 
-		case file::open_mode::read_write:
+		case unlocked_file::open_mode::read_write:
 			return "r+b";
 
-		case file::open_mode::write_read:
+		case unlocked_file::open_mode::write_read:
 			return "w+b";
 
-		case file::open_mode::append_read_write:
+		case unlocked_file::open_mode::append_read_write:
 			return "a+b";
 
 		default:
@@ -71,13 +70,13 @@ static const char *make_mode_string( file::open_mode mode ) {
 }
 
 
-void file::open( const string &fileName, open_mode mode ) {
+void unlocked_file::open( const string &fileName, open_mode mode ) {
 	FILE *file;
 
-	if (( file = fopen( fileName.c_str(), make_mode_string( mode ))) != nullptr ) {
-		// We don't bind the deleter to file::close to prevent exceptions from the destructor.
+	if (( file = AIDKIT_UNLOCKED_FOPEN( fileName.c_str(), make_mode_string( mode ))) != nullptr ) {
+		// We don't bind the deleter to unlocked_file::close to prevent exceptions from the destructor.
 
-		file_ = shared_ptr< FILE >( file, fclose );
+		file_ = shared_ptr< FILE >( file, AIDKIT_UNLOCKED_FCLOSE );
 		fileName_ = fileName;
 	} else {
 		if ( errno == ENOENT )
@@ -88,7 +87,7 @@ void file::open( const string &fileName, open_mode mode ) {
 }
 
 
-void file::close() {
+void unlocked_file::close() {
 	if ( file_ ) {
 		// Close the file via the deleter because we don't necessary know whether to use fclose!
 
@@ -99,24 +98,24 @@ void file::close() {
 }
 
 
-void file::set_buffer( void *buffer, buffer_mode mode, size_t size ) {
+void unlocked_file::set_buffer( void *buffer, buffer_mode mode, size_t size ) {
 	setvbuf( file_.get(), static_cast< char * >( buffer ), static_cast< int >( mode ), size );
 }
 
 
-void file::put( const string &str ) {
-	if ( fputs( str.c_str(), file_.get() ) == EOF && error() )
+void unlocked_file::put( const string &str ) {
+	if ( AIDKIT_UNLOCKED_FPUTS( str.c_str(), file_.get() ) == EOF && error() )
 		throw file_exception::lastError();
 }
 
 
-void file::put( const wstring &str ) {
-	if ( fputws( str.c_str(), file_.get() ) == WEOF && error() )
+void unlocked_file::put( const wstring &str ) {
+	if ( AIDKIT_UNLOCKED_FPUTWS( str.c_str(), file_.get() ) == WEOF && error() )
 		throw file_exception::lastError();
 }
 
 
-int file::print( const char format[], ... ) {
+int unlocked_file::print( const char format[], ... ) {
 	va_list arguments;
 
 	va_start( arguments, format );
@@ -130,7 +129,7 @@ int file::print( const char format[], ... ) {
 }
 
 
-int file::print( const wchar_t format[], ... ) {
+int unlocked_file::print( const wchar_t format[], ... ) {
 	va_list arguments;
 
 	va_start( arguments, format );
@@ -144,53 +143,53 @@ int file::print( const wchar_t format[], ... ) {
 }
 
 
-file::offset_t file::tell() {
+unlocked_file::offset_t unlocked_file::tell() {
 	offset_t offset;
 
-	if (( offset = ftell( file_.get() )) != -1 )
+	if (( offset = AIDKIT_UNLOCKED_FTELL( file_.get() )) != -1 )
 		return offset;
 	else
 		throw file_exception::lastError();
 }
 
 
-void file::seek( offset_t offset, origin origin ) {
-	if ( fseek( file_.get(), offset, static_cast< int >( origin )) != 0 )
+void unlocked_file::seek( offset_t offset, origin origin ) {
+	if ( AIDKIT_UNLOCKED_FSEEK( file_.get(), offset, static_cast< int >( origin )) != 0 )
 		throw file_exception::lastError();
 }
 
 
-void file::rewind() {
-	::rewind( file_.get() );
+void unlocked_file::rewind() {
+	AIDKIT_UNLOCKED_REWIND( file_.get() );
 }
 
 
-fpos_t file::get_position() const {
+fpos_t unlocked_file::get_position() const {
 	fpos_t position;
 
-	if ( fgetpos( file_.get(), &position ) == 0 )
+	if ( AIDKIT_UNLOCKED_FGETPOS( file_.get(), &position ) == 0 )
 		return position;
 	else
 		throw file_exception::lastError();
 }
 
 
-void file::set_position( const fpos_t &position ) {
-	if ( fsetpos( file_.get(), &position ) != 0 )
+void unlocked_file::set_position( const fpos_t &position ) {
+	if ( AIDKIT_UNLOCKED_FSETPOS( file_.get(), &position ) != 0 )
 		throw file_exception::lastError();
 }
 
 
-void file::flush() {
-	if ( fflush( file_.get() ) == EOF )
+void unlocked_file::flush() {
+	if ( AIDKIT_UNLOCKED_FFLUSH( file_.get() ) == EOF )
 		throw file_exception::lastError();
 }
 
-void file::clear_error() {
-	clearerr( file_.get() );
+void unlocked_file::clear_error() {
+	AIDKIT_UNLOCKED_CLEARERR( file_.get() );
 }
 
-const string &file::name() const {
+const string &unlocked_file::name() const {
 	return fileName_;
 }
 

@@ -19,12 +19,10 @@
 
 namespace pera_software { namespace aidkit {
 
-Exception::Exception() noexcept
-{
+exception::exception() noexcept {
 }
 
-Exception::~Exception() noexcept
-{
+exception::~exception() noexcept {
 }
 
 } }

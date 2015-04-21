@@ -61,24 +61,24 @@ set( OTHER_FILES
 )
 
 set( HEADERS
-	src/pera_software/aidkit/AidKit.hpp
+	src/pera_software/aidkit/aidkit.hpp
 	src/pera_software/company/PERA.hpp
-	src/pera_software/aidkit/Platform.hpp
-	src/pera_software/aidkit/Exception.hpp
-	src/pera_software/aidkit/io/File.hpp
+	src/pera_software/aidkit/platform.hpp
+	src/pera_software/aidkit/exception.hpp
+	src/pera_software/aidkit/io/file.hpp
 	src/pera_software/aidkit/io/file_exception.hpp
-	src/pera_software/aidkit/io/UnlockedFile.hpp
-	src/pera_software/aidkit/io/ErrNoException.hpp
+	src/pera_software/aidkit/io/unlocked_file.hpp
+	src/pera_software/aidkit/io/errno_exception.hpp
 )
 set( SOURCES
-	src/pera_software/aidkit/AidKit.cpp
+	src/pera_software/aidkit/aidkit.cpp
 	src/pera_software/company/PERA.cpp
-	src/pera_software/aidkit/Platform.cpp
-	src/pera_software/aidkit/Exception.cpp
-	src/pera_software/aidkit/io/File.cpp
+	src/pera_software/aidkit/platform.cpp
+	src/pera_software/aidkit/exception.cpp
+	src/pera_software/aidkit/io/file.cpp
 	src/pera_software/aidkit/io/file_exception.cpp
-	src/pera_software/aidkit/io/UnlockedFile.cpp
-	src/pera_software/aidkit/io/ErrNoException.cpp
+	src/pera_software/aidkit/io/unlocked_file.cpp
+	src/pera_software/aidkit/io/errno_exception.cpp
 )
 
 set( QT_HEADERS

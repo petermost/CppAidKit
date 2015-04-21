@@ -24,11 +24,11 @@
 namespace pera_software {
 	namespace aidkit {
 
-			class AIDKIT_EXPORT Exception : public std::exception {
+			class AIDKIT_EXPORT exception : public std::exception {
 				public:
-					Exception() noexcept;
+					exception() noexcept;
 
-					virtual ~Exception() noexcept;
+					virtual ~exception() noexcept;
 
 					virtual const char *what() const noexcept = 0;
 			};

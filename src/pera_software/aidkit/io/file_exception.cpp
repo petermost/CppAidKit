@@ -25,20 +25,20 @@ using namespace std;
 
 //#########################################################################################################
 
-FileNotFoundException::FileNotFoundException( const string &fileName )
-	: FileException( ENOENT ) {
+file_not_found_exception::file_not_found_exception( const string &fileName )
+	: file_exception( ENOENT ) {
 	fileName_ = fileName;
 }
 
-const string &FileNotFoundException::fileName() const {
+const string &file_not_found_exception::fileName() const {
 	return fileName_;
 }
 
 
 
 
-EndOfFileException::EndOfFileException()
-	: FileException( EOF, "EOF" ) {
+end_of_file_exception::end_of_file_exception()
+	: file_exception( EOF, "EOF" ) {
 }
 
 } } }

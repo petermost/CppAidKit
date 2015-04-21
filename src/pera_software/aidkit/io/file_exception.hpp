@@ -18,20 +18,18 @@
 #pragma once
 
 #include <pera_software/aidkit/AidKit.hpp>
-#include "ErrNoException.hpp"
+#include "errno_exception.hpp"
 #include <string>
 
 namespace pera_software {
 	namespace aidkit {
 		namespace io {
 
-			typedef ErrNoExceptionTemplate< class File > FileException;
+			typedef errno_exception_template< class file > file_exception;
 
-			// TODO: Rename FileNotFoundException to file_no_found_exception.
-
-			class AIDKIT_EXPORT FileNotFoundException : public FileException {
+			class AIDKIT_EXPORT file_not_found_exception : public file_exception {
 				public:
-					FileNotFoundException( const std::string &fileName );
+					file_not_found_exception( const std::string &fileName );
 
 					const std::string &fileName() const;
 
@@ -40,12 +38,9 @@ namespace pera_software {
 			};
 
 
-			// TODO: Check whether EndOfFileException is used.
-			// TODO: Rename EndOfFileException to end_of_file_exception.
-
-			class AIDKIT_EXPORT EndOfFileException : public FileException {
+			class AIDKIT_EXPORT end_of_file_exception : public file_exception {
 				public:
-					EndOfFileException();
+					end_of_file_exception();
 			};
 		}
 	}

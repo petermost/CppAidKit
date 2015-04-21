@@ -15,20 +15,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "ErrNoException.hpp"
+#include "errno_exception.hpp"
 #include <cstring>
 
 namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;
 
-ErrNoException ErrNoException::LastError()
-{
-	return ErrNoException( errno );
+errno_exception errno_exception::last_error() {
+	return errno_exception( errno );
 }
 
-ErrNoException::ErrNoException( int errNo, const string &errorMessage )
-{
+
+errno_exception::errno_exception( int errNo, const string &errorMessage ) {
 	errNo_ = errNo;
 	if ( !errorMessage.empty() )
 		errorMessage_ = errorMessage;
@@ -36,8 +35,8 @@ ErrNoException::ErrNoException( int errNo, const string &errorMessage )
 		errorMessage_ = strerror( errNo );
 }
 
-const char *ErrNoException::what() const noexcept
-{
+
+const char *errno_exception::what() const noexcept {
 	return errorMessage_.c_str();
 }
 

@@ -26,14 +26,15 @@ namespace pera_software {
 	namespace aidkit {
 		namespace io {
 
-			class AIDKIT_EXPORT ErrNoException : public Exception {
+			class AIDKIT_EXPORT errno_exception : public aidkit::exception {
 				public:
-					static ErrNoException LastError();
+					static errno_exception last_error();
 
-					ErrNoException( int errNo = 0, const std::string &errorMessage = "" );
+					errno_exception( int value = 0, const std::string &errorMessage = "" );
 
-					int errNo() const
-						{ return errNo_; }
+					int value() const {
+						return errNo_;
+					}
 
 					virtual const char *what() const noexcept override;
 
@@ -43,14 +44,15 @@ namespace pera_software {
 			};
 
 			template < typename T >
-				class ErrNoExceptionTemplate : public ErrNoException {
+				class errno_exception_template : public errno_exception {
 					public:
-						static ErrNoExceptionTemplate lastError()
-							{ return ErrNoExceptionTemplate( errno ); }
+						static errno_exception_template lastError() {
+							return errno_exception_template( errno );
+						}
 
-						ErrNoExceptionTemplate( int errNo = 0, const std::string &errorMessage = "" )
-							: ErrNoException( errNo, errorMessage )
-							{ }
+						errno_exception_template( int errNo = 0, const std::string &errorMessage = "" )
+							: errno_exception( errNo, errorMessage ) {
+						}
 				};
 		}
 	}

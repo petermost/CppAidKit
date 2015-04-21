@@ -17,9 +17,8 @@
 
 #pragma once
 
-#include <pera_software/aidkit/AidKit.hpp>
 #include "file_exception.hpp"
-#include "UnlockedFile.hpp"
+#include <pera_software/aidkit/aidkit.hpp>
 #include <memory>
 #include <string>
 #include <cstdio>
@@ -28,9 +27,7 @@ namespace pera_software {
 	namespace aidkit {
 		namespace io {
 
-			// TODO: Rename File to file.
-
-			class AIDKIT_EXPORT File {
+			class AIDKIT_EXPORT file {
 				public:
 					typedef long offset_t;
 
@@ -55,10 +52,10 @@ namespace pera_software {
 						none = _IONBF
 					};
 
-					File();
-					File( std::shared_ptr< std::FILE > file );
-					File( const std::string &fileName, open_mode mode );
-					virtual ~File();
+					file();
+					file( std::shared_ptr< std::FILE > file );
+					file( const std::string &fileName, open_mode mode );
+					virtual ~file();
 
 					// Open/Close a file:
 
@@ -72,8 +69,8 @@ namespace pera_software {
 					// Write/Read characters:
 
 					int put( int c ) {
-						if (( c = AIDKIT_UNLOCKED_PUTC( c, file_.get() )) == EOF && error() )
-							throw FileException::lastError();
+						if (( c = std::putc( c, file_.get() )) == EOF && error() )
+							throw file_exception::lastError();
 						else
 							return c;
 					}
@@ -81,8 +78,8 @@ namespace pera_software {
 					wint_t put( wchar_t c ) {
 						wint_t result;
 
-						if (( result = AIDKIT_UNLOCKED_PUTWC( c, file_.get() )) == WEOF && error() )
-							throw FileException::lastError();
+						if (( result = std::putwc( c, file_.get() )) == WEOF && error() )
+							throw file_exception::lastError();
 						else
 							return c;
 					}
@@ -90,8 +87,8 @@ namespace pera_software {
 					int getc() {
 						int c;
 
-						if (( c = AIDKIT_UNLOCKED_GETC( file_.get() )) == EOF && error() )
-							throw FileException::lastError();
+						if (( c = std::getc( file_.get() )) == EOF && error() )
+							throw file_exception::lastError();
 						else
 							return c;
 					}
@@ -99,8 +96,8 @@ namespace pera_software {
 					wint_t getwc() {
 						wint_t c;
 
-						if (( c = AIDKIT_UNLOCKED_GETWC( file_.get() )) == WEOF && error() )
-							throw FileException::lastError();
+						if (( c = std::getwc( file_.get() )) == WEOF && error() )
+							throw file_exception::lastError();
 						else
 							return c;
 					}
@@ -116,8 +113,8 @@ namespace pera_software {
 					size_t write( const void *buffer, size_t size, size_t count ) {
 						size_t writeCount;
 
-						if (( writeCount = AIDKIT_UNLOCKED_FWRITE( buffer, size, count, file_.get() )) < count && error() )
-							throw FileException::lastError();
+						if (( writeCount = std::fwrite( buffer, size, count, file_.get() )) < count && error() )
+							throw file_exception::lastError();
 						else
 							return writeCount;
 					}
@@ -131,8 +128,8 @@ namespace pera_software {
 					size_t read( void *buffer, size_t size, size_t count ) {
 						size_t readCount;
 
-						if (( readCount = AIDKIT_UNLOCKED_FREAD( buffer, size, count, file_.get() )) < count && error() )
-							throw FileException::lastError();
+						if (( readCount = std::fread( buffer, size, count, file_.get() )) < count && error() )
+							throw file_exception::lastError();
 						else
 							return readCount;
 					}
@@ -155,11 +152,11 @@ namespace pera_software {
 					void clear_error();
 
 					bool error() const {
-						return AIDKIT_UNLOCKED_FERROR( file_.get() ) != 0;
+						return std::ferror( file_.get() ) != 0;
 					}
 
 					bool eof() const {
-						return AIDKIT_UNLOCKED_FEOF( file_.get() ) != 0;
+						return std::feof( file_.get() ) != 0;
 					}
 
 					const std::string &name() const;
