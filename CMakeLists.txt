@@ -85,6 +85,7 @@ set( SOURCES
 	src/pera_software/aidkit/debug.cpp
 	src/pera_software/aidkit/platform.cpp
 	src/pera_software/aidkit/exception.cpp
+	src/pera_software/aidkit/enum_class.cpp
 	src/pera_software/aidkit/io/file.cpp
 	src/pera_software/aidkit/io/file_exception.cpp
 	src/pera_software/aidkit/io/unlocked_file.cpp
