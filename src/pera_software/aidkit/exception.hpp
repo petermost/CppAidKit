@@ -30,7 +30,8 @@ namespace pera_software {
 
 					virtual ~exception() noexcept;
 
-					virtual const char *what() const noexcept = 0;
+					// TODO: Figure out what to do with std::exception::what().
+					virtual const char *what() const noexcept /* = 0 */;
 			};
 	}
 }
