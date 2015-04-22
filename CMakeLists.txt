@@ -73,6 +73,7 @@ set( HEADERS
 	src/pera_software/aidkit/debug.hpp
 	src/pera_software/aidkit/platform.hpp
 	src/pera_software/aidkit/exception.hpp
+	src/pera_software/aidkit/enum_class.hpp
 	src/pera_software/aidkit/io/file.hpp
 	src/pera_software/aidkit/io/file_exception.hpp
 	src/pera_software/aidkit/io/unlocked_file.hpp
@@ -115,6 +116,7 @@ set( TEST_HEADERS
 set( TEST_SOURCES
 	tests/pera_software/aidkit/run_tests.cpp
 	tests/pera_software/aidkit/debug_test.cpp
+	tests/pera_software/aidkit/enum_class_test.cpp
 )
 
 qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})
