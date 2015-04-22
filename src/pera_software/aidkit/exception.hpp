@@ -19,7 +19,7 @@
 
 #include <exception>
 #include <string>
-#include <pera_software/aidkit/AidKit.hpp>
+#include <pera_software/aidkit/aidkit.hpp>
 
 namespace pera_software {
 	namespace aidkit {

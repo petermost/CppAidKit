@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "File.hpp"
+#include "file.hpp"
 #include <cerrno>
 #include <cstdarg>
 #include "file_exception.hpp"

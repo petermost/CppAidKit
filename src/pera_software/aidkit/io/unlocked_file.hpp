@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include <pera_software/aidkit/AidKit.hpp>
-#include <pera_software/aidkit/Platform.hpp>
+#include <pera_software/aidkit/aidkit.hpp>
+#include <pera_software/aidkit/platform.hpp>
 #include "file_exception.hpp"
 #include <memory>
 #include <string>

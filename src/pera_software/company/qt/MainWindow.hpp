@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include <pera_software/aidkit/AidKit.hpp>
+#include <pera_software/aidkit/aidkit.hpp>
 #include <QMainWindow>
 
 class QSettings;

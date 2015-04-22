@@ -18,7 +18,7 @@
 #pragma once
 
 #include <QObject>
-#include <pera_software/aidkit/AidKit.hpp>
+#include <pera_software/aidkit/aidkit.hpp>
 
 class QString;
 class QFileInfo;

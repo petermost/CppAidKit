@@ -1,4 +1,4 @@
-// Copyright 2015 Peter Most, PERA Software Solutions GmbH
+// Copyright 2014 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,4 +15,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "Platform.hpp"
+#include "aidkit.hpp"
+
+namespace pera_software { namespace aidkit {
+
+const char AidKit::QUIT_ICON_NAME[] = ":/system-shutdown-16x16.png";
+
+} }

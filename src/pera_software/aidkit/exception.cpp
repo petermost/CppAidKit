@@ -15,10 +15,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "AidKit.hpp"
+#include "exception.hpp"
 
 namespace pera_software { namespace aidkit {
 
-const char AidKit::QUIT_ICON_NAME[] = ":/system-shutdown-16x16.png";
+exception::exception() noexcept {
+}
+
+exception::~exception() noexcept {
+}
 
 } }
