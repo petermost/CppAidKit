@@ -22,7 +22,7 @@
 namespace pera_software {
 	namespace company {
 
-		class AIDKIT_EXPORT PERA {
+		class AIDKIT_API PERA {
 			public:
 				static const char NAME[];
 				static const char FULL_NAME[];

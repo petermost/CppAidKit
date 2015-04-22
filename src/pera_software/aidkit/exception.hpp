@@ -24,7 +24,7 @@
 namespace pera_software {
 	namespace aidkit {
 
-			class AIDKIT_EXPORT exception : public std::exception {
+			class AIDKIT_API exception : public std::exception {
 				public:
 					exception() noexcept;
 

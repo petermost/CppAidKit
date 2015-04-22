@@ -17,20 +17,27 @@
 
 #pragma once
 
-// TODO: Remove Qt dependency for Q_DECL_EXPORT/Q_DECL_IMPORT.
+#include "platform.hpp"
 
-#include <QtCore/qglobal.h>
+#if defined( AIDKIT_GCC )
+	#define AIDKIT_DECLARE_EXPORT __attribute__(( visibility( "default" )))
+	#define AIDKIT_DECLARE_IMPORT __attribute__(( visibility( "default" )))
+#elif defined( AIDKIT_MSVC )
+	#define AIDKIT_DECLARE_EXPORT __declspec( dllexport )
+	#define AIDKIT_DECLARE_IMPORT __declspec( dllimport )
+#endif
 
 #if defined( AidKit_EXPORTS ) // Will be defined by cmake
-	#define AIDKIT_EXPORT Q_DECL_EXPORT
+	#define AIDKIT_API AIDKIT_DECLARE_EXPORT
 #else
-	#define AIDKIT_EXPORT Q_DECL_IMPORT
+	#define AIDKIT_API AIDKIT_DECLARE_IMPORT
 #endif
+
 
 namespace pera_software {
 	namespace aidkit {
 
-		class AIDKIT_EXPORT AidKit {
+		class AIDKIT_API AidKit {
 			public:
 				static const char QUIT_ICON_NAME[];
 		};

@@ -24,7 +24,7 @@ namespace pera_software {
 	namespace company {
 		namespace qt {
 
-			class AIDKIT_EXPORT AboutDialog : public QDialog {
+			class AIDKIT_API AboutDialog : public QDialog {
 				Q_OBJECT
 				public:
 					explicit AboutDialog(QWidget *parent = 0);

@@ -24,7 +24,7 @@ namespace pera_software {
 	namespace aidkit {
 		namespace qt {
 
-			class AIDKIT_EXPORT QuitAction : public QAction {
+			class AIDKIT_API QuitAction : public QAction {
 				Q_OBJECT
 				public:
 					explicit QuitAction( QObject *parent = nullptr );

@@ -27,7 +27,7 @@ namespace pera_software {
 
 			typedef errno_exception_template< class file > file_exception;
 
-			class AIDKIT_EXPORT file_not_found_exception : public file_exception {
+			class AIDKIT_API file_not_found_exception : public file_exception {
 				public:
 					file_not_found_exception( const std::string &fileName );
 
@@ -38,7 +38,7 @@ namespace pera_software {
 			};
 
 
-			class AIDKIT_EXPORT end_of_file_exception : public file_exception {
+			class AIDKIT_API end_of_file_exception : public file_exception {
 				public:
 					end_of_file_exception();
 			};

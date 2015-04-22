@@ -58,6 +58,7 @@ add_compile_options(
 	-std=c++14                  # Compile in C++14 mode
 	-w -Wall -Wextra -Wpedantic # Enable all warnings
 	-fvisibility=hidden         # Make symbols hidden by default i.e. must be explicitly exported
+	-pthread
 )
 
 

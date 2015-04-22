@@ -27,7 +27,7 @@ namespace pera_software {
 	namespace aidkit {
 		namespace io {
 
-			class AIDKIT_EXPORT file {
+			class AIDKIT_API file {
 				public:
 					typedef long offset_t;
 

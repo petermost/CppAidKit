@@ -26,7 +26,7 @@ namespace pera_software {
 	namespace aidkit {
 		namespace io {
 
-			class AIDKIT_EXPORT errno_exception : public aidkit::exception {
+			class AIDKIT_API errno_exception : public aidkit::exception {
 				public:
 					static errno_exception last_error();
 

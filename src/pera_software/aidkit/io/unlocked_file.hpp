@@ -107,7 +107,7 @@ namespace pera_software {
 	namespace aidkit {
 		namespace io {
 
-			class AIDKIT_EXPORT unlocked_file {
+			class AIDKIT_API unlocked_file {
 				public:
 					typedef long offset_t;
 

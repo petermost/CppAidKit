@@ -26,7 +26,7 @@ namespace pera_software {
 	namespace company {
 		namespace qt {
 
-			class AIDKIT_EXPORT MainWindow : public QMainWindow {
+			class AIDKIT_API MainWindow : public QMainWindow {
 				Q_OBJECT
 				public:
 					MainWindow(QWidget *parent = 0);

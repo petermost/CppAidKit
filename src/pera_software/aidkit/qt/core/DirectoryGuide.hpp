@@ -27,7 +27,7 @@ namespace pera_software {
 	namespace aidkit {
 		namespace qt {
 
-			class AIDKIT_EXPORT DirectoryGuide : public QObject {
+			class AIDKIT_API DirectoryGuide : public QObject {
 				Q_OBJECT
 				public:
 					explicit DirectoryGuide( QObject *parent = nullptr );
@@ -40,7 +40,7 @@ namespace pera_software {
 				public slots:
 			};
 
-			class AIDKIT_EXPORT DirectoryVisitor : public QObject {
+			class AIDKIT_API DirectoryVisitor : public QObject {
 				Q_OBJECT
 				public:
 					explicit DirectoryVisitor( QObject *parent = nullptr );
