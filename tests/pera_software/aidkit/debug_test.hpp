@@ -1,4 +1,4 @@
-// Copyright 2014 Peter Most, PERA Software Solutions GmbH
+// Copyright 2015 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -17,21 +17,9 @@
 
 #pragma once
 
-#include <exception>
-#include <string>
-#include <pera_software/aidkit/aidkit.hpp>
-
 namespace pera_software {
 	namespace aidkit {
 
-			class AIDKIT_API exception : public std::exception {
-				public:
-					exception() noexcept;
-
-					virtual ~exception() noexcept;
-
-					// TODO: Figure out what to do with std::exception::what().
-					// virtual const char *what() const noexcept /* = 0 */;
-			};
+		void runDebugTests();
 	}
 }

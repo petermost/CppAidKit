@@ -1,4 +1,4 @@
-# Copyright 2014 Peter Most, PERA Software Solutions GmbH
+# Copyright 2015 Peter Most, PERA Software Solutions GmbH
 #
 # This file is part of the CppAidKit library.
 #
@@ -66,6 +66,8 @@ set( OTHER_FILES
 	lgpl.txt
 )
 
+# Library sources:
+
 set( HEADERS
 	src/pera_software/aidkit/aidkit.hpp
 	src/pera_software/aidkit/debug.hpp
@@ -103,14 +105,32 @@ set( QT_SOURCES
 	src/pera_software/company/qt/AboutDialog.cpp
 	src/pera_software/company/qt/Application.cpp
 )
+
+# Library Test sources:
+
+set( TEST_HEADERS
+	tests/pera_software/aidkit/debug_test.hpp
+)
+
+set( TEST_SOURCES
+	tests/pera_software/aidkit/run_tests.cpp
+	tests/pera_software/aidkit/debug_test.cpp
+)
+
 qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})
 
 qt5_add_resources( QT_RESOURCES
 	resources/pera_software/aidkit/AidKitResources.qrc
 	resources/pera_software/company/CompanyResources.qrc
 )
+
+# Setup library build:
+
 add_library( AidKit SHARED ${SOURCES} ${QT_SOURCES} ${MOC_SOURCES} ${QT_RESOURCES})
 include_directories( src/ )
-
 target_link_libraries( AidKit Qt5::Widgets )
 
+# Setup library test build:
+
+add_executable( testAidKit ${TEST_SOURCES} )
+target_link_libraries( testAidKit AidKit )
