@@ -75,6 +75,7 @@ namespace pera_software {
 						nextValue() = value_ + 1;
 					}
 
+					// TODO: Check whether we can ensure that this ctor is getting called with a string literal
 					enum_class( const C *name )
 						: value_( nextValue()++ ), name_( name )
 					{
@@ -92,6 +93,8 @@ namespace pera_software {
 					// Must be assignable for vector<>, so we don't declare these attributes as const:
 
 					I value_;
+
+					// TODO: Ensure that name_ is never null!
 					const C *name_;
 
 					// Initializing order of static template members is quite tricky so we avoid these problems
