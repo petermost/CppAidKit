@@ -150,7 +150,7 @@ namespace pera_software {
 
 					int put( int c ) {
 						if (( c = AIDKIT_UNLOCKED_PUTC( c, file_.get() )) == EOF && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return c;
 					}
@@ -159,7 +159,7 @@ namespace pera_software {
 						wint_t result;
 
 						if (( result = AIDKIT_UNLOCKED_PUTWC( c, file_.get() )) == WEOF && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return c;
 					}
@@ -168,7 +168,7 @@ namespace pera_software {
 						int c;
 
 						if (( c = AIDKIT_UNLOCKED_GETC( file_.get() )) == EOF && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return c;
 					}
@@ -177,7 +177,7 @@ namespace pera_software {
 						wint_t c;
 
 						if (( c = AIDKIT_UNLOCKED_GETWC( file_.get() )) == WEOF && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return c;
 					}
@@ -194,7 +194,7 @@ namespace pera_software {
 						size_t writeCount;
 
 						if (( writeCount = AIDKIT_UNLOCKED_FWRITE( buffer, size, count, file_.get() )) < count && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return writeCount;
 					}
@@ -209,7 +209,7 @@ namespace pera_software {
 						size_t readCount;
 
 						if (( readCount = AIDKIT_UNLOCKED_FREAD( buffer, size, count, file_.get() )) < count && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return readCount;
 					}

@@ -82,7 +82,7 @@ void unlocked_file::open( const string &fileName, open_mode mode ) {
 		if ( errno == ENOENT )
 			throw file_not_found_exception( fileName );
 		else
-			throw file_exception::lastError();
+			throw file_exception::last_error();
 	}
 }
 
@@ -93,7 +93,7 @@ void unlocked_file::close() {
 
 		auto deleter = get_deleter< int (*)( FILE * )>( file_ );
 		if ( deleter != nullptr && ( *deleter )( file_.get() ) == EOF )
-			throw file_exception::lastError();
+			throw file_exception::last_error();
 	}
 }
 
@@ -105,13 +105,13 @@ void unlocked_file::set_buffer( void *buffer, buffer_mode mode, size_t size ) {
 
 void unlocked_file::put( const string &str ) {
 	if ( AIDKIT_UNLOCKED_FPUTS( str.c_str(), file_.get() ) == EOF && error() )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
 void unlocked_file::put( const wstring &str ) {
 	if ( AIDKIT_UNLOCKED_FPUTWS( str.c_str(), file_.get() ) == WEOF && error() )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
@@ -123,7 +123,7 @@ int unlocked_file::print( const char format[], ... ) {
 	va_end( arguments );
 
 	if ( count < 0 )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 
 	return count;
 }
@@ -137,7 +137,7 @@ int unlocked_file::print( const wchar_t format[], ... ) {
 	va_end( arguments );
 
 	if ( count < 0 )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 
 	return count;
 }
@@ -149,13 +149,13 @@ unlocked_file::offset_t unlocked_file::tell() {
 	if (( offset = AIDKIT_UNLOCKED_FTELL( file_.get() )) != -1 )
 		return offset;
 	else
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
 void unlocked_file::seek( offset_t offset, origin origin ) {
 	if ( AIDKIT_UNLOCKED_FSEEK( file_.get(), offset, static_cast< int >( origin )) != 0 )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
@@ -170,19 +170,19 @@ fpos_t unlocked_file::get_position() const {
 	if ( AIDKIT_UNLOCKED_FGETPOS( file_.get(), &position ) == 0 )
 		return position;
 	else
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
 void unlocked_file::set_position( const fpos_t &position ) {
 	if ( AIDKIT_UNLOCKED_FSETPOS( file_.get(), &position ) != 0 )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
 void unlocked_file::flush() {
 	if ( AIDKIT_UNLOCKED_FFLUSH( file_.get() ) == EOF )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 void unlocked_file::clear_error() {

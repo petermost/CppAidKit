@@ -46,7 +46,7 @@ namespace pera_software {
 			template < typename T >
 				class errno_exception_template : public errno_exception {
 					public:
-						static errno_exception_template lastError() {
+						static errno_exception_template last_error() {
 							return errno_exception_template( errno );
 						}
 

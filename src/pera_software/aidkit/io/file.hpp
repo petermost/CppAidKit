@@ -70,7 +70,7 @@ namespace pera_software {
 
 					int put( int c ) {
 						if (( c = std::putc( c, file_.get() )) == EOF && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return c;
 					}
@@ -79,7 +79,7 @@ namespace pera_software {
 						wint_t result;
 
 						if (( result = std::putwc( c, file_.get() )) == WEOF && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return c;
 					}
@@ -88,7 +88,7 @@ namespace pera_software {
 						int c;
 
 						if (( c = std::getc( file_.get() )) == EOF && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return c;
 					}
@@ -97,7 +97,7 @@ namespace pera_software {
 						wint_t c;
 
 						if (( c = std::getwc( file_.get() )) == WEOF && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return c;
 					}
@@ -114,7 +114,7 @@ namespace pera_software {
 						size_t writeCount;
 
 						if (( writeCount = std::fwrite( buffer, size, count, file_.get() )) < count && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return writeCount;
 					}
@@ -129,7 +129,7 @@ namespace pera_software {
 						size_t readCount;
 
 						if (( readCount = std::fread( buffer, size, count, file_.get() )) < count && error() )
-							throw file_exception::lastError();
+							throw file_exception::last_error();
 						else
 							return readCount;
 					}

@@ -83,7 +83,7 @@ void file::open( const string &fileName, open_mode mode ) {
 		if ( errno == ENOENT )
 			throw file_not_found_exception( fileName );
 		else
-			throw file_exception::lastError();
+			throw file_exception::last_error();
 	}
 }
 
@@ -94,7 +94,7 @@ void file::close() {
 
 		auto deleter = get_deleter< int (*)( FILE * )>( file_ );
 		if ( deleter != nullptr && ( *deleter )( file_.get() ) == EOF )
-			throw file_exception::lastError();
+			throw file_exception::last_error();
 	}
 }
 
@@ -106,13 +106,13 @@ void file::set_buffer( void *buffer, buffer_mode mode, size_t size ) {
 
 void file::put( const string &str ) {
 	if ( fputs( str.c_str(), file_.get() ) == EOF && error() )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
 void file::put( const wstring &str ) {
 	if ( fputws( str.c_str(), file_.get() ) == WEOF && error() )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
@@ -124,7 +124,7 @@ int file::print( const char format[], ... ) {
 	va_end( arguments );
 
 	if ( count < 0 )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 
 	return count;
 }
@@ -138,7 +138,7 @@ int file::print( const wchar_t format[], ... ) {
 	va_end( arguments );
 
 	if ( count < 0 )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 
 	return count;
 }
@@ -150,13 +150,13 @@ file::offset_t file::tell() {
 	if (( offset = ftell( file_.get() )) != -1 )
 		return offset;
 	else
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
 void file::seek( offset_t offset, origin origin ) {
 	if ( fseek( file_.get(), offset, static_cast< int >( origin )) != 0 )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
@@ -171,19 +171,19 @@ fpos_t file::get_position() const {
 	if ( fgetpos( file_.get(), &position ) == 0 )
 		return position;
 	else
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
 void file::set_position( const fpos_t &position ) {
 	if ( fsetpos( file_.get(), &position ) != 0 )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 
 void file::flush() {
 	if ( fflush( file_.get() ) == EOF )
-		throw file_exception::lastError();
+		throw file_exception::last_error();
 }
 
 void file::clear_error() {
