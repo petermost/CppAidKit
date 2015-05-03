@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include "files.hpp"
 #include "file_exception.hpp"
 #include <pera_software/aidkit/aidkit.hpp>
 #include <memory>
@@ -26,6 +27,7 @@
 namespace pera_software {
 	namespace aidkit {
 		namespace io {
+
 
 			class AIDKIT_API file {
 				public:
@@ -71,35 +73,35 @@ namespace pera_software {
 					// Write/Read characters:
 
 					void put( char c ) {
-						put_impl( c, std::putc, EOF );
+						fput_char( file_.get(), c );
 					}
 
 					bool put( char c, file_exception *error ) {
-						return put_impl( c, error, std::putc, EOF );
+						return fput_char( file_.get(), c, error );
 					}
 
 					void put( wchar_t c ) {
-						put_impl( c, std::putwc, WEOF );
+						fput_char( file_.get(), c );
 					}
 
 					bool put( wchar_t c, file_exception *error ) {
-						return put_impl( c, error, std::putwc, WEOF );
+						return fput_char( file_.get(), c, error );
 					}
 
 					void get( char *c ) {
-						get_impl( c, std::getc, EOF );
+						fget_char( file_.get(), c );
 					}
 
 					bool get( char *c, file_exception *error ) {
-						return get_impl( c, error, std::getc, EOF );
+						return fget_char( file_.get(), c, error );
 					}
 
 					void get( wchar_t *c ) {
-						get_impl( c, std::getwc, WEOF );
+						fget_char( file_.get(), c );
 					}
 
 					bool get( wchar_t *c, file_exception *error ) {
-						return get_impl( c, error, std::getwc, WEOF );
+						return fget_char( file_.get(), c, error );
 					}
 
 					// Write strings:
@@ -165,44 +167,8 @@ namespace pera_software {
 					const std::string &name() const;
 
 				private:
-					template < typename C, typename F, typename I >
-						void put_impl( C c, F put_function, const I eof ) {
-							file_exception error;
-							if ( !put_impl( c, &error, put_function, eof ))
-								throw error;
-						}
-
-					template < typename C, typename F, typename I >
-						bool put_impl( C c, file_exception *error, F put_function, const I eof ) {
-							decltype( put_function( c, file_.get() )) result = put_function( c, file_.get() );
-							if ( result == eof ) {
-								*error = file_exception::last_error();
-								return false;
-							} else
-								return true;
-						}
-
-					template < typename C, typename F, typename I >
-						void get_impl( C *c, F get_function, const I eof ) {
-							file_exception error;
-							if ( !get_impl( c, &error, get_function, eof ))
-								throw error;
-						}
-
-					template < typename C, typename F, typename I >
-						bool get_impl( C *c, file_exception *error, F get_function, const I eof ) {
-							decltype( get_function( file_.get() )) result = get_function( file_.get() );
-							if ( result == eof ) {
-								*error = file_exception::last_error();
-								return false;
-							} else {
-								*c = result;
-								return true;
-							}
-						}
-
 					std::string fileName_;
-					std::shared_ptr< FILE > file_;
+					std::shared_ptr< std::FILE > file_;
 			};
 		}
 	}

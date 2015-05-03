@@ -75,6 +75,7 @@ set( HEADERS
 	src/pera_software/aidkit/exception.hpp
 	src/pera_software/aidkit/enum_class.hpp
 	src/pera_software/aidkit/io/file.hpp
+	src/pera_software/aidkit/io/files.hpp
 	src/pera_software/aidkit/io/file_exception.hpp
 	src/pera_software/aidkit/io/unlocked_file.hpp
 	src/pera_software/aidkit/io/errno_exception.hpp
@@ -87,6 +88,7 @@ set( SOURCES
 	src/pera_software/aidkit/exception.cpp
 	src/pera_software/aidkit/enum_class.cpp
 	src/pera_software/aidkit/io/file.cpp
+	src/pera_software/aidkit/io/files.cpp
 	src/pera_software/aidkit/io/file_exception.cpp
 	src/pera_software/aidkit/io/unlocked_file.cpp
 	src/pera_software/aidkit/io/errno_exception.cpp
