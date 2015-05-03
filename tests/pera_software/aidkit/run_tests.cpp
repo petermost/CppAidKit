@@ -1,5 +1,6 @@
 #include "debug_test.hpp"
 #include "enum_class_test.hpp"
+#include "io/file_test.hpp"
 #include <pera_software/aidkit/debug.hpp>
 //#include "AidKit_Network_Test.hpp"
 //#include "AidKit_Exception_Test.hpp"
@@ -10,11 +11,13 @@
 namespace pera_software { namespace aidkit {
 
 using namespace std;
+using namespace io;
 
 int runTests() {
 	try {
 		runDebugTests();
 		runEnumTests();
+		runFileTests();
 //		runExceptionTests();
 //		runNetworkTests();
 //		runResourceMutexTests();

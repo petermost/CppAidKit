@@ -36,8 +36,8 @@ file::file( shared_ptr< FILE > file ) {
 		throw file_exception( EINVAL );
 }
 
-file::file( const string &fileName, open_mode mode ) {
-	open( fileName, mode );
+file::file(const string &fileName, open_mode mode , file_exception *error ) {
+	open( fileName, mode, error );
 }
 
 
@@ -45,7 +45,7 @@ file::~file() {
 }
 
 
-static const char *make_mode_string( file::open_mode mode ) {
+static const char *make_mode_string( file::open_mode mode, file_exception *error ) {
 	switch ( mode ) {
 		case file::open_mode::read:
 			return "rb";
@@ -66,36 +66,63 @@ static const char *make_mode_string( file::open_mode mode ) {
 			return "a+b";
 
 		default:
-			return "";
+			*error = file_exception( EINVAL );
+			return nullptr;
 	}
 }
 
-
-void file::open( const string &fileName, open_mode mode ) {
-	FILE *file;
-
-	if (( file = fopen( fileName.c_str(), make_mode_string( mode ))) != nullptr ) {
-		// We don't bind the deleter to file::close to prevent exceptions from the destructor.
-
-		file_ = shared_ptr< FILE >( file, fclose );
-		fileName_ = fileName;
-	} else {
-		if ( errno == ENOENT )
-			throw file_not_found_exception( fileName );
+bool checkSuccess( bool success, file_exception *error ) {
+	if ( !success ) {
+		if ( error != nullptr )
+			*error = file_exception::last_error();
 		else
 			throw file_exception::last_error();
 	}
+	return success;
 }
 
+void file::open( const string &fileName, open_mode mode ) {
+	file_exception error;
+	if ( !open( fileName, mode, &error ))
+		throw error;
+}
+
+bool file::open( const string &fileName, open_mode mode, file_exception *error ) {
+	const char *mode_string = make_mode_string( mode, error );
+	if ( mode_string != nullptr ) {
+		FILE *file_ptr = fopen( fileName.c_str(), mode_string );
+		if ( file_ptr != nullptr ) {
+			// We don't bind the deleter to file::close to prevent exceptions from the destructor.
+			file_ = shared_ptr< FILE >( file_ptr, fclose );
+			fileName_ = fileName;
+			return true;
+		} else {
+			*error = file_exception::last_error();
+			return false;
+		}
+	} else
+		return false;
+}
 
 void file::close() {
+	file_exception error;
+	if ( !close( &error ))
+		throw error;
+}
+
+bool file::close( file_exception *error ) {
 	if ( file_ ) {
 		// Close the file via the deleter because we don't necessary know whether to use fclose!
 
 		auto deleter = get_deleter< int (*)( FILE * )>( file_ );
-		if ( deleter != nullptr && ( *deleter )( file_.get() ) == EOF )
-			throw file_exception::last_error();
-	}
+		if ( deleter != nullptr && ( *deleter )( file_.get() ) == 0 ) {
+			return true;
+		} else {
+			*error = file_exception::last_error();
+			return false;
+		}
+	} else
+		return false;
 }
 
 
@@ -104,15 +131,35 @@ void file::set_buffer( void *buffer, buffer_mode mode, size_t size ) {
 }
 
 
+
+
 void file::put( const string &str ) {
-	if ( fputs( str.c_str(), file_.get() ) == EOF && error() )
-		throw file_exception::last_error();
+	file_exception error;
+	if ( !put( str, &error ))
+		throw error;
+}
+
+bool file::put( const string &str, file_exception *error ) {
+	if ( fputs( str.c_str(), file_.get() ) == EOF ) {
+		*error = file_exception::last_error();
+		return false;
+	} else
+		return true;
 }
 
 
 void file::put( const wstring &str ) {
-	if ( fputws( str.c_str(), file_.get() ) == WEOF && error() )
-		throw file_exception::last_error();
+	file_exception error;
+	if ( !put( str, &error ))
+		throw error;
+}
+
+bool file::put( const wstring &str, file_exception *error ) {
+	if ( fputws( str.c_str(), file_.get() ) == WEOF ) {
+		*error = file_exception::last_error();
+		return false;
+	} else
+		return true;
 }
 
 

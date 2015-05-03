@@ -118,6 +118,7 @@ set( TEST_SOURCES
 	tests/pera_software/aidkit/run_tests.cpp
 	tests/pera_software/aidkit/debug_test.cpp
 	tests/pera_software/aidkit/enum_class_test.cpp
+	tests/pera_software/aidkit/io/file_test.cpp
 )
 
 qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})

@@ -54,13 +54,15 @@ namespace pera_software {
 
 					file();
 					file( std::shared_ptr< std::FILE > file );
-					file( const std::string &fileName, open_mode mode );
+					file( const std::string &fileName, open_mode mode, file_exception *error = nullptr );
 					virtual ~file();
 
 					// Open/Close a file:
-
 					void open( const std::string &fileName, open_mode mode );
+					bool open( const std::string &fileName, open_mode mode, file_exception *error );
+
 					void close();
+					bool close( file_exception *error );
 
 					// Set the buffer:
 
@@ -68,44 +70,45 @@ namespace pera_software {
 
 					// Write/Read characters:
 
-					int put( int c ) {
-						if (( c = std::putc( c, file_.get() )) == EOF && error() )
-							throw file_exception::last_error();
-						else
-							return c;
+					void put( char c ) {
+						put_impl( c, std::putc, EOF );
 					}
 
-					wint_t put( wchar_t c ) {
-						wint_t result;
-
-						if (( result = std::putwc( c, file_.get() )) == WEOF && error() )
-							throw file_exception::last_error();
-						else
-							return c;
+					bool put( char c, file_exception *error ) {
+						return put_impl( c, error, std::putc, EOF );
 					}
 
-					int getc() {
-						int c;
-
-						if (( c = std::getc( file_.get() )) == EOF && error() )
-							throw file_exception::last_error();
-						else
-							return c;
+					void put( wchar_t c ) {
+						put_impl( c, std::putwc, WEOF );
 					}
 
-					wint_t getwc() {
-						wint_t c;
+					bool put( wchar_t c, file_exception *error ) {
+						return put_impl( c, error, std::putwc, WEOF );
+					}
 
-						if (( c = std::getwc( file_.get() )) == WEOF && error() )
-							throw file_exception::last_error();
-						else
-							return c;
+					void get( char *c ) {
+						get_impl( c, std::getc, EOF );
+					}
+
+					bool get( char *c, file_exception *error ) {
+						return get_impl( c, error, std::getc, EOF );
+					}
+
+					void get( wchar_t *c ) {
+						get_impl( c, std::getwc, WEOF );
+					}
+
+					bool get( wchar_t *c, file_exception *error ) {
+						return get_impl( c, error, std::getwc, WEOF );
 					}
 
 					// Write strings:
 
 					void put( const std::string &str );
+					bool put( const std::string &str, file_exception *error );
+
 					void put( const std::wstring &str );
+					bool put( const std::wstring &str, file_exception *error );
 
 					int print( const char format[], ... );
 					int print( const wchar_t format[], ... );
@@ -162,6 +165,42 @@ namespace pera_software {
 					const std::string &name() const;
 
 				private:
+					template < typename C, typename F, typename I >
+						void put_impl( C c, F put_function, const I eof ) {
+							file_exception error;
+							if ( !put_impl( c, &error, put_function, eof ))
+								throw error;
+						}
+
+					template < typename C, typename F, typename I >
+						bool put_impl( C c, file_exception *error, F put_function, const I eof ) {
+							decltype( put_function( c, file_.get() )) result = put_function( c, file_.get() );
+							if ( result == eof ) {
+								*error = file_exception::last_error();
+								return false;
+							} else
+								return true;
+						}
+
+					template < typename C, typename F, typename I >
+						void get_impl( C *c, F get_function, const I eof ) {
+							file_exception error;
+							if ( !get_impl( c, &error, get_function, eof ))
+								throw error;
+						}
+
+					template < typename C, typename F, typename I >
+						bool get_impl( C *c, file_exception *error, F get_function, const I eof ) {
+							decltype( get_function( file_.get() )) result = get_function( file_.get() );
+							if ( result == eof ) {
+								*error = file_exception::last_error();
+								return false;
+							} else {
+								*c = result;
+								return true;
+							}
+						}
+
 					std::string fileName_;
 					std::shared_ptr< FILE > file_;
 			};
