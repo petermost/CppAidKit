@@ -71,56 +71,58 @@ namespace pera_software {
 
 					void set_buffer( void *buffer, buffer_mode mode, size_t size );
 
-					// Write/Read characters:
+					// Put characters:
 
 					void put( char c ) {
-						fput_char( file_.get(), c );
+						fput_char_impl( file_.get(), c, std::putc, EOF );
 					}
 
 					bool put( char c, file_exception *error ) {
-						return fput_char( file_.get(), c, error );
+						return fput_char_impl( file_.get(), c, error, std::putc, EOF );
 					}
 
 					void put( wchar_t c ) {
-						fput_char( file_.get(), c );
+						fput_char_impl( file_.get(), c, std::putwc, WEOF );
 					}
 
 					bool put( wchar_t c, file_exception *error ) {
-						return fput_char( file_.get(), c, error );
+						return fput_char_impl( file_.get(), c, error, std::putwc, WEOF );
 					}
 
+					// Get characters:
+
 					void get( char *c ) {
-						fget_char( file_.get(), c );
+						fget_char_impl( file_.get(), c, std::getc, EOF );
 					}
 
 					bool get( char *c, file_exception *error ) {
-						return fget_char( file_.get(), c, error );
+						return fget_char_impl( file_.get(), c, error, std::getc, EOF );
 					}
 
 					void get( wchar_t *c ) {
-						fget_char( file_.get(), c );
+						fget_char_impl( file_.get(), c, std::getwc, WEOF );
 					}
 
 					bool get( wchar_t *c, file_exception *error ) {
-						return fget_char( file_.get(), c, error );
+						return fget_char_impl( file_.get(), c, error, std::getwc, WEOF );
 					}
 
-					// Write strings:
+					// Put strings:
 
 					void put( const char str[] ) {
-						fput_string( file_.get(), str );
+						fput_string_impl( file_.get(), str, std::fputs, EOF );
 					}
 
 					bool put( const char str[], file_exception *error ) {
-						return fput_string( file_.get(), str, error );
+						return fput_string_impl( file_.get(), str, error, std::fputs, EOF );
 					}
 
 					void put( const wchar_t str[] ) {
-						fput_string( file_.get(), str );
+						fput_string_impl( file_.get(), str, std::fputws, WEOF );
 					}
 
 					bool put( const wchar_t str[], file_exception *error ) {
-						return fput_string( file_.get(), str, error );
+						return fput_string_impl( file_.get(), str, error, std::fputws, WEOF );
 					}
 
 					void put( const std::string &str ) {
@@ -143,22 +145,22 @@ namespace pera_software {
 
 					template < typename ... Args >
 						void print( const char format[], Args &&... args ) {
-							fprint_format( file_.get(), format, std::forward< Args >( args ) ... );
+							fprint_format_impl( file_.get(), format, std::fprintf, std::forward< Args >( args ) ... );
 						}
 
 					template < typename ... Args >
 						bool print( file_exception *error, const char format[], Args && ... args ) {
-							return fprint_format( file_.get(), error, format, std::forward< Args >( args ) ... );
+							return fprint_format_impl( file_.get(), error, format, std::fprintf, std::forward< Args >( args ) ... );
 						}
 
 					template < typename ... Args >
 						void print( const wchar_t format[], Args &&... args ) {
-							fprint_format( file_.get(), format, std::forward< Args >( args ) ... );
+							fprint_format_impl( file_.get(), format, std::fwprintf, std::forward< Args >( args ) ... );
 						}
 
 					template < typename ... Args >
 						bool print( file_exception *error, const wchar_t format[], Args && ... args ) {
-							return fprint_format( file_.get(), error, format, std::forward< Args >( args ) ... );
+							return fprint_format_impl( file_.get(), error, format, std::fwprintf, std::forward< Args >( args ) ... );
 						}
 
 					size_t write( const void *buffer, size_t size, size_t count ) {
