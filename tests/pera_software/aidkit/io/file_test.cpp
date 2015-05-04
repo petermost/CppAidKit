@@ -40,10 +40,19 @@ void runFileTests() {
 	file.get( &wc );
 	file.get( &wc, &error );
 
+	file.put( "" );
+	file.put( "", &error );
+	file.put( L"" );
+	file.put( L"", &error );
 	file.put( s );
 	file.put( s, &error );
 	file.put( ws );
 	file.put( wc, &error );
+
+	file.print( "%s, %d", "", 0 );
+	file.print( &error, "%s, %d", "", 0 );
+	file.print( L"%s, %d", "", 0 );
+	file.print( &error, L"%s, %d", "", 0 );
 }
 
 } } }

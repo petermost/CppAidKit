@@ -60,6 +60,7 @@ namespace pera_software {
 					virtual ~file();
 
 					// Open/Close a file:
+
 					void open( const std::string &fileName, open_mode mode );
 					bool open( const std::string &fileName, open_mode mode, file_exception *error );
 
@@ -106,24 +107,59 @@ namespace pera_software {
 
 					// Write strings:
 
-					void put( const std::string &str ) {
+					void put( const char str[] ) {
 						fput_string( file_.get(), str );
+					}
+
+					bool put( const char str[], file_exception *error ) {
+						return fput_string( file_.get(), str, error );
+					}
+
+					void put( const wchar_t str[] ) {
+						fput_string( file_.get(), str );
+					}
+
+					bool put( const wchar_t str[], file_exception *error ) {
+						return fput_string( file_.get(), str, error );
+					}
+
+					void put( const std::string &str ) {
+						put( str.c_str() );
 					}
 
 					bool put( const std::string &str, file_exception *error ) {
-						return fput_string( file_.get(), str, error );
+						return put( str.c_str(), error );
 					}
 
 					void put( const std::wstring &str ) {
-						fput_string( file_.get(), str );
+						put( str.c_str() );
 					}
 
 					bool put( const std::wstring &str, file_exception *error ) {
-						return fput_string( file_.get(), str, error );
+						return put( str.c_str(), error );
 					}
 
-					int print( const char format[], ... );
-					int print( const wchar_t format[], ... );
+					// Print strings:
+
+					template < typename ... Args >
+						void print( const char format[], Args &&... args ) {
+							fprint_format( file_.get(), format, std::forward< Args >( args ) ... );
+						}
+
+					template < typename ... Args >
+						bool print( file_exception *error, const char format[], Args && ... args ) {
+							return fprint_format( file_.get(), error, format, std::forward< Args >( args ) ... );
+						}
+
+					template < typename ... Args >
+						void print( const wchar_t format[], Args &&... args ) {
+							fprint_format( file_.get(), format, std::forward< Args >( args ) ... );
+						}
+
+					template < typename ... Args >
+						bool print( file_exception *error, const wchar_t format[], Args && ... args ) {
+							return fprint_format( file_.get(), error, format, std::forward< Args >( args ) ... );
+						}
 
 					size_t write( const void *buffer, size_t size, size_t count ) {
 						size_t writeCount;

@@ -131,33 +131,6 @@ void file::set_buffer( void *buffer, buffer_mode mode, size_t size ) {
 }
 
 
-int file::print( const char format[], ... ) {
-	va_list arguments;
-
-	va_start( arguments, format );
-	int count = vfprintf( file_.get(), format, arguments );
-	va_end( arguments );
-
-	if ( count < 0 )
-		throw file_exception::last_error();
-
-	return count;
-}
-
-
-int file::print( const wchar_t format[], ... ) {
-	va_list arguments;
-
-	va_start( arguments, format );
-	int count = vfwprintf( file_.get(), format, arguments );
-	va_end( arguments );
-
-	if ( count < 0 )
-		throw file_exception::last_error();
-
-	return count;
-}
-
 
 file::offset_t file::tell() {
 	offset_t offset;

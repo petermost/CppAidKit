@@ -24,6 +24,8 @@ namespace pera_software {
 	namespace aidkit {
 		namespace io {
 
+			// Put implementations for char/wchar_t:
+
 			template < typename C, typename F, typename I >
 				void fput_char_impl( std::FILE *file, C c, F put_function, const I eof ) {
 					file_exception error;
@@ -40,6 +42,8 @@ namespace pera_software {
 					} else
 						return true;
 				}
+
+			// Get implementations for char/wchar_t:
 
 			template < typename C, typename F, typename I >
 				void fget_char_impl( std::FILE *file, C *c, F get_function, const I eof ) {
@@ -60,23 +64,43 @@ namespace pera_software {
 					}
 				}
 
+			// Put implementations for char/wchar_t arrays:
 
-
-			template < typename S, typename F, typename I >
-				void fput_string_impl( std::FILE *file, const S &str, F put_function, const I eof ) {
+			template < typename C, typename F, typename I >
+				void fput_string_impl( std::FILE *file, const C str[], F put_function, const I eof ) {
 					file_exception error;
 					if ( !fput_string_impl( file, str, &error, put_function, eof ))
 						throw error;
 				}
 
-			template < typename S, typename F, typename I >
-				bool fput_string_impl( std::FILE *file, const S &str, file_exception *error, F put_function, const I eof ) {
-					if ( put_function( str.c_str(), file ) == eof ) {
+			template < typename C, typename F, typename I >
+				bool fput_string_impl( std::FILE *file, const C str[], file_exception *error, F put_function, const I eof ) {
+					if ( put_function( str, file ) == eof ) {
 						*error = file_exception::last_error();
 						return false;
 					} else
 						return true;
 				}
+
+			// Print implementations for char/wchar_t format strings:
+
+			template < typename C, typename F, typename ... Args >
+				void fprint_format_impl( std::FILE *file, const C format[], F print_function, Args && ... args ) {
+					file_exception error;
+					if ( !fprint_format_impl( file, &error, format, print_function, std::forward< Args >( args ) ... ))
+						throw error;
+				}
+
+			template < typename C, typename F, typename ... Args >
+				bool fprint_format_impl( std::FILE *file, file_exception *error, const C format[], F print_function, Args && ... args ) {
+					if ( print_function( file, format, std::forward< Args >( args ) ... ) < 0 ) {
+						*error = file_exception::last_error();
+						return false;
+					} else
+						return true;
+				}
+
+			// Put functions for char/wchar_t:
 
 			inline void fput_char( std::FILE *file, char c ) {
 				fput_char_impl( file, c, std::putc, EOF );
@@ -94,6 +118,8 @@ namespace pera_software {
 				return fput_char_impl( file, c, error, std::putwc, WEOF );
 			}
 
+			// Get functions for char/wchar_t:
+
 			inline void fget_char( std::FILE *file, char *c ) {
 				fget_char_impl( file, c, std::getc, EOF );
 			}
@@ -110,24 +136,45 @@ namespace pera_software {
 				return fget_char_impl( file, c, error, std::getwc, WEOF );
 			}
 
+			// Put functions for char/wchar_t arrays:
 
-
-			inline void fput_string( std::FILE *file, const std::string &str ) {
+			inline void fput_string( std::FILE *file, const char str[] ) {
 				fput_string_impl( file, str, std::fputs, EOF );
 			}
 
-			inline bool fput_string( std::FILE *file, const std::string &str, file_exception *error ) {
+			inline bool fput_string( std::FILE *file, const char str[], file_exception *error ) {
 				return fput_string_impl( file, str, error, std::fputs, EOF );
 			}
 
-			inline void fput_string( std::FILE *file, const std::wstring &str ) {
+			inline void fput_string( std::FILE *file, const wchar_t str[] ) {
 				fput_string_impl( file, str, std::fputws, WEOF );
 			}
 
-			inline bool fput_string( std::FILE *file, const std::wstring &str, file_exception *error ) {
+			inline bool fput_string( std::FILE *file, const wchar_t str[], file_exception *error ) {
 				return fput_string_impl( file, str, error, std::fputws, WEOF );
 			}
 
+			// Print functions for char/wchar_t arrays:
+
+			template < typename ... Args >
+				void fprint_format( std::FILE *file, const char format[], Args ... args ) {
+					fprint_format_impl( file, format, std::fprintf, std::forward< Args >( args ) ... );
+				}
+
+			template < typename ... Args >
+				bool fprint_format( std::FILE *file, file_exception *error, const char format[], Args ... args ) {
+					return fprint_format_impl( file, error, format, std::fprintf, std::forward< Args >( args ) ... );
+				}
+
+			template < typename ... Args >
+				void fprint_format( std::FILE *file, const wchar_t format[], Args ... args ) {
+					fprint_format_impl( file, format, std::fwprintf, std::forward< Args >( args ) ... );
+				}
+
+			template < typename ... Args >
+				bool fprint_format( std::FILE *file, file_exception *error, const wchar_t format[], Args ... args ) {
+					return fprint_format_impl( file, error, format, std::fwprintf, std::forward< Args >( args ) ... );
+				}
 
 		}
 	}
