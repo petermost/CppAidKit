@@ -15,35 +15,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <pera_software/aidkit/io/temporary_file.hpp>
+#pragma once
 
-namespace pera_software { namespace aidkit { namespace io {
+#include "file.hpp"
+#include <pera_software/aidkit/aidkit.hpp>
+#include <string>
 
-using namespace std;
+namespace pera_software {
+	namespace aidkit {
+		namespace io {
 
-void runFileTests() {
-	char c = 'c';
-	wchar_t wc = L'c';
-	string s = "";
-	wstring ws = L"";
+			class AIDKIT_API temporary_file : public file {
+				public:
+					static std::string make_name();
+					static std::wstring make_wname();
 
-	temporary_file file;
-	file_exception error;
+					temporary_file();
+			};
 
-	file.put( c );
-	file.put( c, &error );
-	file.put( wc );
-	file.put( wc, &error );
-
-	file.get( &c );
-	file.get( &c, &error );
-	file.get( &wc );
-	file.get( &wc, &error );
-
-	file.put( s );
-	file.put( s, &error );
-	file.put( ws );
-	file.put( wc, &error );
+		}
+	}
 }
 
-} } }

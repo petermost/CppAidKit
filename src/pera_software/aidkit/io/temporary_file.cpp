@@ -15,35 +15,31 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <pera_software/aidkit/io/temporary_file.hpp>
+#include "temporary_file.hpp"
 
 namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;
 
-void runFileTests() {
-	char c = 'c';
-	wchar_t wc = L'c';
-	string s = "";
-	wstring ws = L"";
+string temporary_file::make_name() {
+	char fileName[ L_tmpnam ];
+	if ( tmpnam( fileName ) != nullptr )
+		return fileName;
+	else
+		return "";
+}
 
-	temporary_file file;
-	file_exception error;
+wstring temporary_file::make_wname() {
+	wchar_t fileName[ L_tmpnam ];
+	if ( _wtmpnam( fileName ) != nullptr )
+		return fileName;
+	else
+		return L"";
+}
 
-	file.put( c );
-	file.put( c, &error );
-	file.put( wc );
-	file.put( wc, &error );
 
-	file.get( &c );
-	file.get( &c, &error );
-	file.get( &wc );
-	file.get( &wc, &error );
-
-	file.put( s );
-	file.put( s, &error );
-	file.put( ws );
-	file.put( wc, &error );
+temporary_file::temporary_file()
+	: file( shared_ptr< FILE >( tmpfile(), fclose )) {
 }
 
 } } }

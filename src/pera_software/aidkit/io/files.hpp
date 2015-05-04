@@ -23,6 +23,7 @@
 namespace pera_software {
 	namespace aidkit {
 		namespace io {
+
 			template < typename C, typename F, typename I >
 				void fput_char_impl( std::FILE *file, C c, F put_function, const I eof ) {
 					file_exception error;
@@ -32,7 +33,7 @@ namespace pera_software {
 
 			template < typename C, typename F, typename I >
 				bool fput_char_impl( std::FILE *file, C c, file_exception *error, F put_function, const I eof ) {
-					decltype( put_function( c, file )) result = put_function( c, file );
+					auto result = put_function( c, file );
 					if ( result == eof ) {
 						*error = file_exception::last_error();
 						return false;
@@ -49,7 +50,7 @@ namespace pera_software {
 
 			template < typename C, typename F, typename I >
 				bool fget_char_impl( std::FILE *file, C *c, file_exception *error, F get_function, const I eof ) {
-					decltype( get_function( file )) result = get_function( file );
+					auto result = get_function( file );
 					if ( result == eof ) {
 						*error = file_exception::last_error();
 						return false;
@@ -57,6 +58,24 @@ namespace pera_software {
 						*c = result;
 						return true;
 					}
+				}
+
+
+
+			template < typename S, typename F, typename I >
+				void fput_string_impl( std::FILE *file, const S &str, F put_function, const I eof ) {
+					file_exception error;
+					if ( !fput_string_impl( file, str, &error, put_function, eof ))
+						throw error;
+				}
+
+			template < typename S, typename F, typename I >
+				bool fput_string_impl( std::FILE *file, const S &str, file_exception *error, F put_function, const I eof ) {
+					if ( put_function( str.c_str(), file ) == eof ) {
+						*error = file_exception::last_error();
+						return false;
+					} else
+						return true;
 				}
 
 			inline void fput_char( std::FILE *file, char c ) {
@@ -90,6 +109,25 @@ namespace pera_software {
 			inline bool fget_char( std::FILE *file, wchar_t *c, file_exception *error ) {
 				return fget_char_impl( file, c, error, std::getwc, WEOF );
 			}
+
+
+
+			inline void fput_string( std::FILE *file, const std::string &str ) {
+				fput_string_impl( file, str, std::fputs, EOF );
+			}
+
+			inline bool fput_string( std::FILE *file, const std::string &str, file_exception *error ) {
+				return fput_string_impl( file, str, error, std::fputs, EOF );
+			}
+
+			inline void fput_string( std::FILE *file, const std::wstring &str ) {
+				fput_string_impl( file, str, std::fputws, WEOF );
+			}
+
+			inline bool fput_string( std::FILE *file, const std::wstring &str, file_exception *error ) {
+				return fput_string_impl( file, str, error, std::fputws, WEOF );
+			}
+
 
 		}
 	}

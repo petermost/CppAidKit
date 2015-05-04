@@ -106,11 +106,21 @@ namespace pera_software {
 
 					// Write strings:
 
-					void put( const std::string &str );
-					bool put( const std::string &str, file_exception *error );
+					void put( const std::string &str ) {
+						fput_string( file_.get(), str );
+					}
 
-					void put( const std::wstring &str );
-					bool put( const std::wstring &str, file_exception *error );
+					bool put( const std::string &str, file_exception *error ) {
+						return fput_string( file_.get(), str, error );
+					}
+
+					void put( const std::wstring &str ) {
+						fput_string( file_.get(), str );
+					}
+
+					bool put( const std::wstring &str, file_exception *error ) {
+						return fput_string( file_.get(), str, error );
+					}
 
 					int print( const char format[], ... );
 					int print( const wchar_t format[], ... );

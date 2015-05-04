@@ -131,38 +131,6 @@ void file::set_buffer( void *buffer, buffer_mode mode, size_t size ) {
 }
 
 
-
-
-void file::put( const string &str ) {
-	file_exception error;
-	if ( !put( str, &error ))
-		throw error;
-}
-
-bool file::put( const string &str, file_exception *error ) {
-	if ( fputs( str.c_str(), file_.get() ) == EOF ) {
-		*error = file_exception::last_error();
-		return false;
-	} else
-		return true;
-}
-
-
-void file::put( const wstring &str ) {
-	file_exception error;
-	if ( !put( str, &error ))
-		throw error;
-}
-
-bool file::put( const wstring &str, file_exception *error ) {
-	if ( fputws( str.c_str(), file_.get() ) == WEOF ) {
-		*error = file_exception::last_error();
-		return false;
-	} else
-		return true;
-}
-
-
 int file::print( const char format[], ... ) {
 	va_list arguments;
 
