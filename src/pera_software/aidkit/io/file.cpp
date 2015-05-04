@@ -24,6 +24,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;
 
+//==================================================================================================
 
 file::file() {
 }
@@ -44,6 +45,7 @@ file::file(const string &fileName, open_mode mode , file_exception *error ) {
 file::~file() {
 }
 
+//==================================================================================================
 
 static const char *make_mode_string( file::open_mode mode, file_exception *error ) {
 	switch ( mode ) {
@@ -71,15 +73,6 @@ static const char *make_mode_string( file::open_mode mode, file_exception *error
 	}
 }
 
-bool checkSuccess( bool success, file_exception *error ) {
-	if ( !success ) {
-		if ( error != nullptr )
-			*error = file_exception::last_error();
-		else
-			throw file_exception::last_error();
-	}
-	return success;
-}
 
 void file::open( const string &fileName, open_mode mode ) {
 	file_exception error;
@@ -125,11 +118,13 @@ bool file::close( file_exception *error ) {
 		return false;
 }
 
+//==================================================================================================
 
 void file::set_buffer( void *buffer, buffer_mode mode, size_t size ) {
 	setvbuf( file_.get(), static_cast< char * >( buffer ), static_cast< int >( mode ), size );
 }
 
+//==================================================================================================
 
 void file::write( const void *buffer, size_t size ) {
 	file_exception error;
@@ -164,55 +159,88 @@ bool file::read( void *buffer, size_t size, file_exception *error ) {
 		return true;
 }
 
+//==================================================================================================
 
-file::offset_t file::tell() {
-	offset_t offset;
+void file::tell( offset_t *offset ) {
+	file_exception error;
+	if ( !tell( offset, &error ))
+		throw error;
+}
 
-	if (( offset = ftell( file_.get() )) != -1 )
-		return offset;
+bool file::tell( offset_t *offset, file_exception *error ) {
+	*offset = ftell( file_.get() );
+	if ( *offset == -1 ) {
+		*error = file_exception::last_error();
+		return false;
+	}
 	else
-		throw file_exception::last_error();
+		return true;
 }
 
 
 void file::seek( offset_t offset, origin origin ) {
-	if ( fseek( file_.get(), offset, static_cast< int >( origin )) != 0 )
-		throw file_exception::last_error();
+	file_exception error;
+	if ( !seek( offset, &error, origin ))
+		throw error;
 }
 
+
+bool file::seek( offset_t offset, file_exception *error, origin origin ) {
+	if ( fseek( file_.get(), offset, static_cast< int >( origin )) != 0 ) {
+		*error = file_exception::last_error();
+		return false;
+	} else
+		return true;
+}
 
 void file::rewind() {
 	::rewind( file_.get() );
 }
 
+void file::get_position( fpos_t *position ) {
+	file_exception error;
+	if ( !get_position( position, &error ))
+		throw error;
+}
 
-fpos_t file::get_position() const {
-	fpos_t position;
 
-	if ( fgetpos( file_.get(), &position ) == 0 )
-		return position;
+bool file::get_position( fpos_t *position, file_exception *error ) {
+	if ( fgetpos( file_.get(), position ) != 0 ) {
+		*error = file_exception::last_error();
+		return false;
+	}
 	else
-		throw file_exception::last_error();
+		return true;
 }
 
 
 void file::set_position( const fpos_t &position ) {
-	if ( fsetpos( file_.get(), &position ) != 0 )
-		throw file_exception::last_error();
+	file_exception error;
+	if ( !set_position( position, &error ))
+		throw error;
 }
 
+
+bool file::set_position( const fpos_t &position, file_exception *error ) {
+	if ( fsetpos( file_.get(), &position ) != 0 ) {
+		*error = file_exception::last_error();
+		return false;
+	} else
+		return true;
+}
 
 void file::flush() {
-	if ( fflush( file_.get() ) == EOF )
-		throw file_exception::last_error();
+	file_exception error;
+	if ( !flush( &error ))
+		throw error;
 }
 
-void file::clear_error() {
-	clearerr( file_.get() );
-}
-
-const string &file::name() const {
-	return fileName_;
+bool file::flush( file_exception *error ) {
+	if ( fflush( file_.get() ) == EOF ) {
+		*error = file_exception::last_error();
+		return false;
+	} else
+		return true;
 }
 
 } } }

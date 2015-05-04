@@ -22,6 +22,8 @@ namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;
 
+// TODO: Change to errc and error_code.
+
 errno_exception errno_exception::last_error() {
 	return errno_exception( errno );
 }

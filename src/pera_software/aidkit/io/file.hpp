@@ -182,16 +182,26 @@ namespace pera_software {
 
 					// Positioning:
 
-					offset_t tell();
+					void tell( offset_t *offset );
+					bool tell( offset_t *offset, file_exception *error );
+
 					void seek( offset_t offset, origin origin = origin::begin );
+					bool seek( offset_t offset, file_exception *error, origin origin = origin::begin );
+
 					void rewind();
 
-					fpos_t get_position() const;
+					void get_position( fpos_t *position );
+					bool get_position( fpos_t *position, file_exception *error );
+
 					void set_position( const fpos_t &position );
+					bool set_position( const fpos_t &position, file_exception *error );
 
 					void flush();
+					bool flush( file_exception *error );
 
-					void clear_error();
+					void clear_error() {
+						std::clearerr( file_.get() );
+					}
 
 					bool error() const {
 						return std::ferror( file_.get() ) != 0;
@@ -201,7 +211,9 @@ namespace pera_software {
 						return std::feof( file_.get() ) != 0;
 					}
 
-					const std::string &name() const;
+					const std::string &name() const {
+						return fileName_;
+					}
 
 				private:
 					std::string fileName_;
