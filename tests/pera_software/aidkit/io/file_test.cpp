@@ -26,6 +26,7 @@ void runFileTests() {
 	wchar_t wc = L'c';
 	string s = "";
 	wstring ws = L"";
+	char buffer[ 10 ];
 
 	temporary_file file;
 	file_exception error;
@@ -53,6 +54,11 @@ void runFileTests() {
 	file.print( &error, "%s, %d", "", 0 );
 	file.print( L"%s, %d", "", 0 );
 	file.print( &error, L"%s, %d", "", 0 );
+
+	file.write( buffer, sizeof( buffer ));
+	file.write( buffer, sizeof( buffer ), &error );
+	file.read( buffer, sizeof( buffer ));
+	file.read( buffer, sizeof( buffer ), &error );
 }
 
 } } }

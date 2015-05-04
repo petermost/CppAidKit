@@ -131,6 +131,39 @@ void file::set_buffer( void *buffer, buffer_mode mode, size_t size ) {
 }
 
 
+void file::write( const void *buffer, size_t size ) {
+	file_exception error;
+	if ( !write( buffer, size, &error ))
+		throw error;
+}
+
+void file::read( void *buffer, size_t size ) {
+	file_exception error;
+	if ( !read( buffer, size, &error ))
+		throw error;
+}
+
+
+const size_t COUNT = 1;
+
+bool file::write( const void *buffer, size_t size, file_exception *error ) {
+	size_t writeCount = fwrite( buffer, size, COUNT, file_.get() );
+	if ( writeCount < COUNT ) {
+		*error = file_exception::last_error();
+		return false;
+	} else
+		return true;
+}
+
+bool file::read( void *buffer, size_t size, file_exception *error ) {
+	size_t readCount = fread( buffer, size, COUNT, file_.get() );
+	if ( readCount < COUNT ) {
+		*error = file_exception::last_error();
+		return false;
+	} else
+		return true;
+}
+
 
 file::offset_t file::tell() {
 	offset_t offset;

@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "files.hpp"
+#include "file_impl.hpp"
 #include "file_exception.hpp"
 #include <pera_software/aidkit/aidkit.hpp>
 #include <memory>
@@ -174,22 +174,11 @@ namespace pera_software {
 
 					// Write/Read binary data:
 
-					size_t write( const void *buffer, size_t size ) {
-						return write( buffer, 1, size );
-					}
+					void write( const void *buffer, size_t size );
+					bool write( const void *buffer, size_t size, file_exception *error );
 
-					size_t read( void *buffer, size_t size, size_t count ) {
-						size_t readCount;
-
-						if (( readCount = std::fread( buffer, size, count, file_.get() )) < count && error() )
-							throw file_exception::last_error();
-						else
-							return readCount;
-					}
-
-					size_t read( void *buffer, size_t size ) {
-						return read( buffer, 1, size );
-					}
+					void read( void *buffer, size_t size );
+					bool read( void *buffer, size_t size, file_exception *error );
 
 					// Positioning:
 
