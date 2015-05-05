@@ -243,4 +243,12 @@ bool file::flush( file_exception *error ) {
 		return true;
 }
 
+error_code make_last_errno_error_code() {
+	return error_code( errno, generic_category() );
+}
+
+void file::test_function( error_code *error ) {
+	*error = make_last_errno_error_code();
+}
+
 } } }

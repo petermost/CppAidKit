@@ -23,6 +23,7 @@
 #include <memory>
 #include <string>
 #include <cstdio>
+#include <system_error>
 
 namespace pera_software {
 	namespace aidkit {
@@ -215,6 +216,7 @@ namespace pera_software {
 						return fileName_;
 					}
 
+					void test_function( std::error_code *error );
 				private:
 					std::string fileName_;
 					std::shared_ptr< std::FILE > file_;
