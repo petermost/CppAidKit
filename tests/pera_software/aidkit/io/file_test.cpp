@@ -29,7 +29,10 @@ void runFileTests() {
 	char buffer[ 10 ];
 
 	temporary_file file;
-	file_exception error;
+	error_code error;
+
+	if ( error == errc::invalid_argument )
+		;
 
 	file.put( c );
 	file.put( c, &error );

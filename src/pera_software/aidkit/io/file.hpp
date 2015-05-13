@@ -18,17 +18,14 @@
 #pragma once
 
 #include "file_impl.hpp"
-#include "file_exception.hpp"
 #include <pera_software/aidkit/aidkit.hpp>
 #include <memory>
 #include <string>
 #include <cstdio>
-#include <system_error>
 
 namespace pera_software {
 	namespace aidkit {
 		namespace io {
-
 
 			class AIDKIT_API file {
 				public:
@@ -57,20 +54,20 @@ namespace pera_software {
 
 					file();
 					file( std::shared_ptr< std::FILE > file );
-					file( const std::string &fileName, open_mode mode, file_exception *error = nullptr );
+					file( const std::string &fileName, open_mode mode, std::error_code *errorCode = nullptr );
 					virtual ~file();
 
 					// Open/Close a file:
 
 					void open( const std::string &fileName, open_mode mode );
-					bool open( const std::string &fileName, open_mode mode, file_exception *error );
+					bool open( const std::string &fileName, open_mode mode, std::error_code *error );
 
 					void close();
-					bool close( file_exception *error );
+					bool close( std::error_code *error );
 
 					// Set the buffer:
 
-					void set_buffer( void *buffer, buffer_mode mode, size_t size );
+					void set_buffer( void *buffer, size_t size, buffer_mode mode = buffer_mode::full );
 
 					// Put characters:
 
@@ -78,7 +75,7 @@ namespace pera_software {
 						fput_char_impl( file_.get(), c, std::putc, EOF );
 					}
 
-					bool put( char c, file_exception *error ) {
+					bool put( char c, std::error_code *error ) {
 						return fput_char_impl( file_.get(), c, error, std::putc, EOF );
 					}
 
@@ -86,7 +83,7 @@ namespace pera_software {
 						fput_char_impl( file_.get(), c, std::putwc, WEOF );
 					}
 
-					bool put( wchar_t c, file_exception *error ) {
+					bool put( wchar_t c, std::error_code *error ) {
 						return fput_char_impl( file_.get(), c, error, std::putwc, WEOF );
 					}
 
@@ -96,7 +93,7 @@ namespace pera_software {
 						fget_char_impl( file_.get(), c, std::getc, EOF );
 					}
 
-					bool get( char *c, file_exception *error ) {
+					bool get( char *c, std::error_code *error ) {
 						return fget_char_impl( file_.get(), c, error, std::getc, EOF );
 					}
 
@@ -104,7 +101,7 @@ namespace pera_software {
 						fget_char_impl( file_.get(), c, std::getwc, WEOF );
 					}
 
-					bool get( wchar_t *c, file_exception *error ) {
+					bool get( wchar_t *c, std::error_code *error ) {
 						return fget_char_impl( file_.get(), c, error, std::getwc, WEOF );
 					}
 
@@ -114,7 +111,7 @@ namespace pera_software {
 						fput_string_impl( file_.get(), str, std::fputs, EOF );
 					}
 
-					bool put( const char str[], file_exception *error ) {
+					bool put( const char str[], std::error_code *error ) {
 						return fput_string_impl( file_.get(), str, error, std::fputs, EOF );
 					}
 
@@ -122,7 +119,7 @@ namespace pera_software {
 						fput_string_impl( file_.get(), str, std::fputws, WEOF );
 					}
 
-					bool put( const wchar_t str[], file_exception *error ) {
+					bool put( const wchar_t str[], std::error_code *error ) {
 						return fput_string_impl( file_.get(), str, error, std::fputws, WEOF );
 					}
 
@@ -130,7 +127,7 @@ namespace pera_software {
 						put( str.c_str() );
 					}
 
-					bool put( const std::string &str, file_exception *error ) {
+					bool put( const std::string &str, std::error_code *error ) {
 						return put( str.c_str(), error );
 					}
 
@@ -138,7 +135,7 @@ namespace pera_software {
 						put( str.c_str() );
 					}
 
-					bool put( const std::wstring &str, file_exception *error ) {
+					bool put( const std::wstring &str, std::error_code *error ) {
 						return put( str.c_str(), error );
 					}
 
@@ -150,7 +147,7 @@ namespace pera_software {
 						}
 
 					template < typename ... Args >
-						bool print( file_exception *error, const char format[], Args && ... args ) {
+						bool print( std::error_code *error, const char format[], Args && ... args ) {
 							return fprint_format_impl( file_.get(), error, format, std::fprintf, std::forward< Args >( args ) ... );
 						}
 
@@ -160,7 +157,7 @@ namespace pera_software {
 						}
 
 					template < typename ... Args >
-						bool print( file_exception *error, const wchar_t format[], Args && ... args ) {
+						bool print( std::error_code *error, const wchar_t format[], Args && ... args ) {
 							return fprint_format_impl( file_.get(), error, format, std::fwprintf, std::forward< Args >( args ) ... );
 						}
 
@@ -168,7 +165,7 @@ namespace pera_software {
 						size_t writeCount;
 
 						if (( writeCount = std::fwrite( buffer, size, count, file_.get() )) < count && error() )
-							throw file_exception::last_error();
+							throw std::system_error( make_errno_error_code() );
 						else
 							return writeCount;
 					}
@@ -176,29 +173,29 @@ namespace pera_software {
 					// Write/Read binary data:
 
 					void write( const void *buffer, size_t size );
-					bool write( const void *buffer, size_t size, file_exception *error );
+					bool write( const void *buffer, size_t size, std::error_code *error );
 
 					void read( void *buffer, size_t size );
-					bool read( void *buffer, size_t size, file_exception *error );
+					bool read( void *buffer, size_t size, std::error_code *error );
 
 					// Positioning:
 
 					void tell( offset_t *offset );
-					bool tell( offset_t *offset, file_exception *error );
+					bool tell( offset_t *offset, std::error_code *error );
 
 					void seek( offset_t offset, origin origin = origin::begin );
-					bool seek( offset_t offset, file_exception *error, origin origin = origin::begin );
+					bool seek( offset_t offset, std::error_code *error, origin origin = origin::begin );
 
 					void rewind();
 
 					void get_position( fpos_t *position );
-					bool get_position( fpos_t *position, file_exception *error );
+					bool get_position( fpos_t *position, std::error_code *error );
 
 					void set_position( const fpos_t &position );
-					bool set_position( const fpos_t &position, file_exception *error );
+					bool set_position( const fpos_t &position, std::error_code *error );
 
 					void flush();
-					bool flush( file_exception *error );
+					bool flush( std::error_code *error );
 
 					void clear_error() {
 						std::clearerr( file_.get() );
@@ -216,7 +213,6 @@ namespace pera_software {
 						return fileName_;
 					}
 
-					void test_function( std::error_code *error );
 				private:
 					std::string fileName_;
 					std::shared_ptr< std::FILE > file_;
