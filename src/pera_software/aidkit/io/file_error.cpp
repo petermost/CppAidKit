@@ -18,6 +18,8 @@
 #include "file_error.hpp"
 #include <cerrno>
 
+// TODO: Add unit test for make_errno functions:
+
 namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;

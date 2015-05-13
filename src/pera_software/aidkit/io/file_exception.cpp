@@ -19,6 +19,8 @@
 #include <cerrno>
 #include <cstdarg>
 
+// TODO: Derive file_exception from std::system_exception
+
 namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;
