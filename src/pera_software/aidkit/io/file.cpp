@@ -33,7 +33,7 @@ file::file( shared_ptr< FILE > file ) {
 	if ( file )
 		file_ = file;
 	else
-		throw system_error( make_errno_error_code( EINVAL ));
+		throw system_error( make_error_code( errc::invalid_argument ));
 }
 
 file::file(const string &fileName, open_mode mode , error_code *error ) {
@@ -67,7 +67,7 @@ static const char *make_mode_string( file::open_mode mode, error_code *error ) {
 			return "a+b";
 
 		default:
-			*error = make_errno_error_code( EINVAL );
+			*error = make_error_code( errc::invalid_argument );
 			return nullptr;
 	}
 }

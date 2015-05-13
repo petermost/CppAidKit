@@ -44,7 +44,6 @@ namespace pera_software {
 			std::error_condition make_error_condition( file_error error );
 
 			std::error_code make_errno_error_code();
-			std::error_code make_errno_error_code( int errNo );
 		}
 	}
 }

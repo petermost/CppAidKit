@@ -57,10 +57,7 @@ error_condition make_error_condition( file_error error ) {
 }
 
 error_code make_errno_error_code() {
-	return make_errno_error_code( errno );
+	return error_code( errno, generic_category() );
 }
 
-error_code make_errno_error_code( int errNo ) {
-	return error_code( errNo, generic_category() );
-}
 } } }
