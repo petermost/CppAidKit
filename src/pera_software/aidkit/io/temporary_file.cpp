@@ -21,22 +21,26 @@ namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;
 
+template < typename C, typename F >
+	basic_string< C > make_name_impl( F tmpnam_function ) {
+		C fileName[ L_tmpnam ];
+		if ( tmpnam_function( fileName ) != nullptr )
+			return fileName;
+		else
+			return basic_string< C >();
+	}
+
 string temporary_file::make_name() {
-	char fileName[ L_tmpnam ];
-	if ( tmpnam( fileName ) != nullptr )
-		return fileName;
-	else
-		return "";
+	return make_name_impl< char >( tmpnam );
 }
 
-wstring temporary_file::make_wname() {
-	wchar_t fileName[ L_tmpnam ];
-	if ( _wtmpnam( fileName ) != nullptr )
-		return fileName;
-	else
-		return L"";
-}
+#if defined( AIDKIT_MINGW )
 
+	wstring temporary_file::make_wname() {
+		return make_name_impl< wchar_t >( _wtmpnam );
+	}
+
+#endif
 
 temporary_file::temporary_file()
 	: file( shared_ptr< FILE >( tmpfile(), fclose )) {

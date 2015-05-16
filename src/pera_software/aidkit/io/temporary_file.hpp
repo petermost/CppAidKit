@@ -28,7 +28,10 @@ namespace pera_software {
 			class AIDKIT_API temporary_file : public file {
 				public:
 					static std::string make_name();
-					static std::wstring make_wname();
+
+					#if defined( AIDKIT_MINGW )
+						static std::wstring make_wname();
+					#endif
 
 					temporary_file();
 			};
