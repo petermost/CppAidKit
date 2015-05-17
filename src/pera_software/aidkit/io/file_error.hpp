@@ -18,6 +18,7 @@
 #pragma once
 
 #include <system_error>
+#include <pera_software/aidkit/aidkit.hpp>
 
 // Define a file error code:
 // http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-4.html
@@ -31,7 +32,7 @@ namespace pera_software {
 				not_open
 			};
 
-			class file_error_category : public std::error_category {
+			class AIDKIT_API file_error_category : public std::error_category {
 				public:
 					static const file_error_category &instance();
 
@@ -39,11 +40,11 @@ namespace pera_software {
 					virtual std::string message( int error ) const override;
 			};
 
-			std::error_code make_error_code( file_error error );
+			AIDKIT_API std::error_code make_error_code( file_error error );
 
-			std::error_condition make_error_condition( file_error error );
+			AIDKIT_API std::error_condition make_error_condition( file_error error );
 
-			std::error_code make_errno_error_code();
+			AIDKIT_API std::error_code make_errno_error_code();
 		}
 	}
 }

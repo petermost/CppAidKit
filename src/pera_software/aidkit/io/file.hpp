@@ -53,17 +53,17 @@ namespace pera_software {
 					};
 
 					file();
-					file( std::shared_ptr< std::FILE > file );
+					file( std::shared_ptr< std::FILE > file, std::error_code *errorCode = nullptr );
 					file( const std::string &fileName, open_mode mode, std::error_code *errorCode = nullptr );
 					virtual ~file();
 
 					// Open/Close a file:
 
 					void open( const std::string &fileName, open_mode mode );
-					bool open( const std::string &fileName, open_mode mode, std::error_code *error );
+					bool open( const std::string &fileName, open_mode mode, std::error_code *errorCode );
 
 					void close();
-					bool close( std::error_code *error );
+					bool close( std::error_code *errorCode );
 
 					// Set the buffer:
 
@@ -72,141 +72,165 @@ namespace pera_software {
 					// Put characters:
 
 					void put( char c ) {
-						fput_char_impl( file_.get(), c, std::putc, EOF );
+						file_put_char_impl( file_.get(), c, std::putc, EOF );
 					}
 
-					bool put( char c, std::error_code *error ) {
-						return fput_char_impl( file_.get(), c, error, std::putc, EOF );
+					bool put( char c, std::error_code *errorCode ) {
+						return file_put_char_impl( file_.get(), c, errorCode, std::putc, EOF );
 					}
 
 					void put( wchar_t c ) {
-						fput_char_impl( file_.get(), c, std::putwc, WEOF );
+						file_put_char_impl( file_.get(), c, std::putwc, WEOF );
 					}
 
-					bool put( wchar_t c, std::error_code *error ) {
-						return fput_char_impl( file_.get(), c, error, std::putwc, WEOF );
+					bool put( wchar_t c, std::error_code *errorCode ) {
+						return file_put_char_impl( file_.get(), c, errorCode, std::putwc, WEOF );
 					}
 
 					// Get characters:
 
 					void get( char *c ) {
-						fget_char_impl( file_.get(), c, std::getc, EOF );
+						file_get_char_impl( file_.get(), c, std::getc, EOF );
 					}
 
-					bool get( char *c, std::error_code *error ) {
-						return fget_char_impl( file_.get(), c, error, std::getc, EOF );
+					bool get( char *c, std::error_code *errorCode ) {
+						return file_get_char_impl( file_.get(), c, errorCode, std::getc, EOF );
 					}
 
 					void get( wchar_t *c ) {
-						fget_char_impl( file_.get(), c, std::getwc, WEOF );
+						file_get_char_impl( file_.get(), c, std::getwc, WEOF );
 					}
 
-					bool get( wchar_t *c, std::error_code *error ) {
-						return fget_char_impl( file_.get(), c, error, std::getwc, WEOF );
+					bool get( wchar_t *c, std::error_code *errorCode ) {
+						return file_get_char_impl( file_.get(), c, errorCode, std::getwc, WEOF );
 					}
 
 					// Put strings:
 
 					void put( const char str[] ) {
-						fput_string_impl( file_.get(), str, std::fputs, EOF );
+						file_put_string_impl( file_.get(), str, std::fputs, EOF );
 					}
 
-					bool put( const char str[], std::error_code *error ) {
-						return fput_string_impl( file_.get(), str, error, std::fputs, EOF );
+					bool put( const char str[], std::error_code *errorCode ) {
+						return file_put_string_impl( file_.get(), str, errorCode, std::fputs, EOF );
 					}
 
 					void put( const wchar_t str[] ) {
-						fput_string_impl( file_.get(), str, std::fputws, WEOF );
+						file_put_string_impl( file_.get(), str, std::fputws, WEOF );
 					}
 
-					bool put( const wchar_t str[], std::error_code *error ) {
-						return fput_string_impl( file_.get(), str, error, std::fputws, WEOF );
+					bool put( const wchar_t str[], std::error_code *errorCode ) {
+						return file_put_string_impl( file_.get(), str, errorCode, std::fputws, WEOF );
 					}
 
 					void put( const std::string &str ) {
 						put( str.c_str() );
 					}
 
-					bool put( const std::string &str, std::error_code *error ) {
-						return put( str.c_str(), error );
+					bool put( const std::string &str, std::error_code *errorCode ) {
+						return put( str.c_str(), errorCode );
 					}
 
 					void put( const std::wstring &str ) {
 						put( str.c_str() );
 					}
 
-					bool put( const std::wstring &str, std::error_code *error ) {
-						return put( str.c_str(), error );
+					bool put( const std::wstring &str, std::error_code *errorCode ) {
+						return put( str.c_str(), errorCode );
 					}
 
 					// Print strings:
 
 					template < typename ... Args >
 						void print( const char format[], Args &&... args ) {
-							fprint_format_impl( file_.get(), format, std::fprintf, std::forward< Args >( args ) ... );
+							file_print_impl( file_.get(), format, std::fprintf, std::forward< Args >( args ) ... );
 						}
 
 					template < typename ... Args >
-						bool print( std::error_code *error, const char format[], Args && ... args ) {
-							return fprint_format_impl( file_.get(), error, format, std::fprintf, std::forward< Args >( args ) ... );
+						bool print( std::error_code *errorCode, const char format[], Args && ... args ) {
+							return file_print_impl( file_.get(), errorCode, format, std::fprintf, std::forward< Args >( args ) ... );
 						}
 
 					template < typename ... Args >
 						void print( const wchar_t format[], Args &&... args ) {
-							fprint_format_impl( file_.get(), format, std::fwprintf, std::forward< Args >( args ) ... );
+							file_print_impl( file_.get(), format, std::fwprintf, std::forward< Args >( args ) ... );
 						}
 
 					template < typename ... Args >
-						bool print( std::error_code *error, const wchar_t format[], Args && ... args ) {
-							return fprint_format_impl( file_.get(), error, format, std::fwprintf, std::forward< Args >( args ) ... );
+						bool print( std::error_code *errorCode, const wchar_t format[], Args && ... args ) {
+							return file_print_impl( file_.get(), errorCode, format, std::fwprintf, std::forward< Args >( args ) ... );
 						}
-
-					size_t write( const void *buffer, size_t size, size_t count ) {
-						size_t writeCount;
-
-						if (( writeCount = std::fwrite( buffer, size, count, file_.get() )) < count && error() )
-							throw std::system_error( make_errno_error_code() );
-						else
-							return writeCount;
-					}
 
 					// Write/Read binary data:
 
-					void write( const void *buffer, size_t size );
-					bool write( const void *buffer, size_t size, std::error_code *error );
+					bool read( void *buffer, size_t size, size_t count, std::error_code *errorCode ) {
+						size_t readCount = std::fread( buffer, size, count, file_.get() );
+						if ( readCount < count ) {
+							get_error_code( file_.get(), errorCode );
+							return false;
+						} else
+							return true;
+					}
 
-					void read( void *buffer, size_t size );
-					bool read( void *buffer, size_t size, std::error_code *error );
+					void read( void *buffer, size_t size, size_t count ) {
+						std::error_code errorCode;
+						if ( !read( buffer, size, count, &errorCode ))
+							throw std::system_error( errorCode );
+					}
+
+					bool read( void *buffer, size_t size, std::error_code *errorCode ) {
+						return read( buffer, size, 1, errorCode );
+					}
+
+					void read( void *buffer, size_t size ) {
+						read( buffer, size, 1 );
+					}
+
+
+					bool write( const void *buffer, size_t size, size_t count, std::error_code *errorCode ) {
+						size_t writeCount = std::fwrite( buffer, size, count, file_.get() );
+						if ( writeCount < count ) {
+							get_error_code( file_.get(), errorCode );
+							return false;
+						} else
+							return true;
+					}
+
+					void write( const void *buffer, size_t size, size_t count ) {
+						std::error_code errorCode;
+						if ( !write( buffer, size, count, &errorCode ))
+							throw std::system_error( errorCode );
+					}
+
+					bool write( const void *buffer, size_t size, std::error_code *errorCode ) {
+						return write( buffer, size, 1, errorCode );
+					}
+
+					void write( const void *buffer, size_t size ) {
+						write( buffer, size, 1 );
+					}
 
 					// Positioning:
 
 					void tell( offset_t *offset );
-					bool tell( offset_t *offset, std::error_code *error );
+					bool tell( offset_t *offset, std::error_code *errorCode );
 
 					void seek( offset_t offset, origin origin = origin::begin );
-					bool seek( offset_t offset, std::error_code *error, origin origin = origin::begin );
+					bool seek( offset_t offset, std::error_code *errorCode, origin origin = origin::begin );
 
 					void rewind();
 
 					void get_position( fpos_t *position );
-					bool get_position( fpos_t *position, std::error_code *error );
+					bool get_position( fpos_t *position, std::error_code *errorCode );
 
 					void set_position( const fpos_t &position );
-					bool set_position( const fpos_t &position, std::error_code *error );
+					bool set_position( const fpos_t &position, std::error_code *errorCode );
 
 					void flush();
-					bool flush( std::error_code *error );
+					bool flush( std::error_code *errorCode );
 
 					void clear_error() {
 						std::clearerr( file_.get() );
-					}
-
-					bool error() const {
-						return std::ferror( file_.get() ) != 0;
-					}
-
-					bool eof() const {
-						return std::feof( file_.get() ) != 0;
 					}
 
 					const std::string &name() const {

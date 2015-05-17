@@ -29,15 +29,26 @@ file::file() {
 }
 
 
-file::file( shared_ptr< FILE > file ) {
+file::file( shared_ptr< FILE > file , error_code *errorCode ) {
 	if ( file )
 		file_ = file;
-	else
-		throw system_error( make_error_code( errc::invalid_argument ));
+	else {
+		error_code ctorErrorCode = make_error_code( errc::invalid_argument );
+		if ( errorCode != nullptr )
+			*errorCode = ctorErrorCode;
+		else
+			throw system_error( ctorErrorCode );
+	}
 }
 
-file::file(const string &fileName, open_mode mode , error_code *error ) {
-	open( fileName, mode, error );
+file::file( const string &fileName, open_mode mode, error_code *errorCode ) {
+	error_code openErrorCode;
+	if ( !open( fileName, mode, &openErrorCode )) {
+		if ( errorCode != nullptr )
+			*errorCode = openErrorCode;
+		else
+			throw system_error( openErrorCode );
+	}
 }
 
 
@@ -46,7 +57,7 @@ file::~file() {
 
 //==================================================================================================
 
-static const char *make_mode_string( file::open_mode mode, error_code *error ) {
+static const char *make_mode_string( file::open_mode mode ) {
 	switch ( mode ) {
 		case file::open_mode::read:
 			return "rb";
@@ -67,56 +78,56 @@ static const char *make_mode_string( file::open_mode mode, error_code *error ) {
 			return "a+b";
 
 		default:
-			*error = make_error_code( errc::invalid_argument );
 			return nullptr;
 	}
 }
 
 
 void file::open( const string &fileName, open_mode mode ) {
-	error_code error;
-	if ( !open( fileName, mode, &error ))
-		throw error;
+	error_code errorCode;
+	if ( !open( fileName, mode, &errorCode ))
+		throw system_error( errorCode );
 }
 
-bool file::open( const string &fileName, open_mode mode, error_code *error ) {
-	const char *mode_string = make_mode_string( mode, error );
-	if ( mode_string != nullptr ) {
-		FILE *file_ptr = fopen( fileName.c_str(), mode_string );
-		if ( file_ptr != nullptr ) {
-			// We don't bind the deleter to file::close to prevent exceptions from the destructor.
-			file_ = shared_ptr< FILE >( file_ptr, fclose );
-			fileName_ = fileName;
-			return true;
-		} else {
-			*error = make_errno_error_code();
-			return false;
-		}
-	} else {
-		// error has already been set by make_mode_string
+bool file::open( const string &fileName, open_mode mode, error_code *errorCode ) {
+	const char *mode_string = make_mode_string( mode );
+	if ( mode_string == nullptr ) {
+		*errorCode = make_error_code( errc::invalid_argument );
 		return false;
 	}
+
+	FILE *file_ptr = fopen( fileName.c_str(), mode_string );
+	if ( file_ptr == nullptr ) {
+		*errorCode = make_errno_error_code();
+		return false;
+	}
+
+	// We don't bind the deleter to file::close to prevent exceptions from the destructor.
+	file_ = shared_ptr< FILE >( file_ptr, fclose );
+	fileName_ = fileName;
+
+	return true;
 }
 
 void file::close() {
-	error_code error;
-	if ( !close( &error ))
-		throw error;
+	error_code errorCode;
+	if ( !close( &errorCode ))
+		throw system_error( errorCode );
 }
 
-bool file::close( error_code *error ) {
-	if ( file_ ) {
-		// Close the file via the deleter because we don't necessary know whether to use fclose!
-
-		auto deleter = get_deleter< int (*)( FILE * )>( file_ );
-		if ( deleter != nullptr && ( *deleter )( file_.get() ) == 0 ) {
-			return true;
-		} else {
-			*error = make_errno_error_code();
-			return false;
-		}
-	} else
+bool file::close( error_code *errorCode ) {
+	if ( !is_file_open( file_.get(), errorCode ))
 		return false;
+
+	// Close the file via the deleter because we don't necessary know whether to use fclose!
+
+	auto deleter = get_deleter< int (*)( FILE * )>( file_ );
+	if ( deleter != nullptr && ( *deleter )( file_.get() ) == 0 ) {
+		return true;
+	} else {
+		*errorCode = make_errno_error_code();
+		return false;
+	}
 }
 
 //==================================================================================================
@@ -127,51 +138,16 @@ void file::set_buffer( void *buffer, size_t size, buffer_mode mode ) {
 
 //==================================================================================================
 
-void file::write( const void *buffer, size_t size ) {
-	error_code error;
-	if ( !write( buffer, size, &error ))
-		throw error;
-}
-
-void file::read( void *buffer, size_t size ) {
-	error_code error;
-	if ( !read( buffer, size, &error ))
-		throw error;
-}
-
-
-const size_t COUNT = 1;
-
-bool file::write( const void *buffer, size_t size, error_code *error ) {
-	size_t writeCount = fwrite( buffer, size, COUNT, file_.get() );
-	if ( writeCount < COUNT ) {
-		*error = make_errno_error_code();
-		return false;
-	} else
-		return true;
-}
-
-bool file::read( void *buffer, size_t size, error_code *error ) {
-	size_t readCount = fread( buffer, size, COUNT, file_.get() );
-	if ( readCount < COUNT ) {
-		*error = make_errno_error_code();
-		return false;
-	} else
-		return true;
-}
-
-//==================================================================================================
-
 void file::tell( offset_t *offset ) {
-	error_code error;
-	if ( !tell( offset, &error ))
-		throw error;
+	error_code errorCode;
+	if ( !tell( offset, &errorCode ))
+		throw system_error( errorCode );
 }
 
-bool file::tell( offset_t *offset, error_code *error ) {
+bool file::tell( offset_t *offset, error_code *errorCode ) {
 	*offset = ftell( file_.get() );
 	if ( *offset == -1 ) {
-		*error = make_errno_error_code();
+		*errorCode = make_errno_error_code();
 		return false;
 	}
 	else
@@ -180,15 +156,15 @@ bool file::tell( offset_t *offset, error_code *error ) {
 
 
 void file::seek( offset_t offset, origin origin ) {
-	error_code error;
-	if ( !seek( offset, &error, origin ))
-		throw error;
+	error_code errorCode;
+	if ( !seek( offset, &errorCode, origin ))
+		throw system_error( errorCode );
 }
 
 
-bool file::seek( offset_t offset, error_code *error, origin origin ) {
+bool file::seek( offset_t offset, error_code *errorCode, origin origin ) {
 	if ( fseek( file_.get(), offset, static_cast< int >( origin )) != 0 ) {
-		*error = make_errno_error_code();
+		*errorCode = make_errno_error_code();
 		return false;
 	} else
 		return true;
@@ -199,15 +175,15 @@ void file::rewind() {
 }
 
 void file::get_position( fpos_t *position ) {
-	error_code error;
-	if ( !get_position( position, &error ))
-		throw error;
+	error_code errorCode;
+	if ( !get_position( position, &errorCode ))
+		throw system_error( errorCode );
 }
 
 
-bool file::get_position( fpos_t *position, error_code *error ) {
+bool file::get_position( fpos_t *position, error_code *errorCode ) {
 	if ( fgetpos( file_.get(), position ) != 0 ) {
-		*error = make_errno_error_code();
+		*errorCode = make_errno_error_code();
 		return false;
 	}
 	else
@@ -216,29 +192,29 @@ bool file::get_position( fpos_t *position, error_code *error ) {
 
 
 void file::set_position( const fpos_t &position ) {
-	error_code error;
-	if ( !set_position( position, &error ))
-		throw error;
+	error_code errorCode;
+	if ( !set_position( position, &errorCode ))
+		throw system_error( errorCode );
 }
 
 
-bool file::set_position( const fpos_t &position, error_code *error ) {
+bool file::set_position( const fpos_t &position, error_code *errorCode ) {
 	if ( fsetpos( file_.get(), &position ) != 0 ) {
-		*error = make_errno_error_code();
+		*errorCode = make_errno_error_code();
 		return false;
 	} else
 		return true;
 }
 
 void file::flush() {
-	error_code error;
-	if ( !flush( &error ))
-		throw error;
+	error_code errorCode;
+	if ( !flush( &errorCode ))
+		throw system_error( errorCode );
 }
 
-bool file::flush( error_code *error ) {
+bool file::flush( error_code *errorCode ) {
 	if ( fflush( file_.get() ) == EOF ) {
-		*error = make_errno_error_code();
+		*errorCode = make_errno_error_code();
 		return false;
 	} else
 		return true;

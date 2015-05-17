@@ -59,6 +59,7 @@ add_compile_options(
 	-w -Wall -Wextra -Wpedantic # Enable all warnings
 	-fvisibility=hidden         # Make symbols hidden by default i.e. must be explicitly exported
 	-pthread
+	-fdiagnostics-show-option   # Show which switch caused a warning
 )
 
 
@@ -118,6 +119,7 @@ set( QT_SOURCES
 
 set( TEST_HEADERS
 	tests/pera_software/aidkit/debug_test.hpp
+	tests/pera_software/aidkit/io/file_test.hpp
 )
 
 set( TEST_SOURCES

@@ -29,39 +29,43 @@ void runFileTests() {
 	char buffer[ 10 ];
 
 	temporary_file file;
-	error_code error;
 
-	if ( error == errc::invalid_argument )
+	error_code errorCode;
+
+	if ( errorCode == errc::invalid_argument )
+		;
+
+	if ( errorCode == file_error::not_open )
 		;
 
 	file.put( c );
-	file.put( c, &error );
+	file.put( c, &errorCode );
 	file.put( wc );
-	file.put( wc, &error );
+	file.put( wc, &errorCode );
 
 	file.get( &c );
-	file.get( &c, &error );
+	file.get( &c, &errorCode );
 	file.get( &wc );
-	file.get( &wc, &error );
+	file.get( &wc, &errorCode );
 
 	file.put( "" );
-	file.put( "", &error );
+	file.put( "", &errorCode );
 	file.put( L"" );
-	file.put( L"", &error );
+	file.put( L"", &errorCode );
 	file.put( s );
-	file.put( s, &error );
+	file.put( s, &errorCode );
 	file.put( ws );
-	file.put( wc, &error );
+	file.put( wc, &errorCode );
 
 	file.print( "%s, %d", "", 0 );
-	file.print( &error, "%s, %d", "", 0 );
+	file.print( &errorCode, "%s, %d", "", 0 );
 	file.print( L"%s, %d", "", 0 );
-	file.print( &error, L"%s, %d", "", 0 );
+	file.print( &errorCode, L"%s, %d", "", 0 );
 
 	file.write( buffer, sizeof( buffer ));
-	file.write( buffer, sizeof( buffer ), &error );
+	file.write( buffer, sizeof( buffer ), &errorCode );
 	file.read( buffer, sizeof( buffer ));
-	file.read( buffer, sizeof( buffer ), &error );
+	file.read( buffer, sizeof( buffer ), &errorCode );
 }
 
 } } }
