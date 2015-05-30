@@ -1,25 +1,24 @@
-#include "debug_test.hpp"
-#include "enum_class_test.hpp"
-#include "io/file_test.hpp"
-#include <pera_software/aidkit/debug.hpp>
 #include <pera_software/aidkit/qt/test/Test.hpp>
-#include <QTest>
-#include <QGlobalStatic>
 //#include "AidKit_Network_Test.hpp"
 //#include "AidKit_Exception_Test.hpp"
 //#include "AidKit_ResourceMutex_Test.hpp"
 //#include "../AidKit/AidKit_Test.hpp"
-#include <iostream>
 
 namespace pera_software { namespace aidkit {
 
-using namespace std;
-using namespace io;
 using namespace qt;
 
 int executeTests() {
 	Test::executeTests();
 	return 0;
+}
+
+} }
+
+int main() {
+	return pera_software::aidkit::executeTests();
+}
+
 //	try {
 
 ////		runDebugTests();
@@ -36,12 +35,3 @@ int executeTests() {
 
 //		return EXIT_FAILURE;
 //	}
-
-}
-
-} }
-
-
-int main() {
-	return pera_software::aidkit::executeTests();
-}

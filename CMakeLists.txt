@@ -124,7 +124,7 @@ set( QT_SOURCES
 
 set( TEST_HEADERS
 #	tests/pera_software/aidkit/debug_test.hpp
-#	tests/pera_software/aidkit/enum_class_test.hpp
+	tests/pera_software/aidkit/enum_class_test.hpp
 	tests/pera_software/aidkit/io/file_test.hpp
 	tests/pera_software/aidkit/qt/core/EndianTest.hpp
 )
@@ -132,7 +132,7 @@ set( TEST_HEADERS
 set( TEST_SOURCES
 	tests/pera_software/aidkit/test_main.cpp
 #	tests/pera_software/aidkit/debug_test.cpp
-#	tests/pera_software/aidkit/enum_class_test.cpp
+	tests/pera_software/aidkit/enum_class_test.cpp
 	tests/pera_software/aidkit/io/file_test.cpp
 	tests/pera_software/aidkit/qt/core/EndianTest.cpp
 )

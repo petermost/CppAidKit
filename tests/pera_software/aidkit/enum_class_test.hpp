@@ -17,10 +17,36 @@
 
 #pragma once
 
+#include <pera_software/aidkit/qt/test/Test.hpp>
+
 namespace pera_software {
 	namespace aidkit {
 
-		void runEnumTests();
+		class ColorEnumTest : public qt::Test {
+			Q_OBJECT
+
+			private slots:
+				void testValue();
+				void testName();
+				void testFindByValue();
+				void testFindByName();
+				void testEquality();
+				void testLessThan();
+		};
+
+		class NumberEnumTest : public qt::Test {
+			Q_OBJECT
+
+			private slots:
+				void testValue();
+		};
+
+		class AnimalEnumTest : public qt::Test {
+			Q_OBJECT
+
+			private slots:
+				void testValue();
+		};
 	}
 }
 

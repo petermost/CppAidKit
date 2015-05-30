@@ -15,16 +15,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <pera_software/aidkit/debug.hpp>
+#include "enum_class_test.hpp"
 #include <pera_software/aidkit/enum_class.hpp>
+#include <QTest>
 
 namespace pera_software { namespace aidkit {
 
-using namespace std;
-
 //#########################################################################################################
 
-// Enum for testing values start with 0:
+// Enum for testing default value assignment:
 
 class Color : public enum_class< Color, int, wchar_t > {
 	public:
@@ -42,64 +41,54 @@ const Color Color::Red( L"Red" );
 const Color Color::Green( L"Green" );
 const Color Color::Blue( L"Blue" );
 
-struct ColorEnumTest {
-	// These are just a compile tests so we don't mark them with [Test]:
+static void colorFunction( Color ) {
+}
 
-	static void ColorFunction( Color /* color */ ) { }
+static void compileTestCallByValue() {
+	colorFunction( Color::Blue );
+}
 
-	void CompileTestCallByValue() {
-		ColorFunction( Color::Blue );
-	}
+void compileTestAssignment() {
+	Color color = Color::Red;
+	color = Color::Blue;
+}
 
-	void CompileTestAssignment() {
-		Color color = Color::Red;
-		color = Color::Blue;
-	}
+void ColorEnumTest::testValue() {
+	QCOMPARE( Color::Red.value(), 0 );
+	QCOMPARE( Color::Green.value(), 1 );
+	QCOMPARE( Color::Blue.value(), 2 );
+}
 
-	void TestValue() {
-		AIDKIT_ASSERT( Color::Red.value() == 0 );
-		AIDKIT_ASSERT( Color::Green.value() == 1 );
-		AIDKIT_ASSERT( Color::Blue.value() == 2 );
-	}
+void ColorEnumTest::testName() {
+	QVERIFY( Color::Red.name() == L"Red" );
+	QVERIFY( Color::Green.name() == L"Green" );
+	QVERIFY( Color::Blue.name() == L"Blue" );
+}
 
-	void TestName() {
-		AIDKIT_ASSERT( Color::Red.name() == L"Red" );
-		AIDKIT_ASSERT( Color::Green.name() == L"Green" );
-		AIDKIT_ASSERT( Color::Blue.name() == L"Blue" );
-	}
+void ColorEnumTest::testFindByValue() {
+	auto colorIterator = Color::find( 2 );
+	QVERIFY( colorIterator != Color::end() );
+	QVERIFY( *colorIterator == Color::Blue );
+}
 
-	void TestBeginEnd() {
-		auto colors1 = make_enum_vector< Color >();
-		vector< Color > colors2( Color::begin(), Color::end() );
+void ColorEnumTest::testFindByName() {
+	auto colorIterator = Color::find( L"Green" );
+	QVERIFY( colorIterator != Color::end() );
+	QVERIFY( *colorIterator == Color::Green );
+}
 
-		AIDKIT_ASSERT( colors1 == colors2 );
-	}
+void ColorEnumTest::testEquality() {
+	QVERIFY( Color::Red == Color::Red );
+	QVERIFY( Color::Green == Color::Green );
+	QVERIFY( Color::Blue == Color::Blue );
+}
 
-	void TestFindWithValue() {
-		auto colorIterator = Color::find( 2 );
-		AIDKIT_ASSERT( colorIterator != Color::end() );
-		AIDKIT_ASSERT( *colorIterator == Color::Blue );
-	}
+void ColorEnumTest::testLessThan() {
+	QVERIFY( Color::Red < Color::Green );
+	QVERIFY( Color::Green < Color::Blue );
+}
 
-	void TestFindWithName() {
-		auto colorIterator = Color::find( L"Green" );
-		AIDKIT_ASSERT( colorIterator != Color::end() );
-		AIDKIT_ASSERT( *colorIterator == Color::Green );
-	}
-
-	void TestEquality() {
-		AIDKIT_ASSERT( Color::Red == Color::Red );
-		AIDKIT_ASSERT( Color::Green == Color::Green );
-		AIDKIT_ASSERT( Color::Blue == Color::Blue );
-	}
-
-	void TestLessThan() {
-		AIDKIT_ASSERT( Color::Red < Color::Green );
-		AIDKIT_ASSERT( Color::Green < Color::Blue );
-	}
-};
-
-//#########################################################################################################
+//##################################################################################################
 
 // Enum for testing explicit value assignment:
 
@@ -119,13 +108,11 @@ const Number Number::One( 1, "One" );
 const Number Number::Two( 2, "Two" );
 const Number Number::Three( 3, "Three" );
 
-struct NumberEnumTest {
-	void TestValue() {
-		AIDKIT_ASSERT( Number::One.value() == 1 );
-		AIDKIT_ASSERT( Number::Two.value() == 2 );
-		AIDKIT_ASSERT( Number::Three.value() == 3);
-	}
-};
+void NumberEnumTest::testValue() {
+	QCOMPARE( Number::One.value(),   1 );
+	QCOMPARE( Number::Two.value(),   2 );
+	QCOMPARE( Number::Three.value(), 3 );
+}
 
 //#########################################################################################################
 
@@ -149,29 +136,13 @@ class Animal : public enum_class< Animal > {
 const Animal Animal::Cat( 10 );
 const Animal Animal::Dog;
 
-struct AnimalEnumTest {
-	void TestValue() {
-		AIDKIT_ASSERT( Animal::Cat.value() == 10 );
-		AIDKIT_ASSERT( Animal::Dog.value() == 11 );
-	}
-};
-
-void runEnumTests() {
-
-	ColorEnumTest colorEnumTest;
-	colorEnumTest.TestValue();
-	colorEnumTest.TestName();
-	colorEnumTest.TestBeginEnd();
-	colorEnumTest.TestFindWithValue();
-	colorEnumTest.TestFindWithName();
-	colorEnumTest.TestEquality();
-	colorEnumTest.TestLessThan();
-
-	NumberEnumTest numberEnumTest;
-	numberEnumTest.TestValue();
-
-	AnimalEnumTest animalEnumTest;
-	animalEnumTest.TestValue();
+void AnimalEnumTest::testValue() {
+	QCOMPARE( Animal::Cat.value(), 10 );
+	QCOMPARE( Animal::Dog.value(), 11 );
 }
+
+static ColorEnumTest colorEnumTest;
+static NumberEnumTest numberEnumTest;
+static AnimalEnumTest animalEnumTest;
 
 } }
