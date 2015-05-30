@@ -41,11 +41,12 @@ endif()
 #
 # For AUTOMOC to work we also have to include the headers in the add_library() call!
 # set( CMAKE_AUTOMOC ON )
-#
-# This is needed when a cpp-file includes the generated moc file.
-# set( CMAKE_INCLUDE_CURRENT_DIR ON )
+
+# Allow including moc files:
+set( CMAKE_INCLUDE_CURRENT_DIR ON )
 
 find_package( Qt5Widgets )
+find_package( Qt5Test )
 
 ############################# Setup AidKit ####################################
 
@@ -102,14 +103,18 @@ set( SOURCES
 
 set( QT_HEADERS
 	src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
+	src/pera_software/aidkit/qt/core/Endian.hpp
 	src/pera_software/aidkit/qt/widgets/QuitAction.hpp
+	src/pera_software/aidkit/qt/test/Test.hpp
 	src/pera_software/company/qt/MainWindow.hpp
 	src/pera_software/company/qt/AboutDialog.hpp
 	src/pera_software/company/qt/Application.hpp
 )
 set( QT_SOURCES
 	src/pera_software/aidkit/qt/core/DirectoryGuide.cpp
+	src/pera_software/aidkit/qt/core/Endian.cpp
 	src/pera_software/aidkit/qt/widgets/QuitAction.cpp
+	src/pera_software/aidkit/qt/test/Test.cpp
 	src/pera_software/company/qt/MainWindow.cpp
 	src/pera_software/company/qt/AboutDialog.cpp
 	src/pera_software/company/qt/Application.cpp
@@ -118,18 +123,23 @@ set( QT_SOURCES
 # Library Test sources:
 
 set( TEST_HEADERS
-	tests/pera_software/aidkit/debug_test.hpp
+#	tests/pera_software/aidkit/debug_test.hpp
+#	tests/pera_software/aidkit/enum_class_test.hpp
 	tests/pera_software/aidkit/io/file_test.hpp
+	tests/pera_software/aidkit/qt/core/EndianTest.hpp
 )
 
 set( TEST_SOURCES
-	tests/pera_software/aidkit/run_tests.cpp
-	tests/pera_software/aidkit/debug_test.cpp
-	tests/pera_software/aidkit/enum_class_test.cpp
+	tests/pera_software/aidkit/test_main.cpp
+#	tests/pera_software/aidkit/debug_test.cpp
+#	tests/pera_software/aidkit/enum_class_test.cpp
 	tests/pera_software/aidkit/io/file_test.cpp
+	tests/pera_software/aidkit/qt/core/EndianTest.cpp
 )
 
 qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})
+
+qt5_wrap_cpp( MOC_TEST_SOURCES ${TEST_HEADERS})
 
 qt5_add_resources( QT_RESOURCES
 	resources/pera_software/aidkit/AidKitResources.qrc
@@ -140,9 +150,9 @@ qt5_add_resources( QT_RESOURCES
 
 add_library( AidKit SHARED ${SOURCES} ${QT_SOURCES} ${MOC_SOURCES} ${QT_RESOURCES})
 include_directories( src/ )
-target_link_libraries( AidKit Qt5::Widgets )
+target_link_libraries( AidKit Qt5::Test Qt5::Widgets )
 
 # Setup library test build:
 
-add_executable( testAidKit ${TEST_SOURCES} )
-target_link_libraries( testAidKit AidKit )
+add_executable( testAidKit ${TEST_SOURCES} ${MOC_TEST_SOURCES})
+target_link_libraries( testAidKit AidKit Qt5::Test )
