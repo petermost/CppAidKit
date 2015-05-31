@@ -17,9 +17,18 @@
 
 #pragma once
 
+#include <pera_software/aidkit/qt/test/Test.hpp>
+
 namespace pera_software {
 	namespace aidkit {
 		namespace io {
+
+			class FileTest : public qt::Test {
+				Q_OBJECT
+
+				private slots:
+					void testOpen();
+			};
 
 			void runFileTests();
 		}

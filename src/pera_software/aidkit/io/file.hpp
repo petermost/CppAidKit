@@ -27,6 +27,192 @@ namespace pera_software {
 	namespace aidkit {
 		namespace io {
 
+			struct file_category {
+			};
+
+			struct file_locked_category : file_category {
+			};
+
+			struct file_unlocked_category : file_category {
+			};
+
+			struct file_temporary_category : file_category {
+			};
+
+			template < typename Char >
+				struct file_traits_base {
+					typedef std::char_traits< Char > char_traits_type;
+					typedef typename char_traits_type::int_type int_type;
+
+					static bool is_eof( int_type result ) {
+						return !char_traits_type::not_eof( result );
+					}
+				};
+
+			template < typename Char, typename Category >
+				struct file_traits : file_traits_base< Char > {
+				};
+
+			template <>
+				struct file_traits< char, file_locked_category > : file_traits_base< char >{
+
+					static bool is_error( std::FILE *fp ) {
+						return std::ferror( fp );
+					}
+
+					static std::FILE *do_open( const char fileName[], const char openMode[] ) {
+						return std::fopen( fileName, openMode );
+					}
+
+					static int do_close( std::FILE *fp ) {
+						return std::fclose( fp );
+					}
+
+					static int do_putc( std::FILE *fp, char c ) {
+						return std::fputc( c, fp );
+					}
+
+					static int do_puts( std::FILE *fp, const char s[] ) {
+						return std::fputs( s, fp );
+					}
+				};
+
+				template <>
+					struct file_traits< char, file_unlocked_category > {
+
+						static bool is_error( std::FILE *fp ) {
+							return ferror_unlocked( fp );
+						}
+
+						static std::FILE *do_open( const char fileName[], const char openMode[] ) {
+							return std::fopen( fileName, openMode );
+						}
+
+						static int do_close( std::FILE *fp ) {
+							return std::fclose( fp );
+						}
+
+						static int do_putc( std::FILE *fp, char c ) {
+							return putc_unlocked( c, fp );
+						}
+
+						static int do_puts( std::FILE *fp, const char s[] ) {
+							return fputs_unlocked( s, fp );
+						}
+					};
+
+			template <>
+				struct file_traits< wchar_t, file_locked_category > {
+
+					static bool is_error( std::FILE *fp ) {
+						return std::ferror( fp );
+					}
+
+					static std::FILE *do_open( const char fileName[], const char openMode[] ) {
+						return std::fopen( fileName, openMode );
+					}
+
+					static int do_close( std::FILE *fp ) {
+						return std::fclose( fp );
+					}
+
+					static wint_t do_putc( std::FILE *fp, wchar_t c ) {
+						return std::fputwc( c, fp );
+					}
+
+					static int do_puts( std::FILE *fp, const wchar_t s[] ) {
+						return std::fputws( s, fp );
+					}
+				};
+
+			template <>
+				struct file_traits< wchar_t, file_unlocked_category > {
+
+					static bool is_error( std::FILE *fp ) {
+						return ferror_unlocked( fp );
+					}
+
+					static std::FILE *do_open( const char fileName[], const char openMode[] ) {
+						return std::fopen( fileName, openMode );
+					}
+
+					static int do_close( std::FILE *fp ) {
+						return std::fclose( fp );
+					}
+
+					static wint_t do_putc( std::FILE *fp, wchar_t c ) {
+						return fputwc_unlocked( c, fp );
+					}
+
+					static int do_puts( std::FILE *fp, const wchar_t s[] ) {
+						return fputws_unlocked( s, fp );
+					}
+				};
+
+			template < typename Char, typename Category, typename Traits = file_traits< Char, Category >>
+				class basic_file {
+					public:
+						basic_file( const basic_file & ) = delete;
+						basic_file &operator = ( const basic_file & ) = delete;
+
+						basic_file() {
+							file_ = nullptr;
+						}
+
+						bool open( const Char fileName[], const Char openMode[], std::error_code *errorCode ) {
+							file_ = Traits::do_open( fileName, openMode );
+							if ( file_ != nullptr ) {
+								fileName_ = fileName;
+								return true;
+							} else {
+								*errorCode = make_errno_error_code();
+								return false;
+							}
+						}
+
+						bool close( std::error_code *errorCode ) {
+							auto result = Traits::do_close( file_ );
+							if ( !Traits::is_eof( result )) {
+								return true;
+							} else {
+								*errorCode = make_errno_error_code();
+								return false;
+							}
+						}
+
+						bool put( Char c, std::error_code *errorCode ) {
+							auto result = Traits::do_putc( file_, c );
+							if ( !Traits::is_eof( result ))
+								return true;
+							else {
+								*errorCode = make_errno_error_code();
+								return false;
+							}
+						}
+
+						bool put( const Char s[], std::error_code *errorCode ) {
+							auto result = Traits::do_puts( file_, s );
+							if ( !Traits::is_eof( result ))
+								return true;
+							else {
+								*errorCode = make_errno_error_code();
+								return false;
+							}
+						}
+
+					private:
+						void get_error_code( std::FILE *file, std::error_code *errorCode ) {
+							if ( Traits::is_error( file ))
+								*errorCode = make_errno_error_code();
+							else
+								*errorCode = file_error::eof;
+						}
+
+						std::FILE *file_;
+						std::basic_string< Char > fileName_;
+
+				};
+
 			class AIDKIT_API file {
 				public:
 					typedef long offset_t;
