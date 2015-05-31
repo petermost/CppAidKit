@@ -46,6 +46,7 @@ namespace pera_software {
 
 			private slots:
 				void testValue();
+				void testName();
 		};
 	}
 }

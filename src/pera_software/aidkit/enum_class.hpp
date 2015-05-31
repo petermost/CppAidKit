@@ -33,7 +33,7 @@ namespace pera_software {
 						return value_;
 					}
 
-					const std::basic_string< Char > name() const {
+					const std::basic_string< Char > &name() const {
 						return name_;
 					}
 
@@ -57,8 +57,7 @@ namespace pera_software {
 
 				protected:
 					enum_class()
-						: value_( nextValue()++ ) {
-						values().push_back( *static_cast< T * >( this ));;
+						: enum_class( nextValue()++ ) {
 					}
 
 					enum_class( Integer value )
@@ -67,13 +66,11 @@ namespace pera_software {
 						nextValue() = value_ + 1;
 					}
 
-					// TODO: Check whether we can ensure that this ctor is getting called with a string literal
-					enum_class( const Char *name )
-						: value_( nextValue()++ ), name_( name ) {
-						values().push_back( *static_cast< T * >( this ));;
+					enum_class( const std::basic_string< Char > &name )
+						: enum_class( nextValue()++, name ) {
 					}
 
-					enum_class( Integer value, const Char *name )
+					enum_class( Integer value, const std::basic_string< Char > &name )
 						: value_( value ), name_( name ) {
 						values().push_back( *static_cast< T * >( this ));;
 						nextValue() = value_ + 1;
@@ -84,23 +81,22 @@ namespace pera_software {
 
 					Integer value_;
 
-					// TODO: Ensure that name_ is never null!
-					const Char *name_;
+					std::basic_string< Char > name_;
 
 					// Initializing order of static template members is quite tricky so we avoid these problems
 					// with returning a reference to a static variable from a function. For symmetry reason we
 					// use this technique for all static members.
 
 					static inline Integer &nextValue() {
-						static Integer nextValue_s = Integer();
+						static Integer s_nextValue = Integer();
 
-						return nextValue_s;
+						return s_nextValue;
 					}
 
 					static inline std::vector< T > &values() {
-						static std::vector< T > values_s;
+						static std::vector< T > s_values;
 
-						return values_s;
+						return s_values;
 					}
 			};
 

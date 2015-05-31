@@ -21,6 +21,8 @@
 
 namespace pera_software { namespace aidkit {
 
+using namespace std;
+
 //#########################################################################################################
 
 // Enum for testing default value assignment:
@@ -32,7 +34,7 @@ class Color : public enum_class< Color, int, wchar_t > {
 		static const Color Blue;
 
 	private:
-		Color( const wchar_t *name )
+		Color( const wstring &name )
 			: enum_class( name ) {
 		}
 };
@@ -94,24 +96,24 @@ void ColorEnumTest::testLessThan() {
 
 class Number : public enum_class< Number > {
 	public:
-		static const Number One;
-		static const Number Two;
-		static const Number Three;
+		static const Number Ten;
+		static const Number Twenty;
+		static const Number Thirty;
 
 	private:
-		Number( int value, const char *name )
+		Number( int value, const string &name )
 			: enum_class( value, name ) {
 		}
 };
 
-const Number Number::One( 1, "One" );
-const Number Number::Two( 2, "Two" );
-const Number Number::Three( 3, "Three" );
+const Number Number::Ten(    10, "Ten" );
+const Number Number::Twenty( 20, "Twenty" );
+const Number Number::Thirty( 30, "Thirty" );
 
 void NumberEnumTest::testValue() {
-	QCOMPARE( Number::One.value(),   1 );
-	QCOMPARE( Number::Two.value(),   2 );
-	QCOMPARE( Number::Three.value(), 3 );
+	QCOMPARE( Number::Ten.value(),    10 );
+	QCOMPARE( Number::Twenty.value(), 20 );
+	QCOMPARE( Number::Thirty.value(), 30 );
 }
 
 //#########################################################################################################
@@ -139,6 +141,11 @@ const Animal Animal::Dog;
 void AnimalEnumTest::testValue() {
 	QCOMPARE( Animal::Cat.value(), 10 );
 	QCOMPARE( Animal::Dog.value(), 11 );
+}
+
+void AnimalEnumTest::testName() {
+	QVERIFY( Animal::Cat.name() == "" );
+	QVERIFY( Animal::Dog.name() == "" );
 }
 
 static ColorEnumTest colorEnumTest;
