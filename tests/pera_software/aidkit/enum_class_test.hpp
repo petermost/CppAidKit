@@ -32,6 +32,7 @@ namespace pera_software {
 				void testFindByName();
 				void testEquality();
 				void testLessThan();
+				void testAssignment();
 		};
 
 		class NumberEnumTest : public qt::Test {

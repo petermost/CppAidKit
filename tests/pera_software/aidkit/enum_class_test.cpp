@@ -50,11 +50,6 @@ static void compileTestCallByValue() {
 	colorFunction( Color::Blue );
 }
 
-void compileTestAssignment() {
-	Color color = Color::Red;
-	color = Color::Blue;
-}
-
 void ColorEnumTest::testValue() {
 	QCOMPARE( Color::Red.value(), 0 );
 	QCOMPARE( Color::Green.value(), 1 );
@@ -70,13 +65,13 @@ void ColorEnumTest::testName() {
 void ColorEnumTest::testFindByValue() {
 	auto colorIterator = Color::find( 2 );
 	QVERIFY( colorIterator != Color::end() );
-	QVERIFY( *colorIterator == Color::Blue );
+	QVERIFY( **colorIterator == Color::Blue );
 }
 
 void ColorEnumTest::testFindByName() {
 	auto colorIterator = Color::find( L"Green" );
 	QVERIFY( colorIterator != Color::end() );
-	QVERIFY( *colorIterator == Color::Green );
+	QVERIFY( **colorIterator == Color::Green );
 }
 
 void ColorEnumTest::testEquality() {
@@ -88,6 +83,14 @@ void ColorEnumTest::testEquality() {
 void ColorEnumTest::testLessThan() {
 	QVERIFY( Color::Red < Color::Green );
 	QVERIFY( Color::Green < Color::Blue );
+}
+
+void ColorEnumTest::testAssignment() {
+	Color color = Color::Red;
+	QVERIFY( color == Color::Red );
+
+	color = Color::Blue;
+	QVERIFY( color == Color::Blue );
 }
 
 //##################################################################################################

@@ -20,6 +20,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <memory>
 
 namespace pera_software {
 	namespace aidkit {
@@ -27,53 +28,53 @@ namespace pera_software {
 		template< typename T, typename Integer = int, typename Char = char >
 			class enum_class {
 				public:
-					typedef typename std::vector< T >::const_iterator const_iterator;
+					typedef std::basic_string< Char > string_type;
+					typedef std::vector< T * > container_type;
+					typedef typename container_type::const_iterator const_iterator;
 
 					const Integer value() const {
 						return value_;
 					}
 
-					const std::basic_string< Char > &name() const {
-						return name_;
+					const string_type &name() const {
+						return *name_;
 					}
 
 					static const_iterator begin() {
-						return values().cbegin();
+						return getValuesReference().cbegin();
 					}
 
 					static const_iterator end() {
-						return values().cend();
+						return getValuesReference().cend();
 					}
 
 					// Some find functions for searching via a name or a value:
 
-					static const_iterator find( const std::basic_string< Char > &name ) {
-						return std::find_if( begin(), end(), [ & ]( const enum_class &other ) { return name == other.name(); });
+					static const_iterator find( const string_type &name ) {
+						return std::find_if( begin(), end(), [ & ]( const enum_class *other ) {
+							return name == other->name();
+						});
 					}
 
 					static const_iterator find( Integer value ) {
-						return std::find_if( begin(), end(), [ = ]( const enum_class &other ) { return value == other.value(); });
+						return std::find_if( begin(), end(), [ & ]( const enum_class *other ) {
+							return value == other->value();
+						});
 					}
 
 				protected:
 					enum_class()
-						: enum_class( nextValue()++ ) {
+						: enum_class( getNextValueReference()++ ) {
 					}
 
-					enum_class( Integer value )
-						: value_( value ) {
-						values().push_back( *static_cast< T * >( this ));;
-						nextValue() = value_ + 1;
+					enum_class( const string_type &name )
+						: enum_class( getNextValueReference()++, name ) {
 					}
 
-					enum_class( const std::basic_string< Char > &name )
-						: enum_class( nextValue()++, name ) {
-					}
-
-					enum_class( Integer value, const std::basic_string< Char > &name )
-						: value_( value ), name_( name ) {
-						values().push_back( *static_cast< T * >( this ));;
-						nextValue() = value_ + 1;
+					enum_class( Integer value, const string_type &name = string_type() )
+						: value_( value ), name_( std::make_shared< string_type >( name )) {
+						getValuesReference().push_back( static_cast< T * >( this ));
+						getNextValueReference() = value_ + 1;
 					}
 
 				private:
@@ -81,20 +82,20 @@ namespace pera_software {
 
 					Integer value_;
 
-					std::basic_string< Char > name_;
+					std::shared_ptr< string_type > name_;
 
 					// Initializing order of static template members is quite tricky so we avoid these problems
 					// with returning a reference to a static variable from a function. For symmetry reason we
 					// use this technique for all static members.
 
-					static inline Integer &nextValue() {
+					static inline Integer &getNextValueReference() {
 						static Integer s_nextValue = Integer();
 
 						return s_nextValue;
 					}
 
-					static inline std::vector< T > &values() {
-						static std::vector< T > s_values;
+					static inline std::vector< T * > &getValuesReference() {
+						static std::vector< T * > s_values;
 
 						return s_values;
 					}
