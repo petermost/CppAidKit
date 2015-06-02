@@ -44,6 +44,7 @@
 #elif defined( __GNUC__ )
 	#define AIDKIT_GCC
 	#if defined( __MINGW32__ ) || defined( __MINGW64__ )
+		// MinGW is a GCC variant so we define it additional to the AIDKIT_GCC symbol
 		#define AIDKIT_MINGW
 	#endif
 #else

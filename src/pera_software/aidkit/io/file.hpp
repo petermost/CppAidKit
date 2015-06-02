@@ -76,31 +76,6 @@ namespace pera_software {
 						return std::fputs( s, fp );
 					}
 				};
-
-				template <>
-					struct file_traits< char, file_unlocked_category > {
-
-						static bool is_error( std::FILE *fp ) {
-							return ferror_unlocked( fp );
-						}
-
-						static std::FILE *do_open( const char fileName[], const char openMode[] ) {
-							return std::fopen( fileName, openMode );
-						}
-
-						static int do_close( std::FILE *fp ) {
-							return std::fclose( fp );
-						}
-
-						static int do_putc( std::FILE *fp, char c ) {
-							return putc_unlocked( c, fp );
-						}
-
-						static int do_puts( std::FILE *fp, const char s[] ) {
-							return fputs_unlocked( s, fp );
-						}
-					};
-
 			template <>
 				struct file_traits< wchar_t, file_locked_category > {
 
@@ -125,30 +100,65 @@ namespace pera_software {
 					}
 				};
 
-			template <>
-				struct file_traits< wchar_t, file_unlocked_category > {
+#if defined( AIDKIT_GCC )
+	#if defined( AIDKIT_MINGW )
+				template <>
+					struct file_traits< char, file_unlocked_category > : file_traits< char, file_locked_category > {
 
-					static bool is_error( std::FILE *fp ) {
-						return ferror_unlocked( fp );
-					}
+						static int do_close( std::FILE *fp ) {
+							return _fclose_nolock( fp );
+						}
 
-					static std::FILE *do_open( const char fileName[], const char openMode[] ) {
-						return std::fopen( fileName, openMode );
-					}
+						static int do_putc( std::FILE *fp, char c ) {
+							return _putc_nolock( c, fp );
+						}
+					};
 
-					static int do_close( std::FILE *fp ) {
-						return std::fclose( fp );
-					}
+				template <>
+					struct file_traits< wchar_t, file_unlocked_category > : file_traits< wchar_t, file_locked_category > {
 
-					static wint_t do_putc( std::FILE *fp, wchar_t c ) {
-						return fputwc_unlocked( c, fp );
-					}
+						static int do_close( std::FILE *fp ) {
+							return _fclose_nolock( fp );
+						}
 
-					static int do_puts( std::FILE *fp, const wchar_t s[] ) {
-						return fputws_unlocked( s, fp );
-					}
-				};
+						static wint_t do_putc( std::FILE *fp, wchar_t c ) {
+							return _putwc_nolock( c, fp );
+						}
+					};
+	#else // AIDKIT_MINGW
+				template <>
+					struct file_traits< char, file_unlocked_category > : file_traits< char, file_locked_category > {
 
+						static bool is_error( std::FILE *fp ) {
+							return ferror_unlocked( fp );
+						}
+
+						static int do_putc( std::FILE *fp, char c ) {
+							return putc_unlocked( c, fp );
+						}
+
+						static int do_puts( std::FILE *fp, const char s[] ) {
+							return fputs_unlocked( s, fp );
+						}
+					};
+
+				template <>
+					struct file_traits< wchar_t, file_unlocked_category > : file_traits< wchar_t, file_locked_category > {
+
+						static bool is_error( std::FILE *fp ) {
+							return ferror_unlocked( fp );
+						}
+
+						static wint_t do_putc( std::FILE *fp, wchar_t c ) {
+							return fputwc_unlocked( c, fp );
+						}
+
+						static int do_puts( std::FILE *fp, const wchar_t s[] ) {
+							return fputws_unlocked( s, fp );
+						}
+					};
+	#endif
+#endif
 			template < typename Char, typename Category, typename Traits = file_traits< Char, Category >>
 				class basic_file {
 					public:
