@@ -27,7 +27,7 @@ using namespace std;
 
 // Enum for testing default value assignment:
 
-class Color : public enum_class< Color, int, wchar_t > {
+class Color : public enum_class< Color, 3, int, wchar_t > {
 	public:
 		static const Color Red;
 		static const Color Green;
@@ -64,13 +64,13 @@ void ColorEnumTest::testName() {
 
 void ColorEnumTest::testFindByValue() {
 	auto colorIterator = Color::find( 2 );
-	QVERIFY( colorIterator != Color::end() );
+	QVERIFY( colorIterator != Color::cend() );
 	QVERIFY( **colorIterator == Color::Blue );
 }
 
 void ColorEnumTest::testFindByName() {
 	auto colorIterator = Color::find( L"Green" );
-	QVERIFY( colorIterator != Color::end() );
+	QVERIFY( colorIterator != Color::cend() );
 	QVERIFY( **colorIterator == Color::Green );
 }
 
@@ -97,7 +97,7 @@ void ColorEnumTest::testAssignment() {
 
 // Enum for testing explicit value assignment:
 
-class Number : public enum_class< Number > {
+class Number : public enum_class< Number, 3 > {
 	public:
 		static const Number Ten;
 		static const Number Twenty;
@@ -123,7 +123,7 @@ void NumberEnumTest::testValue() {
 
 // Enum for testing explicit start value:
 
-class Animal : public enum_class< Animal > {
+class Animal : public enum_class< Animal, 2 > {
 	public:
 		static const Animal Cat;
 		static const Animal Dog;

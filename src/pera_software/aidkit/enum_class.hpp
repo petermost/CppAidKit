@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include <vector>
+#include <array>
 #include <string>
 #include <algorithm>
 #include <memory>
@@ -25,11 +25,11 @@
 namespace pera_software {
 	namespace aidkit {
 
-		template< typename T, typename Integer = int, typename Char = char >
+		template< typename T, size_t SIZE, typename Integer = int, typename Char = char >
 			class enum_class {
 				public:
 					typedef std::basic_string< Char > string_type;
-					typedef std::vector< T * > container_type;
+					typedef std::array< const T *, SIZE > container_type;
 					typedef typename container_type::const_iterator const_iterator;
 
 					const Integer value() const {
@@ -40,79 +40,73 @@ namespace pera_software {
 						return *name_;
 					}
 
-					static const_iterator begin() {
-						return getValuesReference().cbegin();
+					static const_iterator cbegin() {
+						return s_values.cbegin();
 					}
 
-					static const_iterator end() {
-						return getValuesReference().cend();
+					static const_iterator cend() {
+						return s_values.cend();
 					}
 
 					// Some find functions for searching via a name or a value:
 
 					static const_iterator find( const string_type &name ) {
-						return std::find_if( begin(), end(), [ & ]( const enum_class *other ) {
+						return std::find_if( cbegin(), cend(), [ & ]( const enum_class *other ) {
 							return name == other->name();
 						});
 					}
 
 					static const_iterator find( Integer value ) {
-						return std::find_if( begin(), end(), [ & ]( const enum_class *other ) {
+						return std::find_if( cbegin(), cend(), [ & ]( const enum_class *other ) {
 							return value == other->value();
 						});
 					}
 
 				protected:
 					enum_class()
-						: enum_class( getNextValueReference()++ ) {
+						: enum_class( s_nextValue++ ) {
 					}
 
 					enum_class( const string_type &name )
-						: enum_class( getNextValueReference()++, name ) {
+						: enum_class( s_nextValue++, name ) {
 					}
 
 					enum_class( Integer value, const string_type &name = string_type() )
 						: value_( value ), name_( std::make_shared< string_type >( name )) {
-						getValuesReference().push_back( static_cast< T * >( this ));
-						getNextValueReference() = value_ + 1;
+						s_values[ s_nextIndex++ ] = static_cast< const T * >( this );
+						s_nextValue = value_ + 1;
 					}
 
 				private:
-					// Must be assignable for vector<>, so we don't declare these attributes as const:
-
 					Integer value_;
-
 					std::shared_ptr< string_type > name_;
 
-					// Initializing order of static template members is quite tricky so we avoid these problems
-					// with returning a reference to a static variable from a function. For symmetry reason we
-					// use this technique for all static members.
+					static Integer s_nextValue;
 
-					static inline Integer &getNextValueReference() {
-						static Integer s_nextValue = Integer();
-
-						return s_nextValue;
-					}
-
-					static inline std::vector< T * > &getValuesReference() {
-						static std::vector< T * > s_values;
-
-						return s_values;
-					}
+					static size_t s_nextIndex;
+					static container_type s_values;
 			};
 
+		template < typename T, size_t SIZE, typename Integer, typename Char >
+			Integer enum_class< T, SIZE, Integer, Char >::s_nextValue = Integer();
+
+		template < typename T, size_t SIZE, typename Integer, typename Char >
+			size_t enum_class< T, SIZE, Integer, Char >::s_nextIndex = 0;
+
+		template < typename T, size_t SIZE, typename Integer, typename Char >
+			typename enum_class< T, SIZE, Integer, Char >::container_type enum_class< T, SIZE, Integer, Char >::s_values;
 
 		// We only define the equal and less-then operator because if the other one are needed then do:
 		// #include <utility>
 		// using namespace rel_ops;
 
-		template < typename T, typename Integer, typename Char >
-			bool operator == ( const enum_class< T, Integer, Char > &left, const enum_class< T, Integer, Char > &right ) {
+		template < typename T, size_t SIZE, typename Integer, typename Char >
+			bool operator == ( const enum_class< T, SIZE, Integer, Char > &left, const enum_class< T, SIZE, Integer, Char > &right ) {
 				return left.value() == right.value();
 			}
 
-		template < typename T, typename Integer, typename Char >
-			bool operator < ( const enum_class< T, Integer, Char > &left, const enum_class< T, Integer, Char > &right ) {
+		template < typename T, size_t SIZE, typename Integer, typename Char >
+			bool operator < ( const enum_class< T, SIZE, Integer, Char > &left, const enum_class< T, SIZE, Integer, Char > &right ) {
 				return left.value() < right.value();
 			}
 	}
