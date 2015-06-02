@@ -29,8 +29,7 @@ namespace pera_software {
 			class enum_class {
 				public:
 					typedef std::basic_string< Char > string_type;
-					typedef std::array< const T *, SIZE > container_type;
-					typedef typename container_type::const_iterator const_iterator;
+					typedef typename std::array< const T *, SIZE >::const_iterator const_iterator;
 
 					const Integer value() const {
 						return value_;
@@ -84,7 +83,7 @@ namespace pera_software {
 					static Integer s_nextValue;
 
 					static size_t s_nextIndex;
-					static container_type s_values;
+					static std::array< const T *, SIZE > s_values;
 			};
 
 		template < typename T, size_t SIZE, typename Integer, typename Char >
@@ -94,7 +93,7 @@ namespace pera_software {
 			size_t enum_class< T, SIZE, Integer, Char >::s_nextIndex = 0;
 
 		template < typename T, size_t SIZE, typename Integer, typename Char >
-			typename enum_class< T, SIZE, Integer, Char >::container_type enum_class< T, SIZE, Integer, Char >::s_values;
+			std::array< const T *, SIZE > enum_class< T, SIZE, Integer, Char >::s_values;
 
 		// We only define the equal and less-then operator because if the other one are needed then do:
 		// #include <utility>
