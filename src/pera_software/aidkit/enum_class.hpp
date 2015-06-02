@@ -28,10 +28,11 @@ namespace pera_software {
 		template< typename T, size_t SIZE, typename Integer = int, typename Char = char >
 			class enum_class {
 				public:
+					typedef Integer integer_type;
 					typedef std::basic_string< Char > string_type;
 					typedef typename std::array< const T *, SIZE >::const_iterator const_iterator;
 
-					const Integer value() const {
+					const integer_type value() const {
 						return value_;
 					}
 
@@ -55,7 +56,7 @@ namespace pera_software {
 						});
 					}
 
-					static const_iterator find( Integer value ) {
+					static const_iterator find( integer_type value ) {
 						return std::find_if( cbegin(), cend(), [ & ]( const enum_class *other ) {
 							return value == other->value();
 						});
@@ -70,17 +71,17 @@ namespace pera_software {
 						: enum_class( s_nextValue++, name ) {
 					}
 
-					enum_class( Integer value, const string_type &name = string_type() )
+					enum_class( integer_type value, const string_type &name = string_type() )
 						: value_( value ), name_( std::make_shared< string_type >( name )) {
 						s_values[ s_nextIndex++ ] = static_cast< const T * >( this );
 						s_nextValue = value_ + 1;
 					}
 
 				private:
-					Integer value_;
+					integer_type value_;
 					std::shared_ptr< string_type > name_;
 
-					static Integer s_nextValue;
+					static integer_type s_nextValue;
 
 					static size_t s_nextIndex;
 					static std::array< const T *, SIZE > s_values;
