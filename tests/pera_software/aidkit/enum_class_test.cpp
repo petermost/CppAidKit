@@ -63,15 +63,15 @@ void ColorEnumTest::testName() {
 }
 
 void ColorEnumTest::testFindByValue() {
-	auto colorIterator = Color::find( 2 );
-	QVERIFY( colorIterator != Color::cend() );
-	QVERIFY( **colorIterator == Color::Blue );
+	vector< Color > result = Color::find( 2 );
+	QCOMPARE( result.size(), 1u );
+	QVERIFY( result[ 0 ] == Color::Blue );
 }
 
 void ColorEnumTest::testFindByName() {
-	auto colorIterator = Color::find( L"Green" );
-	QVERIFY( colorIterator != Color::cend() );
-	QVERIFY( **colorIterator == Color::Green );
+	vector< Color > result = Color::find( L"Green" );
+	QCOMPARE( result.size(), 1u );
+	QVERIFY( result[ 0 ] == Color::Green );
 }
 
 void ColorEnumTest::testEquality() {

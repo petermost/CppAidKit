@@ -18,6 +18,7 @@
 #pragma once
 
 #include <array>
+#include <vector>
 #include <string>
 #include <algorithm>
 #include <memory>
@@ -30,7 +31,11 @@ namespace pera_software {
 				public:
 					typedef Integer integer_type;
 					typedef std::basic_string< Char > string_type;
-					typedef typename std::array< const T *, SIZE >::const_iterator const_iterator;
+
+					// Compiler generated copy contructor and assignment operator are fine:
+
+					enum_class( const enum_class & ) = default;
+					enum_class &operator = ( const enum_class & ) = default;
 
 					const integer_type value() const {
 						return value_;
@@ -40,27 +45,32 @@ namespace pera_software {
 						return *name_;
 					}
 
-					static const_iterator cbegin() {
-						return s_values.cbegin();
-					}
-
-					static const_iterator cend() {
-						return s_values.cend();
-					}
-
 					// Some find functions for searching via a name or a value:
 
-					static const_iterator find( const string_type &name ) {
-						return std::find_if( cbegin(), cend(), [ & ]( const enum_class *other ) {
-							return name == other->name();
+					static std::vector< T > find( const string_type &name ) {
+						std::vector< T > foundElements;
+						for_each([ & ]( const T &other ) {
+							if ( name == other.name() )
+								foundElements.push_back( other );
 						});
+						return foundElements;
 					}
 
-					static const_iterator find( integer_type value ) {
-						return std::find_if( cbegin(), cend(), [ & ]( const enum_class *other ) {
-							return value == other->value();
+					static std::vector< T > find( integer_type value ) {
+						std::vector< T > foundElements;
+						for_each([ & ]( const T &other ) {
+							if ( value == other.value() )
+								foundElements.push_back( other );
 						});
+						return foundElements;
 					}
+
+					template < typename Functor >
+						static void for_each( Functor &&functor ) {
+							std::for_each( s_values.cbegin(), s_values.cend(), [ & ]( const T *t ) {
+								functor( *t );
+							});
+						}
 
 				protected:
 					enum_class()
@@ -78,10 +88,16 @@ namespace pera_software {
 					}
 
 				private:
+					static integer_type s_nextValue;
+
+					// We don't embed the string_type to avoid the copy cost when one enum gets
+					// assigned to another enum:
+
 					integer_type value_;
 					std::shared_ptr< string_type > name_;
 
-					static integer_type s_nextValue;
+					// We use an array to store the values because it is usable even if it is only
+					// statically initialized with zeros:
 
 					static size_t s_nextIndex;
 					static std::array< const T *, SIZE > s_values;
