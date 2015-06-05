@@ -27,7 +27,7 @@ using namespace std;
 
 // Enum for testing default value assignment:
 
-class Color : public enum_class< Color, 3, int, wchar_t > {
+class Color : public enum_class< Color, 4, int, wchar_t > {
 	public:
 		static const Color Red;
 		static const Color Green;
