@@ -103,7 +103,7 @@ set( SOURCES
 
 set( QT_HEADERS
 	src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
-	src/pera_software/aidkit/qt/core/Endian.hpp
+	src/pera_software/aidkit/qt/net/Endian.hpp
 	src/pera_software/aidkit/qt/widgets/QuitAction.hpp
 	src/pera_software/aidkit/qt/test/Test.hpp
 	src/pera_software/company/qt/MainWindow.hpp
@@ -112,7 +112,7 @@ set( QT_HEADERS
 )
 set( QT_SOURCES
 	src/pera_software/aidkit/qt/core/DirectoryGuide.cpp
-	src/pera_software/aidkit/qt/core/Endian.cpp
+	src/pera_software/aidkit/qt/net/Endian.cpp
 	src/pera_software/aidkit/qt/widgets/QuitAction.cpp
 	src/pera_software/aidkit/qt/test/Test.cpp
 	src/pera_software/company/qt/MainWindow.cpp
@@ -126,7 +126,7 @@ set( TEST_HEADERS
 #	tests/pera_software/aidkit/debug_test.hpp
 	tests/pera_software/aidkit/enum_class_test.hpp
 	tests/pera_software/aidkit/io/file_test.hpp
-	tests/pera_software/aidkit/qt/core/EndianTest.hpp
+	tests/pera_software/aidkit/qt/net/EndianTest.hpp
 )
 
 set( TEST_SOURCES
@@ -134,7 +134,7 @@ set( TEST_SOURCES
 #	tests/pera_software/aidkit/debug_test.cpp
 	tests/pera_software/aidkit/enum_class_test.cpp
 	tests/pera_software/aidkit/io/file_test.cpp
-	tests/pera_software/aidkit/qt/core/EndianTest.cpp
+	tests/pera_software/aidkit/qt/net/EndianTest.cpp
 )
 
 qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})

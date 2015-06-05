@@ -19,21 +19,18 @@
 
 #include <pera_software/aidkit/qt/test/Test.hpp>
 
-namespace pera_software {
-	namespace aidkit {
-		namespace qt {
+namespace pera_software { namespace aidkit { namespace qt { namespace net {
 
-			class EndianTest : public qt::Test {
-				Q_OBJECT
+	class EndianTest : public qt::Test {
+		Q_OBJECT
 
-				private slots:
-					void test_hton_ntoh_8();
-					void test_hton_ntoh_16();
-					void test_hton_ntoh_32();
-					void test_hton_ntoh_64();
-					void testCompilation();
-			};
-		}
-	}
-}
+		private slots:
+			void test_hton_ntoh_8();
+			void test_hton_ntoh_16();
+			void test_hton_ntoh_32();
+			void test_hton_ntoh_64();
+			void testCompilation();
+	};
+
+} } } }
 
