@@ -56,6 +56,11 @@ void ColorEnumTest::testValue() {
 	QCOMPARE( Color::Blue.value(), 2 );
 }
 
+void ColorEnumTest::testValues() {
+	vector< Color > colors = Color::values();
+	QCOMPARE( colors.size(), 3ul );
+}
+
 void ColorEnumTest::testName() {
 	QVERIFY( Color::Red.name() == L"Red" );
 	QVERIFY( Color::Green.name() == L"Green" );
@@ -64,13 +69,13 @@ void ColorEnumTest::testName() {
 
 void ColorEnumTest::testFindByValue() {
 	vector< Color > result = Color::find( 2 );
-	QCOMPARE( result.size(), 1u );
+	QCOMPARE( result.size(), 1ul );
 	QVERIFY( result[ 0 ] == Color::Blue );
 }
 
 void ColorEnumTest::testFindByName() {
 	vector< Color > result = Color::find( L"Green" );
-	QCOMPARE( result.size(), 1u );
+	QCOMPARE( result.size(), 1ul );
 	QVERIFY( result[ 0 ] == Color::Green );
 }
 
@@ -95,28 +100,37 @@ void ColorEnumTest::testAssignment() {
 
 //##################################################################################################
 
-// Enum for testing explicit value assignment:
+// Enum for testing explicit value assignment and duplicated enums:
 
-class Number : public enum_class< Number, 3 > {
+class Number : public enum_class< Number, 4 > {
 	public:
 		static const Number Ten;
 		static const Number Twenty;
 		static const Number Thirty;
-
+		static const Number TwentyToo;
 	private:
 		Number( int value, const string &name )
 			: enum_class( value, name ) {
 		}
 };
 
-const Number Number::Ten(    10, "Ten" );
-const Number Number::Twenty( 20, "Twenty" );
-const Number Number::Thirty( 30, "Thirty" );
+const Number Number::Ten(       10, "Ten" );
+const Number Number::Twenty(    20, "Twenty" );
+const Number Number::Thirty(    30, "Thirty" );
+const Number Number::TwentyToo( 20, "TwentyToo" );
 
 void NumberEnumTest::testValue() {
 	QCOMPARE( Number::Ten.value(),    10 );
 	QCOMPARE( Number::Twenty.value(), 20 );
 	QCOMPARE( Number::Thirty.value(), 30 );
+	QCOMPARE( Number::TwentyToo.value(), 20 );
+}
+
+void NumberEnumTest::testFindDuplicates() {
+	vector< Number > numbers = Number::find( 20 );
+	QCOMPARE( numbers.size(), 2ul );
+	QVERIFY( numbers[ 0 ] == Number::Twenty );
+	QVERIFY( numbers[ 1 ] == Number::TwentyToo );
 }
 
 //#########################################################################################################

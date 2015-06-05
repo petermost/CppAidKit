@@ -48,29 +48,42 @@ namespace pera_software {
 					// Some find functions for searching via a name or a value:
 
 					static std::vector< T > find( const string_type &name ) {
-						std::vector< T > foundElements;
+						std::vector< T > foundEnums;
 						for_each([ & ]( const T &other ) {
 							if ( name == other.name() )
-								foundElements.push_back( other );
+								foundEnums.push_back( other );
 						});
-						return foundElements;
+						return foundEnums;
 					}
 
 					static std::vector< T > find( integer_type value ) {
-						std::vector< T > foundElements;
+						std::vector< T > foundEnums;
 						for_each([ & ]( const T &other ) {
 							if ( value == other.value() )
-								foundElements.push_back( other );
+								foundEnums.push_back( other );
 						});
-						return foundElements;
+						return foundEnums;
 					}
+
+					// Allow iterating through all enum values:
 
 					template < typename Functor >
 						static void for_each( Functor &&functor ) {
-							std::for_each( s_values.cbegin(), s_values.cend(), [ & ]( const T *t ) {
+							std::for_each( cbegin(), cend(), [ & ]( const T *t ) {
 								functor( *t );
 							});
 						}
+
+					// Get all defined enum values:
+
+					static std::vector< T > values() {
+						std::vector< T > values;
+						values.reserve( s_values.size() );
+						for_each([ & ]( const T &t ) {
+							values.push_back( t );
+						});
+						return values;
+					}
 
 				protected:
 					enum_class()
@@ -88,6 +101,16 @@ namespace pera_software {
 					}
 
 				private:
+					typedef typename std::array< const T *, SIZE >::const_iterator const_iterator;
+
+					static const_iterator cbegin() {
+						return s_values.cbegin();
+					}
+
+					static const_iterator cend() {
+						return s_values.cend();
+					}
+
 					static integer_type s_nextValue;
 
 					// We don't embed the string_type to avoid the copy cost when one enum gets

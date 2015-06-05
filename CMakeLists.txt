@@ -31,7 +31,7 @@ if ( NOT CMAKE_VERBOSE_MAKEFILE )
 endif()
 
 if ( UNIX )
-	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.4.1/5.4/gcc_64/lib/cmake" )
+	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.4.2/5.4/gcc_64/lib/cmake" )
 elseif( WIN32 )
 	set( CMAKE_PREFIX_PATH "C:/Qt/Qt5/5.4/mingw491_32/lib/cmake" )
 endif()

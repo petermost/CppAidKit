@@ -27,6 +27,7 @@ namespace pera_software {
 
 			private slots:
 				void testValue();
+				void testValues();
 				void testName();
 				void testFindByValue();
 				void testFindByName();
@@ -40,6 +41,7 @@ namespace pera_software {
 
 			private slots:
 				void testValue();
+				void testFindDuplicates();
 		};
 
 		class AnimalEnumTest : public qt::Test {
