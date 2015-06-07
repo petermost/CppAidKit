@@ -30,9 +30,9 @@ Test::~Test() {
 	s_tests.removeOne( this );
 }
 
-void Test::executeTests() {
+void Test::executeTests( const QStringList &arguments ) {
 	for ( QObject *object : s_tests )
-		QTest::qExec( object );
+		QTest::qExec( object, arguments );
 }
 
 } } }

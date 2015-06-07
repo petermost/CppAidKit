@@ -17,26 +17,20 @@
 
 #pragma once
 
-#include <QList>
-#include <QStringList>
-#include <pera_software/aidkit/aidkit.hpp>
+#include <pera_software/aidkit/qt/test/Test.hpp>
 
-namespace pera_software {
-	namespace aidkit {
-		namespace qt {
+namespace pera_software { namespace aidkit {
 
-			class AIDKIT_API Test : public QObject {
-				Q_OBJECT
-				public:
-					static void executeTests( const QStringList &arguments );
+	class StringsTest : public qt::Test {
+		Q_OBJECT
 
-				protected:
-					Test();
-					virtual ~Test();
+		private slots:
+//			void testStringLiteral();
+//			void testNonStringLiteral();
+			void testTrimLeftSpace();
+			void testTrimRightSpace();
+			void testTrimLeftChars();
+			void testTrimRightChars();
+	};
 
-				private:
-					static QList< QObject * > s_tests;
-			};
-		}
-	}
-}
+} }
