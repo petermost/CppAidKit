@@ -30,9 +30,9 @@ namespace pera_software { namespace aidkit {
 	AIDKIT_API std::wstring u8string_to_wstring( const u8string & );
 	AIDKIT_API u8string wstring_to_u8string( const std::wstring & );
 
-	AIDKIT_API std::string wstring_to_string( const std::wstring & );
 	AIDKIT_API std::wstring string_to_wstring( const std::string & );
 #endif
+	AIDKIT_API std::string wstring_to_string( const std::wstring & );
 
 } }
 

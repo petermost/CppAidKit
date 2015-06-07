@@ -82,14 +82,14 @@ namespace pera_software { namespace aidkit {
 		}
 
 
-//	template < typename Char, size_t SIZE >
-//		constexpr bool is_string_literal( const Char ( & )[ SIZE ] ) {
-//			return true;
-//		}
+	template < typename Char, size_t SIZE >
+		constexpr bool is_string_literal( const Char ( & )[ SIZE ] ) noexcept {
+			return true;
+		}
 
-//	template < typename Char, size_t SIZE >
-//		constexpr bool is_string_literal( const Char *[] ) {
-//			return false;
-//		}
+	template < typename Char >
+		constexpr bool is_string_literal( const Char * const & ) noexcept {
+			return false;
+		}
 } }
 

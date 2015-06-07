@@ -23,27 +23,54 @@ namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;
 
-//template class basic_file< char, file_locked_category >;
-//template class basic_file< wchar_t, file_locked_category >;
+typedef basic_file< char, file_locked_category > locked_file;
+typedef basic_file< wchar_t, file_locked_category > locked_wfile;
+typedef basic_file< char, file_unlocked_category > unlocked_file;
+typedef basic_file< wchar_t, file_unlocked_category > unlocked_wfile;
 
-//template class basic_file< char, file_unlocked_category >;
-//template class basic_file< wchar_t, file_unlocked_category >;
+template < typename File, typename Char >
+	void testOpen() {
+		error_code errorCode;
+		Char fileName[] = { 0 };
+		Char openMode[] = { 0 };
 
-void FileTest::testOpen() {
-//	error_code error;
-//	basic_file< wchar_t, file_locked_category > wfile;
+		File file;
+		file.open( fileName, openMode, &errorCode );
+	}
 
-//	ufile.open( "", "", &error );
-//	file.open( "", "", &error );
+template < typename File, typename Char >
+	void testPutChar() {
+		error_code errorCode;
+		Char c = Char();
 
-//	file.put( 'c', &error );
-//	file.put( "s", &error );
+		File file;
+		file.put( c, &errorCode );
+	}
 
-//	file.close( &error );
+template < typename File >
+	void testWrite() {
+		error_code errorCode;
 
-//	wfile.open( L"", L"", &error );
-//	wfile.close( &error );
+		File file;
+		file.write( nullptr, 0, 0, &errorCode );
+	}
 
+void FileTest::test() {
+
+	testOpen< locked_file, char >();
+	testOpen< locked_wfile, wchar_t >();
+	testOpen< unlocked_file, char >();
+	testOpen< unlocked_wfile, wchar_t >();
+
+	testPutChar< locked_file, char >();
+	testPutChar< locked_wfile, wchar_t >();
+	testPutChar< unlocked_file, char >();
+	testPutChar< unlocked_wfile, wchar_t >();
+
+	testWrite< locked_file >();
+	testWrite< locked_wfile >();
+	testWrite< unlocked_file >();
+	testWrite< unlocked_wfile >();
 }
 
 // static FileTest fileTest;

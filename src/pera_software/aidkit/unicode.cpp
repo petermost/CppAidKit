@@ -57,6 +57,12 @@ wstring string_to_wstring( const string &s ) {
 	return converter.from_bytes( s );
 }
 
+#else
+
+string wstring_to_string( const wstring &s ) {
+	return string( s.begin(), s.end() );
+}
+
 #endif
 
 } }

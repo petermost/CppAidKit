@@ -25,8 +25,9 @@ namespace pera_software { namespace aidkit {
 		Q_OBJECT
 
 		private slots:
-//			void testStringLiteral();
-//			void testNonStringLiteral();
+			void testStringLiteral();
+			void testNonStringLiteral();
+
 			void testTrimLeftSpace();
 			void testTrimRightSpace();
 			void testTrimLeftChars();

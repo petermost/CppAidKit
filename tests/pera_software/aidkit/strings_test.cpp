@@ -23,17 +23,17 @@ namespace pera_software { namespace aidkit {
 
 using namespace std;
 
-//void StringsTest::testStringLiteral() {
-//	const char stringLiteral[] = "unimportend";
+void StringsTest::testStringLiteral() {
+	const char stringLiteral[] = "unimportend";
 
-//	QVERIFY( is_string_literal( stringLiteral ));
-//}
+	QVERIFY( is_string_literal( stringLiteral ));
+}
 
-//void StringsTest::testNonStringLiteral() {
-//	const char *nonStringLiteral = "unimportend";
+void StringsTest::testNonStringLiteral() {
+	const char *nonStringLiteral = "unimportend";
 
-//	QVERIFY( !is_string_literal( nonStringLiteral ));
-//}
+	QVERIFY( !is_string_literal( nonStringLiteral ));
+}
 
 
 void StringsTest::testTrimLeftSpace() {

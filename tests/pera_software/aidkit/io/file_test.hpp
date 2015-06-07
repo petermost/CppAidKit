@@ -19,18 +19,13 @@
 
 #include <pera_software/aidkit/qt/test/Test.hpp>
 
-namespace pera_software {
-	namespace aidkit {
-		namespace io {
+namespace pera_software { namespace aidkit { namespace io {
 
-			class FileTest : public qt::Test {
-				Q_OBJECT
+	class FileTest : public qt::Test {
+		Q_OBJECT
 
-				private slots:
-					void testOpen();
-			};
+		private slots:
+			void test();
+	};
 
-			void runFileTests();
-		}
-	}
-}
+} } }
