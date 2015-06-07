@@ -73,6 +73,7 @@ set( OTHER_FILES
 set( HEADERS
 	src/pera_software/aidkit/aidkit.hpp
 	src/pera_software/aidkit/debug.hpp
+	src/pera_software/aidkit/unicode.hpp
 	src/pera_software/aidkit/strings.hpp
 	src/pera_software/aidkit/platform.hpp
 	src/pera_software/aidkit/exception.hpp
@@ -89,6 +90,7 @@ set( HEADERS
 set( SOURCES
 	src/pera_software/aidkit/aidkit.cpp
 	src/pera_software/aidkit/debug.cpp
+	src/pera_software/aidkit/unicode.cpp
 	src/pera_software/aidkit/strings.cpp
 	src/pera_software/aidkit/platform.cpp
 	src/pera_software/aidkit/exception.cpp
