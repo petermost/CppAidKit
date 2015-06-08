@@ -58,7 +58,7 @@ void ColorEnumTest::testValue() {
 
 void ColorEnumTest::testValues() {
 	vector< Color > colors = Color::values();
-	QCOMPARE( colors.size(), 3ul );
+	QCOMPARE( colors.size(), static_cast< size_t >( 3 ));
 }
 
 void ColorEnumTest::testName() {
@@ -69,13 +69,13 @@ void ColorEnumTest::testName() {
 
 void ColorEnumTest::testFindByValue() {
 	vector< Color > result = Color::find( 2 );
-	QCOMPARE( result.size(), 1ul );
+	QCOMPARE( result.size(), static_cast< size_t >( 1 ));
 	QVERIFY( result[ 0 ] == Color::Blue );
 }
 
 void ColorEnumTest::testFindByName() {
 	vector< Color > result = Color::find( L"Green" );
-	QCOMPARE( result.size(), 1ul );
+	QCOMPARE( result.size(), static_cast< size_t >( 1 ));
 	QVERIFY( result[ 0 ] == Color::Green );
 }
 
@@ -128,7 +128,7 @@ void NumberEnumTest::testValue() {
 
 void NumberEnumTest::testFindDuplicates() {
 	vector< Number > numbers = Number::find( 20 );
-	QCOMPARE( numbers.size(), 2ul );
+	QCOMPARE( numbers.size(), static_cast< size_t >( 2 ));
 	QVERIFY( numbers[ 0 ] == Number::Twenty );
 	QVERIFY( numbers[ 1 ] == Number::TwentyToo );
 }

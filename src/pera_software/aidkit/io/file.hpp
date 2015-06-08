@@ -70,11 +70,11 @@ namespace pera_software { namespace aidkit { namespace io {
 			}
 
 			static int do_putc( std::FILE *fp, char c ) {
-				return std::fputc( c, fp );
+				return std::putc( c, fp );
 			}
 
 			static int do_getc( std::FILE *fp ) {
-				return std::fgetc( fp );
+				return std::getc( fp );
 			}
 
 			static int do_puts( std::FILE *fp, const char s[] ) {
@@ -109,11 +109,11 @@ namespace pera_software { namespace aidkit { namespace io {
 			}
 
 			static wint_t do_putc( std::FILE *fp, wchar_t c ) {
-				return std::fputwc( c, fp );
+				return std::putwc( c, fp );
 			}
 
 			static wint_t do_getc( std::FILE *fp ) {
-				return std::fgetwc( fp );
+				return std::getwc( fp );
 			}
 
 			static int do_puts( std::FILE *fp, const wchar_t s[] ) {
@@ -146,7 +146,8 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				static std::size_t do_write( std::FILE *fp, const void *buffer, std::size_t size, std::size_t count ) {
-					return _fwrite_nolock( buffer, size, count, fp );
+					return std::fwrite( buffer, size, count, fp );
+					// return _fwrite_nolock( buffer, size, count, fp );
 				}
 
 				static std::size_t do_read( std::FILE *fp, void *buffer, std::size_t size, std::size_t count ) {
@@ -162,7 +163,8 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				static wint_t do_putc( std::FILE *fp, wchar_t c ) {
-					return _putwc_nolock( c, fp );
+					return std::putwc( c, fp );
+					// return _putwc_nolock( c, fp );
 				}
 			};
 #else // AIDKIT_MINGW
