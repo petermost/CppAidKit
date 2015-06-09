@@ -146,8 +146,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				static std::size_t do_write( std::FILE *fp, const void *buffer, std::size_t size, std::size_t count ) {
-					return std::fwrite( buffer, size, count, fp );
-					// return _fwrite_nolock( buffer, size, count, fp );
+					return _fwrite_nolock( buffer, size, count, fp );
 				}
 
 				static std::size_t do_read( std::FILE *fp, void *buffer, std::size_t size, std::size_t count ) {
@@ -163,8 +162,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				static wint_t do_putc( std::FILE *fp, wchar_t c ) {
-					return std::putwc( c, fp );
-					// return _putwc_nolock( c, fp );
+					return _putwc_nolock( c, fp );
 				}
 			};
 #else // AIDKIT_MINGW

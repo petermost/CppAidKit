@@ -157,6 +157,9 @@ qt5_add_resources( QT_RESOURCES
 add_library( AidKit SHARED ${SOURCES} ${QT_SOURCES} ${MOC_SOURCES} ${QT_RESOURCES})
 include_directories( src/ )
 target_link_libraries( AidKit Qt5::Test Qt5::Widgets )
+if ( MINGW )
+	target_link_libraries( AidKit msvcr110 )
+endif()
 
 # Setup library test build:
 
