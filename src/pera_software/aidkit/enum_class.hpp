@@ -25,28 +25,25 @@
 
 namespace pera_software { namespace aidkit {
 
-	template< typename T, size_t SIZE, typename Integer = int, typename Char = char >
+	template< typename T, size_t SIZE, typename Integer = int, typename String = std::string >
 		class enum_class {
 			public:
-				typedef Integer integer_type;
-				typedef std::basic_string< Char > string_type;
-
-				// Compiler generated copy contructor and assignment operator are fine:
+				// Compiler generated copy constructor and assignment operator are fine:
 
 				enum_class( const enum_class & ) = default;
 				enum_class &operator = ( const enum_class & ) = default;
 
-				const integer_type value() const noexcept {
+				const Integer value() const noexcept {
 					return value_;
 				}
 
-				const string_type &name() const noexcept {
+				const String &name() const noexcept {
 					return *name_;
 				}
 
 				// Some find functions for searching via a name or a value:
 
-				static std::vector< T > find( const string_type &name ) {
+				static std::vector< T > find( const String &name ) {
 					std::vector< T > foundEnums;
 					for_each([ & ]( const T &other ) {
 						if ( name == other.name() )
@@ -55,7 +52,7 @@ namespace pera_software { namespace aidkit {
 					return foundEnums;
 				}
 
-				static std::vector< T > find( integer_type value ) {
+				static std::vector< T > find( Integer value ) {
 					std::vector< T > foundEnums;
 					for_each([ & ]( const T &other ) {
 						if ( value == other.value() )
@@ -89,12 +86,12 @@ namespace pera_software { namespace aidkit {
 					: enum_class( s_nextValue++ ) {
 				}
 
-				enum_class( const string_type &name )
+				enum_class( const String &name )
 					: enum_class( s_nextValue++, name ) {
 				}
 
-				enum_class( integer_type value, const string_type &name = string_type() )
-					: value_( value ), name_( std::make_shared< string_type >( name )) {
+				enum_class( Integer value, const String &name = String() )
+					: value_( value ), name_( std::make_shared< String >( name )) {
 					s_values[ s_valuesSize++ ] = static_cast< const T * >( this );
 					s_nextValue = value_ + 1;
 				}
@@ -103,20 +100,20 @@ namespace pera_software { namespace aidkit {
 				typedef typename std::array< const T *, SIZE >::const_iterator const_iterator;
 
 				static const_iterator cbegin() noexcept {
-					return s_values.data();
+					return s_values.cbegin();
 				}
 
 				static const_iterator cend() noexcept {
-					return s_values.data() + s_valuesSize;
+					return s_values.cbegin() + s_valuesSize;
 				}
 
-				static integer_type s_nextValue;
+				static Integer s_nextValue;
 
 				// We don't embed the string_type to avoid the copy cost when an enum gets
 				// assigned to another enum:
 
-				integer_type value_;
-				std::shared_ptr< string_type > name_;
+				Integer value_;
+				std::shared_ptr< String > name_;
 
 				// We use an array to store the values because it is usable even if it is only
 				// statically initialized with zeros:

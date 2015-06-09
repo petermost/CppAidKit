@@ -51,6 +51,13 @@ namespace pera_software {
 				void testValue();
 				void testName();
 		};
+
+		class FruitEnumTest : public qt::Test {
+			Q_OBJECT
+
+			private slots:
+				void testName();
+		};
 	}
 }
 

@@ -27,7 +27,7 @@ using namespace std;
 
 // Enum for testing default value assignment:
 
-class Color : public enum_class< Color, 4, int, wchar_t > {
+class Color : public enum_class< Color, 4, int, wstring > {
 	public:
 		static const Color Red;
 		static const Color Green;
@@ -165,8 +165,42 @@ void AnimalEnumTest::testName() {
 	QVERIFY( Animal::Dog.name() == "" );
 }
 
+//#########################################################################################################
+
+// Enum for testing with QString:
+
+class Fruit : public enum_class< Fruit, 3, int, QString > {
+	public:
+		static const Fruit Apple;
+		static const Fruit Orange;
+		static const Fruit Lemon;
+
+	private:
+		Fruit( const QString &name )
+			: enum_class( name ) {
+		}
+};
+
+const Fruit Fruit::Apple( "Apple");
+const Fruit Fruit::Orange( "Orange");
+const Fruit Fruit::Lemon( "Lemon" );
+
+void FruitEnumTest::testName() {
+	QString expectedName = "Orange";
+
+	QCOMPARE( Fruit::Orange.name(), expectedName );
+}
+
+
+
+
+
+
+
+
 static ColorEnumTest colorEnumTest;
 static NumberEnumTest numberEnumTest;
 static AnimalEnumTest animalEnumTest;
+static FruitEnumTest fruitEnumTest;
 
 } }
