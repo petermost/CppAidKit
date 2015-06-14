@@ -79,6 +79,7 @@ set( HEADERS
 	src/pera_software/aidkit/exception.hpp
 	src/pera_software/aidkit/enum_class.hpp
 	src/pera_software/aidkit/io/file.hpp
+	src/pera_software/aidkit/io/basic_file.hpp
 	src/pera_software/aidkit/io/file_impl.hpp
 	src/pera_software/aidkit/io/file_error.hpp
 	src/pera_software/aidkit/io/temporary_file.hpp
@@ -124,7 +125,23 @@ set( QT_SOURCES
 	src/pera_software/company/qt/Application.cpp
 )
 
-# Library Test sources:
+qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})
+
+qt5_add_resources( QRC_RESOURCES
+	resources/pera_software/aidkit/AidKitResources.qrc
+	resources/pera_software/company/CompanyResources.qrc
+)
+
+# Setup library build:
+
+add_library( AidKit SHARED ${SOURCES} ${QT_SOURCES} ${MOC_SOURCES} ${QRC_RESOURCES})
+include_directories( src/ )
+target_link_libraries( AidKit Qt5::Test Qt5::Widgets )
+if ( MINGW )
+	target_link_libraries( AidKit msvcr110 )
+endif()
+
+########################### Setup testAidKit ##################################
 
 set( TEST_HEADERS
 #	tests/pera_software/aidkit/debug_test.hpp
@@ -143,23 +160,7 @@ set( TEST_SOURCES
 	tests/pera_software/aidkit/qt/net/EndianTest.cpp
 )
 
-qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})
-
 qt5_wrap_cpp( MOC_TEST_SOURCES ${TEST_HEADERS})
-
-qt5_add_resources( QT_RESOURCES
-	resources/pera_software/aidkit/AidKitResources.qrc
-	resources/pera_software/company/CompanyResources.qrc
-)
-
-# Setup library build:
-
-add_library( AidKit SHARED ${SOURCES} ${QT_SOURCES} ${MOC_SOURCES} ${QT_RESOURCES})
-include_directories( src/ )
-target_link_libraries( AidKit Qt5::Test Qt5::Widgets )
-if ( MINGW )
-	target_link_libraries( AidKit msvcr110 )
-endif()
 
 # Setup library test build:
 

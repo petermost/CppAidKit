@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <pera_software/aidkit/io/file.hpp>
+#include <pera_software/aidkit/io/basic_file.hpp>
 #include "file_test.hpp"
 #include <QTest>
 
@@ -23,8 +23,23 @@ namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;
 
+// Explicit template instantiations to catch missing functions:
+
+template class basic_file< char, file_locked_category >;
+template class basic_file< wchar_t, file_locked_category >;
+
+template class basic_file< char, file_unlocked_category >;
+template class basic_file< wchar_t, file_unlocked_category >;
+
+
+//template bool basic_file< char, file_locked_category >::print< int, int >( error_code *, const char *, int, int  );
+//template bool basic_file< char, file_locked_category >::is_eof() const;
+
+// Convenience typedefs:
+
 typedef basic_file< char, file_locked_category > locked_file;
 typedef basic_file< wchar_t, file_locked_category > locked_wfile;
+
 typedef basic_file< char, file_unlocked_category > unlocked_file;
 typedef basic_file< wchar_t, file_unlocked_category > unlocked_wfile;
 
@@ -50,9 +65,17 @@ template < typename File, typename Char >
 template < typename File >
 	void testWrite() {
 		error_code errorCode;
-
 		File file;
 		file.write( nullptr, 0, 0, &errorCode );
+	}
+
+template < typename File, typename Char >
+	void testPrint() {
+		error_code errorCode;
+		Char format[] = { 0 };
+
+		File file;
+		file.print( &errorCode, format, 1, 2 );
 	}
 
 void FileTest::test() {
@@ -71,6 +94,11 @@ void FileTest::test() {
 	testWrite< locked_wfile >();
 	testWrite< unlocked_file >();
 	testWrite< unlocked_wfile >();
+
+	testPrint< locked_file, char >();
+	testPrint< locked_wfile, wchar_t >();
+	testPrint< unlocked_file, char >();
+	testPrint< unlocked_wfile, wchar_t >();
 }
 
 // static FileTest fileTest;

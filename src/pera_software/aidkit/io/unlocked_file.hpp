@@ -24,72 +24,22 @@
 #include <string>
 #include <cstdio>
 
-#if defined( AIDKIT_GCC )
-	#if defined( AIDKIT_MINGW )
-		#define AIDKIT_UNLOCKED_PUTC   _putc_nolock
-		#define AIDKIT_UNLOCKED_PUTWC  _putwc_nolock
-		#define AIDKIT_UNLOCKED_GETC   _getc_nolock
-		#define AIDKIT_UNLOCKED_GETWC  _fgetwc_nolock
-		#define AIDKIT_UNLOCKED_FWRITE _fwrite_nolock
-		#define AIDKIT_UNLOCKED_FREAD  _fread_nolock
-
-		// These *_nolock functions exist in the mingw491 stdio.h but result in a linker error!
-
-		#define AIDKIT_UNLOCKED_FSEEK  ::_fseeki64
-		#define AIDKIT_UNLOCKED_FTELL  ::_ftelli64
-		#define AIDKIT_UNLOCKED_FFLUSH ::std::fflush
-		#define AIDKIT_UNLOCKED_FCLOSE ::std::fclose
-
-		// Missing unlocked functions:
-
-		#define AIDKIT_UNLOCKED_FOPEN    ::std::fopen
-		#define AIDKIT_UNLOCKED_FERROR   ::std::ferror
-		#define AIDKIT_UNLOCKED_FEOF     ::std::feof
-		#define AIDKIT_UNLOCKED_FPUTS    ::std::fputs
-		#define AIDKIT_UNLOCKED_FPUTWS   ::std::fputws
-		#define AIDKIT_UNLOCKED_REWIND   ::std::rewind
-		#define AIDKIT_UNLOCKED_FGETPOS  ::std::fgetpos
-		#define AIDKIT_UNLOCKED_FSETPOS  ::std::fsetpos
-		#define AIDKIT_UNLOCKED_CLEARERR ::std::clearerr
-	#else
-		#define AIDKIT_UNLOCKED_PUTC     putc_unlocked
-		#define AIDKIT_UNLOCKED_PUTWC    putwc_unlocked
-		#define AIDKIT_UNLOCKED_GETC     getc_unlocked
-		#define AIDKIT_UNLOCKED_GETWC    getwc_unlocked
-		#define AIDKIT_UNLOCKED_FWRITE   fwrite_unlocked
-		#define AIDKIT_UNLOCKED_FREAD    fread_unlocked
-		#define AIDKIT_UNLOCKED_FPUTS    fputs_unlocked
-		#define AIDKIT_UNLOCKED_FPUTWS   fputws_unlocked
-		#define AIDKIT_UNLOCKED_FFLUSH   fflush_unlocked
-		#define AIDKIT_UNLOCKED_FERROR   ferror_unlocked
-		#define AIDKIT_UNLOCKED_FEOF     feof_unlocked
-		#define AIDKIT_UNLOCKED_CLEARERR clearerr_unlocked
-
-		// Missing unlocked functions:
-
-		#define AIDKIT_UNLOCKED_FOPEN   ::std::fopen
-		#define AIDKIT_UNLOCKED_FCLOSE  ::std::fclose
-		#define AIDKIT_UNLOCKED_FTELL   ::std::ftell
-		#define AIDKIT_UNLOCKED_FSEEK   ::std::fseek
-		#define AIDKIT_UNLOCKED_REWIND  ::std::rewind
-		#define AIDKIT_UNLOCKED_FGETPOS ::std::fgetpos
-		#define AIDKIT_UNLOCKED_FSETPOS ::std::fsetpos
-	#endif
-#elif defined( AIDKIT_MSVC )
+#if defined( AIDKIT_GCC ) && defined( AIDKIT_MINGW )
 	#define AIDKIT_UNLOCKED_PUTC   _putc_nolock
 	#define AIDKIT_UNLOCKED_PUTWC  _putwc_nolock
 	#define AIDKIT_UNLOCKED_GETC   _getc_nolock
+	#define AIDKIT_UNLOCKED_GETWC  _fgetwc_nolock
 	#define AIDKIT_UNLOCKED_FWRITE _fwrite_nolock
 	#define AIDKIT_UNLOCKED_FREAD  _fread_nolock
-	#define AIDKIT_UNLOCKED_FTELL  _ftelli64_nolock
-	#define AIDKIT_UNLOCKED_FSEEK  _fseeki64_nolock
-	#define AIDKIT_UNLOCKED_FFLUSH _fflush_nolock
-	#define AIDKIT_UNLOCKED_FCLOSE _fclose_nolock
+
+	#define AIDKIT_UNLOCKED_FSEEK  ::_fseeki64
+	#define AIDKIT_UNLOCKED_FTELL  ::_ftelli64
+	#define AIDKIT_UNLOCKED_FFLUSH ::std::fflush
+	#define AIDKIT_UNLOCKED_FCLOSE ::std::fclose
 
 	// Missing unlocked functions:
 
 	#define AIDKIT_UNLOCKED_FOPEN    ::std::fopen
-	#define AIDKIT_UNLOCKED_GETWC    ::std::getwc
 	#define AIDKIT_UNLOCKED_FERROR   ::std::ferror
 	#define AIDKIT_UNLOCKED_FEOF     ::std::feof
 	#define AIDKIT_UNLOCKED_FPUTS    ::std::fputs
@@ -99,7 +49,28 @@
 	#define AIDKIT_UNLOCKED_FSETPOS  ::std::fsetpos
 	#define AIDKIT_UNLOCKED_CLEARERR ::std::clearerr
 #else
-	#error Missing unlocked file functions!
+	#define AIDKIT_UNLOCKED_PUTC     putc_unlocked
+	#define AIDKIT_UNLOCKED_PUTWC    putwc_unlocked
+	#define AIDKIT_UNLOCKED_GETC     getc_unlocked
+	#define AIDKIT_UNLOCKED_GETWC    getwc_unlocked
+	#define AIDKIT_UNLOCKED_FWRITE   fwrite_unlocked
+	#define AIDKIT_UNLOCKED_FREAD    fread_unlocked
+	#define AIDKIT_UNLOCKED_FPUTS    fputs_unlocked
+	#define AIDKIT_UNLOCKED_FPUTWS   fputws_unlocked
+	#define AIDKIT_UNLOCKED_FFLUSH   fflush_unlocked
+	#define AIDKIT_UNLOCKED_FERROR   ferror_unlocked
+	#define AIDKIT_UNLOCKED_FEOF     feof_unlocked
+	#define AIDKIT_UNLOCKED_CLEARERR clearerr_unlocked
+
+	// Missing unlocked functions:
+
+	#define AIDKIT_UNLOCKED_FOPEN   ::std::fopen
+	#define AIDKIT_UNLOCKED_FCLOSE  ::std::fclose
+	#define AIDKIT_UNLOCKED_FTELL   ::std::ftell
+	#define AIDKIT_UNLOCKED_FSEEK   ::std::fseek
+	#define AIDKIT_UNLOCKED_REWIND  ::std::rewind
+	#define AIDKIT_UNLOCKED_FGETPOS ::std::fgetpos
+	#define AIDKIT_UNLOCKED_FSETPOS ::std::fsetpos
 #endif
 
 
