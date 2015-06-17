@@ -152,6 +152,26 @@ namespace pera_software { namespace aidkit { namespace io {
 
 #if defined( AIDKIT_GCC ) && !defined( AIDKIT_MINGW )
 
+		template < typename Char >
+			struct file_functions_base< typename Char, file_unlocked_category > : file_functions_base< Char, file_locked_category > {
+
+				static std::size_t do_write( std::FILE *fp, const void *buffer, std::size_t size, std::size_t count ) {
+					return fwrite_unlocked( buffer, size, count, fp );
+				}
+
+				static std::size_t do_read( std::FILE *fp, void *buffer, std::size_t size, std::size_t count ) {
+					return fread_unlocked( buffer, size, count, fp );
+				}
+
+				static int do_eof( std::FILE *fp ) {
+					return feof_unlocked( fp );
+				}
+
+				static int do_error( std::FILE *fp ) {
+					return ferror_unlocked( fp );
+				}
+			};
+
 		template <>
 			struct file_functions< char, file_unlocked_category > : file_functions_base< char, file_locked_category > {
 
@@ -169,22 +189,6 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				static char *do_gets( std::FILE *fp, char *str, int count ) {
 					return fgets_unlocked( str, count, fp );
-				}
-
-				static std::size_t do_write( std::FILE *fp, const void *buffer, std::size_t size, std::size_t count ) {
-					return fwrite_unlocked( buffer, size, count, fp );
-				}
-
-				static std::size_t do_read( std::FILE *fp, void *buffer, std::size_t size, std::size_t count ) {
-					return fread_unlocked( buffer, size, count, fp );
-				}
-
-				static int do_eof( std::FILE *fp ) {
-					return feof_unlocked( fp );
-				}
-
-				static int do_error( std::FILE *fp ) {
-					return ferror_unlocked( fp );
 				}
 			};
 
@@ -205,22 +209,6 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				static wchar_t *do_gets( std::FILE *fp, wchar_t *str, int count ) {
 					return fgetws_unlocked( str, count, fp );
-				}
-
-				static std::size_t do_write( std::FILE *fp, const void *buffer, std::size_t size, std::size_t count ) {
-					return fwrite_unlocked( buffer, size, count, fp );
-				}
-
-				static std::size_t do_read( std::FILE *fp, void *buffer, std::size_t size, std::size_t count ) {
-					return fread_unlocked( buffer, size, count, fp );
-				}
-
-				static int do_eof( std::FILE *fp ) {
-					return feof_unlocked( fp );
-				}
-
-				static int do_error( std::FILE *fp ) {
-					return ferror_unlocked( fp );
 				}
 			};
 
