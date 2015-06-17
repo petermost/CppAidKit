@@ -173,7 +173,7 @@ namespace pera_software { namespace aidkit { namespace io {
 			};
 
 		template <>
-			struct file_functions< char, file_unlocked_category > : file_functions_base< char, file_locked_category > {
+			struct file_functions< char, file_unlocked_category > : file_functions< char, file_locked_category > {
 
 				static int do_putc( std::FILE *fp, char c ) {
 					return putc_unlocked( c, fp );
@@ -193,7 +193,7 @@ namespace pera_software { namespace aidkit { namespace io {
 			};
 
 		template <>
-			struct file_functions< wchar_t, file_unlocked_category > : file_functions_base< wchar_t, file_locked_category > {
+			struct file_functions< wchar_t, file_unlocked_category > : file_functions< wchar_t, file_locked_category > {
 
 				static wint_t do_putc( std::FILE *fp, wchar_t c ) {
 					return putwc_unlocked( c, fp );
