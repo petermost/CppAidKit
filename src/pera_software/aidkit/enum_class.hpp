@@ -21,17 +21,25 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <memory>
 
 namespace pera_software { namespace aidkit {
 
 	template< typename T, size_t SIZE, typename Integer = int, typename String = std::string >
 		class enum_class {
 			public:
-				// Compiler generated copy constructor and assignment operator are fine:
+				enum_class( const enum_class &other ) {
+					name_ = other.name_;
+					value_ = other.value_;
+					isOwner_ = false;
+				}
 
-				enum_class( const enum_class & ) = default;
-				enum_class &operator = ( const enum_class & ) = default;
+				enum_class &operator = ( const enum_class &other ) {
+					if ( this != &other ) {
+						name_ = other.name_;
+						value_ = other.value_;
+						isOwner_ = false;
+					}
+				}
 
 				const Integer value() const noexcept {
 					return value_;
@@ -90,14 +98,31 @@ namespace pera_software { namespace aidkit {
 					: enum_class( s_nextValue++, name ) {
 				}
 
-				enum_class( Integer value, const String &name = String() )
-					: value_( value ), name_( std::make_shared< String >( name )) {
+				enum_class( Integer value, const String &name = String() ) {
+					name_ = new String( name );
+					value_ = value;
+					isOwner_ = true;
+
 					s_values[ s_valuesSize++ ] = static_cast< const T * >( this );
 					s_nextValue = value_ + 1;
 				}
 
+				~enum_class() {
+					if ( isOwner_ )
+						delete name_;
+				}
+
 			private:
 				typedef typename std::array< const T *, SIZE >::const_iterator const_iterator;
+
+				// We don't:
+				// - Embed the string_type to avoid the copy cost when an enum_class gets copied.
+				// - Use a shared_ptr because copying would then always incremente/decrement the
+				//   reference counter which is most likely not in the cache.
+
+				String *name_;
+				Integer value_;
+				bool isOwner_;
 
 				static const_iterator cbegin() noexcept {
 					return s_values.cbegin();
@@ -107,20 +132,20 @@ namespace pera_software { namespace aidkit {
 					return s_values.cbegin() + s_valuesSize;
 				}
 
+				// The value for the next enum instance:
+
 				static Integer s_nextValue;
-
-				// We don't embed the string_type to avoid the copy cost when an enum gets
-				// assigned to another enum:
-
-				Integer value_;
-				std::shared_ptr< String > name_;
 
 				// We use an array to store the values because it is usable even if it is only
 				// statically initialized with zeros:
 
 				static size_t s_valuesSize;
 				static std::array< const T *, SIZE > s_values;
+
+
 		};
+
+	// Note that all static members must be usable after they have been zero-initialized!
 
 	template < typename T, size_t SIZE, typename Integer, typename Char >
 		Integer enum_class< T, SIZE, Integer, Char >::s_nextValue;
