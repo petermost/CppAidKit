@@ -17,7 +17,8 @@
 
 #pragma once
 
-#include "file_impl.hpp"
+//#include "file_impl.hpp"
+#include "file_error.hpp"
 #include <pera_software/aidkit/aidkit.hpp>
 #include <pera_software/aidkit/unicode.hpp>
 #include <memory>
@@ -50,7 +51,7 @@ namespace pera_software { namespace aidkit { namespace io {
 			typedef std::char_traits< Char > char_traits_type;
 			typedef typename char_traits_type::int_type int_type;
 
-			static bool is_not_eof( int_type result ) {
+			static int_type do_not_eof( int_type result ) {
 				return char_traits_type::not_eof( result );
 			}
 		};
@@ -245,13 +246,13 @@ namespace pera_software { namespace aidkit { namespace io {
 		template <>
 			struct file_functions< wchar_t, file_unlocked_category > : file_functions< wchar_t, file_locked_category > {
 
-				static wint_t do_getc( std::FILE *fp ) {
-					return _getwc_nolock( fp );
-				}
+//				static wint_t do_getc( std::FILE *fp ) {
+//					return _getwc_nolock( fp );
+//				}
 
-				static wint_t do_putc( std::FILE *fp, wchar_t c ) {
-					return _putwc_nolock( c, fp );
-				}
+//				static wint_t do_putc( std::FILE *fp, wchar_t c ) {
+//					return _putwc_nolock( c, fp );
+//				}
 			};
 #endif
 
@@ -278,7 +279,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				bool close( std::error_code *errorCode ) {
 					auto result = Functions::do_close( file_ );
-					if ( Functions::is_not_eof( result )) {
+					if ( Functions::do_not_eof( result )) {
 						return true;
 					} else {
 						set_error_code( file_, errorCode );
@@ -288,7 +289,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				bool put( Char c, std::error_code *errorCode ) {
 					auto result = Functions::do_putc( file_, c );
-					if ( Functions::is_not_eof( result ))
+					if ( Functions::do_not_eof( result ))
 						return true;
 					else {
 						set_error_code( file_, errorCode );
@@ -298,7 +299,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				bool get( Char *c, std::error_code *errorCode ) {
 					auto result = Functions::do_getc( file_ );
-					if ( Functions::is_not_eof( result )) {
+					if ( Functions::do_not_eof( result )) {
 						*c = static_cast< Char >( result );
 						return true;
 					} else {
@@ -309,7 +310,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				bool put( const Char s[], std::error_code *errorCode ) {
 					auto result = Functions::do_puts( file_, s );
-					if ( Functions::is_not_eof( result ))
+					if ( Functions::do_not_eof( result ))
 						return true;
 					else {
 						set_error_code( file_, errorCode );
@@ -351,7 +352,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				template < typename ... Args >
 					bool print( std::error_code *errorCode, const Char format[], Args && ... args ) {
 						auto result = Functions::do_print( file_, format, std::forward< Args >( args ) ... );
-						if ( Functions::is_not_eof( result ))
+						if ( Functions::do_not_eof( result ))
 							return true;
 						else {
 							set_error_code( file_, errorCode );

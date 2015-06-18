@@ -79,6 +79,7 @@ set( HEADERS
 	src/pera_software/aidkit/exception.hpp
 	src/pera_software/aidkit/enum_class.hpp
 	src/pera_software/aidkit/io/file.hpp
+	src/pera_software/aidkit/io/file2.hpp
 	src/pera_software/aidkit/io/basic_file.hpp
 	src/pera_software/aidkit/io/file_impl.hpp
 	src/pera_software/aidkit/io/file_error.hpp
@@ -97,6 +98,8 @@ set( SOURCES
 	src/pera_software/aidkit/exception.cpp
 	src/pera_software/aidkit/enum_class.cpp
 	src/pera_software/aidkit/io/file.cpp
+	src/pera_software/aidkit/io/file2.cpp
+	src/pera_software/aidkit/io/basic_file.cpp
 	src/pera_software/aidkit/io/file_impl.cpp
 	src/pera_software/aidkit/io/file_error.cpp
 	src/pera_software/aidkit/io/temporary_file.cpp
@@ -137,8 +140,12 @@ qt5_add_resources( QRC_RESOURCES
 add_library( AidKit SHARED ${SOURCES} ${QT_SOURCES} ${MOC_SOURCES} ${QRC_RESOURCES})
 include_directories( src/ )
 target_link_libraries( AidKit Qt5::Test Qt5::Widgets )
+
 if ( MINGW )
-	target_link_libraries( AidKit msvcr110 )
+	# Linking to this library would solve linking errors to some *_nolock functions, but it results
+	# in a startup crash most likely because of msvcrt.dll (libstdc++-6.dll) *and* msvr110.dll being used
+	#
+	# target_link_libraries( AidKit msvcr110 )
 endif()
 
 ########################### Setup testAidKit ##################################
