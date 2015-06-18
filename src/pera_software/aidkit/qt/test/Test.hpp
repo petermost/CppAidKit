@@ -20,6 +20,7 @@
 #include <QList>
 #include <QStringList>
 #include <pera_software/aidkit/aidkit.hpp>
+#include <array>
 
 namespace pera_software {
 	namespace aidkit {
@@ -35,7 +36,9 @@ namespace pera_software {
 					virtual ~Test();
 
 				private:
-					static QList< QObject * > s_tests;
+					enum { SIZE = 100 };
+					static std::size_t s_testsSize;
+					static std::array< QObject *, SIZE > s_tests;
 			};
 		}
 	}

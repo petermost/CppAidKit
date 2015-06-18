@@ -17,22 +17,29 @@
 
 #include "Test.hpp"
 #include <QTest>
+#include <algorithm>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-QList< QObject * > Test::s_tests;
+using namespace std;
+
+size_t Test::s_testsSize;
+array< QObject *, Test::SIZE > Test::s_tests;
 
 Test::Test() {
-	s_tests.append( this );
+	s_tests[ s_testsSize++ ] = this;
 }
 
 Test::~Test() {
-	s_tests.removeOne( this );
+	auto endIterator = remove( s_tests.begin(), s_tests.end(), this );
+	s_testsSize = endIterator - s_tests.begin();
 }
 
 void Test::executeTests( const QStringList &arguments ) {
-	for ( QObject *object : s_tests )
+	for ( size_t i = 0; i < s_testsSize; ++i ) {
+		QObject *object = s_tests[ i ];
 		QTest::qExec( object, arguments );
+	}
 }
 
 } } }
