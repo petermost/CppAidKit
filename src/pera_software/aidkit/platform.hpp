@@ -34,7 +34,7 @@
 #elif defined( __linux__ )
 	#define AIDKIT_LINUX
 #else
-	#error Can't determine operating system!
+	#error Cannot determine operating system!
 #endif
 
 // Determine the compiler:
@@ -48,5 +48,5 @@
 		#define AIDKIT_MINGW
 	#endif
 #else
-	#error "Can't determine compiler!"
+	#error "Cannot determine compiler!"
 #endif

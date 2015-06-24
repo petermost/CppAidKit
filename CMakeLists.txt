@@ -20,6 +20,12 @@ project( AidKit )
 
 set( CMAKE_WARN_DEPRECATED ON )
 
+if ( UNIX )
+	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.4.2/5.4/gcc_64/lib/cmake" )
+elseif( WIN32 )
+	set( CMAKE_PREFIX_PATH "C:/Qt64/qt-5.4.2/qt-5.4.2-x64-mingw510r0-seh-opengl-rev0/lib/cmake" )
+endif()
+
 if ( NOT CMAKE_BUILD_TYPE )
 	message( "Enabling debug build" )
 	set( CMAKE_BUILD_TYPE Debug )
@@ -30,11 +36,6 @@ if ( NOT CMAKE_VERBOSE_MAKEFILE )
 	set( CMAKE_VERBOSE_MAKEFILE TRUE )
 endif()
 
-if ( UNIX )
-	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.4.2/5.4/gcc_64/lib/cmake" )
-elseif( WIN32 )
-	set( CMAKE_PREFIX_PATH "C:/Qt/Qt5.4.2/5.4/mingw491_32/lib/cmake" )
-endif()
 
 ############################# Setup Qt5 usage #################################
 # See: http://doc.qt.io/qt-5/cmake-manual.html
@@ -50,18 +51,36 @@ find_package( Qt5Test )
 
 ############################# Setup AidKit ####################################
 
-if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-	message( "Enabling libstdc++ debug" )
-	add_definitions( -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC )
-endif()
 
 add_compile_options(
 	-std=c++14                  # Compile in C++14 mode
-	-w -Wall -Wextra -Wpedantic # Enable all warnings
+
+	-Wall -Wextra -Wpedantic    # Enable all warnings
+	-Wmissing-include-dirs      # Warn if a user-supplied include directory does not exist.
+	-Wsuggest-override          # Warn about overriding virtual functions that are not marked with the override keyword.
+	-Wundef                     # Warn if an undefined identifier is evaluated in an #if directive.
+	-Wcast-align                # Warn whenever a pointer is cast such that the required alignment of the target is increased.
+	-Wold-style-cast            # Warn if an old-style (C-style) cast to a non-void type is used within a C++ program.
+
 	-fvisibility=hidden         # Make symbols hidden by default i.e. must be explicitly exported
-	-pthread
 	-fdiagnostics-show-option   # Show which switch caused a warning
+
+	-pthread                    # Adds support for multithreading with the pthreads library. This option sets flags for both the preprocessor and linker
 )
+
+if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+	message( "Enabling debug settings" )
+	add_definitions( -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC )
+#	add_compile_options(
+#		-fsanitize=address      # Enable AddressSanitizer, a fast memory error detector.
+#		-fsanitize=thread       # Enable ThreadSanitizer, a fast data race detector.
+#		-fsanitize=undefined    # Enable UndefinedBehaviorSanitizer, a fast undefined behavior detector.
+#	)
+endif()
+
+if ( MINGW )
+	add_definitions( -D__USE_MINGW_ANSI_STDIO )
+endif()
 
 
 set( OTHER_FILES
@@ -79,7 +98,6 @@ set( HEADERS
 	src/pera_software/aidkit/exception.hpp
 	src/pera_software/aidkit/enum_class.hpp
 	src/pera_software/aidkit/io/file.hpp
-	src/pera_software/aidkit/io/file2.hpp
 	src/pera_software/aidkit/io/basic_file.hpp
 	src/pera_software/aidkit/io/file_impl.hpp
 	src/pera_software/aidkit/io/file_error.hpp
@@ -98,7 +116,6 @@ set( SOURCES
 	src/pera_software/aidkit/exception.cpp
 	src/pera_software/aidkit/enum_class.cpp
 	src/pera_software/aidkit/io/file.cpp
-	src/pera_software/aidkit/io/file2.cpp
 	src/pera_software/aidkit/io/basic_file.cpp
 	src/pera_software/aidkit/io/file_impl.cpp
 	src/pera_software/aidkit/io/file_error.cpp
@@ -144,7 +161,7 @@ target_link_libraries( AidKit Qt5::Test Qt5::Widgets )
 if ( MINGW )
 	# Linking to this library would solve linking errors to some *_nolock functions, but it results
 	# in a startup crash most likely because of msvcrt.dll (libstdc++-6.dll) *and* msvr110.dll being used
-	#
+
 	# target_link_libraries( AidKit msvcr110 )
 endif()
 

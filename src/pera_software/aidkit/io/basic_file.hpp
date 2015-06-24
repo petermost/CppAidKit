@@ -30,48 +30,66 @@ namespace pera_software { namespace aidkit { namespace io {
 	struct file_category {
 	};
 
-	// TODO: Write file_functions<> for file_null_category.
-
-	struct file_null_category : file_category {
-	};
-
 	struct file_locked_category : file_category {
 	};
 
-	struct file_unlocked_category : file_category {
+	struct file_functions_base {
+
+		static int do_not_eof( int result ) {
+			return std::char_traits< char >::not_eof( result );
+		}
+
+		static wint_t do_not_eof( wint_t result ) {
+			return std::char_traits< wchar_t >::not_eof( result );
+		}
 	};
 
-	// TODO: Write file_functions<> for file_temporary_category.
 
-	struct file_temporary_category : file_category {
-	};
+	template < typename Category >
+		struct file_functions : file_functions_base {
+		};
 
-	template < typename Char >
-		struct file_char_functions_base {
-			typedef std::char_traits< Char > char_traits_type;
-			typedef typename char_traits_type::int_type int_type;
+	template <>
+		struct file_functions< file_locked_category > : file_functions_base {
 
-			static int_type do_not_eof( int_type result ) {
-				return char_traits_type::not_eof( result );
+			static std::FILE *do_open( const char fileName[], const char openMode[] ) {
+				return std::fopen( fileName, openMode );
 			}
-		};
-
-	template < typename Char, typename Category >
-		struct file_functions_base {
-		};
-
-
-	template < typename Char, typename Category >
-		struct file_functions : file_functions_base< Char, Category > {
-		};
-
-	// file_functions<> for char/wchar_t, locked:
-
-	template < typename Char >
-		struct file_functions_base< Char, file_locked_category > : file_char_functions_base< Char >{
 
 			static int do_close( std::FILE *fp ) {
 				return std::fclose( fp );
+			}
+
+			static int do_putc( std::FILE *fp, char c ) {
+				return std::putc( c, fp );
+			}
+
+			static wint_t do_putwc( std::FILE *fp, wchar_t c ) {
+				return std::putwc( c, fp );
+			}
+
+			static int do_getc( std::FILE *fp ) {
+				return std::getc( fp );
+			}
+
+			static wint_t do_getwc( std::FILE *fp ) {
+				return std::getwc( fp );
+			}
+
+			static int do_puts( std::FILE *fp, const char s[] ) {
+				return std::fputs( s, fp );
+			}
+
+			static int do_putws( std::FILE *fp, const wchar_t s[] ) {
+				return std::fputws( s, fp );
+			}
+
+			static char *do_gets( std::FILE *fp, char *str, int count ) {
+				return std::fgets( str, count, fp );
+			}
+
+			static wchar_t *do_getws( std::FILE *fp, wchar_t *str, int count ) {
+				return std::fgetws( str, count, fp );
 			}
 
 			static std::size_t do_write( std::FILE *fp, const void *buffer, std::size_t size, std::size_t count ) {
@@ -82,6 +100,16 @@ namespace pera_software { namespace aidkit { namespace io {
 				return std::fread( buffer, size, count, fp );
 			}
 
+			template < typename ... Args >
+				static int do_printf( std::FILE *fp, const char format[], Args && ... args ) {
+					return std::fprintf( fp, format, std::forward< Args >( args ) ... );
+				}
+
+			template < typename ... Args >
+				static int do_wprintf( std::FILE *fp, const wchar_t format[], Args && ... args ) {
+					return std::fwprintf( fp, format, std::forward< Args >( args ) ... );
+				}
+
 			static int do_eof( std::FILE *fp ) {
 				return std::feof( fp );
 			}
@@ -91,172 +119,8 @@ namespace pera_software { namespace aidkit { namespace io {
 			}
 		};
 
-	template <>
-		struct file_functions< char, file_locked_category > : file_functions_base< char, file_locked_category > {
 
-			static std::FILE *do_open( const char fileName[], const char openMode[] ) {
-				return std::fopen( fileName, openMode );
-			}
-
-			static int do_putc( std::FILE *fp, char c ) {
-				return std::putc( c, fp );
-			}
-
-			static int do_getc( std::FILE *fp ) {
-				return std::getc( fp );
-			}
-
-			static int do_puts( std::FILE *fp, const char s[] ) {
-				return std::fputs( s, fp );
-			}
-
-			static char *do_gets( std::FILE *fp, char *str, int count ) {
-				return std::fgets( str, count, fp );
-			}
-
-			template < typename ... Args >
-				static int do_print( std::FILE *fp, const char format[], Args && ... args ) {
-					return std::fprintf( fp, format, std::forward< Args >( args ) ... );
-				}
-		};
-
-	template <>
-		struct file_functions< wchar_t, file_locked_category > : file_functions_base< wchar_t, file_locked_category > {
-
-			static std::FILE *do_open( const wchar_t fileName[], const wchar_t openMode[] ) {
-				return std::fopen( wstring_to_string( fileName ).c_str(), wstring_to_string( openMode ).c_str() );
-			}
-
-			static wint_t do_putc( std::FILE *fp, wchar_t c ) {
-				return std::putwc( c, fp );
-			}
-
-			static wint_t do_getc( std::FILE *fp ) {
-				return std::getwc( fp );
-			}
-
-			static int do_puts( std::FILE *fp, const wchar_t s[] ) {
-				return std::fputws( s, fp );
-			}
-
-			static wchar_t *do_gets( std::FILE *fp, wchar_t *str, int count ) {
-				return std::fgetws( str, count, fp );
-			}
-
-			template < typename ... Args >
-				static int do_print( std::FILE *fp, const wchar_t format[], Args && ... args ) {
-					return std::fwprintf( fp, format, std::forward< Args >( args ) ... );
-				}
-		};
-
-	// file_functions<> for char/wchar_t, unlocked:
-
-#if defined( AIDKIT_GCC ) && !defined( AIDKIT_MINGW )
-
-		template < typename Char >
-			struct file_functions_base< typename Char, file_unlocked_category > : file_functions_base< Char, file_locked_category > {
-
-				static std::size_t do_write( std::FILE *fp, const void *buffer, std::size_t size, std::size_t count ) {
-					return fwrite_unlocked( buffer, size, count, fp );
-				}
-
-				static std::size_t do_read( std::FILE *fp, void *buffer, std::size_t size, std::size_t count ) {
-					return fread_unlocked( buffer, size, count, fp );
-				}
-
-				static int do_eof( std::FILE *fp ) {
-					return feof_unlocked( fp );
-				}
-
-				static int do_error( std::FILE *fp ) {
-					return ferror_unlocked( fp );
-				}
-			};
-
-		template <>
-			struct file_functions< char, file_unlocked_category > : file_functions< char, file_locked_category > {
-
-				static int do_putc( std::FILE *fp, char c ) {
-					return putc_unlocked( c, fp );
-				}
-
-				static int do_getc( std::FILE *fp ) {
-					return getc_unlocked( fp );
-				}
-
-				static int do_puts( std::FILE *fp, const char s[] ) {
-					return fputs_unlocked( s, fp );
-				}
-
-				static char *do_gets( std::FILE *fp, char *str, int count ) {
-					return fgets_unlocked( str, count, fp );
-				}
-			};
-
-		template <>
-			struct file_functions< wchar_t, file_unlocked_category > : file_functions< wchar_t, file_locked_category > {
-
-				static wint_t do_putc( std::FILE *fp, wchar_t c ) {
-					return putwc_unlocked( c, fp );
-				}
-
-				static wint_t do_getc( std::FILE *fp ) {
-					return getwc_unlocked( fp );
-				}
-
-				static int do_puts( std::FILE *fp, const wchar_t s[] ) {
-					return fputws_unlocked( s, fp );
-				}
-
-				static wchar_t *do_gets( std::FILE *fp, wchar_t *str, int count ) {
-					return fgetws_unlocked( str, count, fp );
-				}
-			};
-
-#else // AIDKIT_MINGW
-
-		template < typename Char >
-			struct file_functions_base< Char, file_unlocked_category > : file_functions_base< Char, file_locked_category > {
-
-				static int do_close( std::FILE *fp ) {
-					return _fclose_nolock( fp );
-				}
-
-				static std::size_t do_write( std::FILE *fp, const void *buffer, std::size_t size, std::size_t count ) {
-					return _fwrite_nolock( buffer, size, count, fp );
-				}
-
-				static std::size_t do_read( std::FILE *fp, void *buffer, std::size_t size, std::size_t count ) {
-					return _fread_nolock( buffer, size, count, fp );
-				}
-			};
-
-		template <>
-			struct file_functions< char, file_unlocked_category > : file_functions< char, file_locked_category > {
-
-				static int do_getc( std::FILE *fp ) {
-					return _getc_nolock( fp );
-				}
-
-				static int do_putc( std::FILE *fp, char c ) {
-					return _putc_nolock( c, fp );
-				}
-			};
-
-		template <>
-			struct file_functions< wchar_t, file_unlocked_category > : file_functions< wchar_t, file_locked_category > {
-
-//				static wint_t do_getc( std::FILE *fp ) {
-//					return _getwc_nolock( fp );
-//				}
-
-//				static wint_t do_putc( std::FILE *fp, wchar_t c ) {
-//					return _putwc_nolock( c, fp );
-//				}
-			};
-#endif
-
-	template < typename Char, typename Category, typename Functions = file_functions< Char, Category >>
+	template < typename Category, typename Functions = file_functions< Category >>
 		class basic_file {
 			public:
 				basic_file( const basic_file & ) = delete;
@@ -266,7 +130,7 @@ namespace pera_software { namespace aidkit { namespace io {
 					file_ = nullptr;
 				}
 
-				bool open( const Char fileName[], const Char openMode[], std::error_code *errorCode ) {
+				bool open( const char fileName[], const char openMode[], std::error_code *errorCode ) {
 					file_ = Functions::do_open( fileName, openMode );
 					if ( file_ != nullptr ) {
 						fileName_ = fileName;
@@ -287,77 +151,55 @@ namespace pera_software { namespace aidkit { namespace io {
 					}
 				}
 
-				bool put( Char c, std::error_code *errorCode ) {
-					auto result = Functions::do_putc( file_, c );
-					if ( Functions::do_not_eof( result ))
-						return true;
-					else {
-						set_error_code( file_, errorCode );
-						return false;
-					}
+
+				bool put( char c, std::error_code *errorCode ) {
+					return call_putc( Functions::do_putc, c, errorCode );
 				}
 
-				bool get( Char *c, std::error_code *errorCode ) {
-					auto result = Functions::do_getc( file_ );
-					if ( Functions::do_not_eof( result )) {
-						*c = static_cast< Char >( result );
-						return true;
-					} else {
-						set_error_code( file_, errorCode );
-						return false;
-					}
+				bool put( wchar_t c, std::error_code *errorCode ) {
+					return call_putc( Functions::do_putwc, c, errorCode );
 				}
 
-				bool put( const Char s[], std::error_code *errorCode ) {
-					auto result = Functions::do_puts( file_, s );
-					if ( Functions::do_not_eof( result ))
-						return true;
-					else {
-						set_error_code( file_, errorCode );
-						return false;
-					}
+				bool get( char *c, std::error_code *errorCode ) {
+					return call_getc( Functions::do_getc, c, errorCode );
 				}
 
-				bool get( Char *s, int count, std::error_code *errorCode ) {
-					Char *result = Functions::do_gets( file_, s, count );
-					if ( result != nullptr )
-						return true;
-					else {
-						set_error_code( file_, errorCode );
-						return false;
-					}
+				bool get( wchar_t *c, std::error_code *errorCode ) {
+					return call_getc( Functions::do_getwc, c, errorCode );
+				}
+
+				bool put( const char s[], std::error_code *errorCode ) {
+					return call_puts( Functions::do_puts, s, errorCode );
+				}
+
+				bool put( const wchar_t s[], std::error_code *errorCode ) {
+					return call_puts( Functions::do_putws, s, errorCode );
+				}
+
+				bool get( char *s, int count, std::error_code *errorCode ) {
+					return call_gets( Functions::do_gets, s, count, errorCode );
+				}
+
+				bool get( wchar_t *s, int count, std::error_code *errorCode ) {
+					return call_gets( Functions::do_getws, s, count, errorCode );
 				}
 
 				bool write( const void *buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) {
-					std::size_t result = Functions::do_write( file_, buffer, size, count );
-					if ( result == count )
-						return true;
-					else {
-						set_error_code( file_, errorCode );
-						return false;
-					}
+					return call_transfer( Functions::do_write, buffer, size, count, errorCode );
 				}
 
 				bool read( void *buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) {
-					std::size_t result = Functions::do_read( file_, buffer, size, count );
-					if ( result == count )
-						return true;
-					else {
-						set_error_code( file_, errorCode );
-						return false;
-					}
+					return call_transfer( Functions::do_read, buffer, size, count, errorCode );
 				}
 
+				template < typename ... Args >
+					bool print( std::error_code *errorCode, const char format[], Args && ... args ) {
+						return call_printf( Functions::template do_printf< Args ... >, errorCode, format, std::forward< Args >( args ) ... );
+					}
 
 				template < typename ... Args >
-					bool print( std::error_code *errorCode, const Char format[], Args && ... args ) {
-						auto result = Functions::do_print( file_, format, std::forward< Args >( args ) ... );
-						if ( Functions::do_not_eof( result ))
-							return true;
-						else {
-							set_error_code( file_, errorCode );
-							return false;
-						}
+					bool print( std::error_code *errorCode, const wchar_t format[], Args && ... args ) {
+						return call_printf( Functions::template do_wprintf< Args ... >, errorCode, format, std::forward< Args >( args ) ... );
 					}
 
 				bool is_eof() const {
@@ -369,6 +211,74 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 			private:
+				template < typename Char, typename Function >
+					bool call_putc( Function putcFunction, Char c, std::error_code *errorCode ) {
+						auto result = putcFunction( file_, c );
+						if ( Functions::do_not_eof( result ))
+							return true;
+						else {
+							set_error_code( file_, errorCode );
+							return false;
+						}
+					}
+
+				template < typename Char, typename Function >
+					bool call_getc( Function getcFunction, Char *c, std::error_code *errorCode ) {
+						auto result = getcFunction( file_ );
+						if ( Functions::do_not_eof( result )) {
+							*c = result;
+							return true;
+						} else {
+							set_error_code( file_, errorCode );
+							return false;
+						}
+					}
+
+				template < typename Char, typename Function >
+					bool call_puts( Function putsFunction, const Char s[], std::error_code *errorCode ) {
+						auto result = putsFunction( file_, s );
+						if ( Functions::do_not_eof( result ))
+							return true;
+						else {
+							set_error_code( file_, errorCode );
+							return false;
+						}
+					}
+
+				template < typename Char, typename Function >
+					bool call_gets( Function getsFunction, Char *s, int count, std::error_code *errorCode ) {
+						Char *result = getsFunction( file_, s, count );
+						if ( result != nullptr )
+							return true;
+						else {
+							set_error_code( file_, errorCode );
+							return false;
+						}
+					}
+
+				template < typename T, typename Function >
+					bool call_transfer( Function transferFunction, T buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) {
+						std::size_t result = transferFunction( file_, buffer, size, count );
+						if ( result == count )
+							return true;
+						else {
+							set_error_code( file_, errorCode );
+							return false;
+						}
+					}
+
+				template < typename Char, typename Function, typename ... Args >
+					bool call_printf( Function printfFunction, std::error_code *errorCode, const Char format[], Args && ... args ) {
+						auto result = printfFunction( file_, format, std::forward< Args >( args ) ... );
+						if ( Functions::do_not_eof( result ))
+							return true;
+						else {
+							set_error_code( file_, errorCode );
+							return false;
+						}
+					}
+
+
 				static void set_error_code( std::error_code *errorCode ) {
 					if ( errno != 0 )
 						*errorCode = make_errno_error_code();
@@ -386,7 +296,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				std::FILE *file_;
-				std::basic_string< Char > fileName_;
+				std::string fileName_;
 
 		};
 } } }

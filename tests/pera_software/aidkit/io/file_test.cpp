@@ -25,23 +25,14 @@ using namespace std;
 
 // Explicit template instantiations to catch missing functions:
 
-template class basic_file< char, file_locked_category >;
-template class basic_file< wchar_t, file_locked_category >;
-
-template class basic_file< char, file_unlocked_category >;
-template class basic_file< wchar_t, file_unlocked_category >;
-
+template class basic_file< file_locked_category >;
 
 //template bool basic_file< char, file_locked_category >::print< int, int >( error_code *, const char *, int, int  );
 //template bool basic_file< char, file_locked_category >::is_eof() const;
 
 // Convenience typedefs:
 
-typedef basic_file< char, file_locked_category > locked_file;
-typedef basic_file< wchar_t, file_locked_category > locked_wfile;
-
-typedef basic_file< char, file_unlocked_category > unlocked_file;
-typedef basic_file< wchar_t, file_unlocked_category > unlocked_wfile;
+typedef basic_file< file_locked_category > locked_file;
 
 template < typename File, typename Char >
 	void testOpen() {
@@ -62,43 +53,42 @@ template < typename File, typename Char >
 		file.put( c, &errorCode );
 	}
 
-template < typename File >
-	void testWrite() {
-		error_code errorCode;
-		File file;
-		file.write( nullptr, 0, 0, &errorCode );
-	}
+//template < typename File >
+//	void testWrite() {
+//		error_code errorCode;
+//		File file;
+//		file.write( nullptr, 0, 0, &errorCode );
+//	}
 
-template < typename File, typename Char >
+template < typename Char >
 	void testPrint() {
 		error_code errorCode;
 		Char format[] = { 0 };
 
-		File file;
-		file.print( &errorCode, format, 1, 2 );
+		locked_file file;
+		file.print( &errorCode, format );
+		file.put( format[ 0 ], &errorCode );
 	}
 
 void FileTest::test() {
 
-	testOpen< locked_file, char >();
-	testOpen< locked_wfile, wchar_t >();
-	testOpen< unlocked_file, char >();
-	testOpen< unlocked_wfile, wchar_t >();
+//	testOpen< locked_file, char >();
+//	testOpen< locked_wfile, wchar_t >();
+//	testOpen< unlocked_file, char >();
+//	testOpen< unlocked_wfile, wchar_t >();
 
-	testPutChar< locked_file, char >();
-	testPutChar< locked_wfile, wchar_t >();
-	testPutChar< unlocked_file, char >();
-	testPutChar< unlocked_wfile, wchar_t >();
+//	testPutChar< locked_file, char >();
+//	testPutChar< locked_wfile, wchar_t >();
+//	testPutChar< unlocked_file, char >();
+//	testPutChar< unlocked_wfile, wchar_t >();
 
-	testWrite< locked_file >();
-	testWrite< locked_wfile >();
-	testWrite< unlocked_file >();
-	testWrite< unlocked_wfile >();
+//	testWrite< locked_file >();
+//	testWrite< locked_wfile >();
+//	testWrite< unlocked_file >();
+//	testWrite< unlocked_wfile >();
 
-	testPrint< locked_file, char >();
-	testPrint< locked_wfile, wchar_t >();
-	testPrint< unlocked_file, char >();
-	testPrint< unlocked_wfile, wchar_t >();
+	testPrint< char >();
+	testPrint< wchar_t >();
 }
 
 // static FileTest fileTest;

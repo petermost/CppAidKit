@@ -15,9 +15,6 @@ int executeTests( const QStringList &arguments ) {
 
 int main( int argc, char *argv[] ) {
 
-	// Q_INIT_RESOURCE( AidKitResources );
-	// Q_INIT_RESOURCE( CompanyResources );
-
 	QApplication application( argc, argv );
 	QStringList arguments = application.arguments();
 
@@ -27,9 +24,6 @@ int main( int argc, char *argv[] ) {
 		arguments.append( "-silent" );
 
 	auto result = pera_software::aidkit::executeTests( arguments );
-
-	// Q_CLEANUP_RESOURCE( CompanyResources );
-	// Q_CLEANUP_RESOURCE( AidKitResources );
 
 	return result;
 }

@@ -53,10 +53,10 @@ void EndianTest::testCompilation() {
 
 	// short / unsigned short
 
-	hton(( short )1 );
-	ntoh(( short )1 );
-	hton(( unsigned short )1 );
-	ntoh(( unsigned short )1 );
+	hton( short( 1 ));
+	ntoh( short( 1 ));
+	hton( ushort( 1 ));
+	ntoh( ushort( 1 ));
 
 	// int / unsigned int
 

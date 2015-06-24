@@ -46,7 +46,7 @@ const Color Color::Blue( L"Blue" );
 static void colorFunction( Color ) {
 }
 
-static void compileTestCallByValue() {
+void ColorEnumTest::testCallByValue() {
 	colorFunction( Color::Blue );
 }
 

@@ -39,6 +39,7 @@ namespace pera_software { namespace aidkit {
 						value_ = other.value_;
 						isOwner_ = false;
 					}
+					return *this;
 				}
 
 				const Integer value() const noexcept {

@@ -23,9 +23,10 @@ namespace pera_software {
 	namespace aidkit {
 
 		class ColorEnumTest : public qt::Test {
-			Q_OBJECT
+				Q_OBJECT
 
 			private slots:
+				void testCallByValue();
 				void testValue();
 				void testValues();
 				void testName();
@@ -37,7 +38,7 @@ namespace pera_software {
 		};
 
 		class NumberEnumTest : public qt::Test {
-			Q_OBJECT
+				Q_OBJECT
 
 			private slots:
 				void testValue();
@@ -45,7 +46,7 @@ namespace pera_software {
 		};
 
 		class AnimalEnumTest : public qt::Test {
-			Q_OBJECT
+				Q_OBJECT
 
 			private slots:
 				void testValue();
@@ -53,7 +54,7 @@ namespace pera_software {
 		};
 
 		class FruitEnumTest : public qt::Test {
-			Q_OBJECT
+				Q_OBJECT
 
 			private slots:
 				void testName();
