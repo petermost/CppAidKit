@@ -60,6 +60,14 @@ namespace pera_software { namespace aidkit { namespace io {
 				return std::fclose( fp );
 			}
 
+			static int do_seek( std::FILE *fp, long offset, int origin ) {
+				return std::fseek( fp, offset, origin );
+			}
+
+			static long do_tell( std::FILE *fp ) {
+				return std::ftell( fp );
+			}
+
 			static int do_putc( std::FILE *fp, char c ) {
 				return std::putc( c, fp );
 			}
@@ -123,6 +131,14 @@ namespace pera_software { namespace aidkit { namespace io {
 	template < typename Category, typename Functions = file_functions< Category >>
 		class basic_file {
 			public:
+				typedef long offset_t;
+
+				enum class origin {
+					begin = SEEK_SET,
+					current = SEEK_CUR,
+					end = SEEK_END
+				};
+
 				basic_file( const basic_file & ) = delete;
 				basic_file &operator = ( const basic_file & ) = delete;
 
@@ -132,25 +148,37 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				bool open( const char fileName[], const char openMode[], std::error_code *errorCode ) {
 					file_ = Functions::do_open( fileName, openMode );
-					if ( file_ != nullptr ) {
+					bool success = ( file_ != nullptr );
+					if ( success )
 						fileName_ = fileName;
-						return true;
-					} else {
-						set_error_code( errorCode );
-						return false;
-					}
+
+					*errorCode = get_error_code( success );
+					return success;
 				}
 
 				bool close( std::error_code *errorCode ) {
 					auto result = Functions::do_close( file_ );
-					if ( Functions::do_not_eof( result )) {
-						return true;
-					} else {
-						set_error_code( file_, errorCode );
-						return false;
-					}
+					bool success = Functions::do_not_eof( result );
+
+					*errorCode = get_error_code( success );
+					return success;
 				}
 
+				bool seek( offset_t offset, origin origin, std::error_code *errorCode ) {
+					auto result = Functions::do_seek( file_, offset, static_cast< int >( origin ));
+					bool success = ( result == 0 );
+
+					*errorCode = get_error_code( success );
+					return success;
+				}
+
+				bool tell( offset_t *offset, std::error_code *errorCode ) {
+					*offset = Functions::do_tell( file_ );
+					bool success = ( *offset != offset_t( -1 ));
+
+					*errorCode = get_error_code( success );
+					return success;
+				}
 
 				bool put( char c, std::error_code *errorCode ) {
 					return call_putc( Functions::do_putc, c, errorCode );
@@ -214,85 +242,74 @@ namespace pera_software { namespace aidkit { namespace io {
 				template < typename Char, typename Function >
 					bool call_putc( Function putcFunction, Char c, std::error_code *errorCode ) {
 						auto result = putcFunction( file_, c );
-						if ( Functions::do_not_eof( result ))
-							return true;
-						else {
-							set_error_code( file_, errorCode );
-							return false;
-						}
+						bool success = Functions::do_not_eof( result );
+
+						*errorCode = get_error_code( success );
+						return success;
 					}
 
 				template < typename Char, typename Function >
 					bool call_getc( Function getcFunction, Char *c, std::error_code *errorCode ) {
 						auto result = getcFunction( file_ );
-						if ( Functions::do_not_eof( result )) {
+						bool success = Functions::do_not_eof( result );
+						if ( success )
 							*c = result;
-							return true;
-						} else {
-							set_error_code( file_, errorCode );
-							return false;
-						}
+
+						*errorCode = get_error_code( success );
+						return success;
 					}
 
 				template < typename Char, typename Function >
 					bool call_puts( Function putsFunction, const Char s[], std::error_code *errorCode ) {
 						auto result = putsFunction( file_, s );
-						if ( Functions::do_not_eof( result ))
-							return true;
-						else {
-							set_error_code( file_, errorCode );
-							return false;
-						}
+						bool success = Functions::do_not_eof( result );
+
+						*errorCode = get_error_code( success );
+						return success;
 					}
 
 				template < typename Char, typename Function >
 					bool call_gets( Function getsFunction, Char *s, int count, std::error_code *errorCode ) {
 						Char *result = getsFunction( file_, s, count );
-						if ( result != nullptr )
-							return true;
-						else {
-							set_error_code( file_, errorCode );
-							return false;
-						}
+						bool success = ( result != nullptr );
+
+						*errorCode = get_error_code( success );
+						return success;
 					}
 
 				template < typename T, typename Function >
 					bool call_transfer( Function transferFunction, T buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) {
 						std::size_t result = transferFunction( file_, buffer, size, count );
-						if ( result == count )
-							return true;
-						else {
-							set_error_code( file_, errorCode );
-							return false;
-						}
+						bool success = ( result == count );
+
+						if ( success )
+							errorCode->clear();
+						else if ( size == 0 || count == 0 )
+							errorCode->clear();
+						else
+							*errorCode = get_error_code( success );
+
+						return success;
 					}
 
 				template < typename Char, typename Function, typename ... Args >
 					bool call_printf( Function printfFunction, std::error_code *errorCode, const Char format[], Args && ... args ) {
 						auto result = printfFunction( file_, format, std::forward< Args >( args ) ... );
-						if ( Functions::do_not_eof( result ))
-							return true;
-						else {
-							set_error_code( file_, errorCode );
-							return false;
-						}
+						bool success = Functions::do_not_eof( result );
+
+						*errorCode = get_error_code( success );
+						return success;
 					}
 
-
-				static void set_error_code( std::error_code *errorCode ) {
-					if ( errno != 0 )
-						*errorCode = make_errno_error_code();
-					else
-						errorCode->clear();
-				}
-
-				static void set_error_code( std::FILE *fp, std::error_code *errorCode ) {
-					if ( Functions::do_error( fp ))
-						*errorCode = make_errno_error_code();
-					else if ( Functions::do_eof( fp ))
-						*errorCode = file_error::eof;
-					else
-						errorCode->clear();
+				std::error_code get_error_code( bool success ) {
+					if ( success )
+						return std::error_code();
+					else {
+						if ( is_error() )
+							return make_errno_error_code();
+						else if ( is_eof() )
+							return make_error_code( file_error::eof );
+					}
 				}
 
 				std::FILE *file_;
