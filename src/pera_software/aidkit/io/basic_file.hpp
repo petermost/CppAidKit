@@ -68,6 +68,14 @@ namespace pera_software { namespace aidkit { namespace io {
 				return std::ftell( fp );
 			}
 
+			static int do_setpos( std::FILE *fp, const std::fpos_t *position ) {
+				return std::fsetpos( fp, position );
+			}
+
+			static int do_getpos( std::FILE *fp, std::fpos_t *position ) {
+				return std::fgetpos( fp, position );
+			}
+
 			static int do_putc( std::FILE *fp, char c ) {
 				return std::putc( c, fp );
 			}
@@ -132,6 +140,7 @@ namespace pera_software { namespace aidkit { namespace io {
 		class basic_file {
 			public:
 				typedef long offset_t;
+				typedef std::fpos_t position_t;
 
 				enum class origin {
 					begin = SEEK_SET,
@@ -175,6 +184,22 @@ namespace pera_software { namespace aidkit { namespace io {
 				bool tell( offset_t *offset, std::error_code *errorCode ) {
 					*offset = Functions::do_tell( file_ );
 					bool success = ( *offset != offset_t( -1 ));
+
+					*errorCode = get_error_code( success );
+					return success;
+				}
+
+				bool set_position( const position_t &position, std::error_code *errorCode ) {
+					auto result = Functions::do_setpos( file_, &position );
+					bool success = ( result == 0 );
+
+					*errorCode = get_error_code( success );
+					return success;
+				}
+
+				bool get_position( position_t *position, std::error_code *errorCode ) {
+					auto result = Functions::do_getpos( file_, position );
+					bool success = ( result == 0 );
 
 					*errorCode = get_error_code( success );
 					return success;
@@ -309,6 +334,8 @@ namespace pera_software { namespace aidkit { namespace io {
 							return make_errno_error_code();
 						else if ( is_eof() )
 							return make_error_code( file_error::eof );
+						else
+							return make_errno_error_code();
 					}
 				}
 
