@@ -126,6 +126,10 @@ namespace pera_software { namespace aidkit { namespace io {
 					return std::fwprintf( fp, format, std::forward< Args >( args ) ... );
 				}
 
+			static void do_clearerr( std::FILE *fp ) {
+				std::clearerr( fp );
+			}
+
 			static int do_eof( std::FILE *fp ) {
 				return std::feof( fp );
 			}
@@ -254,6 +258,10 @@ namespace pera_software { namespace aidkit { namespace io {
 					bool print( std::error_code *errorCode, const wchar_t format[], Args && ... args ) {
 						return call_printf( Functions::template do_wprintf< Args ... >, errorCode, format, std::forward< Args >( args ) ... );
 					}
+
+				void clear_error() {
+					Functions::do_clearerr( file_ );
+				}
 
 				bool is_eof() const {
 					return Functions::do_eof( file_ ) != 0;
