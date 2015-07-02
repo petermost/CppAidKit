@@ -108,6 +108,7 @@ set( HEADERS
 	src/pera_software/company/PERA.hpp
 )
 set( SOURCES
+	src/pera_software/pera_software.cpp
 	src/pera_software/aidkit/aidkit.cpp
 	src/pera_software/aidkit/debug.cpp
 	src/pera_software/aidkit/unicode.cpp
@@ -136,6 +137,7 @@ set( QT_HEADERS
 	src/pera_software/company/qt/Application.hpp
 )
 set( QT_SOURCES
+	src/pera_software/aidkit/qt/qt.cpp
 	src/pera_software/aidkit/qt/core/DirectoryGuide.cpp
 	src/pera_software/aidkit/qt/net/Endian.cpp
 	src/pera_software/aidkit/qt/widgets/QuitAction.cpp
