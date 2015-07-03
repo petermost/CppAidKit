@@ -80,6 +80,10 @@ namespace pera_software { namespace aidkit { namespace io {
 				return std::fflush( fp );
 			}
 
+			static void do_rewind( std::FILE *fp ) {
+				std::rewind( fp );
+			}
+
 			static void do_clearerr( std::FILE *fp ) {
 				std::clearerr( fp );
 			}
@@ -134,6 +138,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				return std::char_traits< wchar_t >::not_eof( result );
 			}
 
+			// There is no wfopen function, so we only provide a char based version:
 			static std::FILE *do_open( const char fileName[], const char openMode[] ) {
 				return std::fopen( fileName, openMode );
 			}
@@ -162,22 +167,21 @@ namespace pera_software { namespace aidkit { namespace io {
 		};
 
 
-	template < typename Char, typename Category, typename Functions = file_functions< Char, Category >>
+	template < typename Char, typename Category = file_locked_category, typename Functions = file_functions< Char, Category >>
 		class basic_file {
 			public:
 				typedef long offset_t;
-				typedef std::fpos_t position_t;
 
 				enum class origin {
-					begin = SEEK_SET,
+					begin   = SEEK_SET,
 					current = SEEK_CUR,
-					end = SEEK_END
+					end     = SEEK_END
 				};
 
 				enum class orientation {
 					byte = -1,
-					none = 0,
-					wide = 1
+					none =  0,
+					wide =  1
 				};
 
 				basic_file( const basic_file & ) = delete;
@@ -205,55 +209,53 @@ namespace pera_software { namespace aidkit { namespace io {
 					return success;
 				}
 
-				bool put( Char c, std::error_code *errorCode ) {
+				Char put( Char c, std::error_code *errorCode ) {
 					auto result = Functions::do_putc( file_, c );
 					bool success = Functions::do_not_eof( result );
 
 					*errorCode = get_error_code( success );
-					return success;
+					return result;
 				}
 
-				bool get( Char *c, std::error_code *errorCode ) {
+				Char get( std::error_code *errorCode ) {
 					auto result = Functions::do_getc( file_ );
 					bool success = Functions::do_not_eof( result );
-					if ( success )
-						*c = result;
 
 					*errorCode = get_error_code( success );
-					return success;
+					return result;
 				}
 
-				bool put( const Char s[], std::error_code *errorCode ) {
+				const Char *put( const Char s[], std::error_code *errorCode ) {
 					auto result = Functions::do_puts( file_, s );
 					bool success = Functions::do_not_eof( result );
 
 					*errorCode = get_error_code( success );
-					return success;
+					return success ? s : nullptr;
 				}
 
-				bool get( Char *s, int count, std::error_code *errorCode ) {
+				Char *get( Char *s, int count, std::error_code *errorCode ) {
 					Char *result = Functions::do_gets( file_, s, count );
 					bool success = ( result != nullptr );
 
 					*errorCode = get_error_code( success );
-					return success;
+					return result;
 				}
 
-				bool write( const void *buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) {
+				size_t write( const void *buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) {
 					return call_transfer( Functions::do_write, buffer, size, count, errorCode );
 				}
 
-				bool read( void *buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) {
+				size_t read( void *buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) {
 					return call_transfer( Functions::do_read, buffer, size, count, errorCode );
 				}
 
 				template < typename ... Args >
-					bool print( std::error_code *errorCode, const Char format[], Args && ... args ) {
+					int print( std::error_code *errorCode, const Char format[], Args && ... args ) {
 						auto result = Functions::do_printf( file_, format, std::forward< Args >( args ) ... );
 						bool success = Functions::do_not_eof( result );
 
 						*errorCode = get_error_code( success );
-						return success;
+						return result;
 					}
 
 				bool seek( offset_t offset, origin origin, std::error_code *errorCode ) {
@@ -264,15 +266,15 @@ namespace pera_software { namespace aidkit { namespace io {
 					return success;
 				}
 
-				bool tell( offset_t *offset, std::error_code *errorCode ) {
-					*offset = Functions::do_tell( file_ );
-					bool success = ( *offset != offset_t( -1 ));
+				offset_t tell( std::error_code *errorCode ) {
+					auto result = Functions::do_tell( file_ );
+					bool success = ( result != offset_t( -1 ));
 
 					*errorCode = get_error_code( success );
-					return success;
+					return result;
 				}
 
-				bool set_position( const position_t &position, std::error_code *errorCode ) {
+				bool set_position( const std::fpos_t &position, std::error_code *errorCode ) {
 					auto result = Functions::do_setpos( file_, &position );
 					bool success = ( result == 0 );
 
@@ -280,12 +282,13 @@ namespace pera_software { namespace aidkit { namespace io {
 					return success;
 				}
 
-				bool get_position( position_t *position, std::error_code *errorCode ) {
-					auto result = Functions::do_getpos( file_, position );
+				std::fpos_t get_position( std::error_code *errorCode ) {
+					fpos_t position;
+					auto result = Functions::do_getpos( file_, &position );
 					bool success = ( result == 0 );
 
 					*errorCode = get_error_code( success );
-					return success;
+					return position;
 				}
 
 				void set_orientation( orientation newOrientation ) {
@@ -296,14 +299,14 @@ namespace pera_software { namespace aidkit { namespace io {
 						Functions::do_wide( file_, static_cast< int >( newOrientation ));
 				}
 
-				void get_orientation( orientation *currentOrientation ) {
+				orientation get_orientation() {
 					auto result = Functions::do_wide( file_, 0 );
 					if( result < 0 )
-						*currentOrientation = orientation::byte;
+						return orientation::byte;
 					else if ( result > 0 )
-						*currentOrientation = orientation::wide;
-					else if ( result == 0 )
-						*currentOrientation = orientation::none;
+						return orientation::wide;
+					else // if ( result == 0 )
+						return orientation::none;
 				}
 
 				bool flush( std::error_code *errorCode ) {
@@ -312,6 +315,10 @@ namespace pera_software { namespace aidkit { namespace io {
 
 					*errorCode = get_error_code( success );
 					return success;
+				}
+
+				void rewind() {
+					Functions::do_rewind( file_ );
 				}
 
 				void clear_error() {
@@ -329,7 +336,7 @@ namespace pera_software { namespace aidkit { namespace io {
 			private:
 
 				template < typename T, typename Function >
-					bool call_transfer( Function transferFunction, T buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) {
+					size_t call_transfer( Function transferFunction, T buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) {
 						std::size_t result = transferFunction( file_, buffer, size, count );
 						bool success = ( result == count );
 
@@ -340,7 +347,7 @@ namespace pera_software { namespace aidkit { namespace io {
 						else
 							*errorCode = get_error_code( success );
 
-						return success;
+						return result;
 					}
 
 

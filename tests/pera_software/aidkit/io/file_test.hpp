@@ -25,7 +25,8 @@ namespace pera_software { namespace aidkit { namespace io {
 		Q_OBJECT
 
 		private slots:
-			void test();
+			void testOpenFailed();
+			void testOpenSucceeded();
 	};
 
 } } }

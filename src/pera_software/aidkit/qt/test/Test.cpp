@@ -24,22 +24,52 @@ namespace pera_software { namespace aidkit { namespace qt {
 using namespace std;
 
 size_t Test::s_testsSize;
-array< QObject *, Test::SIZE > Test::s_tests;
+array< Test *, Test::SIZE > Test::s_tests;
+
+//==================================================================================================
 
 Test::Test() {
+
+	// Append the test to the list of tests:
+
 	s_tests[ s_testsSize++ ] = this;
 }
 
+//==================================================================================================
+
 Test::~Test() {
+
+	// We can't really remove anything from an std::array, so we move the destructed test to the end
+	// of the tests:
+
 	auto endIterator = remove( s_tests.begin(), s_tests.end(), this );
+
+	// Adjust the size so the 'removed' test won't be accessed anymore:
+
 	s_testsSize = endIterator - s_tests.begin();
 }
 
-void Test::executeTests( const QStringList &arguments ) {
-	for ( size_t i = 0; i < s_testsSize; ++i ) {
-		QObject *object = s_tests[ i ];
-		QTest::qExec( object, arguments );
-	}
+//==================================================================================================
+
+int Test::executeTests( const QStringList &arguments ) {
+	int summaryResult = 0;
+
+	forEach([ & ]( Test *test ) {
+		int result = QTest::qExec( test, arguments );
+		summaryResult = summaryResult && result;
+	});
+	return summaryResult;
+}
+
+//==================================================================================================
+
+QVector< Test * > Test::queryTests() {
+	QVector< Test * > tests;
+
+	forEach([ & ]( Test *test ) {
+		tests.push_back( test );
+	});
+	return tests;
 }
 
 } } }

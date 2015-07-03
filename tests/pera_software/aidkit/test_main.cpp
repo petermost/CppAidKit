@@ -7,8 +7,7 @@ namespace pera_software { namespace aidkit {
 using namespace qt;
 
 int executeTests( const QStringList &arguments ) {
-	Test::executeTests( arguments );
-	return 0;
+	return Test::executeTests( arguments );
 }
 
 } }

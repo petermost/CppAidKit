@@ -23,7 +23,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;
 
-// Explicit template instantiations to catch missing functions:
+// Explicit template instantiations to catch compiler errors early:
 
 template class basic_file< char, file_locked_category >;
 template class basic_file< wchar_t, file_locked_category >;
@@ -33,27 +33,27 @@ template class basic_file< wchar_t, file_locked_category >;
 
 // Convenience typedefs:
 
-typedef basic_file< char, file_locked_category > locked_file;
-typedef basic_file< wchar_t, file_locked_category > locked_wfile;
+typedef basic_file< char > file;
+typedef basic_file< wchar_t > wfile;
 
-template < typename File, typename Char >
-	void testOpen() {
-		error_code errorCode;
-		Char fileName[] = { 0 };
-		Char openMode[] = { 0 };
+//template < typename File, typename Char >
+//	void testOpen() {
+//		error_code errorCode;
+//		Char fileName[] = { 0 };
+//		Char openMode[] = { 0 };
 
-		File file;
-		file.open( fileName, openMode, &errorCode );
-	}
+//		File file;
+//		file.open( fileName, openMode, &errorCode );
+//	}
 
-template < typename File, typename Char >
-	void testPutChar() {
-		error_code errorCode;
-		Char c = Char();
+//template < typename File, typename Char >
+//	void testPutChar() {
+//		error_code errorCode;
+//		Char c = Char();
 
-		File file;
-		file.put( c, &errorCode );
-	}
+//		File file;
+//		file.put( c, &errorCode );
+//	}
 
 //template < typename File >
 //	void testWrite() {
@@ -62,38 +62,60 @@ template < typename File, typename Char >
 //		file.write( nullptr, 0, 0, &errorCode );
 //	}
 
-template < typename Char >
-	void testPrint() {
-		error_code errorCode;
-		Char format[] = { 0 };
+//template < typename Char >
+//	void testPrint() {
+//		error_code errorCode;
+//		Char format[] = { 0 };
 
-		basic_file< Char, file_locked_category > file;
-		file.print( &errorCode, format );
-		file.put( format[ 0 ], &errorCode );
-	}
+//		basic_file< Char, file_locked_category > file;
+//		file.print( &errorCode, format );
+//		file.put( format[ 0 ], &errorCode );
+//	}
 
-void FileTest::test() {
+//void FileTest::test() {
 
-//	testOpen< locked_file, char >();
-//	testOpen< locked_wfile, wchar_t >();
-//	testOpen< unlocked_file, char >();
-//	testOpen< unlocked_wfile, wchar_t >();
+////	testOpen< locked_file, char >();
+////	testOpen< locked_wfile, wchar_t >();
+////	testOpen< unlocked_file, char >();
+////	testOpen< unlocked_wfile, wchar_t >();
 
-//	testPutChar< locked_file, char >();
-//	testPutChar< locked_wfile, wchar_t >();
-//	testPutChar< unlocked_file, char >();
-//	testPutChar< unlocked_wfile, wchar_t >();
+////	testPutChar< locked_file, char >();
+////	testPutChar< locked_wfile, wchar_t >();
+////	testPutChar< unlocked_file, char >();
+////	testPutChar< unlocked_wfile, wchar_t >();
 
-//	testWrite< locked_file >();
-//	testWrite< locked_wfile >();
-//	testWrite< unlocked_file >();
-//	testWrite< unlocked_wfile >();
+////	testWrite< locked_file >();
+////	testWrite< locked_wfile >();
+////	testWrite< unlocked_file >();
+////	testWrite< unlocked_wfile >();
 
-	testPrint< char >();
-	testPrint< wchar_t >();
+//	testPrint< char >();
+//	testPrint< wchar_t >();
+//}
+
+void FileTest::testOpenFailed() {
+	file file;
+	error_code errorCode;
+
+	QVERIFY( !file.open( "", "", &errorCode ));
+	QVERIFY( static_cast< bool >( errorCode ));
+	QVERIFY( !file.close( &errorCode ));
 }
 
-// static FileTest fileTest;
+void FileTest::testOpenSucceeded() {
+	file file;
+	error_code errorCode;
+
+	char temporaryName[ L_tmpnam ];
+	tmpnam( temporaryName );
+
+	char c;
+	QVERIFY( file.open( temporaryName, "w+", &errorCode ));
+	c = file.get( &errorCode );
+	QVERIFY( errorCode == file_error::eof );
+}
+
+static FileTest fileTest;
 
 //void runFileTests() {
 //	char c = 'c';
