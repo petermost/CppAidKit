@@ -109,9 +109,8 @@ void FileTest::testOpenSucceeded() {
 	char temporaryName[ L_tmpnam ];
 	tmpnam( temporaryName );
 
-	char c;
 	QVERIFY( file.open( temporaryName, "w+", &errorCode ));
-	c = file.get( &errorCode );
+	file.get( &errorCode );
 	QVERIFY( errorCode == file_error::eof );
 }
 

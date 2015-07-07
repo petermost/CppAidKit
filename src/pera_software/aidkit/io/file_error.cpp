@@ -37,11 +37,11 @@ const char *file_error_category::name() const noexcept {
 
 string file_error_category::message( int error ) const {
 	switch ( static_cast< file_error >( error )) {
+		case file_error::unspecific:
+			return "unspecific";
+
 		case file_error::eof:
 			return "eof";
-
-		case file_error::not_open:
-			return "file not open";
 
 		default:
 			return "unknown file error";
@@ -54,10 +54,6 @@ error_code make_error_code( file_error error ) {
 
 error_condition make_error_condition( file_error error ) {
 	return error_condition( static_cast< int >( error ), file_error_category::instance() );
-}
-
-error_code make_errno_error_code() {
-	return error_code( errno, generic_category() );
 }
 
 } } }
