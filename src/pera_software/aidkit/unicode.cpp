@@ -17,7 +17,10 @@
 
 #include "unicode.hpp"
 #include <locale>
-#include <codecvt>
+
+#if __GNUC__ >= 5
+	#include <codecvt>
+#endif
 
 namespace pera_software { namespace aidkit {
 
@@ -27,7 +30,7 @@ static_assert( sizeof( char8_t ) == sizeof( char ), "Wrong size for char8_t" );
 
 // TODO: Fix for g++ 5.x
 
-#if __GNUC__ >= 6
+#if __GNUC__ >= 5
 
 typedef wstring_convert< codecvt_utf8_utf16< wchar_t >, wchar_t > wstring_u8string_converter;
 typedef wstring_convert< codecvt< wchar_t, char, mbstate_t >, wchar_t > wstring_string_converter;
@@ -71,7 +74,7 @@ string wstring_to_string( const wstring &s ) {
 
 namespace std {
 
-#if __GNUC__ >= 6
+#if __GNUC__ >= 5
 
 wostream &operator << ( wostream &outputStream, const string &str ) {
 	return outputStream << ::pera_software::aidkit::string_to_wstring( str );

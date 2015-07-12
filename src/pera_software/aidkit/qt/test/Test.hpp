@@ -21,6 +21,7 @@
 #include <QStringList>
 #include <pera_software/aidkit/aidkit.hpp>
 #include <array>
+#include <QObject>
 #include <QVector>
 
 namespace pera_software {

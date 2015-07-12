@@ -21,7 +21,7 @@ project( AidKit )
 set( CMAKE_WARN_DEPRECATED ON )
 
 if ( UNIX )
-	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.4.2/5.4/gcc_64/lib/cmake" )
+	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.5.0/5.5/gcc_64/lib/cmake" )
 elseif( WIN32 )
 	set( CMAKE_PREFIX_PATH "C:/Qt64/qt-5.4.2/qt-5.4.2-x64-mingw510r0-seh-opengl-rev0/lib/cmake" )
 endif()
@@ -36,6 +36,7 @@ if ( NOT CMAKE_VERBOSE_MAKEFILE )
 	set( CMAKE_VERBOSE_MAKEFILE TRUE )
 endif()
 
+# message( "C++ compiler version is: " ${CMAKE_CXX_COMPILER_VERSION})
 
 ############################# Setup Qt5 usage #################################
 # See: http://doc.qt.io/qt-5/cmake-manual.html
@@ -57,7 +58,6 @@ add_compile_options(
 
 	-Wall -Wextra -Wpedantic    # Enable all warnings
 	-Wmissing-include-dirs      # Warn if a user-supplied include directory does not exist.
-	-Wsuggest-override          # Warn about overriding virtual functions that are not marked with the override keyword.
 	-Wundef                     # Warn if an undefined identifier is evaluated in an #if directive.
 	-Wcast-align                # Warn whenever a pointer is cast such that the required alignment of the target is increased.
 	-Wold-style-cast            # Warn if an old-style (C-style) cast to a non-void type is used within a C++ program.
@@ -67,6 +67,12 @@ add_compile_options(
 
 	-pthread                    # Adds support for multithreading with the pthreads library. This option sets flags for both the preprocessor and linker
 )
+
+if ( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5 )
+	add_compile_options(
+		-Wsuggest-override          # Warn about overriding virtual functions that are not marked with the override keyword.
+	)
+endif()
 
 if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 	message( "Enabling debug settings" )
