@@ -529,7 +529,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool is_error() const {
-					return Functions::do_error( file_ ) != 0;
+					return file_ == nullptr || Functions::do_error( file_ ) != 0;
 				}
 
 			private:

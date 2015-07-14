@@ -23,6 +23,8 @@ namespace pera_software { namespace aidkit {
 
 using namespace std;
 
+static StringsTest stringsTest;
+
 void StringsTest::testStringLiteral() {
 	const char stringLiteral[] = "unimportend";
 
@@ -34,7 +36,6 @@ void StringsTest::testNonStringLiteral() {
 
 	QVERIFY( !is_string_literal( nonStringLiteral ));
 }
-
 
 void StringsTest::testTrimLeftSpace() {
 	string actual = trim_left( string( "\t\r\n   123   " ));
@@ -64,7 +65,5 @@ void StringsTest::testTrimRightChars() {
 
 	QCOMPARE( actual, expected );
 }
-
-static StringsTest stringsTest;
 
 } }

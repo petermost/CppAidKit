@@ -23,6 +23,11 @@ namespace pera_software { namespace aidkit {
 
 using namespace std;
 
+static ColorEnumTest colorEnumTest;
+static NumberEnumTest numberEnumTest;
+static AnimalEnumTest animalEnumTest;
+static FruitEnumTest fruitEnumTest;
+
 //#########################################################################################################
 
 // Enum for testing default value assignment:
@@ -190,17 +195,5 @@ void FruitEnumTest::testName() {
 
 	QCOMPARE( Fruit::Orange.name(), expectedName );
 }
-
-
-
-
-
-
-
-
-static ColorEnumTest colorEnumTest;
-static NumberEnumTest numberEnumTest;
-static AnimalEnumTest animalEnumTest;
-static FruitEnumTest fruitEnumTest;
 
 } }

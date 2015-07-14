@@ -28,12 +28,11 @@ using namespace std;
 
 static_assert( sizeof( char8_t ) == sizeof( char ), "Wrong size for char8_t" );
 
-// TODO: Fix for g++ 5.x
-
 #if __GNUC__ >= 5
 
-typedef wstring_convert< codecvt_utf8_utf16< wchar_t >, wchar_t > wstring_u8string_converter;
-typedef wstring_convert< codecvt< wchar_t, char, mbstate_t >, wchar_t > wstring_string_converter;
+//==================================================================================================
+
+typedef wstring_convert< codecvt_utf8< wchar_t >> wstring_u8string_converter;
 
 wstring u8string_to_wstring( const u8string &s ) {
 	wstring_u8string_converter converter;
@@ -42,13 +41,24 @@ wstring u8string_to_wstring( const u8string &s ) {
 	return converter.from_bytes( bytes );
 }
 
-
 u8string wstring_to_u8string( const wstring &s ) {
 	wstring_u8string_converter converter;
 
 	string bytes( converter.to_bytes( s ));
 	return u8string( bytes.begin(), bytes.end() );
 }
+
+//==================================================================================================
+
+// Wrapper to get access to the protected destructor of a facet:
+
+template < typename Facet >
+	struct deletable_facet : Facet {
+		using Facet::Facet;
+	};
+
+typedef deletable_facet< codecvt< wchar_t, char, mbstate_t >> codecvt_facet;
+typedef wstring_convert< codecvt_facet > wstring_string_converter;
 
 string wstring_to_string( const wstring &s ) {
 	wstring_string_converter converter;
