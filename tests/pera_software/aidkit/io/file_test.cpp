@@ -36,6 +36,39 @@ template class basic_file< wchar_t, file_locked_category >;
 typedef basic_file< char > file;
 typedef basic_file< wchar_t > wfile;
 
+static FileTest fileTest;
+
+void FileTest::testOpenFailed() {
+	file file;
+	error_code errorCode;
+
+	QVERIFY( !file.open( "", "", &errorCode ));
+	QVERIFY( static_cast< bool >( errorCode ));
+	QVERIFY( !file.close( &errorCode ));
+}
+
+void FileTest::testOpenSucceeded() {
+	file file;
+	error_code errorCode;
+
+	char temporaryName[ L_tmpnam ];
+	tmpnam( temporaryName );
+
+	QVERIFY( file.open( temporaryName, "w+", &errorCode ));
+	file.get( &errorCode );
+	QVERIFY( errorCode == file_error::eof );
+}
+
+static void testCompileGetChar() {
+	file file;
+
+	file::char_int_t c;
+
+	while (( c = file.get()) != file::eof )
+		;
+}
+
+
 //template < typename File, typename Char >
 //	void testOpen() {
 //		error_code errorCode;
@@ -92,29 +125,6 @@ typedef basic_file< wchar_t > wfile;
 //	testPrint< char >();
 //	testPrint< wchar_t >();
 //}
-
-void FileTest::testOpenFailed() {
-	file file;
-	error_code errorCode;
-
-	QVERIFY( !file.open( "", "", &errorCode ));
-	QVERIFY( static_cast< bool >( errorCode ));
-	QVERIFY( !file.close( &errorCode ));
-}
-
-void FileTest::testOpenSucceeded() {
-	file file;
-	error_code errorCode;
-
-	char temporaryName[ L_tmpnam ];
-	tmpnam( temporaryName );
-
-	QVERIFY( file.open( temporaryName, "w+", &errorCode ));
-	file.get( &errorCode );
-	QVERIFY( errorCode == file_error::eof );
-}
-
-static FileTest fileTest;
 
 //void runFileTests() {
 //	char c = 'c';

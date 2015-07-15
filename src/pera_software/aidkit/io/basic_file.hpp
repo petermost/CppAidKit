@@ -196,7 +196,18 @@ namespace pera_software { namespace aidkit { namespace io {
 	template < typename Char, typename Category = file_locked_category, typename Functions = file_functions< Char, Category >>
 		class basic_file {
 			public:
+				// Represents an offset to be used by seek/tell:
+
 				typedef long offset_t;
+
+				// Represents an int which can contain a char or an EOF value:
+
+				typedef std::char_traits< Char > traits_t;
+				typedef typename traits_t::int_type char_int_t;
+
+				static const char_int_t eof = traits_t::eof();
+
+				// Indicates from where to start the seek:
 
 				enum class origin {
 					begin   = SEEK_SET,
@@ -259,13 +270,13 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				// Putting a char:
 
-				Char put( Char c ) {
+				char_int_t put( Char c ) {
 					return call_and_throw_if_error([ & ]( std::error_code *errorCode ) {
 						return put( c, errorCode );
 					});
 				}
 
-				Char put( Char c, std::error_code *errorCode ) {
+				char_int_t put( Char c, std::error_code *errorCode ) {
 					auto result = Functions::do_putc( file_, c );
 					bool success = Functions::do_not_eof( result );
 
@@ -275,13 +286,13 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				// Getting a char:
 
-				Char get() {
+				char_int_t get() {
 					return call_and_throw_if_error([ & ]( std::error_code *errorCode ) {
 						return get( errorCode );
 					});
 				}
 
-				Char get( std::error_code *errorCode ) {
+				char_int_t get( std::error_code *errorCode ) {
 					auto result = Functions::do_getc( file_ );
 					bool success = Functions::do_not_eof( result );
 
@@ -291,13 +302,13 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				// Ungetting a char:
 
-				Char unget( Char c ) {
+				char_int_t unget( Char c ) {
 					return call_and_throw_if_error([ & ]( std::error_code *errorCode ) {
 						return unget( c, errorCode );
 					});
 				}
 
-				Char unget( Char c, std::error_code *errorCode ) {
+				char_int_t unget( Char c, std::error_code *errorCode ) {
 					auto result = Functions::do_ungetc( file_, c );
 					bool success = Functions::do_not_eof( result );
 
@@ -529,7 +540,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool is_error() const {
-					return file_ == nullptr || Functions::do_error( file_ ) != 0;
+					return Functions::do_error( file_ ) != 0;
 				}
 
 			private:
@@ -554,14 +565,17 @@ namespace pera_software { namespace aidkit { namespace io {
 					if ( success )
 						return std::error_code();
 					else {
-						if ( is_eof() ) {
+						if ( file_ == nullptr && errno == 0 ) {
+							// I'm not sure whether all implementations check the FILE * for nullptr,
+							// and set errno accordingly. So just in case we return an error code
+							// saying that we got an invalid argument:
+
+							return std::make_error_code( std::errc::invalid_argument );
+						} else if ( is_eof() ) {
 							return make_error_code( file_error::eof );
 						} else {
-							assert( is_error() );
-							if ( errno == 0 )
-								return make_error_code( file_error::unspecific );
-							else
-								return make_errno_error_code( errno );
+							assert( errno != 0 );
+							return make_errno_error_code( errno );
 						}
 					}
 				}

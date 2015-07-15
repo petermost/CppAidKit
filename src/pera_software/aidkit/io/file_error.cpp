@@ -37,9 +37,6 @@ const char *file_error_category::name() const noexcept {
 
 string file_error_category::message( int error ) const {
 	switch ( static_cast< file_error >( error )) {
-		case file_error::unspecific:
-			return "unspecific";
-
 		case file_error::eof:
 			return "eof";
 

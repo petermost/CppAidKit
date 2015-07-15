@@ -78,6 +78,10 @@ string wstring_to_string( const wstring &s ) {
 	return string( s.begin(), s.end() );
 }
 
+string string_to_wstring( const wstring &s ) {
+	return wstring( s.begin(), s.end() );
+}
+
 #endif
 
 } }
@@ -89,6 +93,7 @@ namespace std {
 wostream &operator << ( wostream &outputStream, const string &str ) {
 	return outputStream << ::pera_software::aidkit::string_to_wstring( str );
 }
+
 #endif
 
 }
