@@ -28,7 +28,8 @@ namespace pera_software {
 		namespace io {
 
 			enum class file_error {
-				eof = 1
+				unspecific = 1,
+				eof
 			};
 
 			class AIDKIT_API file_error_category : public std::error_category {
