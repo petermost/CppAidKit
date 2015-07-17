@@ -58,9 +58,11 @@ static void nullHandler( const wchar_t *, const wchar_t *, const wchar_t *, unsi
 }
 
 FileTest::FileTest() {
-	// Disable the invalid error handler from the msvcrt:
+	#if defined( AIDKIT_MINGW )
+		// Disable the invalid error handler from the msvcrt:
 
-	_set_invalid_parameter_handler( nullHandler );
+		_set_invalid_parameter_handler( nullHandler );
+	#endif
 }
 
 template < typename Functor >

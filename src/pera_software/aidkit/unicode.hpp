@@ -26,18 +26,14 @@ namespace pera_software { namespace aidkit {
 	typedef unsigned char char8_t;
 	typedef std::basic_string< char8_t, std::char_traits< char8_t >, std::allocator< char8_t >> u8string;
 
-#if __GNUC__ >= 5
 	AIDKIT_API std::wstring u8string_to_wstring( const u8string & );
 	AIDKIT_API u8string wstring_to_u8string( const std::wstring & );
 
 	AIDKIT_API std::wstring string_to_wstring( const std::string & );
-#endif
 	AIDKIT_API std::string wstring_to_string( const std::wstring & );
 
 } }
 
 namespace std {
-#if __GNUC__ >= 5
 	AIDKIT_API wostream &operator << ( wostream &outputStream, const string &str );
-#endif
 }

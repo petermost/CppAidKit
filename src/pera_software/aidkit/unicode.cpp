@@ -28,9 +28,9 @@ using namespace std;
 
 static_assert( sizeof( char8_t ) == sizeof( char ), "Wrong size for char8_t" );
 
-#if __GNUC__ >= 5
-
 //==================================================================================================
+
+#if __GNUC__ >= 5
 
 typedef wstring_convert< codecvt_utf8< wchar_t >> wstring_u8string_converter;
 
@@ -48,23 +48,31 @@ u8string wstring_to_u8string( const wstring &s ) {
 	return u8string( bytes.begin(), bytes.end() );
 }
 
+#else
+
+wstring u8string_to_wstring( const u8string &s ) {
+	return wstring( s.begin(), s.end() );
+}
+
+u8string wstring_to_u8string( const wstring &s ) {
+	return u8string( s.begin(), s.end() );
+}
+
+#endif
+
 //==================================================================================================
+
+#if __GNUC__ >= 5
 
 // Wrapper to get access to the protected destructor of a facet:
 
 template < typename Facet >
-	struct deletable_facet : Facet {
+	struct destructable_facet : Facet {
 		using Facet::Facet;
 	};
 
-typedef deletable_facet< codecvt< wchar_t, char, mbstate_t >> codecvt_facet;
+typedef destructable_facet< codecvt< wchar_t, char, mbstate_t >> codecvt_facet;
 typedef wstring_convert< codecvt_facet > wstring_string_converter;
-
-string wstring_to_string( const wstring &s ) {
-	wstring_string_converter converter;
-
-	return converter.to_bytes( s );
-}
 
 wstring string_to_wstring( const string &s ) {
 	wstring_string_converter converter;
@@ -72,14 +80,20 @@ wstring string_to_wstring( const string &s ) {
 	return converter.from_bytes( s );
 }
 
+string wstring_to_string( const wstring &s ) {
+	wstring_string_converter converter;
+
+	return converter.to_bytes( s );
+}
+
 #else
+
+wstring string_to_wstring( const string &s ) {
+	return wstring( s.begin(), s.end() );
+}
 
 string wstring_to_string( const wstring &s ) {
 	return string( s.begin(), s.end() );
-}
-
-string string_to_wstring( const wstring &s ) {
-	return wstring( s.begin(), s.end() );
 }
 
 #endif
