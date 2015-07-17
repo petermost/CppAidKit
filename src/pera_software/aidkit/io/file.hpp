@@ -17,18 +17,17 @@
 
 #pragma once
 
-#include <pera_software/aidkit/qt/test/Test.hpp>
+#include "basic_file.hpp"
+#include <pera_software/aidkit/aidkit.hpp>
+#include <string>
 
 namespace pera_software { namespace aidkit { namespace io {
 
-	class FileTest : public qt::Test {
-		Q_OBJECT
+	typedef basic_file< char > file;
+	typedef basic_file< wchar_t > wfile;
 
-		private slots:
-			void testIsEof();
-			void testIsError();
-			void testOpenFailed();
-			void testOpenSucceeded();
-	};
+	AIDKIT_API bool remove_file( const char fileName[] );
+	AIDKIT_API bool remove_file( const char fileName[], std::error_code *errorCode );
+	AIDKIT_API std::string make_temporary_filename();
 
 } } }

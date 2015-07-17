@@ -16,3 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "basic_file.hpp"
+
+namespace pera_software { namespace aidkit { namespace io {
+
+} } }

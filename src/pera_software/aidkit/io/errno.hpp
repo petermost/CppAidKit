@@ -22,6 +22,10 @@
 
 namespace pera_software { namespace aidkit { namespace io {
 
+	// There is no error constant for no error so we define our own:
+
+	const int ENONE = 0;
+
 	// Helper functions to make an error_code from errno:
 
 	AIDKIT_API std::error_code make_errno_error_code();

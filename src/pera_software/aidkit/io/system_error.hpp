@@ -17,18 +17,19 @@
 
 #pragma once
 
-#include <pera_software/aidkit/qt/test/Test.hpp>
+#include <system_error>
 
 namespace pera_software { namespace aidkit { namespace io {
 
-	class FileTest : public qt::Test {
-		Q_OBJECT
+	template < typename Functor >
+		static auto call_and_throw_if_error( Functor &&functor ) -> decltype( functor( static_cast< std::error_code * >( nullptr ))) {
+			std::error_code errorCode;
+			auto result = functor( &errorCode );
 
-		private slots:
-			void testIsEof();
-			void testIsError();
-			void testOpenFailed();
-			void testOpenSucceeded();
-	};
+			if ( errorCode )
+				throw std::system_error( errorCode );
+
+			return result;
+		}
 
 } } }

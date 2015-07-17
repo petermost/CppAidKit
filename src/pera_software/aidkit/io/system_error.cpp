@@ -15,20 +15,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <pera_software/aidkit/qt/test/Test.hpp>
+#include "system_error.hpp"
 
 namespace pera_software { namespace aidkit { namespace io {
 
-	class FileTest : public qt::Test {
-		Q_OBJECT
-
-		private slots:
-			void testIsEof();
-			void testIsError();
-			void testOpenFailed();
-			void testOpenSucceeded();
-	};
+using namespace std;
 
 } } }
