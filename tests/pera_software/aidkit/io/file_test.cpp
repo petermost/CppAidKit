@@ -73,27 +73,44 @@ template < typename Functor >
 		}
 	}
 
-void FileTest::testIsEof() {
+void FileTest::testInvalidIsEof() {
 	expectSystemError([ & ] {
 		file file;
 		file.is_eof();
 	}, make_error_code( errc::invalid_argument ));
 }
 
-void FileTest::testGetIsEof() {
+void FileTest::testInvalidGet() {
 	expectSystemError([ & ] {
 		file file;
 		file.get();
 	}, make_error_code( errc::invalid_argument ));
 }
 
-void FileTest::testIsError() {
-	expectSystemError( [ & ] {
+void FileTest::testInvalidIsError() {
+	expectSystemError([ & ] {
 		file file;
 		file.is_error();
 	}, make_error_code( errc::invalid_argument ));
 }
 
+void FileTest::testInvalidClose() {
+	expectSystemError([ & ] {
+		file file;
+		file.close();
+	}, make_error_code( errc::invalid_argument ));
+}
+
+void FileTest::testInvalidCloseAndClose() {
+	expectSystemError([ & ] {
+		string fileName = make_temporary_filename();
+		file_deleter fileDeleter( fileName );
+
+		file file( fileName.c_str(), "w+" );
+		file.close();
+		file.close();
+	}, make_error_code( errc::invalid_argument ));
+}
 
 void FileTest::testOpenFailed() {
 	expectSystemError([ & ] {
@@ -114,5 +131,61 @@ void FileTest::testOpenSucceeded() {
 		QFAIL( "Unexpected system_error thrown!" );
 	}
 }
+
+void FileTest::testGetCharReturnsEof() {
+	try {
+		string fileName = make_temporary_filename();
+		file_deleter fileDeleter( fileName );
+
+		file file( fileName.c_str(), "w+" );
+		file.get();
+		QFAIL( "Expected thrown system_error( file_error::eof )!" );
+	} catch ( const system_error &error ) {
+		QVERIFY( error.code() == file_error::eof );
+	}
+}
+
+void FileTest::testGetStringReturnsEof() {
+	try {
+		string fileName = make_temporary_filename();
+		file_deleter fileDeleter( fileName );
+
+		file file( fileName.c_str(), "w+" );
+
+		char str[ 100 ];
+		file.get( str, 10 );
+		QFAIL( "Expected thrown system_error( file_error::eof )!" );
+	} catch ( const system_error &error ) {
+		QVERIFY( error.code() == file_error::eof );
+	}
+}
+
+void FileTest::testReadReturnsEof() {
+	try {
+		string fileName = make_temporary_filename();
+		file_deleter fileDeleter( fileName );
+
+		file file( fileName.c_str(), "w+" );
+
+		char buffer[ 100 ];
+		file.read( buffer, sizeof( buffer ), 1 );
+		QFAIL( "Expected thrown system_error( file_error::eof )!" );
+	} catch ( const system_error &error ) {
+		QVERIFY( error.code() == file_error::eof );
+	}
+}
+
+void FileTest::testCloseAndDestructor() {
+	try {
+		string fileName = make_temporary_filename();
+		file_deleter fileDeleter( fileName );
+
+		file file( fileName.c_str(), "w+" );
+		file.close();
+	} catch ( const system_error & ) {
+		QFAIL( "Unexpected system_error thrown!" );
+	}
+}
+
 
 } } }

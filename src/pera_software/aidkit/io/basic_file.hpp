@@ -600,6 +600,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				template < typename Functor >
 					auto call_and_set_error_code( std::error_code *errorCode, Functor &&functor ) const noexcept -> decltype( functor() ) {
+						int oldErrNo = errno;
 						errno = ENONE;
 						auto result = functor();
 						bool success = ( errno == ENONE );
@@ -608,6 +609,7 @@ namespace pera_software { namespace aidkit { namespace io {
 						else
 							*errorCode = make_errno_error_code( errno );
 
+						errno = oldErrNo;
 						return result;
 					}
 

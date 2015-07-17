@@ -27,11 +27,18 @@ namespace pera_software { namespace aidkit { namespace io {
 			FileTest();
 
 		private slots:
-			void testIsEof();
-			void testGetIsEof();
-			void testIsError();
+			void testInvalidIsEof();
+			void testInvalidGet();
+			void testInvalidIsError();
+			void testInvalidClose();
+			void testInvalidCloseAndClose();
+
 			void testOpenFailed();
 			void testOpenSucceeded();
+			void testGetCharReturnsEof();
+			void testReadReturnsEof();
+			void testGetStringReturnsEof();
+			void testCloseAndDestructor();
 	};
 
 } } }
