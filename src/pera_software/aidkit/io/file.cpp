@@ -23,17 +23,6 @@ namespace pera_software { namespace aidkit { namespace io {
 
 using namespace std;
 
-static error_code get_error_code( bool success ) noexcept {
-	if ( success )
-		return error_code();
-	else {
-		if ( errno != ENONE )
-			return make_errno_error_code( errno );
-		else
-			return make_error_code( file_error::unspecific );
-	}
-}
-
 //==================================================================================================
 
 string make_temporary_filename() {
@@ -59,7 +48,7 @@ bool remove_file( const char fileName[], error_code *errorCode ) {
 	auto result = ::remove( fileName );
 	bool success = ( result == 0 );
 
-	*errorCode = get_error_code( success );
+	*errorCode = get_file_error_code( success );
 	return success;
 }
 

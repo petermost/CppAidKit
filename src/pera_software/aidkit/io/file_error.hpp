@@ -23,28 +23,27 @@
 // Define a file error code:
 // http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-4.html
 
-namespace pera_software {
-	namespace aidkit {
-		namespace io {
+namespace pera_software { namespace aidkit { namespace io {
 
-			enum class file_error {
-				unspecific = 1,
-				eof
-			};
+	enum class file_error {
+		unspecific = 1,
+		eof
+	};
 
-			class AIDKIT_API file_error_category : public std::error_category {
-				public:
-					static const file_error_category &instance();
+	class AIDKIT_API file_error_category : public std::error_category {
+		public:
+			static const file_error_category &instance();
 
-					virtual const char *name() const noexcept override;
-					virtual std::string message( int error ) const override;
-			};
+			virtual const char *name() const noexcept override;
+			virtual std::string message( int error ) const override;
+	};
 
-			AIDKIT_API std::error_code make_error_code( file_error error );
-			AIDKIT_API std::error_condition make_error_condition( file_error error );
-		}
-	}
-}
+	AIDKIT_API std::error_code make_error_code( file_error error );
+	AIDKIT_API std::error_condition make_error_condition( file_error error );
+
+	AIDKIT_API std::error_code get_file_error_code( bool success ) noexcept;
+
+} } }
 
 namespace std {
 	template <>

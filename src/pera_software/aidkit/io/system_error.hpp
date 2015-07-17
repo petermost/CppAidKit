@@ -22,7 +22,7 @@
 namespace pera_software { namespace aidkit { namespace io {
 
 	template < typename Functor >
-		static auto call_and_throw_if_error( Functor &&functor ) -> decltype( functor( static_cast< std::error_code * >( nullptr ))) {
+		auto call_and_throw_if_error( Functor &&functor ) -> decltype( functor( static_cast< std::error_code * >( nullptr ))) {
 			std::error_code errorCode;
 			auto result = functor( &errorCode );
 

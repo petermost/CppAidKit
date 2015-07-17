@@ -16,9 +16,6 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "errno.hpp"
-#include <cerrno>
-
-// TODO: Add unit test for make_errno functions:
 
 namespace pera_software { namespace aidkit { namespace io {
 

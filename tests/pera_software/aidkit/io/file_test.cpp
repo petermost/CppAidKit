@@ -41,7 +41,10 @@ class file_deleter {
 			fileName_ = fileName;
 		}
 
-		~file_deleter() {
+		// Destructors in C++11 are implicitly declared as noexcept, so we have to explicitly allow
+		// exceptions (http://en.cppreference.com/w/cpp/language/destructor#Exceptions):
+
+		~file_deleter() noexcept( false ) {
 			// We want to be notified when the removal fails, so we call the throwing remove version:
 
 			remove_file( fileName_.c_str() );
@@ -51,35 +54,53 @@ class file_deleter {
 		string fileName_;
 };
 
+static void nullHandler( const wchar_t *, const wchar_t *, const wchar_t *, unsigned int, uintptr_t ) {
+}
+
+FileTest::FileTest() {
+	// Disable the invalid error handler from the msvcrt:
+
+	_set_invalid_parameter_handler( nullHandler );
+}
+
+template < typename Functor >
+	void expectSystemError( Functor &&functor, const error_code &expectedErrorCode ) {
+		try {
+			functor();
+			QFAIL( "Expected thrown system_error!" );
+		} catch ( const system_error &error ) {
+			QVERIFY( error.code() == expectedErrorCode );
+		}
+	}
+
 void FileTest::testIsEof() {
-	try {
+	expectSystemError([ & ] {
 		file file;
 		file.is_eof();
-		QFAIL( "Expected thrown system_error( errc::invalid_argument )!" );
-	} catch ( const system_error &error ) {
-		QVERIFY( error.code() == errc::invalid_argument );
-	}
+	}, make_error_code( errc::invalid_argument ));
+}
+
+void FileTest::testGetIsEof() {
+	expectSystemError([ & ] {
+		file file;
+		file.get();
+	}, make_error_code( errc::invalid_argument ));
 }
 
 void FileTest::testIsError() {
-	try {
+	expectSystemError( [ & ] {
 		file file;
 		file.is_error();
-		QFAIL( "Expected thrown system_error( errc::invalid_argument )!" );
-	} catch ( const system_error &error ) {
-		QVERIFY( error.code() == errc::invalid_argument );
-	}
+	}, make_error_code( errc::invalid_argument ));
 }
 
 
 void FileTest::testOpenFailed() {
-	try {
+	expectSystemError([ & ] {
 		file file;
 		string fileName = make_temporary_filename();
 		file.open( fileName.c_str(), "r" );
-	} catch ( const system_error &error ) {
-		QVERIFY( error.code() == errc::no_such_file_or_directory );
-	}
+	}, make_error_code( errc::no_such_file_or_directory ));
 }
 
 void FileTest::testOpenSucceeded() {
@@ -89,8 +110,8 @@ void FileTest::testOpenSucceeded() {
 
 		file file;
 		file.open( fileName.c_str(), "w" );
-	} catch ( const system_error &error ) {
-		QVERIFY( !error.code() );
+	} catch ( const system_error & ) {
+		QFAIL( "Unexpected system_error thrown!" );
 	}
 }
 

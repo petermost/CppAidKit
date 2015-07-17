@@ -23,9 +23,12 @@ namespace pera_software { namespace aidkit { namespace io {
 
 	class FileTest : public qt::Test {
 		Q_OBJECT
+		public:
+			FileTest();
 
 		private slots:
 			void testIsEof();
+			void testGetIsEof();
 			void testIsError();
 			void testOpenFailed();
 			void testOpenSucceeded();

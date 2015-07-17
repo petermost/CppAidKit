@@ -253,20 +253,19 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool open( const char fileName[], const char openMode[], std::error_code *errorCode ) noexcept {
-					auto close_caller = [ & ]( std::FILE *file ) {
-						assert( file == file_.get() );
-
-						// Call the non-throwing close method:
-
-						std::error_code errorCode;
-						close( &errorCode );
-					};
-
 					std::FILE *file = Functions::do_open( fileName, openMode );
 					bool success = ( file != nullptr );
-					if ( success )
-						file_ = std::shared_ptr< std::FILE >( file, close_caller );
+					if ( success ) {
+						auto close_caller = [ & ]( std::FILE *file ) {
+							assert( file == file_.get() );
 
+							// Call the non-throwing close method:
+
+							std::error_code errorCode;
+							close( &errorCode );
+						};
+						file_ = std::shared_ptr< std::FILE >( file, close_caller );
+					}
 					*errorCode = get_error_code( success );
 					return success;
 				}
@@ -564,12 +563,9 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool is_eof( std::error_code *errorCode ) const noexcept {
-					errno = ENONE;
-					auto result = ( Functions::do_eof( file_.get() ) != 0 );
-					bool success = ( errno == ENONE );
-
-					*errorCode = get_error_code( success );
-					return result;
+					return call_and_set_error_code( errorCode, [ & ] {
+						return Functions::do_eof( file_.get() ) != 0;
+					});
 				}
 
 				// Checking for error:
@@ -581,12 +577,9 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool is_error( std::error_code *errorCode ) const noexcept {
-					errno = ENONE;
-					auto result = ( Functions::do_error( file_.get() ) != 0 );
-					bool success = ( errno == ENONE );
-
-					*errorCode = get_error_code( success );
-					return result;
+					return call_and_set_error_code( errorCode, [ & ] {
+						return Functions::do_error( file_.get() ) != 0;
+					});
 				}
 
 			private:
@@ -605,21 +598,39 @@ namespace pera_software { namespace aidkit { namespace io {
 						return result;
 					}
 
-				std::error_code get_error_code( bool success ) const noexcept {
-					if ( success )
-						return std::error_code();
-					else {
-						// We are also called when open fails, so we have to protect against file_ == nullptr:
-
-						if ( file_ && is_eof() )
-							return make_error_code( file_error::eof );
-						else if ( errno != ENONE )
-							return make_errno_error_code( errno );
+				template < typename Functor >
+					auto call_and_set_error_code( std::error_code *errorCode, Functor &&functor ) const noexcept -> decltype( functor() ) {
+						errno = ENONE;
+						auto result = functor();
+						bool success = ( errno == ENONE );
+						if ( success )
+							errorCode->clear();
 						else
-							return make_error_code( file_error::unspecific );
-					}
-				}
+							*errorCode = make_errno_error_code( errno );
 
+						return result;
+					}
+
+				std::error_code get_error_code( bool success ) const noexcept {
+					std::error_code errorCode;
+
+					if ( !success ) {
+						if ( file_ && is_eof( &errorCode ) && !errorCode )
+							errorCode = make_error_code( file_error::eof );
+						else if ( file_ && is_error( &errorCode ) && !errorCode ) {
+							if ( errno != ENONE )
+								errorCode = make_errno_error_code( errno );
+							else
+								errorCode = make_error_code( file_error::unspecific );
+						} else {
+							if ( errno != ENONE )
+								errorCode = make_errno_error_code( errno );
+							else
+								errorCode = make_error_code( file_error::unspecific );
+						}
+					}
+					return errorCode;
+				}
 
 				std::shared_ptr< std::FILE > file_;
 			};

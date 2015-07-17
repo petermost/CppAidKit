@@ -16,9 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "file_error.hpp"
-#include <cerrno>
-
-// TODO: Add unit test for make_errno functions:
+#include "errno.hpp"
 
 namespace pera_software { namespace aidkit { namespace io {
 
@@ -57,6 +55,17 @@ error_code make_error_code( file_error error ) {
 
 error_condition make_error_condition( file_error error ) {
 	return error_condition( static_cast< int >( error ), file_error_category::instance() );
+}
+
+error_code get_file_error_code( bool success ) noexcept {
+	if ( success )
+		return error_code();
+	else {
+		if ( errno != ENONE )
+			return make_errno_error_code( errno );
+		else
+			return make_error_code( file_error::unspecific );
+	}
 }
 
 } } }

@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <cerrno>
 #include <system_error>
 #include <pera_software/aidkit/aidkit.hpp>
 
