@@ -21,11 +21,7 @@
 #include "file_error.hpp"
 #include "system_error.hpp"
 #include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/unicode.hpp>
-#include <memory>
-#include <string>
 #include <cstdio>
-#include <cassert>
 
 namespace pera_software { namespace aidkit { namespace io {
 
@@ -233,16 +229,27 @@ namespace pera_software { namespace aidkit { namespace io {
 					wide =  1
 				};
 
-				basic_file() = default;
+				basic_file() {
+					file_ = nullptr;
+				}
 
 				basic_file( const char fileName[], const char openMode[] ) {
 					open( fileName, openMode );
 				}
 
-				basic_file( const basic_file & ) = default;
-				basic_file &operator = ( const basic_file & ) = default;
+				// For now we forbid copying, becaue what should happen if two instances 'point' to
+				// the same file? Should the first close be ignored and only the second close actually
+				// closes the file? Or should the first close succeed and the second close then fails?
 
-				~basic_file() = default;
+				basic_file( const basic_file & ) = delete;
+				basic_file &operator = ( const basic_file & ) = delete;
+
+				~basic_file() {
+					// Close the file with the non-throwing close method:
+
+					std::error_code errorCode;
+					close( &errorCode );
+				}
 
 				// Opening a file:
 
@@ -253,19 +260,9 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool open( const char fileName[], const char openMode[], std::error_code *errorCode ) noexcept {
-					std::FILE *file = Functions::do_open( fileName, openMode );
-					bool success = ( file != nullptr );
-					if ( success ) {
-						auto close_caller = [ & ]( std::FILE *file ) {
-							assert( file == file_.get() );
+					file_ = Functions::do_open( fileName, openMode );
+					bool success = ( file_ != nullptr );
 
-							// Call the non-throwing close method:
-
-							std::error_code errorCode;
-							close( &errorCode );
-						};
-						file_ = std::shared_ptr< std::FILE >( file, close_caller );
-					}
 					*errorCode = get_error_code( success );
 					return success;
 				}
@@ -279,8 +276,17 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool close( std::error_code *errorCode ) noexcept {
-					auto result = Functions::do_close( file_.get() );
+					if ( file_ == nullptr ) {
+						*errorCode = std::make_error_code( std::errc::invalid_argument );
+						return false;
+					}
+					auto result = Functions::do_close( file_ );
 					bool success = ( result == 0 );
+
+					// http://en.cppreference.com/w/cpp/io/c/fclose
+					// "Whether or not the operation succeeds, the stream is no longer associated with a file"
+
+					file_ = nullptr;
 
 					*errorCode = get_error_code( success );
 					return success;
@@ -295,7 +301,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				char_int_t put( Char c, std::error_code *errorCode ) noexcept {
-					auto result = Functions::do_putc( file_.get(), c );
+					auto result = Functions::do_putc( file_, c );
 					bool success = Functions::do_not_eof( result );
 
 					*errorCode = get_error_code( success );
@@ -311,7 +317,11 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				char_int_t get( std::error_code *errorCode ) noexcept {
-					auto result = Functions::do_getc( file_.get() );
+					if ( file_ == nullptr ) {
+						*errorCode = std::make_error_code( std::errc::invalid_argument );
+						return eof;
+					}
+					auto result = Functions::do_getc( file_ );
 					bool success = Functions::do_not_eof( result );
 
 					*errorCode = get_error_code( success );
@@ -327,7 +337,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				char_int_t unget( Char c, std::error_code *errorCode ) noexcept {
-					auto result = Functions::do_ungetc( file_.get(), c );
+					auto result = Functions::do_ungetc( file_, c );
 					bool success = Functions::do_not_eof( result );
 
 					*errorCode = get_error_code( success );
@@ -343,7 +353,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				const Char *put( const Char s[], std::error_code *errorCode ) noexcept {
-					auto result = Functions::do_puts( file_.get(), s );
+					auto result = Functions::do_puts( file_, s );
 					bool success = Functions::do_not_eof( result );
 
 					*errorCode = get_error_code( success );
@@ -359,7 +369,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				Char *get( Char *s, int count, std::error_code *errorCode ) noexcept {
-					Char *result = Functions::do_gets( file_.get(), s, count );
+					Char *result = Functions::do_gets( file_, s, count );
 					bool success = ( result != nullptr );
 
 					*errorCode = get_error_code( success );
@@ -399,7 +409,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				int print( const Char format[], va_list args, std::error_code *errorCode ) noexcept {
-					auto result = Functions::do_vprintf( file_.get(), format, args );
+					auto result = Functions::do_vprintf( file_, format, args );
 					bool success = Functions::do_not_eof( result );
 
 					*errorCode = get_error_code( success );
@@ -415,7 +425,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				template < typename ... Args >
 					int print( std::error_code *errorCode, const Char format[], Args && ... args ) noexcept {
-						auto result = Functions::do_printf( file_.get(), format, std::forward< Args >( args ) ... );
+						auto result = Functions::do_printf( file_, format, std::forward< Args >( args ) ... );
 						bool success = Functions::do_not_eof( result );
 
 						*errorCode = get_error_code( success );
@@ -431,7 +441,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool seek( offset_t offset, origin origin, std::error_code *errorCode ) noexcept {
-					auto result = Functions::do_seek( file_.get(), offset, static_cast< int >( origin ));
+					auto result = Functions::do_seek( file_, offset, static_cast< int >( origin ));
 					bool success = ( result == 0 );
 
 					*errorCode = get_error_code( success );
@@ -447,7 +457,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				offset_t tell( std::error_code *errorCode ) noexcept {
-					auto result = Functions::do_tell( file_.get() );
+					auto result = Functions::do_tell( file_ );
 					bool success = ( result != offset_t( -1 ));
 
 					*errorCode = get_error_code( success );
@@ -463,7 +473,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool set_position( const std::fpos_t &position, std::error_code *errorCode ) noexcept {
-					auto result = Functions::do_setpos( file_.get(), &position );
+					auto result = Functions::do_setpos( file_, &position );
 					bool success = ( result == 0 );
 
 					*errorCode = get_error_code( success );
@@ -480,7 +490,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				std::fpos_t get_position( std::error_code *errorCode ) noexcept {
 					fpos_t position;
-					auto result = Functions::do_getpos( file_.get(), &position );
+					auto result = Functions::do_getpos( file_, &position );
 					bool success = ( result == 0 );
 
 					*errorCode = get_error_code( success );
@@ -494,13 +504,13 @@ namespace pera_software { namespace aidkit { namespace io {
 					// makes sense to allow that value.
 
 					if ( newOrientation == orientation::byte || newOrientation == orientation::wide )
-						Functions::do_wide( file_.get(), static_cast< int >( newOrientation ));
+						Functions::do_wide( file_, static_cast< int >( newOrientation ));
 				}
 
 				// Getting the orientation:
 
 				orientation get_orientation() noexcept {
-					auto result = Functions::do_wide( file_.get(), 0 );
+					auto result = Functions::do_wide( file_, 0 );
 					if( result < 0 )
 						return orientation::byte;
 					else if ( result > 0 )
@@ -518,7 +528,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool flush( std::error_code *errorCode ) noexcept {
-					auto result = Functions::do_flush( file_.get() );
+					auto result = Functions::do_flush( file_ );
 					bool success = ( result == 0 );
 
 					*errorCode = get_error_code( success );
@@ -526,13 +536,13 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				void rewind() {
-					Functions::do_rewind( file_.get() );
+					Functions::do_rewind( file_ );
 				}
 
 				// Setting a buffer:
 
 				void set_buffer( void *buffer ) noexcept {
-					Functions::do_setbuf( file_.get(), static_cast< char * >( buffer ));
+					Functions::do_setbuf( file_, static_cast< char * >( buffer ));
 				}
 
 				bool set_buffer( void *buffer, buffer_mode mode, std::size_t bufferSize ) {
@@ -542,7 +552,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool set_buffer( void *buffer, buffer_mode mode, std::size_t bufferSize, std::error_code *errorCode ) noexcept {
-					auto result = Functions::do_setvbuf( file_.get(), static_cast< char * >( buffer ), static_cast< int >( mode ), bufferSize );
+					auto result = Functions::do_setvbuf( file_, static_cast< char * >( buffer ), static_cast< int >( mode ), bufferSize );
 					bool success = ( result == 0 );
 
 					*errorCode = get_error_code( success );
@@ -550,7 +560,7 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				void clear_error() noexcept {
-					Functions::do_clearerr( file_.get() );
+					Functions::do_clearerr( file_ );
 				}
 
 				// Checking for end of file:
@@ -563,9 +573,13 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool is_eof( std::error_code *errorCode ) const noexcept {
-					return call_and_set_error_code( errorCode, [ & ] {
-						return Functions::do_eof( file_.get() ) != 0;
-					});
+					if ( file_ != nullptr ) {
+						errorCode->clear();
+						return Functions::do_eof( file_ ) != 0;
+					} else {
+						*errorCode = std::make_error_code( std::errc::invalid_argument );
+						return false;
+					}
 				}
 
 				// Checking for error:
@@ -577,15 +591,19 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 				bool is_error( std::error_code *errorCode ) const noexcept {
-					return call_and_set_error_code( errorCode, [ & ] {
-						return Functions::do_error( file_.get() ) != 0;
-					});
+					if ( file_ != nullptr ) {
+						errorCode->clear();
+						return Functions::do_error( file_ ) != 0;
+					} else {
+						*errorCode = std::make_error_code( std::errc::invalid_argument );
+						return false;
+					}
 				}
 
 			private:
 				template < typename T, typename Function >
 					std::size_t call_transfer( Function transferFunction, T buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) noexcept {
-						std::size_t result = transferFunction( file_.get(), buffer, size, count );
+						std::size_t result = transferFunction( file_, buffer, size, count );
 						bool success = ( result == count );
 
 						if ( success )
@@ -617,13 +635,15 @@ namespace pera_software { namespace aidkit { namespace io {
 					std::error_code errorCode;
 
 					if ( !success ) {
-						if ( file_ && is_eof( &errorCode ) && !errorCode )
-							errorCode = make_error_code( file_error::eof );
-						else if ( file_ && is_error( &errorCode ) && !errorCode ) {
-							if ( errno != ENONE )
-								errorCode = make_errno_error_code( errno );
-							else
-								errorCode = make_error_code( file_error::unspecific );
+						if ( file_ != nullptr ) {
+							if ( is_eof( &errorCode ) && !errorCode )
+								errorCode = make_error_code( file_error::eof );
+							else if ( is_error( &errorCode ) && !errorCode ) {
+								if ( errno != ENONE )
+									errorCode = make_errno_error_code( errno );
+								else
+									errorCode = make_error_code( file_error::unspecific );
+							}
 						} else {
 							if ( errno != ENONE )
 								errorCode = make_errno_error_code( errno );
@@ -634,7 +654,7 @@ namespace pera_software { namespace aidkit { namespace io {
 					return errorCode;
 				}
 
-				std::shared_ptr< std::FILE > file_;
+				std::FILE *file_;
 			};
 } } }
 
