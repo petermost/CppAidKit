@@ -15,39 +15,30 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "ConsoleTest.hpp"
+#include <pera_software/aidkit/qt/console/Streams.hpp>
+#include <QString>
 
-#include <QList>
-#include <QStringList>
-#include <pera_software/aidkit/aidkit.hpp>
-#include <array>
-#include <QObject>
-#include <QVector>
+namespace pera_software { namespace aidkit { namespace qt { namespace console {
 
-namespace pera_software { namespace aidkit { namespace qt {
+// This is more of a compile test then runtime test, so we don't instantiate ConsoleTest.
 
-class AIDKIT_API Test : public QObject {
-	Q_OBJECT
-	public:
-		template < typename Functor >
-			static void forEach( Functor &&functor ) {
-				for ( std::size_t i = 0; i < s_testsSize; ++i ) {
-					functor( s_tests[ i ]);
-				}
-			}
+void ConsoleTest::testOutStream() {
+	QString text( "" );
 
-		static int executeTests( const QStringList &arguments );
+	console::out << text;
+}
 
-		static QVector< Test * > queryTests();
+void ConsoleTest::testErrStream() {
+	QString text( "" );
 
-	protected:
-		Test();
-		virtual ~Test();
+	console::err << text;
+}
 
-	private:
-		enum { SIZE = 100 };
-		static std::size_t s_testsSize;
-		static std::array< Test *, SIZE > s_tests;
-};
+void ConsoleTest::testInStream() {
+	QString text;
 
-} } }
+	text << console::in;
+}
+
+} } } }
