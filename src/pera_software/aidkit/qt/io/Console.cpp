@@ -15,15 +15,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "Console.hpp"
+#include <cstdio>
 
-#include <QTextStream>
-#include <pera_software/aidkit/aidkit.hpp>
+namespace pera_software { namespace aidkit { namespace qt { namespace io {
 
-namespace pera_software { namespace aidkit { namespace qt { namespace console {
+using namespace std;
 
-extern AIDKIT_API QTextStream cin;
-extern AIDKIT_API QTextStream cout;
-extern AIDKIT_API QTextStream cerr;
+QTextStream cin( stdin );
+QTextStream cout( stdout );
+QTextStream cerr( stderr );
 
 } } } }
+
