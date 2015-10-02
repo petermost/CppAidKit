@@ -23,7 +23,7 @@ set( CMAKE_WARN_DEPRECATED ON )
 if ( UNIX )
 	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.5.0/5.5/gcc_64/lib/cmake" )
 elseif( WIN32 )
-	set( CMAKE_PREFIX_PATH "C:/Qt64/qt-5.4.2/qt-5.4.2-x64-mingw510r0-seh-opengl-rev0/lib/cmake" )
+	set( CMAKE_PREFIX_PATH "C:/Qt/Qt5.5.0/5.5/mingw492_32/lib/cmake" )
 endif()
 
 if ( NOT CMAKE_BUILD_TYPE )
@@ -108,7 +108,6 @@ set( HEADERS
 	src/pera_software/aidkit/io/basic_file.hpp
 	src/pera_software/aidkit/io/file_error.hpp
 	src/pera_software/aidkit/io/system_error.hpp
-	src/pera_software/aidkit/container/static_array.hpp
 	src/pera_software/company/PERA.hpp
 )
 set( SOURCES
@@ -125,7 +124,6 @@ set( SOURCES
 	src/pera_software/aidkit/io/basic_file.cpp
 	src/pera_software/aidkit/io/file_error.cpp
 	src/pera_software/aidkit/io/system_error.cpp
-	src/pera_software/aidkit/container/static_array.cpp
 	src/pera_software/company/PERA.cpp
 )
 
@@ -180,7 +178,6 @@ set( TEST_HEADERS
 	tests/pera_software/aidkit/enum_class_test.hpp
 	tests/pera_software/aidkit/io/file_test.hpp
 	tests/pera_software/aidkit/qt/net/EndianTest.hpp
-	tests/pera_software/aidkit/container/static_array_test.hpp
 )
 
 set( TEST_SOURCES
@@ -191,7 +188,6 @@ set( TEST_SOURCES
 	tests/pera_software/aidkit/enum_class_test.cpp
 	tests/pera_software/aidkit/io/file_test.cpp
 	tests/pera_software/aidkit/qt/net/EndianTest.cpp
-	tests/pera_software/aidkit/container/static_array_test.cpp
 )
 
 qt5_wrap_cpp( MOC_TEST_SOURCES ${TEST_HEADERS})
