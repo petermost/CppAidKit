@@ -3,8 +3,6 @@
 #include <UtilityCpp/Std/Vector.hpp>
 #include <boost/format.hpp>
 
-{ namespace Std {
-
 using namespace std;
 using namespace boost;
 using namespace NUnit::Framework;
@@ -58,4 +56,3 @@ public ref struct VectorTest
 	}
 };
 
-} }
