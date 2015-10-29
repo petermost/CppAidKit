@@ -2,8 +2,6 @@
 
 #include <functional>
 
-namespace RohdeSchwarz 
-{
 	class ScopeExit
 	{
 		public:
@@ -20,4 +18,3 @@ namespace RohdeSchwarz
 		private:
 			std::function< void() > code_;
 	};
-}

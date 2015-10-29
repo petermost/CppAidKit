@@ -3,7 +3,7 @@
 #include <UtilityCpp/Std/Vector.hpp>
 #include <boost/format.hpp>
 
-namespace RohdeSchwarz { namespace Std {
+{ namespace Std {
 
 using namespace std;
 using namespace boost;
