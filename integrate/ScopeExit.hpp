@@ -2,16 +2,13 @@
 
 #include <functional>
 
-class ScopeExit
-{
+class ScopeExit {
 	public:
-		ScopeExit( const std::function< void() > &code )
-			: code_( code )
-		{
+		ScopeExit( const std::function< void() > &code ) 
+			: code_( code ) {
 		}
 
-		~ScopeExit()
-		{
+		~ScopeExit() {
 			code_();
 		}
 

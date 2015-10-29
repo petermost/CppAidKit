@@ -13,10 +13,8 @@ static bool is_two( int i )
 	return i == 2;
 }
 
-[TestFixture]
 public ref struct VectorTest
 {
-	[Test]
 	void TestStreamOperatorWithEmptyVector()
 	{
 		vector< int > ints;
@@ -25,7 +23,6 @@ public ref struct VectorTest
 		AssertAreEqual( L"", result );
 	}
 
-	[Test]
 	void TestStreamOperatorWithOneElement()
 	{
 		vector< int > ints = { 1 };
@@ -34,7 +31,6 @@ public ref struct VectorTest
 		AssertAreEqual( L"1", result );
 	}
 
-	[Test]
 	void TestStreamOperatorWithMultipleElements()
 	{
 		vector< int > ints = { 1, 2, 3 };
@@ -43,7 +39,6 @@ public ref struct VectorTest
 		AssertAreEqual( L"1, 2, 3", result );
 	}
 
-	[Test]
 	void TestRemoveIf()
 	{
 		vector< int > ints = { 1, 2, 2, 2, 3 };
