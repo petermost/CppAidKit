@@ -1,6 +1,0 @@
-headerdirs    = src
-sourcedirs    = src
-headers.fileextensions = "*.hpp"
-sources.fileextensions = "*.cpp"
-
-outputdir     = doc

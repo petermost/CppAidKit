@@ -1,0 +1,10 @@
+headerdirs    = ../src
+sourcedirs    = ../src
+headers.fileextensions = "*.hpp"
+sources.fileextensions = "*.cpp"
+
+outputdir     = ../doc
+
+HTML.stylesheets = offline.css
+HTML.headerstyles = "<link rel=\"stylesheet\" type=\"text/css\" href=\"style/offline.css\" />\n"
+
