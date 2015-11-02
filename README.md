@@ -1,7 +1,7 @@
 CppAidKit
 =========
 
-A C++ library which contains C++11/Qt aid classes. The documentation is for now lacking because it is foremost a privatly used library. But some notable highlights:
+A C++ library which contains C++11/Qt aid classes. The documentation is still a work in progress, but some notable highlights are:
 
 ##Standard classes:
 - [file](https://github.com/petermost/CppAidKit/blob/master/src/pera_software/aidkit/io/basic_file.hpp): A RAII wrapper around `std::FILE *` functions and it's wide character versions. It also returns or throws a `std::error_code` instead of setting `std::errno`.
