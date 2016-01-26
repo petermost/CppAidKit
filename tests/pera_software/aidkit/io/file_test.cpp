@@ -54,8 +54,10 @@ class file_deleter {
 		string fileName_;
 };
 
+#if defined( AIDKIT_MINGW )
 static void nullHandler( const wchar_t *, const wchar_t *, const wchar_t *, unsigned int, uintptr_t ) {
 }
+#endif
 
 FileTest::FileTest() {
 	#if defined( AIDKIT_MINGW )

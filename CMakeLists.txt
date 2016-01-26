@@ -108,6 +108,7 @@ set( HEADERS
 	src/pera_software/aidkit/io/basic_file.hpp
 	src/pera_software/aidkit/io/file_error.hpp
 	src/pera_software/aidkit/io/system_error.hpp
+	src/pera_software/aidkit/concurrent/data_data_mutex.hpp
 	src/pera_software/company/PERA.hpp
 )
 set( SOURCES
@@ -124,6 +125,7 @@ set( SOURCES
 	src/pera_software/aidkit/io/basic_file.cpp
 	src/pera_software/aidkit/io/file_error.cpp
 	src/pera_software/aidkit/io/system_error.cpp
+	src/pera_software/aidkit/concurrent/data_mutex.cpp
 	src/pera_software/company/PERA.cpp
 )
 
@@ -177,6 +179,7 @@ set( TEST_HEADERS
 	tests/pera_software/aidkit/unicode_test.hpp
 	tests/pera_software/aidkit/enum_class_test.hpp
 	tests/pera_software/aidkit/io/file_test.hpp
+	tests/pera_software/aidkit/concurrent/data_mutex_test.hpp
 	tests/pera_software/aidkit/qt/net/EndianTest.hpp
 )
 
@@ -187,6 +190,7 @@ set( TEST_SOURCES
 	tests/pera_software/aidkit/unicode_test.cpp
 	tests/pera_software/aidkit/enum_class_test.cpp
 	tests/pera_software/aidkit/io/file_test.cpp
+	tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
 	tests/pera_software/aidkit/qt/net/EndianTest.cpp
 )
 
