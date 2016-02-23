@@ -41,4 +41,11 @@ void DataMutexTest::testLock() {
 	QVERIFY( !static_cast< bool >( p2 ));
 }
 
+void DataMutexTest::testReset() {
+	data_mutex< vector< string >> names( 20, "empty" );
+	auto p = names.lock();
+	p.reset();
+}
+
+
 } } }
