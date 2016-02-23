@@ -18,7 +18,7 @@
 cmake_minimum_required( VERSION 3.0 )
 project( AidKit )
 
-include( cmake/set_general_cmake_options.cmake )
+include( cmake/general_cmake_options.cmake )
 
 #if ( UNIX )
 #	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.5.0/5.5/gcc_64/lib/cmake" )
@@ -44,7 +44,7 @@ find_package( Qt5Test )
 ############################# Setup AidKit ####################################
 
 
-include( cmake/add_gcc_compile_options.cmake )
+include( cmake/gcc_compile_options.cmake )
 
 if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 	message( "Enabling debug settings" )
