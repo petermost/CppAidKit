@@ -18,23 +18,14 @@
 cmake_minimum_required( VERSION 3.0 )
 project( AidKit )
 
-set( CMAKE_WARN_DEPRECATED ON )
+include( cmake/set_general_cmake_options.cmake )
 
-if ( UNIX )
-	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.5.0/5.5/gcc_64/lib/cmake" )
-elseif( WIN32 )
-	set( CMAKE_PREFIX_PATH "C:/Qt/Qt5.5.0/5.5/mingw492_32/lib/cmake" )
-endif()
+#if ( UNIX )
+#	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.5.0/5.5/gcc_64/lib/cmake" )
+#elseif( WIN32 )
+#	set( CMAKE_PREFIX_PATH "C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/cmake" )
+#endif()
 
-if ( NOT CMAKE_BUILD_TYPE )
-	message( "Enabling debug build" )
-	set( CMAKE_BUILD_TYPE Debug )
-endif()
-
-if ( NOT CMAKE_VERBOSE_MAKEFILE )
-	message( "Enabling verbose makefile" )
-	set( CMAKE_VERBOSE_MAKEFILE TRUE )
-endif()
 
 # message( "C++ compiler version is: " ${CMAKE_CXX_COMPILER_VERSION})
 
@@ -53,26 +44,7 @@ find_package( Qt5Test )
 ############################# Setup AidKit ####################################
 
 
-add_compile_options(
-	-std=c++14                  # Compile in C++14 mode
-
-	-Wall -Wextra -Wpedantic    # Enable all warnings
-	-Wmissing-include-dirs      # Warn if a user-supplied include directory does not exist.
-	-Wundef                     # Warn if an undefined identifier is evaluated in an #if directive.
-	-Wcast-align                # Warn whenever a pointer is cast such that the required alignment of the target is increased.
-	-Wold-style-cast            # Warn if an old-style (C-style) cast to a non-void type is used within a C++ program.
-
-	-fvisibility=hidden         # Make symbols hidden by default i.e. must be explicitly exported
-	-fdiagnostics-show-option   # Show which switch caused a warning
-
-	-pthread                    # Adds support for multithreading with the pthreads library. This option sets flags for both the preprocessor and linker
-)
-
-if ( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5 )
-	add_compile_options(
-		-Wsuggest-override          # Warn about overriding virtual functions that are not marked with the override keyword.
-	)
-endif()
+include( cmake/add_gcc_compile_options.cmake )
 
 if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 	message( "Enabling debug settings" )
