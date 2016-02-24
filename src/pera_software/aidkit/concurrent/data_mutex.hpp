@@ -64,20 +64,24 @@ namespace pera_software { namespace aidkit { namespace concurrent {
 				}
 
 			private:
+				void unlock( const T *data_ptr ) {
+
+					// Protect against pointer.reset( some_pointer ):
+
+					if ( data_ptr == &data_ )
+						mutex_.unlock();
+				}
+
 				pointer make_pointer() noexcept {
 					auto unlocker = [ = ]( T *data_ptr ) {
-						// Protect against pointer.reset( some_pointer )
-						if ( data_ptr == &data_ )
-							mutex_.unlock();
+						unlock( data_ptr );
 					};
 					return pointer( &data_, unlocker );
 				}
 
 				const_pointer make_const_pointer() const noexcept {
 					auto unlocker = [ = ]( const T *data_ptr ) {
-						// Protect against pointer.reset( some_pointer )
-						if ( data_ptr == &data_ )
-							mutex_.unlock();
+						unlock( data_ptr );
 					};
 					return const_pointer( &data_, unlocker );
 				}
