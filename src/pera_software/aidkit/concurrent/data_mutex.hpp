@@ -64,7 +64,7 @@ namespace pera_software { namespace aidkit { namespace concurrent {
 				}
 
 			private:
-				void unlock( const T *data_ptr ) {
+				void unlock( const T *data_ptr ) const {
 
 					// Protect against pointer.reset( some_pointer ):
 
