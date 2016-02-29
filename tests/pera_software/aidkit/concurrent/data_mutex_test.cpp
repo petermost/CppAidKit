@@ -34,17 +34,56 @@ template class data_mutex< vector< string >>;
 
 void DataMutexTest::testLock() {
 
+	// Must initially not be locked yet:
+
 	data_mutex< vector< string >> names( 20, "empty" );
-	auto p1 = names.lock();
-	auto p2 = names.try_lock();
-	QVERIFY( static_cast< bool >( p1 ));
-	QVERIFY( !static_cast< bool >( p2 ));
+	QVERIFY( !names.is_locked() );
+
+	// Lock the data:
+
+	{
+		auto names_ptr = names.lock();
+		QVERIFY( static_cast< bool >( names_ptr ));
+		QVERIFY( names.is_locked() );
+
+		// The names_ptr destructor will unlock the mutex.
+	}
+	// Must now be unlocked again:
+
+	QVERIFY( !names.is_locked() );
 }
 
 void DataMutexTest::testReset() {
 	data_mutex< vector< string >> names( 20, "empty" );
+
+	// Lock the data:
+
 	auto p = names.lock();
+	QVERIFY( names.is_locked() );
+
+	// Unlock manually:
+
 	p.reset();
+	QVERIFY( !names.is_locked() );
+}
+
+
+void DataMutexTest::testResetWithUnknownPointer() {
+	data_mutex< vector< string >> names;
+
+	// Lock the data:
+
+	auto p = names.lock();
+	QVERIFY( names.is_locked() );
+
+	// Unlock manually but with an unknown pointer:
+
+	vector< string > someData;
+	p.reset( &someData );
+	QVERIFY( !names.is_locked() );
+
+	p.reset();
+	QCOMPARE( names.lock_count(), 0 );
 }
 
 

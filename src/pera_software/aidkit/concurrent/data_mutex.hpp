@@ -33,6 +33,7 @@ namespace pera_software { namespace aidkit { namespace concurrent {
 				template < typename ... Args >
 					data_mutex( Args && ... args )
 						: data_( std::forward< Args >( args ) ... ) {
+						lockCount_ = 0;
 					}
 
 				pointer lock() {
@@ -63,16 +64,33 @@ namespace pera_software { namespace aidkit { namespace concurrent {
 					return mutex_.native_handle();
 				}
 
+				// These methods follow the same idea then those in shared_ptr<> where unique() is
+				// implemented in terms of use_count():
+
+				bool is_locked() const noexcept {
+					return lock_count() > 0;
+				}
+
+				int lock_count() const noexcept {
+					return lockCount_;
+				}
+
 			private:
 				void unlock( const T *data_ptr ) const {
 
 					// Protect against pointer.reset( some_pointer ):
 
-					if ( data_ptr == &data_ )
+					if ( data_ptr == &data_ ) {
+						--lockCount_;
 						mutex_.unlock();
+					}
 				}
 
+				// If a pointer is requested, then we know that locking has succeeded and we can
+				// increment the lock counter:
+
 				pointer make_pointer() noexcept {
+					++lockCount_;
 					auto unlocker = [ = ]( T *data_ptr ) {
 						unlock( data_ptr );
 					};
@@ -80,13 +98,15 @@ namespace pera_software { namespace aidkit { namespace concurrent {
 				}
 
 				const_pointer make_const_pointer() const noexcept {
+					++lockCount_;
 					auto unlocker = [ = ]( const T *data_ptr ) {
 						unlock( data_ptr );
 					};
 					return const_pointer( &data_, unlocker );
 				}
 
-				mutable Mutex mutex_;
 				T data_;
+				mutable Mutex mutex_;
+				mutable int lockCount_;
 		};
 } } }

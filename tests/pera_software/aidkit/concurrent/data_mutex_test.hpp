@@ -27,6 +27,7 @@ namespace pera_software { namespace aidkit { namespace concurrent {
 		private slots:
 			void testLock();
 			void testReset();
+			void testResetWithUnknownPointer();
 	};
 
 } } }
