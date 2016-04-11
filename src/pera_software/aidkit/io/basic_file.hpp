@@ -610,7 +610,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 			private:
 				template < typename T, typename Function >
-					std::size_t call_transfer( Function transferFunction, T buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) noexcept {
+					std::size_t call_transfer( Function &&transferFunction, T buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) noexcept {
 						std::size_t result = transferFunction( file_, buffer, size, count );
 						bool success = ( result == count );
 
