@@ -32,6 +32,8 @@ namespace pera_software { namespace aidkit {
 			void testTrimRightSpace();
 			void testTrimLeftChars();
 			void testTrimRightChars();
+
+			void testTrySToI();
 	};
 
 } }

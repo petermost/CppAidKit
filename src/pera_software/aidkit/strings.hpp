@@ -17,11 +17,13 @@
 
 #pragma once
 
-#include <cstddef>
 #include <string>
 #include <locale>
+#include <limits>
+#include <cstddef>
 #include <functional>
 #include <algorithm>
+#include <pera_software/aidkit/io/errno.hpp>
 
 #define STRINGIZE( name ) #name
 #define STRINGIZE_SYMBOL( symbol ) STRINGIZE( symbol )
@@ -91,5 +93,86 @@ namespace pera_software { namespace aidkit {
 		constexpr bool is_string_literal( const Char * const & ) noexcept {
 			return false;
 		}
+
+	//=============================================================================================
+
+	template < typename Int, typename Char >
+		struct StringToInteger;
+
+	template <>
+		struct StringToInteger< long, char > {
+			static long convert( const char *str, char **str_end, int base ) {
+				return std::strtol( str, str_end, base );
+			}
+		};
+
+	template <>
+		struct StringToInteger< long long, char > {
+			static long long convert( const char *str, char **str_end, int base ) {
+				return std::strtoll( str, str_end, base );
+			}
+		};
+
+	template <>
+		struct StringToInteger< unsigned long, char > {
+			static unsigned long convert( const char *str, char **str_end, int base ) {
+				return std::strtoul( str, str_end, base );
+			}
+		};
+
+	template <>
+		struct StringToInteger< unsigned long long, char > {
+			static unsigned long long convert( const char *str, char **str_end, int base ) {
+				return std::strtoull( str, str_end, base );
+			}
+		};
+
+	template <>
+		struct StringToInteger< long, wchar_t > {
+			static long convert( const wchar_t *str, wchar_t **str_end, int base ) {
+				return std::wcstol( str, str_end, base );
+			}
+		};
+
+	template <>
+		struct StringToInteger< long long, wchar_t > {
+			static long long convert( const wchar_t *str, wchar_t **str_end, int base ) {
+				return std::wcstoll( str, str_end, base );
+			}
+		};
+
+	template <>
+		struct StringToInteger< unsigned long, wchar_t > {
+			static unsigned long convert( const wchar_t *str, wchar_t **str_end, int base ) {
+				return std::wcstoul( str, str_end, base );
+			}
+		};
+
+	template <>
+		struct StringToInteger< unsigned long long, wchar_t > {
+			static unsigned long long convert( const wchar_t *str, wchar_t **str_end, int base ) {
+				return std::wcstoull( str, str_end, base );
+			}
+		};
+
+	template < typename Int, typename Char >
+		bool try_stoi( const std::basic_string< Char > &str, Int *integer, std::error_code *errorCode ) {
+			const Char *begin = str.c_str();
+			const Char *end = begin + str.size();
+			Char *ptr;
+
+			errno = 0;
+			auto result = StringToInteger< Int, Char >::convert( begin, &ptr, 10 );
+			if ( errno == 0 && ptr == end && std::numeric_limits< Int >::min() <= result && result <= std::numeric_limits< Int >::max() ) {
+				*integer = static_cast< Int >( result );
+				return true;
+			} else {
+				*errorCode = io::make_errno_error_code();
+				return false;
+			}
+		}
+
+
+
 } }
 
