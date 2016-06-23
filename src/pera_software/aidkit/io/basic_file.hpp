@@ -205,7 +205,7 @@ namespace pera_software { namespace aidkit { namespace io {
 			public:
 				typedef typename Functions::char_traits_t char_traits_t;
 
-				/// Represents an int which can contain a char or an EOF value:
+				/// Represents an int which can hold a char or an EOF value:
 
 				typedef typename char_traits_t::int_type char_int_t;
 
@@ -224,6 +224,8 @@ namespace pera_software { namespace aidkit { namespace io {
 					current = SEEK_CUR,
 					end     = SEEK_END
 				};
+
+				/// Indicates What kind of buffering should be used:
 
 				enum class buffer_mode {
 					full = _IOFBF,
@@ -609,6 +611,8 @@ namespace pera_software { namespace aidkit { namespace io {
 				}
 
 			private:
+				// Wrapper function for calling fread()/fwrite() and evaluating the result:
+
 				template < typename T, typename Function >
 					std::size_t call_transfer( Function &&transferFunction, T buffer, std::size_t size, std::size_t count, std::error_code *errorCode ) noexcept {
 						std::size_t result = transferFunction( file_, buffer, size, count );
