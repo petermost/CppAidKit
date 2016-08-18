@@ -15,48 +15,4 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <pera_software/aidkit/qt/test/Test.hpp>
-
-namespace pera_software { namespace aidkit {
-
-	class ColorEnumTest : public qt::Test {
-			Q_OBJECT
-
-		private slots:
-			void testCallByValue();
-			void testValue();
-			void testValues();
-			void testName();
-			void testFindByValue();
-			void testFindByName();
-			void testEquality();
-			void testLessThan();
-			void testAssignment();
-	};
-
-	class NumberEnumTest : public qt::Test {
-			Q_OBJECT
-
-		private slots:
-			void testValue();
-			void testFindDuplicates();
-	};
-
-	class AnimalEnumTest : public qt::Test {
-			Q_OBJECT
-
-		private slots:
-			void testValue();
-			void testName();
-	};
-
-	class FruitEnumTest : public qt::Test {
-			Q_OBJECT
-
-		private slots:
-			void testName();
-	};
-
-} }
+#include "enum_flags.hpp"
