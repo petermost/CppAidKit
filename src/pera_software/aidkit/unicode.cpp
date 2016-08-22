@@ -32,7 +32,11 @@ static_assert( sizeof( char8_t ) == sizeof( char ), "Wrong size for char8_t" );
 
 #if __GNUC__ >= 5
 
-typedef wstring_convert< codecvt_utf8< wchar_t >> wstring_u8string_converter;
+typedef wstring_convert< codecvt_utf8< wchar_t >, wchar_t > wstring_u8string_converter;
+
+// https://sourceforge.net/p/mingw-w64/bugs/538/
+// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69703
+// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66855
 
 wstring u8string_to_wstring( const u8string &s ) {
 	wstring_u8string_converter converter;

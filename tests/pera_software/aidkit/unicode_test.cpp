@@ -37,7 +37,7 @@ const wstring UTF16_LOWER_UE({ 0x00FC });
 const wstring UTF16_UPPER_AE({ 0x00C4 });
 const wstring UTF16_UPPER_OE({ 0x00D6 });
 const wstring UTF16_UPPER_UE({ 0x00DC });
-const wstring UTF16_SS({ 0x00DF });
+const wstring UTF16_SHARP_SS({ 0x00DF });
 
 const u8string UTF8_LOWER_AE({ 0xC3, 0xA4 });
 const u8string UTF8_LOWER_OE({ 0xC3, 0xB6 });
@@ -45,40 +45,40 @@ const u8string UTF8_LOWER_UE({ 0xC3, 0xBC });
 const u8string UTF8_UPPER_AE({ 0xC3, 0x84 });
 const u8string UTF8_UPPER_OE({ 0xC3, 0x96 });
 const u8string UTF8_UPPER_UE({ 0xC3, 0x9C });
-const u8string UTF8_SS({ 0xC3, 0x9F });
+const u8string UTF8_SHARP_SS({ 0xC3, 0x9F });
 
-// TODO: The umlaute below are stored in UTF-8:
+const wstring WIDE_LOWER_AE({ 228 });
+const wstring WIDE_LOWER_OE({ 246 });
+const wstring WIDE_LOWER_UE({ 252 });
+const wstring WIDE_UPPER_AE({ 196 });
+const wstring WIDE_UPPER_OE({ 214 });
+const wstring WIDE_UPPER_UE({ 220 });
+const wstring WIDE_SHARP_SS({ 223 });
 
-const wstring WIDE_LOWER_AE( L"ä" );
-const wstring WIDE_LOWER_OE( L"ö" );
-const wstring WIDE_LOWER_UE( L"ü" );
-const wstring WIDE_UPPER_AE( L"Ä" );
-const wstring WIDE_UPPER_OE( L"Ö" );
-const wstring WIDE_UPPER_UE( L"Ü" );
-const wstring WIDE_SS( L"ß" );
-
-const string NARROW_LOWER_AE( "ä" );
-const string NARROW_LOWER_OE( "ö" );
-const string NARROW_LOWER_UE( "ü" );
-const string NARROW_UPPER_AE( "Ä" );
-const string NARROW_UPPER_OE( "Ö" );
-const string NARROW_UPPER_UE( "Ü" );
-const string NARROW_SS( "ß" );
+const string NARROW_LOWER_AE({ static_cast< char >( 228 )});
+const string NARROW_LOWER_OE({ static_cast< char >( 246 )});
+const string NARROW_LOWER_UE({ static_cast< char >( 252 )});
+const string NARROW_UPPER_AE({ static_cast< char >( 196 )});
+const string NARROW_UPPER_OE({ static_cast< char >( 214 )});
+const string NARROW_UPPER_UE({ static_cast< char >( 220 )});
+const string NARROW_SHARP_SS({ static_cast< char >( 223 )});
 
 const wstring UTF16_UMLAUTE = UTF16_LOWER_AE + UTF16_LOWER_OE + UTF16_LOWER_UE +
-	UTF16_UPPER_AE + UTF16_UPPER_OE + UTF16_UPPER_UE + UTF16_SS;
+	UTF16_UPPER_AE + UTF16_UPPER_OE + UTF16_UPPER_UE + UTF16_SHARP_SS;
 
 const u8string UTF8_UMLAUTE = UTF8_LOWER_AE + UTF8_LOWER_OE + UTF8_LOWER_UE +
-	UTF8_UPPER_AE + UTF8_UPPER_OE + UTF8_UPPER_UE + UTF8_SS;
+	UTF8_UPPER_AE + UTF8_UPPER_OE + UTF8_UPPER_UE + UTF8_SHARP_SS;
 
 const wstring WIDE_UMLAUTE = WIDE_LOWER_AE + WIDE_LOWER_OE + WIDE_LOWER_UE +
-	WIDE_UPPER_AE + WIDE_UPPER_OE + WIDE_UPPER_UE + WIDE_SS;
+	WIDE_UPPER_AE + WIDE_UPPER_OE + WIDE_UPPER_UE + WIDE_SHARP_SS;
 
 const string NARROW_UMLAUTE = NARROW_LOWER_AE + NARROW_LOWER_OE + NARROW_LOWER_UE +
-	NARROW_UPPER_AE + NARROW_UPPER_OE + NARROW_UPPER_UE + NARROW_SS;
+	NARROW_UPPER_AE + NARROW_UPPER_OE + NARROW_UPPER_UE + NARROW_SHARP_SS;
 
 
 static UnicodeTest unicodeTest;
+
+//=================================================================================================
 
 void UnicodeTest::testNarrowStringToWideString() {
 	string narrowString( "abcdef" );
@@ -94,6 +94,8 @@ void UnicodeTest::testWideStringToNarrowString() {
 	QCOMPARE( narrowString, string( "12345" ));
 }
 
+//=================================================================================================
+
 void UnicodeTest::testEmptyNarrowStringToWideString() {
 	string narrowString( "" );
 	wstring wideString = string_to_wstring( narrowString );
@@ -108,6 +110,8 @@ void UnicodeTest::testEmptyWideStringToNarrowString() {
 	QCOMPARE( narrowString, string( "" ));
 }
 
+//=================================================================================================
+
 void UnicodeTest::testUmlauteWideStringToU8String() {
 	u8string utf8Umlaute = wstring_to_u8string( UTF16_UMLAUTE );
 
@@ -119,6 +123,8 @@ void UnicodeTest::testUmlauteU8StringToWideString() {
 
 	QCOMPARE( UTF16_UMLAUTE, utf16Umlaute );
 }
+
+//=================================================================================================
 
 void UnicodeTest::testUmlauteNarrowStringToWideString() {
 	wstring wideUmlaute = string_to_wstring( NARROW_UMLAUTE );
