@@ -44,12 +44,16 @@ void EnumFlagsTest::testFunctionCall() {
 	evaluate({ Option::C, Option::A });
 }
 
+void EnumFlagsTest::testDefaultConstructor() {
+	enum_flags< Option > options;
+
+	QCOMPARE( options.to_int(), 0u );
+}
+
 void EnumFlagsTest::testConstructor() {
 	enum_flags< Option > options = { Option::A, Option::C };
 
 	QCOMPARE( options.to_int(), 5u );
-
-	// QVERIFY( alignment.to_int(), 10 );
 }
 
 void EnumFlagsTest::testOr() {
@@ -57,6 +61,13 @@ void EnumFlagsTest::testOr() {
 	enum_flags< Option > result = options | Option::C;
 
 	QCOMPARE( result.to_int(), 5u );
+}
+
+void EnumFlagsTest::testAnd() {
+	enum_flags< Option > options = { Option::A, Option::C };
+	enum_flags< Option > result = options & Option::C;
+
+	QCOMPARE( static_cast< bool >( result & Option::C ), true );
 }
 
 } }

@@ -30,9 +30,8 @@ namespace pera_software { namespace aidkit {
 				static_assert( std::is_enum< E >::value, "enum_flags: Type must be an enum!" );
 				static_assert( std::is_unsigned< int_type >::value, "enum_flags: Underlying enum type must be unsigned!" );
 
-				enum_flags() noexcept {
-					value_ = 0;
-				}
+				enum_flags() = default;
+				enum_flags( const enum_flags & ) = default;
 
 				enum_flags( std::initializer_list< E > enums ) noexcept {
 					for ( E e : enums )
