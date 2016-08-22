@@ -68,45 +68,54 @@ FileTest::FileTest() {
 }
 
 template < typename Functor >
-	void expectSystemError( Functor &&functor, const error_code &expectedErrorCode ) {
+	void expectError( Functor &&functor, const error_code &expectedErrorCode ) {
 		try {
 			functor();
 			QFAIL( "Expected thrown system_error!" );
 		} catch ( const system_error &error ) {
-			QVERIFY( error.code() == expectedErrorCode );
+			QCOMPARE( error.code(), expectedErrorCode );
+		}
+	}
+
+template < typename Functor >
+	void expectSuccess( Functor &&functor ) {
+		try {
+			functor();
+		} catch ( const system_error &error ) {
+			QFAIL( "Unexcepted system error thrown!" );
 		}
 	}
 
 void FileTest::testInvalidIsEof() {
-	expectSystemError([ & ] {
+	expectError([ & ] {
 		file file;
 		file.is_eof();
 	}, make_error_code( errc::invalid_argument ));
 }
 
 void FileTest::testInvalidGet() {
-	expectSystemError([ & ] {
+	expectError([ & ] {
 		file file;
 		file.get();
 	}, make_error_code( errc::invalid_argument ));
 }
 
 void FileTest::testInvalidIsError() {
-	expectSystemError([ & ] {
+	expectError([ & ] {
 		file file;
 		file.is_error();
 	}, make_error_code( errc::invalid_argument ));
 }
 
 void FileTest::testInvalidClose() {
-	expectSystemError([ & ] {
+	expectError([ & ] {
 		file file;
 		file.close();
 	}, make_error_code( errc::invalid_argument ));
 }
 
 void FileTest::testInvalidCloseAndClose() {
-	expectSystemError([ & ] {
+	expectError([ & ] {
 		string fileName = make_temporary_filename();
 		file_deleter fileDeleter( fileName );
 
@@ -117,7 +126,7 @@ void FileTest::testInvalidCloseAndClose() {
 }
 
 void FileTest::testOpenFailed() {
-	expectSystemError([ & ] {
+	expectError([ & ] {
 		file file;
 		string fileName = make_temporary_filename();
 		file.open( fileName.c_str(), "r" );
@@ -125,32 +134,27 @@ void FileTest::testOpenFailed() {
 }
 
 void FileTest::testOpenSucceeded() {
-	try {
+	expectSuccess([ & ] {
 		string fileName = make_temporary_filename();
 		file_deleter fileDeleter( fileName );
 
 		file file;
 		file.open( fileName.c_str(), "w" );
-	} catch ( const system_error & ) {
-		QFAIL( "Unexpected system_error thrown!" );
-	}
+	});
 }
 
 void FileTest::testGetCharReturnsEof() {
-	try {
+	expectError([ & ] {
 		string fileName = make_temporary_filename();
 		file_deleter fileDeleter( fileName );
 
 		file file( fileName.c_str(), "w+" );
 		file.get();
-		QFAIL( "Expected thrown system_error( file_error::eof )!" );
-	} catch ( const system_error &error ) {
-		QVERIFY( error.code() == file_error::eof );
-	}
+	}, make_error_code( file_error::eof ));
 }
 
 void FileTest::testGetStringReturnsEof() {
-	try {
+	expectError([ & ] {
 		string fileName = make_temporary_filename();
 		file_deleter fileDeleter( fileName );
 
@@ -158,14 +162,11 @@ void FileTest::testGetStringReturnsEof() {
 
 		char str[ 100 ];
 		file.get( str, 10 );
-		QFAIL( "Expected thrown system_error( file_error::eof )!" );
-	} catch ( const system_error &error ) {
-		QVERIFY( error.code() == file_error::eof );
-	}
+	}, make_error_code( file_error::eof ));
 }
 
 void FileTest::testReadReturnsEof() {
-	try {
+	expectError([ & ] {
 		string fileName = make_temporary_filename();
 		file_deleter fileDeleter( fileName );
 
@@ -173,23 +174,17 @@ void FileTest::testReadReturnsEof() {
 
 		char buffer[ 100 ];
 		file.read( buffer, sizeof( buffer ), 1 );
-		QFAIL( "Expected thrown system_error( file_error::eof )!" );
-	} catch ( const system_error &error ) {
-		QVERIFY( error.code() == file_error::eof );
-	}
+	}, make_error_code( file_error::eof ));
 }
 
 void FileTest::testCloseAndDestructor() {
-	try {
+	expectSuccess([ & ] {
 		string fileName = make_temporary_filename();
 		file_deleter fileDeleter( fileName );
 
 		file file( fileName.c_str(), "w+" );
 		file.close();
-	} catch ( const system_error & ) {
-		QFAIL( "Unexpected system_error thrown!" );
-	}
+	});
 }
-
 
 } } }
