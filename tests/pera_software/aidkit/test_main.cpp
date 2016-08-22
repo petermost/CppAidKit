@@ -18,9 +18,11 @@ int main( int argc, char *argv[] ) {
 	QStringList arguments = application.arguments();
 
 	// if there aren't any parameters then we want the 'silent' mode:
+	// http://doc.qt.io/qt-5/qtest-overview.html#qt-test-command-line-arguments
 
-	if ( arguments.length() == 1 )
+	if ( arguments.length() == 1 ) {
 		arguments.append( "-silent" );
+	}
 
 	auto result = pera_software::aidkit::executeTests( arguments );
 

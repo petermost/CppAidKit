@@ -29,16 +29,7 @@ namespace pera_software { namespace aidkit { namespace qt {
 class AIDKIT_API Test : public QObject {
 	Q_OBJECT
 	public:
-		template < typename Functor >
-			static void forEach( Functor &&functor ) {
-				for ( std::size_t i = 0; i < s_testsSize; ++i ) {
-					functor( s_tests[ i ]);
-				}
-			}
-
 		static int executeTests( const QStringList &arguments );
-
-		static QVector< Test * > queryTests();
 
 	protected:
 		Test();
@@ -46,7 +37,7 @@ class AIDKIT_API Test : public QObject {
 
 	private:
 		enum { SIZE = 100 };
-		static std::size_t s_testsSize;
+		static std::size_t s_testsCount;
 		static std::array< Test *, SIZE > s_tests;
 };
 

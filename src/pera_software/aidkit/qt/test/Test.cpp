@@ -23,7 +23,7 @@ namespace pera_software { namespace aidkit { namespace qt {
 
 using namespace std;
 
-size_t Test::s_testsSize;
+size_t Test::s_testsCount;
 array< Test *, Test::SIZE > Test::s_tests;
 
 //==================================================================================================
@@ -32,7 +32,7 @@ Test::Test() {
 
 	// Append the test to the list of tests:
 
-	s_tests[ s_testsSize++ ] = this;
+	s_tests[ s_testsCount++ ] = this;
 }
 
 //==================================================================================================
@@ -46,7 +46,7 @@ Test::~Test() {
 
 	// Adjust the size so the 'removed' test won't be accessed anymore:
 
-	s_testsSize = endIterator - s_tests.begin();
+	s_testsCount = endIterator - s_tests.begin();
 }
 
 //==================================================================================================
@@ -54,22 +54,11 @@ Test::~Test() {
 int Test::executeTests( const QStringList &arguments ) {
 	int summaryResult = 0;
 
-	forEach([ & ]( Test *test ) {
-		int result = QTest::qExec( test, arguments );
+	for ( std::size_t i = 0; i < s_testsCount; ++i ) {
+		int result = QTest::qExec( s_tests[ i ], arguments );
 		summaryResult = summaryResult && result;
-	});
+	}
 	return summaryResult;
-}
-
-//==================================================================================================
-
-QVector< Test * > Test::queryTests() {
-	QVector< Test * > tests;
-
-	forEach([ & ]( Test *test ) {
-		tests.push_back( test );
-	});
-	return tests;
 }
 
 } } }
