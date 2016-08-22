@@ -119,9 +119,13 @@ void UnicodeTest::testUmlauteWideStringToU8String() {
 }
 
 void UnicodeTest::testUmlauteU8StringToWideString() {
+#ifdef U8STRING_TO_WSTRING_NOT_WORKING
+	QSKIP( "u8string_to_wstring is not working with this glibc version!" );
+#else
 	wstring utf16Umlaute = u8string_to_wstring( UTF8_UMLAUTE );
 
 	QCOMPARE( UTF16_UMLAUTE, utf16Umlaute );
+#endif
 }
 
 //=================================================================================================
