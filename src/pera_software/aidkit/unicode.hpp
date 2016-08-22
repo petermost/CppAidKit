@@ -35,7 +35,7 @@ namespace pera_software { namespace aidkit {
 		__attribute__(( warning( "doesn't work correctly with this glibc version!" )));
 
 #else
-		AIDKIT_API std::wstring u8string_to_wstring( const u8string & )
+		AIDKIT_API std::wstring u8string_to_wstring( const u8string & );
 #endif
 
 	AIDKIT_API u8string wstring_to_u8string( const std::wstring & );
