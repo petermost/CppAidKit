@@ -22,69 +22,78 @@
 
 namespace pera_software { namespace aidkit {
 
-	template < typename E >
+	template < typename Enum >
 		class enum_flags {
 			public:
-				typedef typename std::underlying_type< E >::type int_type;
+				typedef typename std::underlying_type< Enum >::type int_type;
 
-				static_assert( std::is_enum< E >::value, "enum_flags: Type must be an enum!" );
+				static_assert( std::is_enum< Enum >::value, "enum_flags: Type must be an enum!" );
 				static_assert( std::is_unsigned< int_type >::value, "enum_flags: Underlying enum type must be unsigned!" );
 
-				enum_flags() = default;
-				enum_flags( const enum_flags & ) = default;
+				constexpr enum_flags() = default;
+				constexpr enum_flags( const enum_flags & ) = default;
 
-				enum_flags( std::initializer_list< E > enums ) noexcept {
-					for ( E e : enums )
-						*this |= e;
+				constexpr enum_flags( Enum e ) noexcept
+					: value_( to_bit( e )) {
 				}
 
 				// Define operators according to ISO C++ standard 17.5.2.1.3 [bitmask.types]:
 
-				enum_flags &operator |= ( E e ) noexcept {
-					value_ |= ( 1u << static_cast< int_type >( e ));
+				constexpr enum_flags &operator |= ( enum_flags other ) noexcept {
+					value_ |= other.value_;
 
 					return *this;
 				}
 
-				enum_flags &operator &= ( E e ) noexcept {
-					value_ &= ( 1u << static_cast< int_type >( e ));
+				constexpr enum_flags &operator &= ( enum_flags other ) noexcept {
+					value_ &= other.value_;
 
 					return *this;
 				}
 
-				enum_flags &operator ^= ( E e ) noexcept {
-					value_ ^= ( 1u << static_cast< int_type >( e ));
+				constexpr enum_flags &operator ^= ( enum_flags other ) noexcept {
+					value_ ^= other.value_;
 
 					return *this;
 				}
 
-				enum_flags operator | ( E e ) const noexcept {
-					return enum_flags( value_ ) |= e;
+				constexpr enum_flags operator | ( enum_flags other ) const noexcept {
+					return enum_flags( value_ ) |= other;
 				}
 
-				enum_flags operator & ( E e ) const noexcept {
-					return enum_flags( value_ ) &= e;
+				constexpr enum_flags operator & ( enum_flags other ) const noexcept {
+					return enum_flags( value_ ) &= other;
 				}
 
-				enum_flags operator ^ ( E e ) const noexcept {
-					return enum_flags( value_ ) ^= e;
+				constexpr enum_flags operator ^ ( enum_flags other ) const noexcept {
+					return enum_flags( value_ ) ^= other;
 				}
 
-				enum_flags operator ~() const noexcept {
+				constexpr enum_flags operator ~() const noexcept {
 					return enum_flags( ~value_ );
 				}
 
-				explicit operator bool() const noexcept {
-					return value_ != 0;
+				// Allow comparing:
+
+				constexpr bool operator == ( enum_flags other ) const noexcept {
+					return value_ == other.value_;
 				}
 
-				int_type to_int() const noexcept {
+				constexpr bool operator != ( enum_flags other ) const noexcept {
+					return value_ != other.value_;
+				}
+
+				constexpr int_type to_int() const noexcept {
 					return value_;
 				}
 
 			private:
-				enum_flags( int_type value ) noexcept {
-					value_ = value;
+				static inline constexpr int_type to_bit( Enum e ) {
+					return 1u << static_cast< int_type >( e );
+				}
+
+				constexpr enum_flags( int_type value ) noexcept
+					: value_( value ) {
 				}
 
 				int_type value_ = 0;

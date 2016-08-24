@@ -25,49 +25,63 @@ using namespace std;
 
 static EnumFlagsTest enumFlagsTest;
 
-enum class Option : unsigned {
-	A,
-	B,
-	C
+enum class open_mode : unsigned {
+	read,
+	write,
+	append,
+	extended,
+	binary
 };
 
 // Explicit template instantion to detect compile errors early:
 
-template class enum_flags< Option >;
+template class enum_flags< open_mode >;
 
-static void evaluate( enum_flags< Option > ) {
+typedef enum_flags< open_mode > open_modes;
+
+static void open_file( const open_modes modes  ) {
+	if (( modes & open_mode::append ) == open_mode::append ) {
+	}
 }
 
 //#########################################################################################################
 
 void EnumFlagsTest::testFunctionCall() {
-	evaluate({ Option::C, Option::A });
-}
-
-void EnumFlagsTest::testDefaultConstructor() {
-	enum_flags< Option > options;
-
-	QCOMPARE( options.to_int(), 0u );
+	open_file( open_modes( open_mode::append ) | open_mode::extended );
 }
 
 void EnumFlagsTest::testConstructor() {
-	enum_flags< Option > options = { Option::A, Option::C };
+	open_modes modes( open_mode::append );
 
-	QCOMPARE( options.to_int(), 5u );
+	QCOMPARE( modes.to_int(), 4u );
 }
 
-void EnumFlagsTest::testOr() {
-	enum_flags< Option > options = { Option::A };
-	enum_flags< Option > result = options | Option::C;
+void EnumFlagsTest::testDefaultConstructor() {
+	open_modes modes;
 
-	QCOMPARE( result.to_int(), 5u );
+	QCOMPARE( modes.to_int(), 0u );
+}
+
+void EnumFlagsTest::testOr1() {
+	open_modes modes = open_modes( open_mode::read ) | open_mode::extended;
+
+	QCOMPARE( modes.to_int(), 9u );
+}
+
+void EnumFlagsTest::testOr2() {
+	open_modes modes = open_modes( open_mode::read ) | open_mode::write | open_mode::extended;
+	open_modes mask = open_modes( open_mode::read ) | open_mode::write;
+
+	open_modes result = modes & mask;
+
+	QVERIFY( result == mask );
 }
 
 void EnumFlagsTest::testAnd() {
-	enum_flags< Option > options = { Option::A, Option::C };
-	enum_flags< Option > result = options & Option::C;
+	open_modes modes = open_modes( open_mode::read ) | open_mode::extended | open_mode::binary;
+	open_modes result = modes & open_mode::binary;
 
-	QCOMPARE( static_cast< bool >( result & Option::C ), true );
+	QVERIFY( result == open_mode::binary );
 }
 
 } }

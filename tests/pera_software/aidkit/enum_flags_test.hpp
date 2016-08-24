@@ -26,12 +26,11 @@ namespace pera_software { namespace aidkit {
 
 		private slots:
 			void testFunctionCall();
-			void testDefaultConstructor();
 			void testConstructor();
-			void testOr();
+			void testDefaultConstructor();
+			void testOr1();
+			void testOr2();
 			void testAnd();
-//			void testXor();
-			//			void testNot();
 	};
 
 } }
