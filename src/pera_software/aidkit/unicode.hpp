@@ -27,10 +27,6 @@ namespace pera_software { namespace aidkit {
 	typedef std::basic_string< char8_t, std::char_traits< char8_t >, std::allocator< char8_t >> u8string;
 
 #if __GLIBCXX__ == 20160427
-	#define U8STRING_TO_WSTRING_NOT_WORKING
-#endif
-
-#ifdef U8STRING_TO_WSTRING_NOT_WORKING
 	AIDKIT_API std::wstring u8string_to_wstring( const u8string & )
 		__attribute__(( warning( "doesn't work correctly with this glibc version!" )));
 
