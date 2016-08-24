@@ -21,6 +21,7 @@
 #include "file_error.hpp"
 #include "system_error.hpp"
 #include <pera_software/aidkit/aidkit.hpp>
+#include <pera_software/aidkit/enum_flags.hpp>
 #include <cstdio>
 
 namespace pera_software { namespace aidkit { namespace io {
@@ -199,6 +200,7 @@ namespace pera_software { namespace aidkit { namespace io {
 					}
 		};
 
+	// TODO: Should we name the methods the same (without the prefixed 'f') as the C-functions?
 
 	template < typename Char, typename Category = file_locked_category, typename Functions = file_functions< Char, Category >>
 		class basic_file {
@@ -225,7 +227,7 @@ namespace pera_software { namespace aidkit { namespace io {
 					end     = SEEK_END
 				};
 
-				/// Indicates What kind of buffering should be used:
+				/// Indicates what kind of buffering should be used:
 
 				enum class buffer_mode {
 					full = _IOFBF,
@@ -233,18 +235,32 @@ namespace pera_software { namespace aidkit { namespace io {
 					none = _IONBF
 				};
 
+				/// Indicates what orientation the file has:
+
 				enum class orientation {
 					byte = -1,
 					none =  0,
 					wide =  1
 				};
 
+				/// Indicates how the file should be open:
+
+				enum class access : unsigned {
+					read,
+					write,
+					append,
+					extended,
+					binary
+				};
+
+				typedef enum_flags< access > access_mode;
+
 				basic_file() {
 					file_ = nullptr;
 				}
 
-				basic_file( const char fileName[], const char openMode[] ) {
-					open( fileName, openMode );
+				basic_file( const char fileName[], const access_mode mode ) {
+					open( fileName, mode );
 				}
 
 				// For now we forbid copying, becaue what should happen if two instances 'point' to
@@ -263,14 +279,31 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				// Opening a file:
 
-				bool open( const char fileName[], const char openMode[] ) {
+				bool open( const char fileName[], const access_mode mode ) {
 					return call_and_throw_if_error([ & ]( std::error_code *errorCode ) {
-						return open( fileName, openMode, errorCode );
+						return open( fileName, mode, errorCode );
 					});
 				}
 
-				bool open( const char fileName[], const char openMode[], std::error_code *errorCode ) noexcept {
-					file_ = Functions::do_open( fileName, openMode );
+				bool open( const char fileName[], const access_mode mode, std::error_code *errorCode ) noexcept {
+
+					// Make the mode string:
+
+					std::string modeString;
+					if (( mode & access::read ) == access::read )
+						modeString += 'r';
+					if (( mode & access::write ) == access::write )
+						modeString += 'w';
+					if (( mode & access::append ) == access::append )
+						modeString += 'a';
+					if (( mode & access::extended ) == access::extended )
+						modeString += '+';
+					if (( mode & access::binary ) == access::binary )
+						modeString += 'b';
+
+					// Open the file:
+
+					file_ = Functions::do_open( fileName, modeString.c_str() );
 					bool success = ( file_ != nullptr );
 
 					*errorCode = get_error_code( success );
