@@ -83,6 +83,10 @@ namespace pera_software { namespace aidkit {
 					return value_ != other.value_;
 				}
 
+				constexpr explicit operator bool () const noexcept {
+					return value_ != 0;
+				}
+
 				constexpr int_type to_int() const noexcept {
 					return value_;
 				}

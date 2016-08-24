@@ -42,6 +42,8 @@ typedef enum_flags< open_mode > open_modes;
 static void open_file( const open_modes modes  ) {
 	if (( modes & open_mode::append ) == open_mode::append ) {
 	}
+	if ( modes & open_mode::binary ) {
+	}
 }
 
 //#########################################################################################################

@@ -290,15 +290,15 @@ namespace pera_software { namespace aidkit { namespace io {
 					// Make the mode string:
 
 					std::string modeString;
-					if (( mode & access::read ) == access::read )
+					if ( mode & access::read )
 						modeString += 'r';
-					if (( mode & access::write ) == access::write )
+					if ( mode & access::write )
 						modeString += 'w';
-					if (( mode & access::append ) == access::append )
+					if ( mode & access::append )
 						modeString += 'a';
-					if (( mode & access::extended ) == access::extended )
+					if ( mode & access::extended )
 						modeString += '+';
-					if (( mode & access::binary ) == access::binary )
+					if ( mode & access::binary )
 						modeString += 'b';
 
 					// Open the file:
