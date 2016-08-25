@@ -37,6 +37,11 @@ namespace pera_software { namespace aidkit {
 					: value_( to_bit( e )) {
 				}
 
+				constexpr enum_flags( std::initializer_list< Enum > enums ) noexcept {
+					for ( Enum e : enums )
+						*this |= e;
+				}
+
 				// Define operators according to ISO C++ standard 17.5.2.1.3 [bitmask.types]:
 
 				constexpr enum_flags &operator |= ( enum_flags other ) noexcept {
@@ -102,4 +107,10 @@ namespace pera_software { namespace aidkit {
 
 				int_type value_ = 0;
 		};
+
+	template < typename Enum >
+		enum_flags< Enum > make_flags( std::initializer_list< Enum > enums ) noexcept {
+			return enum_flags< Enum >( enums );
+		}
+
 } }
