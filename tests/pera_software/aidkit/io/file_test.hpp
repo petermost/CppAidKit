@@ -39,6 +39,7 @@ namespace pera_software { namespace aidkit { namespace io {
 			void testReadReturnsEof();
 			void testGetStringReturnsEof();
 			void testCloseAndDestructor();
+			void testOpenReadWrite();
 	};
 
 } } }

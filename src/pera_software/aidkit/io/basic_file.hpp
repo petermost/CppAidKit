@@ -245,7 +245,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				/// Indicates how the file should be open:
 
-				enum class access : unsigned {
+				enum class open_mode : unsigned {
 					read,
 					write,
 					append,
@@ -253,14 +253,8 @@ namespace pera_software { namespace aidkit { namespace io {
 					binary
 				};
 
-				typedef enum_flags< access > access_mode;
-
 				basic_file() {
 					file_ = nullptr;
-				}
-
-				basic_file( const char fileName[], const access_mode mode ) {
-					open( fileName, mode );
 				}
 
 				// For now we forbid copying, becaue what should happen if two instances 'point' to
@@ -269,6 +263,10 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				basic_file( const basic_file & ) = delete;
 				basic_file &operator = ( const basic_file & ) = delete;
+
+				basic_file( const char fileName[], const enum_flags< open_mode > mode ) {
+					open( fileName, mode );
+				}
 
 				~basic_file() noexcept {
 					// Close the file with the non-throwing close method:
@@ -279,26 +277,28 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				// Opening a file:
 
-				bool open( const char fileName[], const access_mode mode ) {
+				bool open( const char fileName[], const enum_flags< open_mode > mode ) {
 					return call_and_throw_if_error([ & ]( std::error_code *errorCode ) {
 						return open( fileName, mode, errorCode );
 					});
 				}
 
-				bool open( const char fileName[], const access_mode mode, std::error_code *errorCode ) noexcept {
+				bool open( const char fileName[], const enum_flags< open_mode > mode, std::error_code *errorCode ) noexcept {
 
 					// Make the mode string:
 
 					std::string modeString;
-					if ( mode & access::read )
+					if ( mode & open_mode::read )
 						modeString += 'r';
-					if ( mode & access::write )
+					if ( mode & open_mode::write )
 						modeString += 'w';
-					if ( mode & access::append )
+					if ( mode & open_mode::append )
 						modeString += 'a';
-					if ( mode & access::extended )
+
+					if ( mode & open_mode::extended )
 						modeString += '+';
-					if ( mode & access::binary )
+
+					if ( mode & open_mode::binary )
 						modeString += 'b';
 
 					// Open the file:

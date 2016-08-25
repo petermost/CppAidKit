@@ -45,9 +45,11 @@ class file_deleter {
 		// exceptions (http://en.cppreference.com/w/cpp/language/destructor#Exceptions):
 
 		~file_deleter() noexcept( false ) {
-			// We want to be notified when the removal fails, so we call the throwing remove version:
+			// We want to be notified when the removal fails, so we throw an exception:
 
-			remove_file( fileName_.c_str() );
+			error_code errorCode;
+			if ( !remove_file( fileName_.c_str(), &errorCode ) && errorCode != errc::no_such_file_or_directory )
+				throw system_error( errorCode );
 		}
 
 	private:
@@ -59,7 +61,7 @@ static void nullHandler( const wchar_t *, const wchar_t *, const wchar_t *, unsi
 }
 #endif
 
-static const file::access_mode WRITE_ACCESS( file::access_mode( file::access::write ) | file::access::extended );
+static const enum_flags< file::open_mode > WRITE_ACCESS({ file::open_mode::write, file::open_mode::extended });
 
 //==================================================================================================
 
@@ -89,8 +91,9 @@ template < typename Functor >
 	void expectSuccess( Functor &&functor ) {
 		try {
 			functor();
-		} catch ( const system_error & ) {
-			QFAIL( "Unexcepted system error thrown!" );
+		} catch ( const system_error &error ) {
+			string failMessage = "Unexcepted system error thrown: " + error.code().message() + " !";
+			QFAIL( failMessage.c_str() );
 		}
 	}
 
@@ -149,7 +152,7 @@ void FileTest::testOpenFailed() {
 	expectError([ & ] {
 		file file;
 		string fileName = make_temporary_filename();
-		file.open( fileName.c_str(), file::access::read );
+		file.open( fileName.c_str(), file::open_mode::read );
 	}, make_error_code( errc::no_such_file_or_directory ));
 }
 
@@ -161,7 +164,7 @@ void FileTest::testOpenSucceeded() {
 		file_deleter fileDeleter( fileName );
 
 		file file;
-		file.open( fileName.c_str(), file::access::write );
+		file.open( fileName.c_str(), file::open_mode::write );
 	});
 }
 
@@ -215,6 +218,17 @@ void FileTest::testCloseAndDestructor() {
 		file file( fileName.c_str(), WRITE_ACCESS );
 		file.close();
 	});
+}
+
+//==================================================================================================
+
+void FileTest::testOpenReadWrite() {
+	expectError([ & ] {
+		string fileName = make_temporary_filename();
+		file_deleter fileDeleter( fileName );
+
+		file file( fileName.c_str(), make_flags({ file::open_mode::write, file::open_mode::read }));
+	}, make_error_code( errc::invalid_argument ));
 }
 
 } } }
