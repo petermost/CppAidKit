@@ -1,5 +1,5 @@
 add_compile_options(
-	-std=c++14                  # Compile in C++14 mode
+	-std=c++1z                  # Compile in C++17 mode
 
 	-Wall -Wextra -Wpedantic    # Enable all warnings
 	-Wmissing-include-dirs      # Warn if a user-supplied include directory does not exist.
