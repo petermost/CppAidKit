@@ -18,6 +18,10 @@
 cmake_minimum_required( VERSION 3.0 )
 project( AidKit )
 
+# Show the compilers name and version:
+
+message( "C++ compiler is: " ${CMAKE_CXX_COMPILER_ID} ", version: " ${CMAKE_CXX_COMPILER_VERSION})
+
 include( cmake/general_cmake_options.cmake )
 
 #if ( UNIX )
@@ -27,7 +31,6 @@ include( cmake/general_cmake_options.cmake )
 #endif()
 
 
-# message( "C++ compiler version is: " ${CMAKE_CXX_COMPILER_VERSION})
 
 ############################# Setup Qt5 usage #################################
 # See: http://doc.qt.io/qt-5/cmake-manual.html
