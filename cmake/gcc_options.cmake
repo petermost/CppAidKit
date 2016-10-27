@@ -1,6 +1,10 @@
-add_compile_options(
-	-std=c++1z                  # Compile in C++17 mode
+# Show the compilers name and version:
 
+message( "C++ compiler is: " ${CMAKE_CXX_COMPILER_ID} ", version: " ${CMAKE_CXX_COMPILER_VERSION})
+
+# Add GCC specific switches:
+
+add_compile_options(
 	-Wall -Wextra -Wpedantic    # Enable all warnings
 	-Wmissing-include-dirs      # Warn if a user-supplied include directory does not exist.
 	-Wundef                     # Warn if an undefined identifier is evaluated in an #if directive.
@@ -18,3 +22,4 @@ if ( CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5 )
 		-Wsuggest-override          # Warn about overriding virtual functions that are not marked with the override keyword.
 	)
 endif()
+

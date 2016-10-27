@@ -18,7 +18,7 @@
 cmake_minimum_required( VERSION 3.0 )
 project( AidKit )
 
-include( cmake/general_cmake_options.cmake )
+include( cmake/all_options.cmake )
 
 #if ( UNIX )
 #	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.5.0/5.5/gcc_64/lib/cmake" )
@@ -42,18 +42,11 @@ find_package( Qt5Test )
 
 ############################# Setup AidKit ####################################
 
-
-include( cmake/gcc_compile_options.cmake )
-
-if ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-	message( "Enabling debug settings" )
-	add_definitions( -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC )
 #	add_compile_options(
 #		-fsanitize=address      # Enable AddressSanitizer, a fast memory error detector.
 #		-fsanitize=thread       # Enable ThreadSanitizer, a fast data race detector.
 #		-fsanitize=undefined    # Enable UndefinedBehaviorSanitizer, a fast undefined behavior detector.
 #	)
-endif()
 
 if ( MINGW )
 	add_definitions( -D__USE_MINGW_ANSI_STDIO )
