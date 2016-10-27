@@ -27,16 +27,16 @@ namespace pera_software { namespace aidkit {
 	template< typename T, size_t SIZE, typename Integer = int, typename String = std::string >
 		class enum_class {
 			public:
-				enum_class( const enum_class &other ) {
-					name_ = other.name_;
+				enum_class( const enum_class &other ) noexcept {
 					value_ = other.value_;
+					name_ = other.name_;
 					isOwner_ = false;
 				}
 
-				enum_class &operator = ( const enum_class &other ) {
+				enum_class &operator = ( const enum_class &other ) noexcept {
 					if ( this != &other ) {
-						name_ = other.name_;
 						value_ = other.value_;
+						name_ = other.name_;
 						isOwner_ = false;
 					}
 					return *this;
@@ -100,8 +100,8 @@ namespace pera_software { namespace aidkit {
 				}
 
 				enum_class( Integer value, const String &name = String() ) {
-					name_ = new String( name );
 					value_ = value;
+					name_ = new String( name );
 					isOwner_ = true;
 
 					s_values[ s_valuesSize++ ] = static_cast< const T * >( this );
@@ -121,8 +121,8 @@ namespace pera_software { namespace aidkit {
 				// - Use a shared_ptr because copying would then always incremente/decrement the
 				//   reference counter which is most likely not in the cache.
 
-				String *name_;
 				Integer value_;
+				String *name_;
 				bool isOwner_;
 
 				static const_iterator cbegin() noexcept {
@@ -142,8 +142,6 @@ namespace pera_software { namespace aidkit {
 
 				static size_t s_valuesSize;
 				static std::array< const T *, SIZE > s_values;
-
-
 		};
 
 	// Note that all static members must be usable after they have been zero-initialized!
