@@ -76,7 +76,7 @@ FileTest::FileTest() {
 //==================================================================================================
 
 template < typename Functor >
-	void expectError( Functor &&functor, const error_code &expectedErrorCode ) {
+	void expectError( const error_code &expectedErrorCode, Functor &&functor ) {
 		try {
 			functor();
 			QFAIL( "Expected thrown system_error!" );
@@ -100,60 +100,60 @@ template < typename Functor >
 //==================================================================================================
 
 void FileTest::testInvalidIsEof() {
-	expectError([ & ] {
+	expectError( make_error_code( errc::invalid_argument ), [ & ] {
 		file file;
 		file.is_eof();
-	}, make_error_code( errc::invalid_argument ));
+	});
 }
 
 //==================================================================================================
 
 void FileTest::testInvalidGet() {
-	expectError([ & ] {
+	expectError( make_error_code( errc::invalid_argument ), [ & ] {
 		file file;
 		file.get();
-	}, make_error_code( errc::invalid_argument ));
+	});
 }
 
 //==================================================================================================
 
 void FileTest::testInvalidIsError() {
-	expectError([ & ] {
+	expectError( make_error_code( errc::invalid_argument ), [ & ] {
 		file file;
 		file.is_error();
-	}, make_error_code( errc::invalid_argument ));
+	});
 }
 
 //==================================================================================================
 
 void FileTest::testInvalidClose() {
-	expectError([ & ] {
+	expectError( make_error_code( errc::invalid_argument ), [ & ] {
 		file file;
 		file.close();
-	}, make_error_code( errc::invalid_argument ));
+	});
 }
 
 //==================================================================================================
 
 void FileTest::testInvalidCloseAndClose() {
-	expectError([ & ] {
+	expectError( make_error_code( errc::invalid_argument ), [ & ] {
 		string fileName = make_temporary_filename();
 		file_deleter fileDeleter( fileName );
 
 		file file( fileName.c_str(), WRITE_ACCESS );
 		file.close();
 		file.close();
-	}, make_error_code( errc::invalid_argument ));
+	});
 }
 
 //==================================================================================================
 
 void FileTest::testOpenFailed() {
-	expectError([ & ] {
+	expectError( make_error_code( errc::no_such_file_or_directory ), [ & ] {
 		file file;
 		string fileName = make_temporary_filename();
 		file.open( fileName.c_str(), file::open_mode::read );
-	}, make_error_code( errc::no_such_file_or_directory ));
+	});
 }
 
 //==================================================================================================
@@ -171,19 +171,19 @@ void FileTest::testOpenSucceeded() {
 //==================================================================================================
 
 void FileTest::testGetCharReturnsEof() {
-	expectError([ & ] {
+	expectError( make_error_code( file_error::eof ), [ & ] {
 		string fileName = make_temporary_filename();
 		file_deleter fileDeleter( fileName );
 
 		file file( fileName.c_str(), WRITE_ACCESS );
 		file.get();
-	}, make_error_code( file_error::eof ));
+	});
 }
 
 //==================================================================================================
 
 void FileTest::testGetStringReturnsEof() {
-	expectError([ & ] {
+	expectError( make_error_code( file_error::eof ), [ & ] {
 		string fileName = make_temporary_filename();
 		file_deleter fileDeleter( fileName );
 
@@ -191,13 +191,13 @@ void FileTest::testGetStringReturnsEof() {
 
 		char str[ 100 ];
 		file.get( str, 10 );
-	}, make_error_code( file_error::eof ));
+	});
 }
 
 //==================================================================================================
 
 void FileTest::testReadReturnsEof() {
-	expectError([ & ] {
+	expectError( make_error_code( file_error::eof ), [ & ] {
 		string fileName = make_temporary_filename();
 		file_deleter fileDeleter( fileName );
 
@@ -205,7 +205,7 @@ void FileTest::testReadReturnsEof() {
 
 		char buffer[ 100 ];
 		file.read( buffer, sizeof( buffer ), 1 );
-	}, make_error_code( file_error::eof ));
+	});
 }
 
 //==================================================================================================
@@ -223,12 +223,12 @@ void FileTest::testCloseAndDestructor() {
 //==================================================================================================
 
 void FileTest::testOpenReadWrite() {
-	expectError([ & ] {
+	expectError( make_error_code( errc::invalid_argument ), [ & ] {
 		string fileName = make_temporary_filename();
 		file_deleter fileDeleter( fileName );
 
 		file file( fileName.c_str(), make_flags({ file::open_mode::write, file::open_mode::read }));
-	}, make_error_code( errc::invalid_argument ));
+	});
 }
 
 } } }
