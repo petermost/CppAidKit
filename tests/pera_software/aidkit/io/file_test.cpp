@@ -28,33 +28,7 @@ using namespace std;
 template class basic_file< char, file_locked_category >;
 template class basic_file< wchar_t, file_locked_category >;
 
-//template bool basic_file< char, file_locked_category >::print< int, int >( error_code *, const char *, int, int  );
-//template bool basic_file< char, file_locked_category >::is_eof() const;
-
 static FileTest fileTest;
-
-// An RAII file deleter for deleting/cleaning up the temporary files:
-
-class file_deleter {
-	public:
-		file_deleter( const string &fileName ) {
-			fileName_ = fileName;
-		}
-
-		// Destructors in C++11 are implicitly declared as noexcept, so we have to explicitly allow
-		// exceptions (http://en.cppreference.com/w/cpp/language/destructor#Exceptions):
-
-		~file_deleter() noexcept( false ) {
-			// We want to be notified when the removal fails, so we throw an exception:
-
-			error_code errorCode;
-			if ( !remove_file( fileName_.c_str(), &errorCode ) && errorCode != errc::no_such_file_or_directory )
-				throw system_error( errorCode );
-		}
-
-	private:
-		string fileName_;
-};
 
 #if defined( AIDKIT_MINGW )
 static void nullHandler( const wchar_t *, const wchar_t *, const wchar_t *, unsigned int, uintptr_t ) {
@@ -63,6 +37,10 @@ static void nullHandler( const wchar_t *, const wchar_t *, const wchar_t *, unsi
 
 static const enum_flags< file::open_mode > WRITE_ACCESS({ file::open_mode::write, file::open_mode::extended });
 
+static const char *makeTemporaryFilename() {
+	return "pera_software.aidkit.io.file_test.cpp.dat";
+}
+
 //==================================================================================================
 
 FileTest::FileTest() {
@@ -70,7 +48,19 @@ FileTest::FileTest() {
 		// Disable the invalid error handler from the msvcrt:
 
 		_set_invalid_parameter_handler( nullHandler );
-	#endif
+#endif
+}
+
+//==================================================================================================
+
+void FileTest::initTestCase() {
+	remove_file_if_exists( makeTemporaryFilename() );
+}
+
+//==================================================================================================
+
+void FileTest::cleanupTestCase() {
+	remove_file_if_exists( makeTemporaryFilename() );
 }
 
 //==================================================================================================
@@ -137,7 +127,7 @@ void FileTest::testInvalidClose() {
 
 void FileTest::testInvalidCloseAndClose() {
 	expectError( make_error_code( errc::invalid_argument ), [ & ] {
-		string fileName = make_temporary_filename();
+		string fileName = makeTemporaryFilename();
 		file_deleter fileDeleter( fileName );
 
 		file file( fileName.c_str(), WRITE_ACCESS );
@@ -151,7 +141,7 @@ void FileTest::testInvalidCloseAndClose() {
 void FileTest::testOpenFailed() {
 	expectError( make_error_code( errc::no_such_file_or_directory ), [ & ] {
 		file file;
-		string fileName = make_temporary_filename();
+		string fileName = makeTemporaryFilename();
 		file.open( fileName.c_str(), file::open_mode::read );
 	});
 }
@@ -160,7 +150,7 @@ void FileTest::testOpenFailed() {
 
 void FileTest::testOpenSucceeded() {
 	expectSuccess([ & ] {
-		string fileName = make_temporary_filename();
+		string fileName = makeTemporaryFilename();
 		file_deleter fileDeleter( fileName );
 
 		file file;
@@ -172,7 +162,7 @@ void FileTest::testOpenSucceeded() {
 
 void FileTest::testGetCharReturnsEof() {
 	expectError( make_error_code( file_error::eof ), [ & ] {
-		string fileName = make_temporary_filename();
+		string fileName = makeTemporaryFilename();
 		file_deleter fileDeleter( fileName );
 
 		file file( fileName.c_str(), WRITE_ACCESS );
@@ -184,7 +174,7 @@ void FileTest::testGetCharReturnsEof() {
 
 void FileTest::testGetStringReturnsEof() {
 	expectError( make_error_code( file_error::eof ), [ & ] {
-		string fileName = make_temporary_filename();
+		string fileName = makeTemporaryFilename();
 		file_deleter fileDeleter( fileName );
 
 		file file( fileName.c_str(), WRITE_ACCESS );
@@ -198,7 +188,7 @@ void FileTest::testGetStringReturnsEof() {
 
 void FileTest::testReadReturnsEof() {
 	expectError( make_error_code( file_error::eof ), [ & ] {
-		string fileName = make_temporary_filename();
+		string fileName = makeTemporaryFilename();
 		file_deleter fileDeleter( fileName );
 
 		file file( fileName.c_str(), WRITE_ACCESS );
@@ -212,7 +202,7 @@ void FileTest::testReadReturnsEof() {
 
 void FileTest::testCloseAndDestructor() {
 	expectSuccess([ & ] {
-		string fileName = make_temporary_filename();
+		string fileName = makeTemporaryFilename();
 		file_deleter fileDeleter( fileName );
 
 		file file( fileName.c_str(), WRITE_ACCESS );
@@ -223,8 +213,8 @@ void FileTest::testCloseAndDestructor() {
 //==================================================================================================
 
 void FileTest::testOpenReadWrite() {
-	expectError( make_error_code( errc::invalid_argument ), [ & ] {
-		string fileName = make_temporary_filename();
+	expectError( make_error_code( errc::no_such_file_or_directory ), [ & ] {
+		string fileName = makeTemporaryFilename();
 		file_deleter fileDeleter( fileName );
 
 		file file( fileName.c_str(), make_flags({ file::open_mode::write, file::open_mode::read }));

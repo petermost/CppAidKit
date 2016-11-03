@@ -27,6 +27,9 @@ namespace pera_software { namespace aidkit { namespace io {
 			FileTest();
 
 		private slots:
+			void initTestCase();
+			void cleanupTestCase();
+
 			void testInvalidIsEof();
 			void testInvalidGet();
 			void testInvalidIsError();

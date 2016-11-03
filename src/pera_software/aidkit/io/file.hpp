@@ -27,7 +27,27 @@ namespace pera_software { namespace aidkit { namespace io {
 	typedef basic_file< wchar_t > wfile;
 
 	AIDKIT_API bool remove_file( const char fileName[] );
-	AIDKIT_API bool remove_file( const char fileName[], std::error_code *errorCode );
-	AIDKIT_API std::string make_temporary_filename();
+	AIDKIT_API bool remove_file( const char fileName[], std::error_code *errorCode ) noexcept;
+
+	AIDKIT_API void remove_file_if_exists( const char fileName[] );
+
+	// An RAII file deleter for deleting/cleaning up files:
+
+	class file_deleter {
+		public:
+			file_deleter( const std::string &fileName ) {
+				fileName_ = fileName;
+			}
+
+			// Destructors in C++11 are implicitly declared as noexcept, so we have to explicitly allow
+			// exceptions (http://en.cppreference.com/w/cpp/language/destructor#Exceptions):
+
+			~file_deleter() noexcept( false ) {
+				remove_file_if_exists( fileName_.c_str() );
+			}
+
+		private:
+			std::string fileName_;
+	};
 
 } } }

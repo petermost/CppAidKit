@@ -25,17 +25,6 @@ using namespace std;
 
 //==================================================================================================
 
-string make_temporary_filename() {
-	char temporaryName[ L_tmpnam ];
-
-	if ( tmpnam( temporaryName ) != nullptr )
-		return temporaryName;
-	else
-		return string();
-}
-
-//==================================================================================================
-
 bool remove_file( const char fileName[] ) {
 	return call_and_throw_if_error([ & ]( error_code *errorCode ) {
 		return remove_file( fileName, errorCode );
@@ -44,7 +33,7 @@ bool remove_file( const char fileName[] ) {
 
 //==================================================================================================
 
-bool remove_file( const char fileName[], error_code *errorCode ) {
+bool remove_file( const char fileName[], error_code *errorCode ) noexcept {
 	auto result = ::remove( fileName );
 	bool success = ( result == 0 );
 
@@ -52,4 +41,30 @@ bool remove_file( const char fileName[], error_code *errorCode ) {
 	return success;
 }
 
+//==================================================================================================
+
+void remove_file_if_exists( const char fileName[] ) {
+	error_code errorCode;
+
+	// We want to be notified when the remove fails, so we throw an exception:
+
+	if ( !remove_file( fileName, &errorCode ) && errorCode != errc::no_such_file_or_directory )
+		throw system_error( errorCode );
+}
+
 } } }
+
+/*
+Under gcc/glibc the usage of tmpnam() results in the linker! warning:
+"the use of `tmpnam' is dangerous, better use `mkstemp'"
+I've tried other versions like tmpnam_r(), mktemp() etc. but they all resulted in a similar warning.
+
+string make_temporary_filename() {
+	char temporaryName[ L_tmpnam ];
+
+	if ( tmpnam( temporaryName ) != nullptr )
+		return temporaryName;
+	else
+		return string();
+}
+*/
