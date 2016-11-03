@@ -104,6 +104,7 @@ set( QT_HEADERS
 	src/pera_software/company/qt/MainWindow.hpp
 	src/pera_software/company/qt/AboutDialog.hpp
 	src/pera_software/company/qt/Application.hpp
+	src/pera_software/company/qt/Settings.hpp
 )
 set( QT_SOURCES
 	src/pera_software/aidkit/qt/qt.cpp
@@ -115,6 +116,7 @@ set( QT_SOURCES
 	src/pera_software/company/qt/MainWindow.cpp
 	src/pera_software/company/qt/AboutDialog.cpp
 	src/pera_software/company/qt/Application.cpp
+	src/pera_software/company/qt/Settings.cpp
 )
 
 qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})

@@ -1,4 +1,4 @@
-// Copyright 2014 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -18,18 +18,14 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <QApplication>
+#include <QSettings>
 
 namespace pera_software { namespace company { namespace qt {
 
-	class AIDKIT_API Application : public QApplication {
-		Q_OBJECT
+	class AIDKIT_API Settings : public QSettings {
 		public:
-			Application( int &argc, char *argv[] );
-
-		signals:
-
-		public slots:
+			Settings();
 	};
 
 } } }
+

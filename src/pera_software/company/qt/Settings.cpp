@@ -1,4 +1,4 @@
-// Copyright 2014 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,21 +15,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <pera_software/aidkit/aidkit.hpp>
-#include <QApplication>
+#include "Settings.hpp"
+#include <QString>
 
 namespace pera_software { namespace company { namespace qt {
 
-	class AIDKIT_API Application : public QApplication {
-		Q_OBJECT
-		public:
-			Application( int &argc, char *argv[] );
+const QString DEFAULT_FILE_NAME( QStringLiteral( "settings.ini "));
+const QSettings::Format DEFAULT_FORMAT = QSettings::IniFormat;
 
-		signals:
-
-		public slots:
-	};
+Settings::Settings()
+	: QSettings( DEFAULT_FILE_NAME, DEFAULT_FORMAT ) {
+}
 
 } } }

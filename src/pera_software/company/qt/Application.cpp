@@ -17,18 +17,14 @@
 
 #include "Application.hpp"
 #include <pera_software/company/PERA.hpp>
-#include <QSettings>
 
 namespace pera_software { namespace company { namespace qt {
 
-
 Application::Application(int &argc, char *argv[])
-	: QApplication( argc, argv )
-{
+	: QApplication( argc, argv ) {
+
 	setOrganizationName( PERA::NAME );
 	setOrganizationDomain( PERA::DOMAIN_NAME );
-
-	QSettings::setDefaultFormat( QSettings::IniFormat );
 }
 
 } } }

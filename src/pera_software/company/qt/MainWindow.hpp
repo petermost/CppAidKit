@@ -20,32 +20,25 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QMainWindow>
 
-class QSettings;
+namespace pera_software { namespace company { namespace qt {
 
-namespace pera_software {
-	namespace company {
-		namespace qt {
+	class Settings;
 
-			class AIDKIT_API MainWindow : public QMainWindow {
-				Q_OBJECT
-				public:
-					MainWindow(QWidget *parent = 0);
+	class AIDKIT_API MainWindow : public QMainWindow {
+		Q_OBJECT
+		public:
+			MainWindow(QWidget *parent = 0);
 
-				public slots:
-					void aboutPERA();
+		public slots:
+			void aboutPERA();
 
-				protected:
-					virtual void doReadSettings( QSettings *settings ) = 0;
-					virtual void doWriteSettings( QSettings *settings ) const = 0;
+		protected:
+			virtual void showEvent(QShowEvent *showEvent) override;
+			virtual void closeEvent(QCloseEvent *closeEvent) override;
 
-					virtual void showEvent(QShowEvent *showEvent) override;
-					virtual void closeEvent(QCloseEvent *closeEvent) override;
+			virtual void readSettings( Settings *settings );
+			virtual void writeSettings( Settings *settings ) const;
+	};
 
-				private:
-					virtual void readSettings( QSettings *settings );
-					virtual void writeSettings( QSettings *settings ) const;
-			};
-		}
-	}
-}
+} } }
 

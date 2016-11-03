@@ -17,23 +17,23 @@
 
 #include "MainWindow.hpp"
 #include "AboutDialog.hpp"
+#include "Settings.hpp"
 #include <pera_software/company/PERA.hpp>
-#include <QSettings>
+#include <QString>
 #include <QApplication>
 
 namespace pera_software { namespace company { namespace qt {
 
-using namespace pera_software::company::qt;
 using namespace pera_software::company;
 
-const QString GROUP_NAME( "MainWindow" );
-const QString SIZE_KEY( "size" );
-const QString POSITION_KEY( "position" );
+const QString GROUP_NAME( QStringLiteral( "pera_software.company.qt.MainWindow" )); // Colons (':') will be replaced with %3A!
+const QString SIZE_KEY( QStringLiteral( "size" ));
+const QString POSITION_KEY( QStringLiteral( "position" ));
 
-MainWindow::MainWindow(QWidget *parent)
-	: QMainWindow(parent)
-{
-	setWindowTitle( QString( "%1 - (c) by %2 - %3" ).arg( QApplication::applicationName() )
+MainWindow::MainWindow( QWidget *parent )
+	: QMainWindow( parent ) {
+
+	setWindowTitle( QStringLiteral( "%1 - (c) by %2 - %3" ).arg( QApplication::applicationName() )
 		.arg( QApplication::organizationName() ).arg( QApplication::organizationDomain() ));
 
 	setWindowIcon( QIcon( PERA::ICON_NAME ));
@@ -41,9 +41,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-void MainWindow::showEvent( QShowEvent *showEvent )
-{
-	QSettings settings;
+void MainWindow::showEvent( QShowEvent *showEvent ) {
+	Settings settings;
 	readSettings( &settings );
 
 	QMainWindow::showEvent( showEvent );
@@ -51,9 +50,8 @@ void MainWindow::showEvent( QShowEvent *showEvent )
 
 
 
-void MainWindow::closeEvent( QCloseEvent *closeEvent )
-{
-	QSettings settings;
+void MainWindow::closeEvent( QCloseEvent *closeEvent ) {
+	Settings settings;
 	writeSettings( &settings );
 
 	QMainWindow::closeEvent( closeEvent );
@@ -61,28 +59,23 @@ void MainWindow::closeEvent( QCloseEvent *closeEvent )
 
 
 
-void MainWindow::readSettings( QSettings *settings )
-{
+void MainWindow::readSettings( Settings *settings ) {
 	settings->beginGroup( GROUP_NAME );
 		resize( settings->value( SIZE_KEY, size() ).toSize() );
 		move( settings->value( POSITION_KEY, pos() ).toPoint() );
-		doReadSettings( settings );
 	settings->endGroup();
 }
 
 
 
-void MainWindow::writeSettings( QSettings *settings ) const
-{
+void MainWindow::writeSettings( Settings *settings ) const {
 	settings->beginGroup( GROUP_NAME );
 		settings->setValue( SIZE_KEY, size() );
 		settings->setValue( POSITION_KEY, pos() );
-		doWriteSettings( settings );
 	settings->endGroup();
 }
 
-void MainWindow::aboutPERA()
-{
+void MainWindow::aboutPERA() {
 	AboutDialog aboutPERADialog;
 
 	aboutPERADialog.exec();
