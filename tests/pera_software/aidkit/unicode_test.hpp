@@ -31,8 +31,6 @@ namespace pera_software { namespace aidkit {
 			void testEmptyWideStringToNarrowString();
 			void testUmlauteWideStringToU8String();
 			void testUmlauteU8StringToWideString();
-			void testUmlauteNarrowStringToWideString();
-			void testUmlauteWideStringToNarrowString();
 	};
 
 } }
