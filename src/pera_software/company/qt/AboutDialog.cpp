@@ -28,8 +28,8 @@
 namespace pera_software { namespace company { namespace qt {
 
 AboutDialog::AboutDialog( QWidget *parent )
-	: QDialog( parent )
-{
+	: QDialog( parent ) {
+
 	QLabel *peraLogo = new QLabel;
 	peraLogo->setAlignment( Qt::AlignHCenter );
 	Q_ASSERT( QFile::exists( PERA::LOGO_NAME ));

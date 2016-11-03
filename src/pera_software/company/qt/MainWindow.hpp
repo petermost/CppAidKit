@@ -29,6 +29,13 @@ namespace pera_software { namespace company { namespace qt {
 		public:
 			MainWindow(QWidget *parent = 0);
 
+			QMenu *fileMenu();
+			QMenu *helpMenu();
+
+			QAction *quitAction();
+			QAction *aboutPERAAction();
+			QAction *aboutQtAction();
+
 		public slots:
 			void aboutPERA();
 
@@ -38,6 +45,14 @@ namespace pera_software { namespace company { namespace qt {
 
 			virtual void readSettings( Settings *settings );
 			virtual void writeSettings( Settings *settings ) const;
+
+		private:
+			QMenu *fileMenu_ = nullptr;
+			QMenu *helpMenu_ = nullptr;
+
+			QAction *quitAction_ = nullptr;
+			QAction *aboutPERAAction_ = nullptr;
+			QAction *aboutQtAction_ = nullptr;
 	};
 
 } } }

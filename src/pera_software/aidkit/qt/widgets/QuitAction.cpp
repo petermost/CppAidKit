@@ -20,8 +20,8 @@
 namespace pera_software { namespace aidkit { namespace qt {
 
 QuitAction::QuitAction( QObject *parent )
-	: QAction( parent )
-{
+	: QAction( parent ) {
+
 	setText( tr( "&Quit" ));
 	setIcon( QIcon::fromTheme( "application-exit", QIcon( AidKit::QUIT_ICON_NAME )));
 	setShortcut( QKeySequence::Quit );

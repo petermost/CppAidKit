@@ -20,19 +20,16 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QDialog>
 
-namespace pera_software {
-	namespace company {
-		namespace qt {
+namespace pera_software { namespace company { namespace qt {
 
-			class AIDKIT_API AboutDialog : public QDialog {
-				Q_OBJECT
-				public:
-					explicit AboutDialog(QWidget *parent = 0);
+	class AIDKIT_API AboutDialog : public QDialog {
+		Q_OBJECT
+		public:
+			explicit AboutDialog( QWidget *parent = 0 );
 
-				signals:
+		signals:
 
-				public slots:
-			};
-		}
-	}
-}
+		public slots:
+	};
+
+} } }

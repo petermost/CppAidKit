@@ -18,28 +18,98 @@
 #include "MainWindow.hpp"
 #include "AboutDialog.hpp"
 #include "Settings.hpp"
-#include <pera_software/company/PERA.hpp>
+
+#include <QMenu>
+#include <QMenuBar>
 #include <QString>
 #include <QApplication>
+#include <QMessageBox>
+
+#include <pera_software/company/PERA.hpp>
+#include <pera_software/aidkit/qt/widgets/QuitAction.hpp>
 
 namespace pera_software { namespace company { namespace qt {
 
-using namespace pera_software::company;
+using namespace aidkit::qt;
 
 const QString GROUP_NAME( QStringLiteral( "pera_software.company.qt.MainWindow" )); // Colons (':') will be replaced with %3A!
 const QString SIZE_KEY( QStringLiteral( "size" ));
 const QString POSITION_KEY( QStringLiteral( "position" ));
 
+//==================================================================================================
+
 MainWindow::MainWindow( QWidget *parent )
 	: QMainWindow( parent ) {
 
-	setWindowTitle( QStringLiteral( "%1 - (c) by %2 - %3" ).arg( QApplication::applicationName() )
-		.arg( QApplication::organizationName() ).arg( QApplication::organizationDomain() ));
+	setWindowTitle( tr( "%1 - (c) by %2 - %3" )
+		.arg( QApplication::applicationName() )
+		.arg( QApplication::organizationName() )
+		.arg( QApplication::organizationDomain() ));
 
 	setWindowIcon( QIcon( PERA::ICON_NAME ));
 }
 
+//==================================================================================================
 
+QMenu *MainWindow::fileMenu() {
+	if ( fileMenu_ == nullptr ) {
+		fileMenu_ = new QMenu( tr( "&File" ), this );
+
+		fileMenu_->addAction( quitAction() );
+
+		menuBar()->addMenu( fileMenu_ );
+	}
+	return fileMenu_;
+}
+
+//==================================================================================================
+
+QMenu *MainWindow::helpMenu() {
+	if ( helpMenu_ == nullptr ) {
+		helpMenu_ = new QMenu( tr( "&Help" ));
+
+		helpMenu_->addAction( aboutPERAAction() );
+		helpMenu_->addAction( aboutQtAction() );
+
+		menuBar()->addMenu( helpMenu_ );
+	}
+	return helpMenu_;
+}
+
+//==================================================================================================
+
+QAction *MainWindow::quitAction() {
+	if ( quitAction_ == nullptr ) {
+		quitAction_ = new QuitAction( this );
+		connect( quitAction_, &QAction::triggered, this, &MainWindow::close );
+	}
+	return quitAction_;
+}
+
+//==================================================================================================
+
+QAction *MainWindow::aboutPERAAction() {
+	if ( aboutPERAAction_ == nullptr ) {
+		aboutPERAAction_ = new QAction( tr( "&About &PERA..." ), this );
+		connect( aboutPERAAction_, &QAction::triggered, this, &MainWindow::aboutPERA );
+	}
+	return aboutPERAAction_;
+}
+
+//==================================================================================================
+
+QAction *MainWindow::aboutQtAction() {
+	if ( aboutQtAction_ == nullptr ) {
+		aboutQtAction_ = new QAction( tr( "About &Qt..." ), this );
+		connect( aboutQtAction_, &QAction::triggered, [ = ] {
+			QMessageBox::aboutQt( this );
+		});
+	}
+	return aboutQtAction_;
+}
+
+
+//==================================================================================================
 
 void MainWindow::showEvent( QShowEvent *showEvent ) {
 	Settings settings;
@@ -48,7 +118,7 @@ void MainWindow::showEvent( QShowEvent *showEvent ) {
 	QMainWindow::showEvent( showEvent );
 }
 
-
+//==================================================================================================
 
 void MainWindow::closeEvent( QCloseEvent *closeEvent ) {
 	Settings settings;
@@ -57,7 +127,7 @@ void MainWindow::closeEvent( QCloseEvent *closeEvent ) {
 	QMainWindow::closeEvent( closeEvent );
 }
 
-
+//==================================================================================================
 
 void MainWindow::readSettings( Settings *settings ) {
 	settings->beginGroup( GROUP_NAME );
@@ -66,7 +136,7 @@ void MainWindow::readSettings( Settings *settings ) {
 	settings->endGroup();
 }
 
-
+//==================================================================================================
 
 void MainWindow::writeSettings( Settings *settings ) const {
 	settings->beginGroup( GROUP_NAME );
@@ -74,11 +144,13 @@ void MainWindow::writeSettings( Settings *settings ) const {
 		settings->setValue( POSITION_KEY, pos() );
 	settings->endGroup();
 }
+//==================================================================================================
 
 void MainWindow::aboutPERA() {
 	AboutDialog aboutPERADialog;
 
 	aboutPERADialog.exec();
 }
+
 
 } } }

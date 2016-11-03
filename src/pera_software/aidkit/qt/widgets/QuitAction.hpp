@@ -20,15 +20,12 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QAction>
 
-namespace pera_software {
-	namespace aidkit {
-		namespace qt {
+namespace pera_software { namespace aidkit { namespace qt {
 
-			class AIDKIT_API QuitAction : public QAction {
-				Q_OBJECT
-				public:
-					explicit QuitAction( QObject *parent = nullptr );
-			};
-		}
-	}
-}
+	class AIDKIT_API QuitAction : public QAction {
+		Q_OBJECT
+		public:
+			explicit QuitAction( QObject *parent = nullptr );
+	};
+
+} } }
