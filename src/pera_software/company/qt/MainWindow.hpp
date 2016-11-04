@@ -29,6 +29,9 @@ namespace pera_software { namespace company { namespace qt {
 		public:
 			MainWindow(QWidget *parent = 0);
 
+			QMenu *addFileMenu();
+			QMenu *addHelpMenu();
+
 			QMenu *fileMenu();
 			QMenu *helpMenu();
 

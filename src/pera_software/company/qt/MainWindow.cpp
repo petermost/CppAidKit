@@ -51,13 +51,30 @@ MainWindow::MainWindow( QWidget *parent )
 
 //==================================================================================================
 
+QMenu *MainWindow::addFileMenu() {
+	fileMenu()->addAction( quitAction() );
+
+	menuBar()->addMenu( fileMenu() );
+
+	return fileMenu();
+}
+
+//==================================================================================================
+
+QMenu *MainWindow::addHelpMenu() {
+	helpMenu()->addAction( aboutPERAAction() );
+	helpMenu()->addAction( aboutQtAction() );
+
+	menuBar()->addMenu( helpMenu_ );
+
+	return helpMenu();
+}
+
+//==================================================================================================
+
 QMenu *MainWindow::fileMenu() {
 	if ( fileMenu_ == nullptr ) {
 		fileMenu_ = new QMenu( tr( "&File" ), this );
-
-		fileMenu_->addAction( quitAction() );
-
-		menuBar()->addMenu( fileMenu_ );
 	}
 	return fileMenu_;
 }
@@ -67,11 +84,6 @@ QMenu *MainWindow::fileMenu() {
 QMenu *MainWindow::helpMenu() {
 	if ( helpMenu_ == nullptr ) {
 		helpMenu_ = new QMenu( tr( "&Help" ));
-
-		helpMenu_->addAction( aboutPERAAction() );
-		helpMenu_->addAction( aboutQtAction() );
-
-		menuBar()->addMenu( helpMenu_ );
 	}
 	return helpMenu_;
 }
