@@ -253,6 +253,8 @@ namespace pera_software { namespace aidkit { namespace io {
 					binary
 				};
 
+				typedef enum_flags< open_mode > open_modes;
+
 				basic_file() {
 					file_ = nullptr;
 				}
@@ -283,7 +285,7 @@ namespace pera_software { namespace aidkit { namespace io {
 					});
 				}
 
-				bool open( const char fileName[], const enum_flags< open_mode > mode, std::error_code *errorCode ) noexcept {
+				bool open( const char fileName[], open_modes mode, std::error_code *errorCode ) noexcept {
 
 					// Make the mode string:
 

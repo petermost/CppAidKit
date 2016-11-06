@@ -35,7 +35,7 @@ static void nullHandler( const wchar_t *, const wchar_t *, const wchar_t *, unsi
 }
 #endif
 
-static const enum_flags< file::open_mode > WRITE_ACCESS({ file::open_mode::write, file::open_mode::extended });
+static const file::open_modes WRITE_ACCESS = file::open_modes( file::open_mode::write ) | file::open_mode::extended;
 
 static const char *makeTemporaryFilename() {
 	return "pera_software.aidkit.io.file_test.cpp.dat";
@@ -217,7 +217,7 @@ void FileTest::testOpenReadWrite() {
 		string fileName = makeTemporaryFilename();
 		file_deleter fileDeleter( fileName );
 
-		file file( fileName.c_str(), make_flags({ file::open_mode::write, file::open_mode::read }));
+		file file( fileName.c_str(), file::open_modes( file::open_mode::write ) | file::open_mode::read );
 	});
 }
 

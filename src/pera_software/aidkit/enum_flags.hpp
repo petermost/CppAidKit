@@ -22,24 +22,19 @@
 
 namespace pera_software { namespace aidkit {
 
-	template < typename Enum >
+	template < typename E >
 		class enum_flags {
 			public:
-				typedef typename std::underlying_type< Enum >::type int_type;
+				typedef typename std::underlying_type< E >::type int_type;
 
-				static_assert( std::is_enum< Enum >::value, "enum_flags: Type must be an enum!" );
+				static_assert( std::is_enum< E >::value, "enum_flags: Type must be an enum!" );
 				static_assert( std::is_unsigned< int_type >::value, "enum_flags: Underlying enum type must be unsigned!" );
 
 				constexpr enum_flags() = default;
 				constexpr enum_flags( const enum_flags & ) = default;
 
-				constexpr enum_flags( Enum e ) noexcept
+				constexpr enum_flags( E e ) noexcept
 					: value_( to_bit( e )) {
-				}
-
-				constexpr enum_flags( std::initializer_list< Enum > enums ) noexcept {
-					for ( Enum e : enums )
-						*this |= e;
 				}
 
 				// Define operators according to ISO C++ standard 17.5.2.1.3 [bitmask.types]:
@@ -97,7 +92,7 @@ namespace pera_software { namespace aidkit {
 				}
 
 			private:
-				static inline constexpr int_type to_bit( Enum e ) {
+				static inline constexpr int_type to_bit( E e ) {
 					return 1u << static_cast< int_type >( e );
 				}
 
@@ -108,9 +103,28 @@ namespace pera_software { namespace aidkit {
 				int_type value_ = 0;
 		};
 
-	template < typename Enum >
-		enum_flags< Enum > make_flags( std::initializer_list< Enum > enums ) noexcept {
-			return enum_flags< Enum >( enums );
-		}
+	// I've tried to enable literals like e = a | b with the approach from:
+	// https://www.justsoftwaresolutions.co.uk/cplusplus/using-enum-classes-as-bitfields.html)
+	// but then enum_flags | enum_flags failed and it was just not worth it to try to fix it.
+	//
+	//	template< typename E >
+	//		typename std::enable_if< enum_flags< E >::enable_bitmask_operators, enum_flags< E >>::type operator | ( E lhs, E rhs ) {
+	//			return enum_flags< E >( lhs ) | rhs;
+	//		}
+
+	//	template< typename E >
+	//		typename std::enable_if< enum_flags< E >::enable_bitmask_operators, enum_flags< E >>::type operator & ( E lhs, E rhs ) {
+	//			return enum_flags< E >( lhs ) & rhs;
+	//		}
+
+	//	template< typename E >
+	//		typename std::enable_if< enum_flags< E >::enable_bitmask_operators, enum_flags< E >>::type operator ^ ( E lhs, E rhs ) {
+	//			return enum_flags< E >( lhs ) ^ rhs;
+	//		}
+
+	//	template< typename E >
+	//		typename std::enable_if< enum_flags< E >::enable_bitmask_operators, enum_flags< E >>::type operator ~ ( E lhs ) {
+	//			return ~enum_flags< E >( lhs );
+	//		}
 
 } }
