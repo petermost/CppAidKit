@@ -52,6 +52,19 @@ void remove_file_if_exists( const char fileName[] ) {
 		throw system_error( errorCode );
 }
 
+//==================================================================================================
+
+file_deleter::file_deleter( const string &fileName ) {
+	fileName_ = fileName;
+}
+
+//==================================================================================================
+
+file_deleter::~file_deleter() noexcept( false ) {
+	remove_file_if_exists( fileName_.c_str() );
+}
+
+
 } } }
 
 /*
