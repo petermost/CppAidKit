@@ -18,7 +18,11 @@ along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <RCC>
-	<qresource>
+	<qresource prefix="/">
 		<file>system-shutdown-16x16.png</file>
+		<file>Debug.png</file>
+		<file>dialog-error-16x16.png</file>
+		<file>dialog-information-16x16.png</file>
+		<file>dialog-warning-16x16.png</file>
 	</qresource>
 </RCC>

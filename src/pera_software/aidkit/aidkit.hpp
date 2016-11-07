@@ -33,13 +33,6 @@
 	#define AIDKIT_API AIDKIT_DECLARE_IMPORT
 #endif
 
+namespace pera_software { namespace aidkit {
 
-namespace pera_software {
-	namespace aidkit {
-
-		class AIDKIT_API AidKit {
-			public:
-				static const char QUIT_ICON_NAME[];
-		};
-	}
-}
+} }

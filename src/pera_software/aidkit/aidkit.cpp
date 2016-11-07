@@ -23,6 +23,4 @@
 
 namespace pera_software { namespace aidkit {
 
-const char AidKit::QUIT_ICON_NAME[] = ":/system-shutdown-16x16.png";
-
 } }

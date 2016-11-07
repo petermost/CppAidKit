@@ -1,4 +1,4 @@
-// Copyright 2015 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,17 +15,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "QuitAction.hpp"
-#include <pera_software/aidkit/qt/Resources.hpp>
+#pragma once
+
+#include <pera_software/aidkit/aidkit.hpp>
+
+class QIcon;
+class QString;
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-QuitAction::QuitAction( QObject *parent )
-	: QAction( parent ) {
+	class AIDKIT_API Resources {
+		public:
+			static QIcon quitIcon();
 
-	setText( tr( "&Quit" ));
-	setIcon( Resources::quitIcon() );
-	setShortcut( QKeySequence::Quit );
-}
+			static QIcon debugIcon();
+			static QIcon warningIcon();
+			static QIcon informationIcon();
+			static QIcon errorIcon();
+	};
 
 } } }
