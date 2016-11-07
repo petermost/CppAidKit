@@ -21,42 +21,7 @@
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-class MessagesWidgetItem : public QListWidgetItem {
-	public:
-		MessagesWidgetItem( const QIcon &icon, const QString &message )
-			: QListWidgetItem( icon, message ) {
-		}
-};
-
-class InformationWidgetItem : public MessagesWidgetItem {
-	public:
-		InformationWidgetItem( const QString &message )
-			: MessagesWidgetItem( Resources::informationIcon(), message ) {
-		}
-};
-
-class WarningWidgetItem : public MessagesWidgetItem {
-	public:
-		WarningWidgetItem( const QString &message )
-			: MessagesWidgetItem( Resources::warningIcon(), message ) {
-		}
-};
-
-class ErrorWidgetItem : public MessagesWidgetItem {
-	public:
-		ErrorWidgetItem( const QString &message )
-			: MessagesWidgetItem( Resources::errorIcon(), message ) {
-		}
-};
-
-class DebugWidgetItem : public MessagesWidgetItem {
-	public:
-		DebugWidgetItem( const QString &message )
-			: MessagesWidgetItem( Resources::debugIcon(), message ) {
-		}
-};
-
-static void showItem( MessagesWidget *widget, MessagesWidgetItem *item ) {
+static void showItem( QListWidget *widget, QListWidgetItem *item ) {
 	widget->addItem( item );
 	widget->scrollToItem( item );
 }
@@ -66,19 +31,19 @@ MessagesWidget::MessagesWidget( QWidget *parent )
 }
 
 void MessagesWidget::showInformation( const QString &message ) {
-	showItem( this, new InformationWidgetItem( message ));
+	showItem( this, new QListWidgetItem( Resources::informationIcon(), message ));
 }
 
 void MessagesWidget::showWarning( const QString &message ) {
-	showItem( this, new WarningWidgetItem( message ));
+	showItem( this, new QListWidgetItem( Resources::warningIcon(), message ));
 }
 
 void MessagesWidget::showError( const QString &message ) {
-	showItem( this, new ErrorWidgetItem( message ));
+	showItem( this, new QListWidgetItem( Resources::errorIcon(), message ));
 }
 
 void MessagesWidget::showDebug(const QString &message) {
-	showItem( this, new DebugWidgetItem( message ));
+	showItem( this, new QListWidgetItem( Resources::debugIcon(), message ));
 }
 
 } } }

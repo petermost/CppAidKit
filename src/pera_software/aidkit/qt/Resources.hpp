@@ -20,7 +20,6 @@
 #include <pera_software/aidkit/aidkit.hpp>
 
 class QIcon;
-class QString;
 
 namespace pera_software { namespace aidkit { namespace qt {
 
