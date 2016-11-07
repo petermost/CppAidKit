@@ -24,6 +24,8 @@ namespace pera_software { namespace company { namespace qt {
 
 	class AIDKIT_API Settings : public QSettings {
 		public:
+			static void setDefaultPathAndFormat();
+
 			Settings();
 	};
 

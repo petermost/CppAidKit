@@ -16,6 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "Application.hpp"
+#include "Settings.hpp"
 #include <pera_software/company/PERA.hpp>
 
 namespace pera_software { namespace company { namespace qt {
@@ -25,6 +26,8 @@ Application::Application(int &argc, char *argv[])
 
 	setOrganizationName( PERA::NAME );
 	setOrganizationDomain( PERA::DOMAIN_NAME );
+
+	Settings::setDefaultPathAndFormat();
 }
 
 } } }

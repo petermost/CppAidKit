@@ -20,11 +20,18 @@
 
 namespace pera_software { namespace company { namespace qt {
 
-const QString DEFAULT_FILE_NAME( QStringLiteral( "settings.ini" ));
+const QString DEFAULT_PATH( QStringLiteral( "settings.ini" ));
 const QSettings::Format DEFAULT_FORMAT = QSettings::IniFormat;
 
+void Settings::setDefaultPathAndFormat() {
+	QSettings::setDefaultFormat( DEFAULT_FORMAT );
+	QSettings::setPath( DEFAULT_FORMAT, QSettings::UserScope, DEFAULT_PATH );
+}
+
 Settings::Settings()
-	: QSettings( DEFAULT_FILE_NAME, DEFAULT_FORMAT ) {
+	: QSettings( DEFAULT_PATH, DEFAULT_FORMAT ) {
+
+	setDefaultPathAndFormat();
 }
 
 } } }
