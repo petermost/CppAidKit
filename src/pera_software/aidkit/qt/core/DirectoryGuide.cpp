@@ -18,17 +18,14 @@
 #include "DirectoryGuide.hpp"
 #include <QDir>
 #include <QDirIterator>
-//#include <QDebug>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
 DirectoryGuide::DirectoryGuide( QObject *parent )
-	: QObject( parent )
-{
+	: QObject( parent ) {
 }
 
-void DirectoryGuide::walk( const QFileInfo &parentDirectory, DirectoryVisitor *visitor )
-{
+void DirectoryGuide::walk( const QFileInfo &parentDirectory, DirectoryVisitor *visitor ) {
 	const QDir::Filters FILTERS = QDir::Files | QDir::Dirs | QDir::Hidden | QDir::System
 		| QDir::NoDotAndDotDot | QDir::NoSymLinks;
 
@@ -61,26 +58,21 @@ void DirectoryGuide::walk( const QFileInfo &parentDirectory, DirectoryVisitor *v
 
 
 DirectoryVisitor::DirectoryVisitor( QObject *parent )
-	: QObject( parent )
-{
+	: QObject( parent ) {
 }
 
-DirectoryVisitor::~DirectoryVisitor()
-{
+DirectoryVisitor::~DirectoryVisitor() {
 }
 
-bool DirectoryVisitor::visitDirectory(const QFileInfo & /* parentDirectory */, const QFileInfo & /*currentDirectory */ )
-{
+bool DirectoryVisitor::visitDirectory( const QFileInfo & /* parentDirectory */, const QFileInfo & /*currentDirectory */ ) {
 	return true;
 }
 
-bool DirectoryVisitor::visitFile( const QFileInfo & /* parentDirectory */, const QFileInfo &/* currentFile */ )
-{
+bool DirectoryVisitor::visitFile( const QFileInfo & /* parentDirectory */, const QFileInfo &/* currentFile */ ) {
 	return true;
 }
 
-bool DirectoryVisitor::leaveDirectory( const QFileInfo &/* parentDirectory */, const QFileInfo & /* currentDirectory */)
-{
+bool DirectoryVisitor::leaveDirectory( const QFileInfo &/* parentDirectory */, const QFileInfo & /* currentDirectory */ ) {
 	return true;
 }
 

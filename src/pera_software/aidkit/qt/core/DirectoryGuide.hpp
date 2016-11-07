@@ -23,36 +23,33 @@
 class QString;
 class QFileInfo;
 
-namespace pera_software {
-	namespace aidkit {
-		namespace qt {
+namespace pera_software { namespace aidkit { namespace qt {
 
-			class AIDKIT_API DirectoryGuide : public QObject {
-				Q_OBJECT
-				public:
-					explicit DirectoryGuide( QObject *parent = nullptr );
-					void walk( const QFileInfo &parentDirectory, class DirectoryVisitor *visitor );
+	class AIDKIT_API DirectoryGuide : public QObject {
+		Q_OBJECT
+		public:
+			explicit DirectoryGuide( QObject *parent = nullptr );
+			void walk( const QFileInfo &parentDirectory, class DirectoryVisitor *visitor );
 
-				signals:
-					// We could have used signals here, but signals can't return a value and so the
-					// feature to cancel the directory walking wouldn't have been possible.
+		signals:
+			// We could have used signals here, but signals can't return a value and so the
+			// feature to cancel the directory walking wouldn't have been possible.
 
-				public slots:
-			};
+		public slots:
+	};
 
-			class AIDKIT_API DirectoryVisitor : public QObject {
-				Q_OBJECT
-				public:
-					explicit DirectoryVisitor( QObject *parent = nullptr );
-					virtual ~DirectoryVisitor();
+	class AIDKIT_API DirectoryVisitor : public QObject {
+		Q_OBJECT
+		public:
+			explicit DirectoryVisitor( QObject *parent = nullptr );
+			virtual ~DirectoryVisitor();
 
-				protected:
-					friend DirectoryGuide;
+		protected:
+			friend DirectoryGuide;
 
-					virtual bool visitDirectory( const QFileInfo &parentDirectory, const QFileInfo &currentDirectory );
-					virtual bool visitFile( const QFileInfo &parentDirectory, const QFileInfo &currentFile );
-					virtual bool leaveDirectory( const QFileInfo &parentDirectory, const QFileInfo &currentDirectory );
-			};
-		}
-	}
-}
+			virtual bool visitDirectory( const QFileInfo &parentDirectory, const QFileInfo &currentDirectory );
+			virtual bool visitFile( const QFileInfo &parentDirectory, const QFileInfo &currentFile );
+			virtual bool leaveDirectory( const QFileInfo &parentDirectory, const QFileInfo &currentDirectory );
+	};
+
+} } }
