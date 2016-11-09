@@ -23,7 +23,6 @@
 #include <QMenuBar>
 #include <QString>
 #include <QApplication>
-#include <QMessageBox>
 
 #include <pera_software/company/PERA.hpp>
 #include <pera_software/aidkit/qt/widgets/QuitAction.hpp>
@@ -39,14 +38,17 @@ const QString POSITION_KEY( QStringLiteral( "position" ));
 //==================================================================================================
 
 MainWindow::MainWindow( QWidget *parent )
-	: QMainWindow( parent ) {
+	: aidkit::qt::MainWindow( parent ) {
 
 	setWindowTitle( tr( "%1 - (c) by %2 - %3" )
 		.arg( QApplication::applicationName() )
 		.arg( QApplication::organizationName() )
 		.arg( QApplication::organizationDomain() ));
 
-	setWindowIcon( QIcon( PERA::ICON_NAME ));
+	connect( this, &aidkit::qt::MainWindow::showed, this, &MainWindow::onShowed );
+	connect( this, &aidkit::qt::MainWindow::closed, this, &MainWindow::onClosed );
+
+	// Default window icon is set in Application::Application().
 }
 
 //==================================================================================================
@@ -113,9 +115,7 @@ QAction *MainWindow::aboutPERAAction() {
 QAction *MainWindow::aboutQtAction() {
 	if ( aboutQtAction_ == nullptr ) {
 		aboutQtAction_ = new QAction( tr( "About &Qt..." ), this );
-		connect( aboutQtAction_, &QAction::triggered, [ = ] {
-			QMessageBox::aboutQt( this );
-		});
+		connect( aboutQtAction_, &QAction::triggered, &QApplication::aboutQt );
 	}
 	return aboutQtAction_;
 }
@@ -123,20 +123,16 @@ QAction *MainWindow::aboutQtAction() {
 
 //==================================================================================================
 
-void MainWindow::showEvent( QShowEvent *showEvent ) {
+void MainWindow::onShowed() {
 	Settings settings;
 	readSettings( &settings );
-
-	QMainWindow::showEvent( showEvent );
 }
 
 //==================================================================================================
 
-void MainWindow::closeEvent( QCloseEvent *closeEvent ) {
+void MainWindow::onClosed() {
 	Settings settings;
 	writeSettings( &settings );
-
-	QMainWindow::closeEvent( closeEvent );
 }
 
 //==================================================================================================

@@ -97,29 +97,34 @@ set( SOURCES
 
 set( QT_HEADERS
 	src/pera_software/aidkit/qt/Resources.hpp
-	src/pera_software/aidkit/qt/test/Test.hpp
-	src/pera_software/aidkit/qt/net/Endian.hpp
 	src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
+	src/pera_software/aidkit/qt/core/Enum.hpp
 	src/pera_software/aidkit/qt/io/Console.hpp
-	src/pera_software/aidkit/qt/widgets/QuitAction.hpp
+	src/pera_software/aidkit/qt/net/Endian.hpp
+	src/pera_software/aidkit/qt/test/Test.hpp
+	src/pera_software/aidkit/qt/widgets/MainWindow.hpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
-	src/pera_software/company/qt/MainWindow.hpp
+	src/pera_software/aidkit/qt/widgets/QuitAction.hpp
 	src/pera_software/company/qt/AboutDialog.hpp
 	src/pera_software/company/qt/Application.hpp
+	src/pera_software/company/qt/MainWindow.hpp
 	src/pera_software/company/qt/Settings.hpp
 )
+
 set( QT_SOURCES
 	src/pera_software/aidkit/qt/qt.cpp
 	src/pera_software/aidkit/qt/Resources.cpp
-	src/pera_software/aidkit/qt/test/Test.cpp
-	src/pera_software/aidkit/qt/net/Endian.cpp
 	src/pera_software/aidkit/qt/core/DirectoryGuide.cpp
+	src/pera_software/aidkit/qt/core/Enum.cpp
 	src/pera_software/aidkit/qt/io/Console.cpp
-	src/pera_software/aidkit/qt/widgets/QuitAction.cpp
+	src/pera_software/aidkit/qt/net/Endian.cpp
+	src/pera_software/aidkit/qt/test/Test.cpp
+	src/pera_software/aidkit/qt/widgets/MainWindow.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
-	src/pera_software/company/qt/MainWindow.cpp
+	src/pera_software/aidkit/qt/widgets/QuitAction.cpp
 	src/pera_software/company/qt/AboutDialog.cpp
 	src/pera_software/company/qt/Application.cpp
+	src/pera_software/company/qt/MainWindow.cpp
 	src/pera_software/company/qt/Settings.cpp
 )
 

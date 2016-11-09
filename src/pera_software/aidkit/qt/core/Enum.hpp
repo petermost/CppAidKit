@@ -1,4 +1,4 @@
-// Copyright 2014 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,22 +15,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "Application.hpp"
-#include "Settings.hpp"
-#include <pera_software/company/PERA.hpp>
-#include <QIcon>
+#pragma once
 
-namespace pera_software { namespace company { namespace qt {
+#include <pera_software/aidkit/aidkit.hpp>
+#include <QMetaEnum>
 
-Application::Application(int &argc, char *argv[])
-	: QApplication( argc, argv ) {
+namespace pera_software { namespace aidkit { namespace qt {
 
-	setOrganizationName( PERA::NAME );
-	setOrganizationDomain( PERA::DOMAIN_NAME );
-
-	setWindowIcon( QIcon( PERA::ICON_NAME ));
-
-	Settings::setDefaultPathAndFormat();
-}
+	class AIDKIT_API Enum {
+		public:
+			template < typename E >
+				static const char *toString( E e ) noexcept {
+					return QMetaEnum::fromType< E >().valueToKey( e );
+				}
+	};
 
 } } }

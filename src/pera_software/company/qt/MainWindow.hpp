@@ -18,16 +18,16 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <QMainWindow>
+#include <pera_software/aidkit/qt/widgets/MainWindow.hpp>
 
 namespace pera_software { namespace company { namespace qt {
 
 	class Settings;
 
-	class AIDKIT_API MainWindow : public QMainWindow {
+	class AIDKIT_API MainWindow : public aidkit::qt::MainWindow {
 		Q_OBJECT
 		public:
-			MainWindow(QWidget *parent = 0);
+			MainWindow( QWidget *parent = nullptr );
 
 			QMenu *addFileMenu();
 			QMenu *addHelpMenu();
@@ -39,15 +39,15 @@ namespace pera_software { namespace company { namespace qt {
 			QAction *aboutPERAAction();
 			QAction *aboutQtAction();
 
+			virtual void readSettings( Settings *settings );
+			virtual void writeSettings( Settings *settings ) const;
+
 		public slots:
 			void aboutPERA();
 
-		protected:
-			virtual void showEvent(QShowEvent *showEvent) override;
-			virtual void closeEvent(QCloseEvent *closeEvent) override;
-
-			virtual void readSettings( Settings *settings );
-			virtual void writeSettings( Settings *settings ) const;
+		private slots:
+			void onShowed();
+			void onClosed();
 
 		private:
 			QMenu *fileMenu_ = nullptr;

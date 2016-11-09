@@ -1,4 +1,4 @@
-// Copyright 2014 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,22 +15,27 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "Application.hpp"
-#include "Settings.hpp"
-#include <pera_software/company/PERA.hpp>
-#include <QIcon>
+#pragma once
 
-namespace pera_software { namespace company { namespace qt {
+#include <pera_software/aidkit/aidkit.hpp>
+#include <QMainWindow>
 
-Application::Application(int &argc, char *argv[])
-	: QApplication( argc, argv ) {
+namespace pera_software { namespace aidkit { namespace qt {
 
-	setOrganizationName( PERA::NAME );
-	setOrganizationDomain( PERA::DOMAIN_NAME );
+	class AIDKIT_API MainWindow : public QMainWindow {
+		Q_OBJECT
+		public:
+			explicit MainWindow( QWidget *parent = nullptr );
 
-	setWindowIcon( QIcon( PERA::ICON_NAME ));
+		signals:
+			void showed();
+			void closed();
 
-	Settings::setDefaultPathAndFormat();
-}
+		public slots:
+
+		protected:
+			virtual void showEvent( QShowEvent *showEvent ) override;
+			virtual void closeEvent( QCloseEvent *closeEvent ) override;
+	};
 
 } } }
