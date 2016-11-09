@@ -15,22 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "Application.hpp"
-#include "Settings.hpp"
-#include <pera_software/company/PERA.hpp>
-#include <QIcon>
+#pragma once
+
+#include <pera_software/aidkit/aidkit.hpp>
+#include <QDialog>
 
 namespace pera_software { namespace company { namespace qt {
 
-Application::Application(int &argc, char *argv[])
-	: QApplication( argc, argv ) {
+	class AIDKIT_API PERAAboutDialog : public QDialog {
+		Q_OBJECT
+		public:
+			explicit PERAAboutDialog( QWidget *parent = 0 );
 
-	setOrganizationName( PERA::NAME );
-	setOrganizationDomain( PERA::DOMAIN_NAME );
+		signals:
 
-	setWindowIcon( QIcon( PERA::ICON_NAME ));
-
-	Settings::setDefaultPathAndFormat();
-}
+		public slots:
+	};
 
 } } }

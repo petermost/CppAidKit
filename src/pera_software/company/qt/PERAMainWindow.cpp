@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "MainWindow.hpp"
-#include "AboutDialog.hpp"
+#include "PERAMainWindow.hpp"
+#include "PERAAboutDialog.hpp"
 #include "Settings.hpp"
 
 #include <QMenu>
@@ -31,29 +31,29 @@ namespace pera_software { namespace company { namespace qt {
 
 using namespace aidkit::qt;
 
-const QString GROUP_NAME( QStringLiteral( "pera_software.company.qt.MainWindow" )); // Colons (':') will be replaced with %3A!
+const QString GROUP_NAME( QStringLiteral( "pera_software.company.qt.PERAMainWindow" )); // Colons (':') will be replaced with %3A!
 const QString SIZE_KEY( QStringLiteral( "size" ));
 const QString POSITION_KEY( QStringLiteral( "position" ));
 
 //==================================================================================================
 
-MainWindow::MainWindow( QWidget *parent )
-	: aidkit::qt::MainWindow( parent ) {
+PERAMainWindow::PERAMainWindow( QWidget *parent )
+	: MainWindow( parent ) {
 
 	setWindowTitle( tr( "%1 - (c) by %2 - %3" )
 		.arg( QApplication::applicationName() )
 		.arg( QApplication::organizationName() )
 		.arg( QApplication::organizationDomain() ));
 
-	connect( this, &aidkit::qt::MainWindow::showed, this, &MainWindow::onShowed );
-	connect( this, &aidkit::qt::MainWindow::closed, this, &MainWindow::onClosed );
+	connect( this, &MainWindow::showed, this, &PERAMainWindow::onShowed );
+	connect( this, &MainWindow::closed, this, &PERAMainWindow::onClosed );
 
 	// Default window icon is set in Application::Application().
 }
 
 //==================================================================================================
 
-QMenu *MainWindow::addFileMenu() {
+QMenu *PERAMainWindow::addFileMenu() {
 	fileMenu()->addAction( quitAction() );
 
 	menuBar()->addMenu( fileMenu() );
@@ -63,7 +63,7 @@ QMenu *MainWindow::addFileMenu() {
 
 //==================================================================================================
 
-QMenu *MainWindow::addHelpMenu() {
+QMenu *PERAMainWindow::addHelpMenu() {
 	helpMenu()->addAction( aboutPERAAction() );
 	helpMenu()->addAction( aboutQtAction() );
 
@@ -74,7 +74,7 @@ QMenu *MainWindow::addHelpMenu() {
 
 //==================================================================================================
 
-QMenu *MainWindow::fileMenu() {
+QMenu *PERAMainWindow::fileMenu() {
 	if ( fileMenu_ == nullptr ) {
 		fileMenu_ = new QMenu( tr( "&File" ), this );
 	}
@@ -83,7 +83,7 @@ QMenu *MainWindow::fileMenu() {
 
 //==================================================================================================
 
-QMenu *MainWindow::helpMenu() {
+QMenu *PERAMainWindow::helpMenu() {
 	if ( helpMenu_ == nullptr ) {
 		helpMenu_ = new QMenu( tr( "&Help" ));
 	}
@@ -92,27 +92,27 @@ QMenu *MainWindow::helpMenu() {
 
 //==================================================================================================
 
-QAction *MainWindow::quitAction() {
+QAction *PERAMainWindow::quitAction() {
 	if ( quitAction_ == nullptr ) {
 		quitAction_ = new QuitAction( this );
-		connect( quitAction_, &QAction::triggered, this, &MainWindow::close );
+		connect( quitAction_, &QAction::triggered, this, &PERAMainWindow::close );
 	}
 	return quitAction_;
 }
 
 //==================================================================================================
 
-QAction *MainWindow::aboutPERAAction() {
+QAction *PERAMainWindow::aboutPERAAction() {
 	if ( aboutPERAAction_ == nullptr ) {
 		aboutPERAAction_ = new QAction( tr( "&About &PERA..." ), this );
-		connect( aboutPERAAction_, &QAction::triggered, this, &MainWindow::aboutPERA );
+		connect( aboutPERAAction_, &QAction::triggered, this, &PERAMainWindow::aboutPERA );
 	}
 	return aboutPERAAction_;
 }
 
 //==================================================================================================
 
-QAction *MainWindow::aboutQtAction() {
+QAction *PERAMainWindow::aboutQtAction() {
 	if ( aboutQtAction_ == nullptr ) {
 		aboutQtAction_ = new QAction( tr( "About &Qt..." ), this );
 		connect( aboutQtAction_, &QAction::triggered, &QApplication::aboutQt );
@@ -123,21 +123,21 @@ QAction *MainWindow::aboutQtAction() {
 
 //==================================================================================================
 
-void MainWindow::onShowed() {
+void PERAMainWindow::onShowed() {
 	Settings settings;
 	readSettings( &settings );
 }
 
 //==================================================================================================
 
-void MainWindow::onClosed() {
+void PERAMainWindow::onClosed() {
 	Settings settings;
 	writeSettings( &settings );
 }
 
 //==================================================================================================
 
-void MainWindow::readSettings( Settings *settings ) {
+void PERAMainWindow::readSettings( Settings *settings ) {
 	settings->beginGroup( GROUP_NAME );
 		resize( settings->value( SIZE_KEY, size() ).toSize() );
 		move( settings->value( POSITION_KEY, pos() ).toPoint() );
@@ -146,7 +146,7 @@ void MainWindow::readSettings( Settings *settings ) {
 
 //==================================================================================================
 
-void MainWindow::writeSettings( Settings *settings ) const {
+void PERAMainWindow::writeSettings( Settings *settings ) const {
 	settings->beginGroup( GROUP_NAME );
 		settings->setValue( SIZE_KEY, size() );
 		settings->setValue( POSITION_KEY, pos() );
@@ -154,8 +154,8 @@ void MainWindow::writeSettings( Settings *settings ) const {
 }
 //==================================================================================================
 
-void MainWindow::aboutPERA() {
-	AboutDialog aboutPERADialog;
+void PERAMainWindow::aboutPERA() {
+	PERAAboutDialog aboutPERADialog;
 
 	aboutPERADialog.exec();
 }

@@ -18,14 +18,14 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <QDialog>
+#include <QApplication>
 
 namespace pera_software { namespace company { namespace qt {
 
-	class AIDKIT_API AboutDialog : public QDialog {
+	class AIDKIT_API PERAApplication : public QApplication {
 		Q_OBJECT
 		public:
-			explicit AboutDialog( QWidget *parent = 0 );
+			PERAApplication( int &argc, char *argv[] );
 
 		signals:
 

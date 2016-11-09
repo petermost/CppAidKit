@@ -105,9 +105,9 @@ set( QT_HEADERS
 	src/pera_software/aidkit/qt/widgets/MainWindow.hpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
 	src/pera_software/aidkit/qt/widgets/QuitAction.hpp
-	src/pera_software/company/qt/AboutDialog.hpp
-	src/pera_software/company/qt/Application.hpp
-	src/pera_software/company/qt/MainWindow.hpp
+	src/pera_software/company/qt/PERAAboutDialog.hpp
+	src/pera_software/company/qt/PERAApplication.hpp
+	src/pera_software/company/qt/PERAMainWindow.hpp
 	src/pera_software/company/qt/Settings.hpp
 )
 
@@ -122,9 +122,9 @@ set( QT_SOURCES
 	src/pera_software/aidkit/qt/widgets/MainWindow.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
 	src/pera_software/aidkit/qt/widgets/QuitAction.cpp
-	src/pera_software/company/qt/AboutDialog.cpp
-	src/pera_software/company/qt/Application.cpp
-	src/pera_software/company/qt/MainWindow.cpp
+	src/pera_software/company/qt/PERAAboutDialog.cpp
+	src/pera_software/company/qt/PERAApplication.cpp
+	src/pera_software/company/qt/PERAMainWindow.cpp
 	src/pera_software/company/qt/Settings.cpp
 )
 

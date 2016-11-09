@@ -24,10 +24,10 @@ namespace pera_software { namespace company { namespace qt {
 
 	class Settings;
 
-	class AIDKIT_API MainWindow : public aidkit::qt::MainWindow {
+	class AIDKIT_API PERAMainWindow : public aidkit::qt::MainWindow {
 		Q_OBJECT
 		public:
-			MainWindow( QWidget *parent = nullptr );
+			PERAMainWindow( QWidget *parent = nullptr );
 
 			QMenu *addFileMenu();
 			QMenu *addHelpMenu();
