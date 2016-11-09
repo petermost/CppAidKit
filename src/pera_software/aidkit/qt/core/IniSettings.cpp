@@ -15,19 +15,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <pera_software/aidkit/aidkit.hpp>
-#include <QSettings>
+#include "IniSettings.hpp"
+#include <QString>
 
 namespace pera_software { namespace company { namespace qt {
 
-	class AIDKIT_API Settings : public QSettings {
-		public:
-			static void setDefaultPathAndFormat();
+const QString DEFAULT_PATH( QStringLiteral( "settings.ini" ));
+const QSettings::Format DEFAULT_FORMAT = QSettings::IniFormat;
 
-			Settings();
-	};
+void IniSettings::setDefaultPathAndFormat() {
+	QSettings::setDefaultFormat( DEFAULT_FORMAT );
+	QSettings::setPath( DEFAULT_FORMAT, QSettings::UserScope, DEFAULT_PATH );
+}
+
+IniSettings::IniSettings()
+	: QSettings( DEFAULT_PATH, DEFAULT_FORMAT ) {
+
+	setDefaultPathAndFormat();
+}
 
 } } }
-

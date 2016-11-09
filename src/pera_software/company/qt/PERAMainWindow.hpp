@@ -22,7 +22,7 @@
 
 namespace pera_software { namespace company { namespace qt {
 
-	class Settings;
+	class IniSettings;
 
 	class AIDKIT_API PERAMainWindow : public aidkit::qt::MainWindow {
 		Q_OBJECT
@@ -39,8 +39,8 @@ namespace pera_software { namespace company { namespace qt {
 			QAction *aboutPERAAction();
 			QAction *aboutQtAction();
 
-			virtual void readSettings( Settings *settings );
-			virtual void writeSettings( Settings *settings ) const;
+			virtual void readSettings( IniSettings *settings );
+			virtual void writeSettings( IniSettings *settings ) const;
 
 		public slots:
 			void aboutPERA();

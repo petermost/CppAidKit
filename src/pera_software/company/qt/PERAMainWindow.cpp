@@ -17,7 +17,6 @@
 
 #include "PERAMainWindow.hpp"
 #include "PERAAboutDialog.hpp"
-#include "Settings.hpp"
 
 #include <QMenu>
 #include <QMenuBar>
@@ -25,6 +24,7 @@
 #include <QApplication>
 
 #include <pera_software/company/PERA.hpp>
+#include <pera_software/aidkit/qt/core/IniSettings.hpp>
 #include <pera_software/aidkit/qt/widgets/QuitAction.hpp>
 
 namespace pera_software { namespace company { namespace qt {
@@ -124,20 +124,20 @@ QAction *PERAMainWindow::aboutQtAction() {
 //==================================================================================================
 
 void PERAMainWindow::onShowed() {
-	Settings settings;
+	IniSettings settings;
 	readSettings( &settings );
 }
 
 //==================================================================================================
 
 void PERAMainWindow::onClosed() {
-	Settings settings;
+	IniSettings settings;
 	writeSettings( &settings );
 }
 
 //==================================================================================================
 
-void PERAMainWindow::readSettings( Settings *settings ) {
+void PERAMainWindow::readSettings( IniSettings *settings ) {
 	settings->beginGroup( GROUP_NAME );
 		resize( settings->value( SIZE_KEY, size() ).toSize() );
 		move( settings->value( POSITION_KEY, pos() ).toPoint() );
@@ -146,7 +146,7 @@ void PERAMainWindow::readSettings( Settings *settings ) {
 
 //==================================================================================================
 
-void PERAMainWindow::writeSettings( Settings *settings ) const {
+void PERAMainWindow::writeSettings( IniSettings *settings ) const {
 	settings->beginGroup( GROUP_NAME );
 		settings->setValue( SIZE_KEY, size() );
 		settings->setValue( POSITION_KEY, pos() );

@@ -99,6 +99,7 @@ set( QT_HEADERS
 	src/pera_software/aidkit/qt/Resources.hpp
 	src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
 	src/pera_software/aidkit/qt/core/Enum.hpp
+	src/pera_software/aidkit/qt/core/IniSettings.hpp
 	src/pera_software/aidkit/qt/io/Console.hpp
 	src/pera_software/aidkit/qt/net/Endian.hpp
 	src/pera_software/aidkit/qt/test/Test.hpp
@@ -108,7 +109,6 @@ set( QT_HEADERS
 	src/pera_software/company/qt/PERAAboutDialog.hpp
 	src/pera_software/company/qt/PERAApplication.hpp
 	src/pera_software/company/qt/PERAMainWindow.hpp
-	src/pera_software/company/qt/Settings.hpp
 )
 
 set( QT_SOURCES
@@ -116,6 +116,7 @@ set( QT_SOURCES
 	src/pera_software/aidkit/qt/Resources.cpp
 	src/pera_software/aidkit/qt/core/DirectoryGuide.cpp
 	src/pera_software/aidkit/qt/core/Enum.cpp
+	src/pera_software/aidkit/qt/core/IniSettings.cpp
 	src/pera_software/aidkit/qt/io/Console.cpp
 	src/pera_software/aidkit/qt/net/Endian.cpp
 	src/pera_software/aidkit/qt/test/Test.cpp
@@ -125,7 +126,6 @@ set( QT_SOURCES
 	src/pera_software/company/qt/PERAAboutDialog.cpp
 	src/pera_software/company/qt/PERAApplication.cpp
 	src/pera_software/company/qt/PERAMainWindow.cpp
-	src/pera_software/company/qt/Settings.cpp
 )
 
 qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})
