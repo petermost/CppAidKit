@@ -18,7 +18,7 @@
 #include "IniSettings.hpp"
 #include <QString>
 
-namespace pera_software { namespace company { namespace qt {
+namespace pera_software { namespace aidkit { namespace qt {
 
 const QString DEFAULT_PATH( QStringLiteral( "settings.ini" ));
 const QSettings::Format DEFAULT_FORMAT = QSettings::IniFormat;

@@ -22,6 +22,8 @@
 
 namespace pera_software { namespace company { namespace qt {
 
+using namespace aidkit::qt;
+
 PERAApplication::PERAApplication(int &argc, char *argv[])
 	: QApplication( argc, argv ) {
 

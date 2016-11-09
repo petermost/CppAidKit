@@ -20,9 +20,11 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <pera_software/aidkit/qt/widgets/MainWindow.hpp>
 
-namespace pera_software { namespace company { namespace qt {
-
+namespace pera_software { namespace aidkit { namespace qt {
 	class IniSettings;
+} } }
+
+namespace pera_software { namespace company { namespace qt {
 
 	class AIDKIT_API PERAMainWindow : public aidkit::qt::MainWindow {
 		Q_OBJECT
@@ -39,8 +41,8 @@ namespace pera_software { namespace company { namespace qt {
 			QAction *aboutPERAAction();
 			QAction *aboutQtAction();
 
-			virtual void readSettings( IniSettings *settings );
-			virtual void writeSettings( IniSettings *settings ) const;
+			virtual void readSettings( aidkit::qt::IniSettings *settings );
+			virtual void writeSettings( aidkit::qt::IniSettings *settings ) const;
 
 		public slots:
 			void aboutPERA();
