@@ -27,9 +27,9 @@ namespace pera_software { namespace company { namespace qt {
 		public:
 			PERAApplication( int &argc, char *argv[] );
 
-		signals:
+		Q_SIGNALS:
 
-		public slots:
+		public Q_SLOTS:
 	};
 
 } } }

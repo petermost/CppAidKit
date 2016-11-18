@@ -32,9 +32,9 @@ namespace pera_software { namespace aidkit { namespace qt {
 			void showError( const QString &message );
 			void showDebug( const QString &message );
 
-		signals:
+		Q_SIGNALS:
 
-		public slots:
+		public Q_SLOTS:
 
 		private:
 	};

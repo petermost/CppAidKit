@@ -27,11 +27,11 @@ namespace pera_software { namespace aidkit { namespace qt {
 		public:
 			explicit MainWindow( QWidget *parent = nullptr );
 
-		signals:
+		Q_SIGNALS:
 			void showed();
 			void closed();
 
-		public slots:
+		public Q_SLOTS:
 
 		protected:
 			virtual void showEvent( QShowEvent *showEvent ) override;

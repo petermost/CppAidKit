@@ -31,11 +31,11 @@ namespace pera_software { namespace aidkit { namespace qt {
 			explicit DirectoryGuide( QObject *parent = nullptr );
 			void walk( const QFileInfo &parentDirectory, class DirectoryVisitor *visitor );
 
-		signals:
+		Q_SIGNALS:
 			// We could have used signals here, but signals can't return a value and so the
 			// feature to cancel the directory walking wouldn't have been possible.
 
-		public slots:
+		public Q_SLOTS:
 	};
 
 	class AIDKIT_API DirectoryVisitor : public QObject {

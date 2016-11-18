@@ -24,7 +24,7 @@ namespace pera_software { namespace aidkit {
 	class StringsTest : public qt::Test {
 		Q_OBJECT
 
-		private slots:
+		private Q_SLOTS:
 			void testStringLiteral();
 			void testNonStringLiteral();
 

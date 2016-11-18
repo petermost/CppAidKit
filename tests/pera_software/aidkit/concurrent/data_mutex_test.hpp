@@ -24,7 +24,7 @@ namespace pera_software { namespace aidkit { namespace concurrent {
 	class DataMutexTest : public qt::Test {
 			Q_OBJECT
 
-		private slots:
+		private Q_SLOTS:
 			void testLock();
 			void testReset();
 			void testResetWithUnknownPointer();

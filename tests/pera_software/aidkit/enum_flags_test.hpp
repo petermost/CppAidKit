@@ -24,7 +24,7 @@ namespace pera_software { namespace aidkit {
 	class EnumFlagsTest : public qt::Test {
 			Q_OBJECT
 
-		private slots:
+		private Q_SLOTS:
 			void testFunctionCall();
 			void testConstructor();
 			void testDefaultConstructor();

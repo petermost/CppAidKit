@@ -128,6 +128,10 @@ set( QT_SOURCES
 	src/pera_software/company/qt/PERAMainWindow.cpp
 )
 
+# Disable the slot, signal, emit etc. keywords:
+
+add_definitions( -DQT_NO_KEYWORDS )
+
 qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})
 
 qt5_add_resources( QRC_RESOURCES

@@ -44,10 +44,10 @@ namespace pera_software { namespace company { namespace qt {
 			virtual void readSettings( aidkit::qt::IniSettings *settings );
 			virtual void writeSettings( aidkit::qt::IniSettings *settings ) const;
 
-		public slots:
+		public Q_SLOTS:
 			void aboutPERA();
 
-		private slots:
+		private Q_SLOTS:
 			void onShowed();
 			void onClosed();
 

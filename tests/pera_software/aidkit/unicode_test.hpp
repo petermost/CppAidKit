@@ -24,7 +24,7 @@ namespace pera_software { namespace aidkit {
 	class UnicodeTest : public qt::Test {
 		Q_OBJECT
 
-		private slots:
+		private Q_SLOTS:
 			void testNarrowStringToWideString();
 			void testWideStringToNarrowString();
 			void testEmptyNarrowStringToWideString();

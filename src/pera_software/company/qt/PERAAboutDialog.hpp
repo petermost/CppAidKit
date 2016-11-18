@@ -27,9 +27,9 @@ namespace pera_software { namespace company { namespace qt {
 		public:
 			explicit PERAAboutDialog( QWidget *parent = 0 );
 
-		signals:
+		Q_SIGNALS:
 
-		public slots:
+		public Q_SLOTS:
 	};
 
 } } }

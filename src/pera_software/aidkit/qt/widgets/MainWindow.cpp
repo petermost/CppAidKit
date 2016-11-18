@@ -29,14 +29,14 @@ MainWindow::MainWindow( QWidget *parent )
 
 void MainWindow::showEvent( QShowEvent *showEvent ) {
 	QMainWindow::showEvent( showEvent );
-	emit showed();
+	Q_EMIT showed();
 }
 
 //==================================================================================================
 
 void MainWindow::closeEvent( QCloseEvent *closeEvent ) {
 	QMainWindow::closeEvent( closeEvent );
-	emit closed();
+	Q_EMIT closed();
 }
 
 } } }
