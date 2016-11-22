@@ -22,7 +22,7 @@
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-	class AIDKIT_API Enum {
+	class AIDKIT_API Enums {
 		public:
 			template < typename E >
 				static const char *toString( E e ) noexcept {
