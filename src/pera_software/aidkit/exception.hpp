@@ -21,17 +21,15 @@
 #include <string>
 #include <pera_software/aidkit/aidkit.hpp>
 
-namespace pera_software {
-	namespace aidkit {
+namespace pera_software { namespace aidkit {
 
-			class AIDKIT_API exception : public std::exception {
-				public:
-					exception() noexcept;
+	class AIDKIT_API exception : public std::exception {
+		public:
+			exception() noexcept;
 
-					virtual ~exception() noexcept;
+			virtual const std::string &message() const noexcept = 0;
 
-					// TODO: Figure out what to do with std::exception::what().
-					// virtual const char *what() const noexcept /* = 0 */;
-			};
-	}
-}
+			virtual const char *what() const noexcept override final;
+	};
+
+} }

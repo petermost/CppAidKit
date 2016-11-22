@@ -21,8 +21,39 @@
 #include "exception.hpp"
 #include <string>
 
+namespace pera_software { namespace aidkit {
+
+	void AIDKIT_API check_assertion( bool condition, const std::string &expression, const std::string &fileName,
+			int lineNumber, const std::string &functionName );
+
+	class AIDKIT_API assertion_exception : public aidkit::exception {
+		public:
+			assertion_exception( const std::string &expression, const std::string &file_name,
+					int line_number, const std::string &function_name );
+
+			const std::string &expression() const noexcept;
+
+			const std::string &file_name() const noexcept;
+
+			const std::string &function_name() const noexcept;
+
+			int line_number() const noexcept;
+
+			const std::string &message() const noexcept override;
+
+		private:
+			std::string expression_;
+			std::string fileName_;
+			int lineNumber_;
+			std::string functionName_;
+
+			std::string message_;
+	};
+
+} }
+
 #define AIDKIT_VERIFY( expression ) \
-	pera_software::aidkit::check_assertion( expression, #expression, __FILE__, __LINE__, __FUNCTION__ )
+	pera_software::aidkit::check_assertion( expression, #expression, __FILE__, __LINE__, __func__ )
 
 #if defined( AIDKIT_DEBUG )
 	#define AIDKIT_ASSERT( expression ) \
@@ -30,42 +61,3 @@
 #else
 	#define AIDKIT_ASSERT( expression )
 #endif
-
-namespace pera_software {
-	namespace aidkit {
-
-		void AIDKIT_API check_assertion( bool condition, const std::string &expression, const std::string &fileName,
-				int lineNumber, const std::string &functionName );
-
-		class AIDKIT_API assertion_exception : public aidkit::exception {
-			public:
-				assertion_exception( const std::string &expression, const std::string &file_name,
-						int line_number, const std::string &function_name );
-
-				~assertion_exception() noexcept;
-
-				const std::string &expression() const noexcept {
-					return expression_;
-				}
-
-				const std::string &file_name() const	noexcept {
-					return fileName_;
-				}
-
-				const std::string &function_name() const noexcept {
-					return functionName_;
-				}
-
-				int line_number() const noexcept {
-					return lineNumber_;
-				}
-
-			private:
-				std::string expression_;
-				std::string fileName_;
-				int lineNumber_;
-				std::string functionName_;
-		};
-
-	}
-}

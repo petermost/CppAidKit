@@ -29,14 +29,28 @@ void check_assertion( bool condition, const string &expression, const string &fi
 
 assertion_exception::assertion_exception( const string &expression, const string &fileName, int lineNumber, const string &functionName )
 	: expression_( expression ), fileName_( fileName ), lineNumber_( lineNumber ), functionName_( functionName ) {
+
+	message_ = fileName_ + "(" + to_string( lineNumber_ ) + "): " + functionName_ + ": Assertion '" + expression_ + "' failed!";
 }
 
-assertion_exception::~assertion_exception() noexcept {
+const string &assertion_exception::expression() const noexcept {
+	return expression_;
 }
 
-//const char *AssertionException::what() const
-//{
-//	return( fileName + "(" + to_string( lineNumber ) + "): " + functionName + ": Assertion '" + expression + "' failed!" )
-//}
+const string &assertion_exception::file_name() const noexcept {
+	return fileName_;
+}
+
+const string &assertion_exception::function_name() const noexcept {
+	return functionName_;
+}
+
+int assertion_exception::line_number() const noexcept {
+	return lineNumber_;
+}
+
+const string &assertion_exception::message() const noexcept {
+	return message_;
+}
 
 } }

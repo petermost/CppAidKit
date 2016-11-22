@@ -22,7 +22,8 @@ namespace pera_software { namespace aidkit {
 exception::exception() noexcept {
 }
 
-exception::~exception() noexcept {
+const char *exception::what() const noexcept {
+	return message().c_str();
 }
 
 } }
