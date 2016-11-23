@@ -20,39 +20,30 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <functional>
+#include "string_ref.hpp"
 
 namespace pera_software { namespace aidkit {
 
-	template< typename T, size_t SIZE, typename Integer = int, typename String = std::string >
+	template< typename T, typename Int = int, typename Char = char >
 		class enum_class {
 			public:
-				enum_class( const enum_class &other ) noexcept {
-					value_ = other.value_;
-					name_ = other.name_;
-					isOwner_ = false;
-				}
+				enum_class( const enum_class &other ) = default;
+				enum_class &operator = ( const enum_class &other ) = default;
 
-				enum_class &operator = ( const enum_class &other ) noexcept {
-					if ( this != &other ) {
-						value_ = other.value_;
-						name_ = other.name_;
-						isOwner_ = false;
-					}
-					return *this;
-				}
-
-				const Integer value() const noexcept {
+				Int value() const noexcept {
 					return value_;
 				}
 
-				const String &name() const noexcept {
-					return *name_;
+				basic_string_ref< Char > name() const noexcept {
+					return name_;
 				}
 
 				// Some find functions for searching via a name or a value:
 
-				static std::vector< T > find( const String &name ) {
+				static std::vector< T > find( const basic_string_ref< Char > &name ) {
 					std::vector< T > foundEnums;
+
 					for_each([ & ]( const T &other ) {
 						if ( name == other.name() )
 							foundEnums.push_back( other );
@@ -60,8 +51,9 @@ namespace pera_software { namespace aidkit {
 					return foundEnums;
 				}
 
-				static std::vector< T > find( Integer value ) {
+				static std::vector< T > find( Int value ) {
 					std::vector< T > foundEnums;
+
 					for_each([ & ]( const T &other ) {
 						if ( value == other.value() )
 							foundEnums.push_back( other );
@@ -71,18 +63,18 @@ namespace pera_software { namespace aidkit {
 
 				// Allow iterating through all enum values:
 
-				template < typename Functor >
-					static void for_each( Functor &&functor ) {
-						std::for_each( cbegin(), cend(), [ & ]( const T *t ) {
-							functor( *t );
-						});
-					}
+				static void for_each( const std::function< void ( const T & )> &function ) {
+					std::for_each( get_container().cbegin(), get_container().cend(), [ & ]( const T *t ) {
+						function( *t );
+					});
+				}
 
 				// Get all defined enum values:
 
 				static std::vector< T > values() {
 					std::vector< T > values;
-					values.reserve( make_values().size() );
+					values.reserve( get_container().size() );
+
 					for_each([ & ]( const T &t ) {
 						values.push_back( t );
 					});
@@ -90,70 +82,64 @@ namespace pera_software { namespace aidkit {
 				}
 
 			protected:
-				enum_class()
-					: enum_class( make_next_value() ) {
+				enum_class() {
+					initialize( get_next_value(), EMPTY_NAME );
 				}
 
-				enum_class( const String &name )
-					: enum_class( make_next_value(), name ) {
+				enum_class( Int value ) {
+					initialize( value, EMPTY_NAME );
 				}
 
-				enum_class( Integer value, const String &name = String() ) {
-					value_ = value;
-					name_ = new String( name );
-					isOwner_ = true;
+				template < std::size_t SIZE >
+					enum_class( const Char ( &name )[ SIZE ]) {
+						initialize( get_next_value(), name );
+					}
 
-					make_values().push_back( static_cast< const T * >( this ));
-				}
-
-				~enum_class() {
-					if ( isOwner_ )
-						delete name_;
-				}
+				template < std::size_t SIZE >
+					enum_class( Int value, const Char ( &name )[ SIZE ]) {
+						initialize( value, name );
+					}
 
 			private:
-				using const_iterator = typename std::vector< const T * >::const_iterator;
+				static const Char EMPTY_NAME[];
 
-				static std::vector< const T * > &make_values() {
+				static std::vector< const T * > &get_container() {
+					// If using a std::vector<> is inconvenient then boost contains a small_vector<>.
 					static std::vector< const T * > s_values;
 
 					return s_values;
 				}
 
-				static Integer make_next_value() {
-					return make_values().empty() ? 0 : make_values().back()->value_ + 1;
+				static Int get_next_value() {
+					return get_container().empty() ? 0 : get_container().back()->value_ + 1;
 				}
 
-				// We don't:
-				// - Embed the string_type to avoid the copy cost when an enum_class gets copied.
-				// - Use a shared_ptr because copying would then always incremente/decrement the
-				//   reference counter which is most likely not in the cache.
+				void initialize( Int value, const Char name[] ) {
+					value_ = value;
+					name_ = name;
 
-				Integer value_;
-				String *name_;
-				bool isOwner_;
-
-				static const_iterator cbegin() noexcept {
-					return make_values().cbegin();
+					get_container().push_back( static_cast< const T * >( this ));
 				}
 
-				static const_iterator cend() noexcept {
-					return make_values().cend();
-				}
+				Int value_;
+				const Char *name_;
 		};
+
+	template < typename T, typename Int, typename Char >
+		const Char enum_class< T, Int, Char >::EMPTY_NAME[] = { 0 };
 
 	// We only define the equal and less-then operator because if the other ones are needed then
 	// do:
 	// #include <utility>
 	// using namespace rel_ops;
 
-	template < typename T, size_t SIZE, typename Integer, typename Char >
-		bool operator == ( const enum_class< T, SIZE, Integer, Char > &left, const enum_class< T, SIZE, Integer, Char > &right ) {
+	template < typename T, typename Integer, typename Char >
+		bool operator == ( const enum_class< T, Integer, Char > &left, const enum_class< T, Integer, Char > &right ) {
 			return left.value() == right.value();
 		}
 
-	template < typename T, size_t SIZE, typename Integer, typename Char >
-		bool operator < ( const enum_class< T, SIZE, Integer, Char > &left, const enum_class< T, SIZE, Integer, Char > &right ) {
+	template < typename T, typename Integer, typename Char >
+		bool operator < ( const enum_class< T, Integer, Char > &left, const enum_class< T, Integer, Char > &right ) {
 			return left.value() < right.value();
 		}
 } }

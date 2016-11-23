@@ -56,7 +56,7 @@ namespace pera_software { namespace aidkit {
 			Q_OBJECT
 
 		private Q_SLOTS:
-			void testName();
+			void test();
 	};
 
 } }

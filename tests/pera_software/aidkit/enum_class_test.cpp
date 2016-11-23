@@ -32,16 +32,17 @@ static FruitEnumTest fruitEnumTest;
 
 // Enum for testing default value assignment:
 
-class Color : public enum_class< Color, 4, int, wstring > {
+class Color : public enum_class< Color, int, wchar_t > {
 	public:
 		static const Color Red;
 		static const Color Green;
 		static const Color Blue;
 
 	private:
-		Color( const wstring &name )
-			: enum_class( name ) {
-		}
+		template < size_t SIZE >
+			Color( const wchar_t ( &name )[ SIZE ])
+				: enum_class( name ) {
+			}
 };
 
 const Color Color::Red( L"Red" );
@@ -107,16 +108,18 @@ void ColorEnumTest::testAssignment() {
 
 // Enum for testing explicit value assignment and duplicated enums:
 
-class Number : public enum_class< Number, 4 > {
+class Number : public enum_class< Number > {
 	public:
 		static const Number Ten;
 		static const Number Twenty;
 		static const Number Thirty;
 		static const Number TwentyToo;
+
 	private:
-		Number( int value, const string &name )
-			: enum_class( value, name ) {
-		}
+		template < size_t SIZE >
+			Number( int value, const char ( &name )[ SIZE ])
+				: enum_class( value, name ) {
+			}
 };
 
 const Number Number::Ten(       10, "Ten" );
@@ -142,7 +145,7 @@ void NumberEnumTest::testFindDuplicates() {
 
 // Enum for testing explicit start value:
 
-class Animal : public enum_class< Animal, 2 > {
+class Animal : public enum_class< Animal > {
 	public:
 		static const Animal Cat;
 		static const Animal Dog;
@@ -172,28 +175,36 @@ void AnimalEnumTest::testName() {
 
 //#########################################################################################################
 
-// Enum for testing with QString:
+// Because the enum_class<> is now using string_ref<> (a.k.a string_view<>) only some functionality
+// is available for QChar/QString.
 
-class Fruit : public enum_class< Fruit, 3, int, QString > {
+class Fruit : public enum_class< Fruit, int, QChar > {
 	public:
 		static const Fruit Apple;
 		static const Fruit Orange;
 		static const Fruit Lemon;
 
 	private:
-		Fruit( const QString &name )
-			: enum_class( name ) {
-		}
+		template < size_t SIZE >
+			Fruit( const QChar ( &name )[ SIZE ])
+				: enum_class( name ) {
+			}
 };
 
-const Fruit Fruit::Apple( "Apple");
-const Fruit Fruit::Orange( "Orange");
-const Fruit Fruit::Lemon( "Lemon" );
+const QChar appleName[] = { 'A', 'p', 'p', 'l', 'e', '\0' };
+const QChar orangeName[] = { 'O', 'r', 'a', 'n', 'g', 'e', '\0' };
+const QChar lemonName[] = { 'L', 'e', 'm', 'o', 'n', '\0' };
 
-void FruitEnumTest::testName() {
-	QString expectedName = "Orange";
+const Fruit Fruit::Apple( appleName );
+const Fruit Fruit::Orange( orangeName );
+const Fruit Fruit::Lemon( lemonName );
 
-	QCOMPARE( Fruit::Orange.name(), expectedName );
+void FruitEnumTest::test() {
+	auto value = Fruit::Orange.value();
+	QVERIFY( value == 1 );
+
+	auto name = Fruit::Lemon.name();
+	QVERIFY( name == lemonName );
 }
 
 } }
