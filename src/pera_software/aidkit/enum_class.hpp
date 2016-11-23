@@ -17,7 +17,6 @@
 
 #pragma once
 
-#include <array>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -83,7 +82,7 @@ namespace pera_software { namespace aidkit {
 
 				static std::vector< T > values() {
 					std::vector< T > values;
-					values.reserve( s_values.size() );
+					values.reserve( make_values().size() );
 					for_each([ & ]( const T &t ) {
 						values.push_back( t );
 					});
@@ -92,11 +91,11 @@ namespace pera_software { namespace aidkit {
 
 			protected:
 				enum_class()
-					: enum_class( s_nextValue++ ) {
+					: enum_class( make_next_value() ) {
 				}
 
 				enum_class( const String &name )
-					: enum_class( s_nextValue++, name ) {
+					: enum_class( make_next_value(), name ) {
 				}
 
 				enum_class( Integer value, const String &name = String() ) {
@@ -104,8 +103,7 @@ namespace pera_software { namespace aidkit {
 					name_ = new String( name );
 					isOwner_ = true;
 
-					s_values[ s_valuesSize++ ] = static_cast< const T * >( this );
-					s_nextValue = value_ + 1;
+					make_values().push_back( static_cast< const T * >( this ));
 				}
 
 				~enum_class() {
@@ -114,7 +112,17 @@ namespace pera_software { namespace aidkit {
 				}
 
 			private:
-				typedef typename std::array< const T *, SIZE >::const_iterator const_iterator;
+				using const_iterator = typename std::vector< const T * >::const_iterator;
+
+				static std::vector< const T * > &make_values() {
+					static std::vector< const T * > s_values;
+
+					return s_values;
+				}
+
+				static Integer make_next_value() {
+					return make_values().empty() ? 0 : make_values().back()->value_ + 1;
+				}
 
 				// We don't:
 				// - Embed the string_type to avoid the copy cost when an enum_class gets copied.
@@ -126,34 +134,13 @@ namespace pera_software { namespace aidkit {
 				bool isOwner_;
 
 				static const_iterator cbegin() noexcept {
-					return s_values.cbegin();
+					return make_values().cbegin();
 				}
 
 				static const_iterator cend() noexcept {
-					return s_values.cbegin() + s_valuesSize;
+					return make_values().cend();
 				}
-
-				// The value for the next enum instance:
-
-				static Integer s_nextValue;
-
-				// We use an array to store the values because it is usable even if it is only
-				// statically initialized with zeros:
-
-				static size_t s_valuesSize;
-				static std::array< const T *, SIZE > s_values;
 		};
-
-	// Note that all static members must be usable after they have been zero-initialized!
-
-	template < typename T, size_t SIZE, typename Integer, typename Char >
-		Integer enum_class< T, SIZE, Integer, Char >::s_nextValue;
-
-	template < typename T, size_t SIZE, typename Integer, typename Char >
-		size_t enum_class< T, SIZE, Integer, Char >::s_valuesSize;
-
-	template < typename T, size_t SIZE, typename Integer, typename Char >
-		std::array< const T *, SIZE > enum_class< T, SIZE, Integer, Char >::s_values;
 
 	// We only define the equal and less-then operator because if the other ones are needed then
 	// do:
