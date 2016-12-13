@@ -17,48 +17,52 @@
 
 #include "Test.hpp"
 #include <QTest>
-#include <algorithm>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
 using namespace std;
 
-size_t Test::s_testsCount;
-array< Test *, Test::SIZE > Test::s_tests;
-
 //==================================================================================================
 
 Test::Test() {
 
-	// Append the test to the list of tests:
+	// Append this test to the list of tests:
 
-	s_tests[ s_testsCount++ ] = this;
+	tests().append( this );
 }
 
 //==================================================================================================
 
 Test::~Test() {
 
-	// We can't really remove anything from an std::array, so we move the destructed test to the end
-	// of the tests:
+	// Remove this test from the list of tests:
 
-	auto endIterator = remove( s_tests.begin(), s_tests.end(), this );
-
-	// Adjust the size so the 'removed' test won't be accessed anymore:
-
-	s_testsCount = endIterator - s_tests.begin();
+	tests().removeOne( this );
 }
 
 //==================================================================================================
 
-int Test::executeTests( const QStringList &arguments ) {
-	int summaryResult = 0;
+// TODO: Return a list of the failed tests
 
-	for ( std::size_t i = 0; i < s_testsCount; ++i ) {
-		int result = QTest::qExec( s_tests[ i ], arguments );
-		summaryResult = summaryResult && result;
+int Test::executeTests( const QStringList &arguments ) {
+	int failedTests = 0;
+
+	for ( Test *test : tests() ) {
+		int hasFailed = QTest::qExec( test, arguments );
+		failedTests += ( hasFailed != 0 ) ? 1 : 0;
 	}
-	return summaryResult;
+	return failedTests;
+}
+
+//==================================================================================================
+
+QVector< Test * > &Test::tests() {
+	// Use a function level static container so we don't get a problem with the undefined
+	// initialization order of file level statics:
+
+	static QVector< Test * > s_tests;
+
+	return s_tests;
 }
 
 } } }

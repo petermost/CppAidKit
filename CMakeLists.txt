@@ -69,6 +69,7 @@ set( HEADERS
 	src/pera_software/aidkit/exception.hpp
 	src/pera_software/aidkit/enum_class.hpp
 	src/pera_software/aidkit/enum_flags.hpp
+	src/pera_software/aidkit/vectors.hpp
 	src/pera_software/aidkit/io/errno.hpp
 	src/pera_software/aidkit/io/file.hpp
 	src/pera_software/aidkit/io/basic_file.hpp
@@ -88,6 +89,7 @@ set( SOURCES
 	src/pera_software/aidkit/exception.cpp
 	src/pera_software/aidkit/enum_class.cpp
 	src/pera_software/aidkit/enum_flags.cpp
+	src/pera_software/aidkit/vectors.cpp
 	src/pera_software/aidkit/io/errno.cpp
 	src/pera_software/aidkit/io/file.cpp
 	src/pera_software/aidkit/io/basic_file.cpp
@@ -157,23 +159,25 @@ endif()
 ########################### Setup testAidKit ##################################
 
 set( TEST_HEADERS
-	tests/pera_software/aidkit/strings_test.hpp
-	tests/pera_software/aidkit/unicode_test.hpp
 	tests/pera_software/aidkit/enum_class_test.hpp
 	tests/pera_software/aidkit/enum_flags_test.hpp
-	tests/pera_software/aidkit/io/file_test.hpp
+	tests/pera_software/aidkit/strings_test.hpp
+	tests/pera_software/aidkit/unicode_test.hpp
+	tests/pera_software/aidkit/vectors_test.hpp
 	tests/pera_software/aidkit/concurrent/data_mutex_test.hpp
+	tests/pera_software/aidkit/io/file_test.hpp
 	tests/pera_software/aidkit/qt/net/EndianTest.hpp
 )
 
 set( TEST_SOURCES
 	tests/pera_software/aidkit/test_main.cpp
-	tests/pera_software/aidkit/strings_test.cpp
-	tests/pera_software/aidkit/unicode_test.cpp
 	tests/pera_software/aidkit/enum_class_test.cpp
 	tests/pera_software/aidkit/enum_flags_test.cpp
-	tests/pera_software/aidkit/io/file_test.cpp
+	tests/pera_software/aidkit/strings_test.cpp
+	tests/pera_software/aidkit/unicode_test.cpp
+	tests/pera_software/aidkit/vectors_test.cpp
 	tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
+	tests/pera_software/aidkit/io/file_test.cpp
 	tests/pera_software/aidkit/qt/net/EndianTest.cpp
 )
 

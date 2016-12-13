@@ -104,7 +104,9 @@ namespace pera_software { namespace aidkit {
 				static const Char EMPTY_NAME[];
 
 				static std::vector< const T * > &get_container() {
-					// If using a std::vector<> is inconvenient then boost contains a small_vector<>.
+					// - Use a function level static container so we don't get a problem with the
+					//   undefined initialization order of file level statics.
+					// - If using a std::vector<> is inconvenient then boost contains a small_vector<>.
 					static std::vector< const T * > s_values;
 
 					return s_values;

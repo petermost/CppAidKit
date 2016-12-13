@@ -15,6 +15,8 @@ int executeTests( const QStringList &arguments ) {
 
 using namespace std;
 
+// TODO: Move main to class Test.
+
 int main( int argc, char *argv[] ) {
 
 	set_terminate( __gnu_cxx::__verbose_terminate_handler );
@@ -29,7 +31,9 @@ int main( int argc, char *argv[] ) {
 		arguments.append( "-silent" );
 	}
 
-	auto result = pera_software::aidkit::executeTests( arguments );
+	// TODO: Print the list of the failed tests:
 
-	return result;
+	auto failedTests = pera_software::aidkit::executeTests( arguments );
+
+	return failedTests;
 }
