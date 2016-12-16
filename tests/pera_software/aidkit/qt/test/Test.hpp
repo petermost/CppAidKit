@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2015 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -17,26 +17,23 @@
 
 #pragma once
 
-#include <pera_software/aidkit/qt/test/Test.hpp>
+#include <QObject>
+#include <QVector>
+#include <QStringList>
 
-namespace pera_software { namespace aidkit {
+namespace pera_software { namespace aidkit { namespace qt {
 
-	class VectorsTest : public qt::Test {
-			Q_OBJECT
+class Test : public QObject {
+	Q_OBJECT
+	public:
+		static int executeTests( const QStringList &arguments );
 
-		private Q_SLOTS:
-			void testRemove();
+	protected:
+		Test();
+		virtual ~Test();
 
-			void testJoin();
-			void testWJoin();
+	private:
+		static QVector< Test * > &tests();
+};
 
-			void testStreamOperatorWithEmptyVector();
-			void testStreamOperatorWithOneElement();
-			void testStreamOperatorWithMultipleElements();
-
-			void testWStreamOperatorWithEmptyVector();
-			void testWStreamOperatorWithOneElement();
-			void testWStreamOperatorWithMultipleElements();
-	};
-
-} }
+} } }

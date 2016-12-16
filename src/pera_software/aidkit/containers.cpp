@@ -1,4 +1,4 @@
-// Copyright 2015 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,26 +15,4 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <pera_software/aidkit/aidkit.hpp>
-#include <QObject>
-#include <QVector>
-#include <QStringList>
-
-namespace pera_software { namespace aidkit { namespace qt {
-
-class AIDKIT_API Test : public QObject {
-	Q_OBJECT
-	public:
-		static int executeTests( const QStringList &arguments );
-
-	protected:
-		Test();
-		virtual ~Test();
-
-	private:
-		static QVector< Test * > &tests();
-};
-
-} } }
+#include "containers.hpp"

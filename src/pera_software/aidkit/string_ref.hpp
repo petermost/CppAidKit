@@ -19,13 +19,13 @@
 
 #include <experimental/string_view>
 
-// IMHO the name string_ref is a better name then string_view, but apart from that it's now only one
+// IMHO string_ref is a better name then string_view, but apart from that it's now only one
 // place which needs to be edited when string_view moves from experimental to std.
 
 namespace pera_software { namespace aidkit {
 
-	template < typename Character >
-		using basic_string_ref = std::experimental::basic_string_view< Character >;
+	template < typename Char >
+		using basic_string_ref = std::experimental::basic_string_view< Char >;
 
 	using string_ref    = std::experimental::string_view;
 	using wstring_ref   = std::experimental::wstring_view;

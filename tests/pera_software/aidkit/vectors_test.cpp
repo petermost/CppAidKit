@@ -26,19 +26,32 @@ using namespace std;
 
 static VectorsTest vectorsTest;
 
-static bool is_two( int i ) {
-	return i == 2;
-}
-
-
-void VectorsTest::testRemoveIf() {
+void VectorsTest::testRemove() {
 	vector< int > ints = { 1, 2, 2, 2, 3 };
 
-	vector_remove_if( &ints, is_two );
+	// It is enough to test remove() because it calls remove_if():
+
+	vectors::remove( &ints, 2 );
 
 	QVERIFY( ints.size() == 2 );
 	QVERIFY( ints.at( 0 ) == 1 );
 	QVERIFY( ints.at( 1 ) == 3 );
+}
+
+void VectorsTest::testJoin() {
+	vector< int > ints = { 1, 2, 3 };
+
+	string str = vectors::join( ints, "[", ",", "]" );
+
+	QVERIFY( str == "[1,2,3]" );
+}
+
+void VectorsTest::testWJoin() {
+	vector< int > ints = { 1, 2, 3 };
+
+	wstring str = vectors::wjoin( ints, L"[", L",", L"]" );
+
+	QVERIFY( str == L"[1,2,3]" );
 }
 
 void VectorsTest::testStreamOperatorWithEmptyVector() {

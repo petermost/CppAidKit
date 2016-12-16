@@ -23,6 +23,11 @@
 
 namespace pera_software { namespace aidkit { namespace concurrent {
 
+	/// A compile time guaranteed mutex.
+	/**
+	 * This special mutex guarantees that the embedded resource can only be accessed after the
+	 * associated mutex has been successfully locked.
+	 */
 	template < typename T, typename Mutex = std::recursive_mutex >
 		class data_mutex {
 			public:
@@ -30,12 +35,14 @@ namespace pera_software { namespace aidkit { namespace concurrent {
 				using pointer = std::unique_ptr< T, std::function< void ( T * ) >>;
 				using const_pointer = std::unique_ptr< const T, std::function< void ( const T * ) >>;
 
+				/// Initialize the embedded resource with the given parameters.
 				template < typename ... Args >
 					data_mutex( Args && ... args )
 						: data_( std::forward< Args >( args ) ... ) {
 						lockCount_ = 0;
 					}
 
+				/// Lock the mutex and return a pointer for accessing the embedded resource.
 				pointer lock() {
 					mutex_.lock();
 					return make_pointer();

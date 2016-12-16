@@ -17,26 +17,25 @@
 
 #pragma once
 
-#include <pera_software/aidkit/qt/test/Test.hpp>
+#include <pera_software/aidkit/aidkit.hpp>
+#include "string_ref.hpp"
+#include <sstream>
 
-namespace pera_software { namespace aidkit {
+namespace pera_software { namespace aidkit { namespace containers {
 
-	class VectorsTest : public qt::Test {
-			Q_OBJECT
+	template < typename Iterator, typename Char >
+		std::basic_ostream< Char > &print( std::basic_ostream< Char > &output, Iterator begin, Iterator end,
+			basic_string_ref< Char > prefix, basic_string_ref< Char > delimiter, basic_string_ref< Char > suffix ) {
 
-		private Q_SLOTS:
-			void testRemove();
+			output << prefix;
+			auto it = begin;
+			if ( it != end ) {
+				output << *it++;
+				while ( it != end )
+					output << delimiter << *it++;
+			}
+			output << suffix;
 
-			void testJoin();
-			void testWJoin();
-
-			void testStreamOperatorWithEmptyVector();
-			void testStreamOperatorWithOneElement();
-			void testStreamOperatorWithMultipleElements();
-
-			void testWStreamOperatorWithEmptyVector();
-			void testWStreamOperatorWithOneElement();
-			void testWStreamOperatorWithMultipleElements();
-	};
-
-} }
+			return output;
+		}
+} } }

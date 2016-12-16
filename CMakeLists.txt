@@ -26,22 +26,7 @@ include( cmake/all_options.cmake )
 #	set( CMAKE_PREFIX_PATH "C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/cmake" )
 #endif()
 
-
-
-############################# Setup Qt5 usage #################################
-# See: http://doc.qt.io/qt-5/cmake-manual.html
-#
-# For AUTOMOC to work we also have to include the headers in the add_library() call!
-# set( CMAKE_AUTOMOC ON )
-
-# Allow including moc files:
-# set( CMAKE_INCLUDE_CURRENT_DIR ON )
-
-find_package( Qt5Widgets )
-find_package( Qt5Test )
-
 ############################# Setup AidKit ####################################
-
 #	add_compile_options(
 #		-fsanitize=address      # Enable AddressSanitizer, a fast memory error detector.
 #		-fsanitize=thread       # Enable ThreadSanitizer, a fast data race detector.
@@ -52,23 +37,24 @@ if ( MINGW )
 	add_definitions( -D__USE_MINGW_ANSI_STDIO )
 endif()
 
-
 set( OTHER_FILES
 	lgpl.txt
+	src/pera_software/aidkit/qt/qt.cpp
 )
 
 # Library sources:
 
 set( HEADERS
 	src/pera_software/aidkit/aidkit.hpp
+	src/pera_software/aidkit/containers.hpp
 	src/pera_software/aidkit/debug.hpp
-	src/pera_software/aidkit/unicode.hpp
-	src/pera_software/aidkit/strings.hpp
-	src/pera_software/aidkit/string_ref.hpp
-	src/pera_software/aidkit/platform.hpp
-	src/pera_software/aidkit/exception.hpp
 	src/pera_software/aidkit/enum_class.hpp
 	src/pera_software/aidkit/enum_flags.hpp
+	src/pera_software/aidkit/exception.hpp
+	src/pera_software/aidkit/unicode.hpp
+	src/pera_software/aidkit/platform.hpp
+	src/pera_software/aidkit/strings.hpp
+	src/pera_software/aidkit/string_ref.hpp
 	src/pera_software/aidkit/vectors.hpp
 	src/pera_software/aidkit/io/errno.hpp
 	src/pera_software/aidkit/io/file.hpp
@@ -81,14 +67,15 @@ set( HEADERS
 set( SOURCES
 	src/pera_software/pera_software.cpp
 	src/pera_software/aidkit/aidkit.cpp
+	src/pera_software/aidkit/containers.cpp
 	src/pera_software/aidkit/debug.cpp
-	src/pera_software/aidkit/unicode.cpp
-	src/pera_software/aidkit/strings.cpp
-	src/pera_software/aidkit/string_ref.cpp
-	src/pera_software/aidkit/platform.cpp
-	src/pera_software/aidkit/exception.cpp
 	src/pera_software/aidkit/enum_class.cpp
 	src/pera_software/aidkit/enum_flags.cpp
+	src/pera_software/aidkit/exception.cpp
+	src/pera_software/aidkit/unicode.cpp
+	src/pera_software/aidkit/platform.cpp
+	src/pera_software/aidkit/strings.cpp
+	src/pera_software/aidkit/string_ref.cpp
 	src/pera_software/aidkit/vectors.cpp
 	src/pera_software/aidkit/io/errno.cpp
 	src/pera_software/aidkit/io/file.cpp
@@ -99,55 +86,147 @@ set( SOURCES
 	src/pera_software/company/PERA.cpp
 )
 
-set( QT_HEADERS
-	src/pera_software/aidkit/qt/Resources.hpp
-	src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
-	src/pera_software/aidkit/qt/core/Enums.hpp
-	src/pera_software/aidkit/qt/core/IniSettings.hpp
-	src/pera_software/aidkit/qt/io/Console.hpp
-	src/pera_software/aidkit/qt/net/Endian.hpp
-	src/pera_software/aidkit/qt/test/Test.hpp
-	src/pera_software/aidkit/qt/widgets/MainWindow.hpp
-	src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
-	src/pera_software/aidkit/qt/widgets/QuitAction.hpp
-	src/pera_software/company/qt/PERAAboutDialog.hpp
-	src/pera_software/company/qt/PERAApplication.hpp
-	src/pera_software/company/qt/PERAMainWindow.hpp
+# Library unit test sources:
+
+set( TEST_HEADERS
+	tests/pera_software/aidkit/enum_class_test.hpp
+	tests/pera_software/aidkit/enum_flags_test.hpp
+	tests/pera_software/aidkit/strings_test.hpp
+	tests/pera_software/aidkit/unicode_test.hpp
+	tests/pera_software/aidkit/vectors_test.hpp
+	tests/pera_software/aidkit/concurrent/data_mutex_test.hpp
+	tests/pera_software/aidkit/io/file_test.hpp
+)
+set( TEST_SOURCES
+	tests/pera_software/aidkit/test_main.cpp
+	tests/pera_software/aidkit/enum_class_test.cpp
+	tests/pera_software/aidkit/enum_flags_test.cpp
+	tests/pera_software/aidkit/strings_test.cpp
+	tests/pera_software/aidkit/unicode_test.cpp
+	tests/pera_software/aidkit/vectors_test.cpp
+	tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
+	tests/pera_software/aidkit/io/file_test.cpp
 )
 
-set( QT_SOURCES
-	src/pera_software/aidkit/qt/qt.cpp
-	src/pera_software/aidkit/qt/Resources.cpp
-	src/pera_software/aidkit/qt/core/DirectoryGuide.cpp
-	src/pera_software/aidkit/qt/core/Enums.cpp
-	src/pera_software/aidkit/qt/core/IniSettings.cpp
-	src/pera_software/aidkit/qt/io/Console.cpp
-	src/pera_software/aidkit/qt/net/Endian.cpp
-	src/pera_software/aidkit/qt/test/Test.cpp
-	src/pera_software/aidkit/qt/widgets/MainWindow.cpp
-	src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
-	src/pera_software/aidkit/qt/widgets/QuitAction.cpp
-	src/pera_software/company/qt/PERAAboutDialog.cpp
-	src/pera_software/company/qt/PERAApplication.cpp
-	src/pera_software/company/qt/PERAMainWindow.cpp
-)
+############################# Setup Qt5 usage #################################
+# See: http://doc.qt.io/qt-5/cmake-manual.html
+#
+# For AUTOMOC to work we also have to include the headers in the add_library() call!
+# set( CMAKE_AUTOMOC ON )
 
-# Disable the slot, signal, emit etc. keywords:
+# Allow including moc files:
+# set( CMAKE_INCLUDE_CURRENT_DIR ON )
 
-add_definitions( -DQT_NO_KEYWORDS )
+find_package( Qt5Core QUIET )
+if ( Qt5Core_FOUND )
+	message( "Building with QtCore." )
 
-qt5_wrap_cpp( MOC_SOURCES ${QT_HEADERS})
+	# Disable the slot, signal, emit etc. keywords:
 
-qt5_add_resources( QRC_RESOURCES
-	resources/pera_software/aidkit/AidKitResources.qrc
-	resources/pera_software/company/CompanyResources.qrc
-)
+	add_definitions( -DQT_NO_KEYWORDS )
+
+	qt5_add_resources( QRC_RESOURCES
+		resources/pera_software/aidkit/AidKitResources.qrc
+		resources/pera_software/company/CompanyResources.qrc
+	)
+	set( QT_CORE_HEADERS
+		src/pera_software/aidkit/qt/io/Console.hpp
+		src/pera_software/aidkit/qt/net/Endian.hpp
+		src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
+		src/pera_software/aidkit/qt/core/Enums.hpp
+		src/pera_software/aidkit/qt/core/IniSettings.hpp
+	)
+	set( QT_CORE_SOURCES
+		src/pera_software/aidkit/qt/io/Console.cpp
+		src/pera_software/aidkit/qt/net/Endian.cpp
+		src/pera_software/aidkit/qt/core/DirectoryGuide.cpp
+		src/pera_software/aidkit/qt/core/Enums.cpp
+		src/pera_software/aidkit/qt/core/IniSettings.cpp
+	)
+	set( QT_CORE_TEST_HEADERS
+		tests/pera_software/aidkit/qt/net/EndianTest.hpp
+	)
+	set( QT_CORE_TEST_SOURCES
+		tests/pera_software/aidkit/qt/net/EndianTest.cpp
+	)
+	qt5_wrap_cpp( QT_CORE_MOC_SOURCES ${QT_CORE_HEADERS})
+
+	link_libraries( Qt5::Core )
+else()
+	message( "Building without QtCore!" )
+endif()
+
+find_package( Qt5Gui QUIET )
+if ( Qt5Gui_FOUND )
+	message( "Building with QtGui." )
+	set( QT_GUI_HEADERS
+		src/pera_software/aidkit/qt/Resources.hpp
+	)
+	set( QT_GUI_SOURCES
+		src/pera_software/aidkit/qt/Resources.cpp
+	)
+	qt5_wrap_cpp( QT_GUI_MOC_SOURCES ${QT_GUI_HEADERS})
+
+	link_libraries( Qt5::Gui )
+else()
+	message( "Building without QtGui!" )
+endif()
+
+find_package( Qt5Widgets QUIET )
+if ( Qt5Widgets_FOUND )
+	message( "Building with QtWidgets." )
+	set( QT_WIDGETS_HEADERS
+		src/pera_software/aidkit/qt/widgets/MainWindow.hpp
+		src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
+		src/pera_software/aidkit/qt/widgets/QuitAction.hpp
+		src/pera_software/company/qt/PERAAboutDialog.hpp
+		src/pera_software/company/qt/PERAApplication.hpp
+		src/pera_software/company/qt/PERAMainWindow.hpp
+	)
+	set( QT_WIDGETS_SOURCES
+		src/pera_software/aidkit/qt/widgets/MainWindow.cpp
+		src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
+		src/pera_software/aidkit/qt/widgets/QuitAction.cpp
+		src/pera_software/company/qt/PERAAboutDialog.cpp
+		src/pera_software/company/qt/PERAApplication.cpp
+		src/pera_software/company/qt/PERAMainWindow.cpp
+	)
+	qt5_wrap_cpp( QT_WIDGETS_MOC_SOURCES ${QT_WIDGETS_HEADERS})
+
+	link_libraries( Qt5::Widgets )
+else()
+	message( "Building without QtWidgets!" )
+endif()
+
+find_package( Qt5Test QUIET )
+if ( Qt5Test_FOUND )
+	message( "Building with QtTest." )
+
+	set( QT_TEST_HEADERS
+		tests/pera_software/aidkit/qt/test/Test.hpp
+	)
+	set( QT_TEST_SOURCES
+		tests/pera_software/aidkit/qt/test/Test.cpp
+	)
+	qt5_wrap_cpp( QT_TEST_MOC_SOURCES ${QT_TEST_HEADERS})
+
+	link_libraries( Qt5::Test )
+else()
+	message( "Building without QtTest!" )
+endif()
 
 # Setup library build:
 
-add_library( AidKit SHARED ${SOURCES} ${QT_SOURCES} ${MOC_SOURCES} ${QRC_RESOURCES})
+add_library( AidKit SHARED
+	${SOURCES}
+	${QRC_RESOURCES}
+	${QT_CORE_SOURCES} ${QT_CORE_MOC_SOURCES}
+	${QT_GUI_SOURCES} ${QT_GUI_MOC_SOURCES}
+	${QT_WIDGETS_SOURCES} ${QT_WIDGETS_MOC_SOURCES}
+)
+
 include_directories( src/ )
-target_link_libraries( AidKit Qt5::Test Qt5::Widgets )
+target_link_libraries( AidKit )
 
 if ( MINGW )
 	# Linking to this library would solve linking errors to some *_nolock functions, but it results
@@ -158,32 +237,17 @@ endif()
 
 ########################### Setup testAidKit ##################################
 
-set( TEST_HEADERS
-	tests/pera_software/aidkit/enum_class_test.hpp
-	tests/pera_software/aidkit/enum_flags_test.hpp
-	tests/pera_software/aidkit/strings_test.hpp
-	tests/pera_software/aidkit/unicode_test.hpp
-	tests/pera_software/aidkit/vectors_test.hpp
-	tests/pera_software/aidkit/concurrent/data_mutex_test.hpp
-	tests/pera_software/aidkit/io/file_test.hpp
-	tests/pera_software/aidkit/qt/net/EndianTest.hpp
-)
+if ( Qt5Test_FOUND )
+	message( "Building unit tests." )
+	include_directories( tests/ )
 
-set( TEST_SOURCES
-	tests/pera_software/aidkit/test_main.cpp
-	tests/pera_software/aidkit/enum_class_test.cpp
-	tests/pera_software/aidkit/enum_flags_test.cpp
-	tests/pera_software/aidkit/strings_test.cpp
-	tests/pera_software/aidkit/unicode_test.cpp
-	tests/pera_software/aidkit/vectors_test.cpp
-	tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
-	tests/pera_software/aidkit/io/file_test.cpp
-	tests/pera_software/aidkit/qt/net/EndianTest.cpp
-)
+	qt5_wrap_cpp( MOC_TEST_SOURCES ${TEST_HEADERS})
 
-qt5_wrap_cpp( MOC_TEST_SOURCES ${TEST_HEADERS})
-
-# Setup library test build:
-
-add_executable( testAidKit ${TEST_SOURCES} ${MOC_TEST_SOURCES})
-target_link_libraries( testAidKit AidKit Qt5::Test )
+	add_executable( testAidKit
+		${TEST_SOURCES} ${MOC_TEST_SOURCES}
+		${QT_TEST_SOURCES} ${QT_TEST_MOC_SOURCES}
+	)
+	target_link_libraries( testAidKit AidKit )
+else()
+	message( "Building without unit tests!" )
+endif()
