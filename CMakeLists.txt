@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required( VERSION 3.0 )
+cmake_minimum_required( VERSION 3.5 )
 project( AidKit )
 
 include( cmake/all_options.cmake )
@@ -125,10 +125,14 @@ if ( Qt5Core_FOUND )
 
 	add_definitions( -DQT_NO_KEYWORDS )
 
-	qt5_add_resources( QRC_RESOURCES
+	link_libraries( Qt5::Core )
+
+	qt5_add_resources( RESOURCES
 		resources/pera_software/aidkit/AidKitResources.qrc
 		resources/pera_software/company/CompanyResources.qrc
 	)
+	# Normal source files:
+
 	set( QT_CORE_HEADERS
 		src/pera_software/aidkit/qt/io/Console.hpp
 		src/pera_software/aidkit/qt/net/Endian.hpp
@@ -143,15 +147,21 @@ if ( Qt5Core_FOUND )
 		src/pera_software/aidkit/qt/core/Enums.cpp
 		src/pera_software/aidkit/qt/core/IniSettings.cpp
 	)
+	qt5_wrap_cpp( QT_CORE_MOC_SOURCES ${QT_CORE_HEADERS} )
+
+	list( APPEND SOURCES ${QT_CORE_SOURCES} ${QT_CORE_MOC_SOURCES} )
+
+	# Test source files:
+
 	set( QT_CORE_TEST_HEADERS
 		tests/pera_software/aidkit/qt/net/EndianTest.hpp
 	)
 	set( QT_CORE_TEST_SOURCES
 		tests/pera_software/aidkit/qt/net/EndianTest.cpp
 	)
-	qt5_wrap_cpp( QT_CORE_MOC_SOURCES ${QT_CORE_HEADERS})
+	qt5_wrap_cpp( QT_CORE_TEST_MOC_SOURCES ${QT_CORE_TEST_HEADERS} )
 
-	link_libraries( Qt5::Core )
+	list( APPEND TEST_SOURCES ${QT_CORE_TEST_SOURCES} ${QT_CORE_TEST_MOC_SOURCES} )
 else()
 	message( "Building without QtCore!" )
 endif()
@@ -159,6 +169,9 @@ endif()
 find_package( Qt5Gui QUIET )
 if ( Qt5Gui_FOUND )
 	message( "Building with QtGui." )
+
+	link_libraries( Qt5::Gui )
+
 	set( QT_GUI_HEADERS
 		src/pera_software/aidkit/qt/Resources.hpp
 	)
@@ -167,7 +180,7 @@ if ( Qt5Gui_FOUND )
 	)
 	qt5_wrap_cpp( QT_GUI_MOC_SOURCES ${QT_GUI_HEADERS})
 
-	link_libraries( Qt5::Gui )
+	list( APPEND SOURCES ${QT_GUI_SOURCES} ${QT_GUI_MOC_SOURCES} )
 else()
 	message( "Building without QtGui!" )
 endif()
@@ -175,6 +188,9 @@ endif()
 find_package( Qt5Widgets QUIET )
 if ( Qt5Widgets_FOUND )
 	message( "Building with QtWidgets." )
+
+	link_libraries( Qt5::Widgets )
+
 	set( QT_WIDGETS_HEADERS
 		src/pera_software/aidkit/qt/widgets/MainWindow.hpp
 		src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
@@ -193,39 +209,16 @@ if ( Qt5Widgets_FOUND )
 	)
 	qt5_wrap_cpp( QT_WIDGETS_MOC_SOURCES ${QT_WIDGETS_HEADERS})
 
-	link_libraries( Qt5::Widgets )
+	list( APPEND SOURCES ${QT_WIDGETS_SOURCES} ${QT_WIDGETS_MOC_SOURCES} )
 else()
 	message( "Building without QtWidgets!" )
 endif()
 
-find_package( Qt5Test QUIET )
-if ( Qt5Test_FOUND )
-	message( "Building with QtTest." )
-
-	set( QT_TEST_HEADERS
-		tests/pera_software/aidkit/qt/test/Test.hpp
-	)
-	set( QT_TEST_SOURCES
-		tests/pera_software/aidkit/qt/test/Test.cpp
-	)
-	qt5_wrap_cpp( QT_TEST_MOC_SOURCES ${QT_TEST_HEADERS})
-
-	link_libraries( Qt5::Test )
-else()
-	message( "Building without QtTest!" )
-endif()
-
 # Setup library build:
 
-add_library( AidKit SHARED
-	${SOURCES}
-	${QRC_RESOURCES}
-	${QT_CORE_SOURCES} ${QT_CORE_MOC_SOURCES}
-	${QT_GUI_SOURCES} ${QT_GUI_MOC_SOURCES}
-	${QT_WIDGETS_SOURCES} ${QT_WIDGETS_MOC_SOURCES}
-)
-
+# message( "${SOURCES}" )
 include_directories( src/ )
+add_library( AidKit SHARED ${SOURCES} ${RESOURCES} )
 target_link_libraries( AidKit )
 
 if ( MINGW )
@@ -237,17 +230,33 @@ endif()
 
 ########################### Setup testAidKit ##################################
 
+find_package( Qt5Test QUIET )
 if ( Qt5Test_FOUND )
-	message( "Building unit tests." )
-	include_directories( tests/ )
+	message( "Building with QtTest." )
 
-	qt5_wrap_cpp( MOC_TEST_SOURCES ${TEST_HEADERS})
+	link_libraries( Qt5::Test )
 
-	add_executable( testAidKit
-		${TEST_SOURCES} ${MOC_TEST_SOURCES}
-		${QT_TEST_SOURCES} ${QT_TEST_MOC_SOURCES}
+	# Prepare the 'normal' test files:
+
+	qt5_wrap_cpp( TEST_MOC_SOURCES ${TEST_HEADERS} )
+	list( APPEND TEST_SOURCES ${TEST_MOC_SOURCES} )
+
+	# Prepare the Qt support files:
+
+	set( QT_TEST_HEADERS
+		tests/pera_software/aidkit/qt/test/Test.hpp
 	)
+	set( QT_TEST_SOURCES
+		tests/pera_software/aidkit/qt/test/Test.cpp
+	)
+	qt5_wrap_cpp( QT_TEST_MOC_SOURCES ${QT_TEST_HEADERS})
+
+	list( APPEND TEST_SOURCES ${QT_TEST_SOURCES} ${QT_TEST_MOC_SOURCES} )
+
+	# message( "${TEST_SOURCES}" )
+	include_directories( tests/ )
+	add_executable( testAidKit ${TEST_SOURCES} )
 	target_link_libraries( testAidKit AidKit )
 else()
-	message( "Building without unit tests!" )
+	message( "Building without QtTest!" )
 endif()
