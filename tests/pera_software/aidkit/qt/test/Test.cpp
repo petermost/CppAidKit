@@ -19,14 +19,16 @@
 #include <QTest>
 #include <exception>
 #include <QApplication>
+#include <pera_software/aidkit/qt/io/Console.hpp>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
+using namespace io;
 using namespace std;
 
 //==================================================================================================
 
-Test::Test() {
+Test::Test() noexcept {
 
 	// Append this test to the list of tests:
 
@@ -44,7 +46,7 @@ Test::~Test() {
 
 //==================================================================================================
 
-int Test::main( int argc, char *argv[] ) {
+int Test::main( int argc, char *argv[] ) noexcept {
 
 	set_terminate( __gnu_cxx::__verbose_terminate_handler );
 
@@ -58,30 +60,38 @@ int Test::main( int argc, char *argv[] ) {
 		arguments.append( "-silent" );
 	}
 
-	// TODO: Print the list of the failed tests:
+	// Execute the tests and print which have failed:
 
-	auto failedTests = executeTests( arguments );
-
-	return failedTests;
+	QVector< Test * > failedTests = executeTests( arguments );
+	for ( Test *test : failedTests ) {
+		cerr << "Test failed: '" << test->name() << "'!" << endl;
+	}
+	return failedTests.size();
 }
 
 //==================================================================================================
 
-// TODO: Return a list of the failed tests
+QString Test::name() const noexcept {
+	const QMetaObject *meta = metaObject();
+	return meta->className();
+}
 
-int Test::executeTests( const QStringList &arguments ) {
-	int failedTests = 0;
+//==================================================================================================
+
+QVector< Test * > Test::executeTests( const QStringList &arguments ) noexcept {
+	QVector< Test * > failedTests;
 
 	for ( Test *test : tests() ) {
 		int hasFailed = QTest::qExec( test, arguments );
-		failedTests += ( hasFailed != 0 ) ? 1 : 0;
+		if ( hasFailed )
+			failedTests.append( test );
 	}
 	return failedTests;
 }
 
 //==================================================================================================
 
-QVector< Test * > &Test::tests() {
+QVector< Test * > &Test::tests() noexcept {
 	// Use a function level static container so we don't get a problem with the undefined
 	// initialization order of file level statics:
 

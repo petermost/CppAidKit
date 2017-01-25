@@ -26,16 +26,18 @@ namespace pera_software { namespace aidkit { namespace qt {
 class Test : public QObject {
 	Q_OBJECT
 	public:
-		static int main( int argc, char *argv[] );
+		static int main( int argc, char *argv[] ) noexcept;
+
+		QString name() const noexcept;
 
 	protected:
-		Test();
+		Test() noexcept;
 		virtual ~Test();
 
-		static int executeTests( const QStringList &arguments );
+		static QVector< Test * > executeTests( const QStringList &arguments ) noexcept;
 
 	private:
-		static QVector< Test * > &tests();
+		static QVector< Test * > &tests() noexcept;
 };
 
 } } }
