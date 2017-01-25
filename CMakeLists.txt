@@ -20,6 +20,15 @@ project( AidKit )
 
 include( cmake/all_options.cmake )
 
+macro( FindPackage packageName )
+	find_package( ${packageName} QUIET )
+	if ( ${packageName}_FOUND )
+		message( "Building with ${packageName}." )
+	else()
+		message( "Building without ${packageName}!" )
+	endif()
+endmacro()
+
 #if ( UNIX )
 #	set( CMAKE_PREFIX_PATH "/home/peter/Qt5.5.0/5.5/gcc_64/lib/cmake" )
 #elseif( WIN32 )
@@ -61,7 +70,7 @@ set( HEADERS
 	src/pera_software/aidkit/io/basic_file.hpp
 	src/pera_software/aidkit/io/file_error.hpp
 	src/pera_software/aidkit/io/system_error.hpp
-	src/pera_software/aidkit/concurrent/data_data_mutex.hpp
+	src/pera_software/aidkit/concurrent/data_mutex.hpp
 	src/pera_software/company/PERA.hpp
 )
 set( SOURCES
@@ -108,6 +117,26 @@ set( TEST_SOURCES
 	tests/pera_software/aidkit/io/file_test.cpp
 )
 
+################################ Setup Boost ##################################
+
+#FindPackage( Boost )
+find_package( Boost COMPONENTS test )
+if ( Boost_FOUND )
+#	find_package( Boost COMPONENTS test )
+	include_directories( ${Boost_INCLUDE_DIRS} )
+	link_directories( ${Boost_LIBRARY_DIRS} )
+
+	message( "Include: ${Boost_INCLUDE_DIRS}, Library: ${Boost_LIBRARY_DIRS}, Libraries: ${Boost_LIBRARIES}")
+
+	set( BOOST_HEADERS
+		src/pera_software/aidkit/boost/formatter.hpp
+	)
+	set( BOOST_SOURCES
+		src/pera_software/aidkit/boost/formatter.cpp
+	)
+	list( APPEND SOURCES ${BOOST_SOURCES})
+endif()
+
 ############################# Setup Qt5 usage #################################
 # See: http://doc.qt.io/qt-5/cmake-manual.html
 #
@@ -117,10 +146,8 @@ set( TEST_SOURCES
 # Allow including moc files:
 # set( CMAKE_INCLUDE_CURRENT_DIR ON )
 
-find_package( Qt5Core QUIET )
+FindPackage( Qt5Core )
 if ( Qt5Core_FOUND )
-	message( "Building with QtCore." )
-
 	# Disable the slot, signal, emit etc. keywords:
 
 	add_definitions( -DQT_NO_KEYWORDS )
@@ -162,14 +189,10 @@ if ( Qt5Core_FOUND )
 	qt5_wrap_cpp( QT_CORE_TEST_MOC_SOURCES ${QT_CORE_TEST_HEADERS} )
 
 	list( APPEND TEST_SOURCES ${QT_CORE_TEST_SOURCES} ${QT_CORE_TEST_MOC_SOURCES} )
-else()
-	message( "Building without QtCore!" )
 endif()
 
-find_package( Qt5Gui QUIET )
+FindPackage( Qt5Gui )
 if ( Qt5Gui_FOUND )
-	message( "Building with QtGui." )
-
 	link_libraries( Qt5::Gui )
 
 	set( QT_GUI_HEADERS
@@ -181,14 +204,10 @@ if ( Qt5Gui_FOUND )
 	qt5_wrap_cpp( QT_GUI_MOC_SOURCES ${QT_GUI_HEADERS})
 
 	list( APPEND SOURCES ${QT_GUI_SOURCES} ${QT_GUI_MOC_SOURCES} )
-else()
-	message( "Building without QtGui!" )
 endif()
 
-find_package( Qt5Widgets QUIET )
+FindPackage( Qt5Widgets )
 if ( Qt5Widgets_FOUND )
-	message( "Building with QtWidgets." )
-
 	link_libraries( Qt5::Widgets )
 
 	set( QT_WIDGETS_HEADERS
@@ -210,8 +229,6 @@ if ( Qt5Widgets_FOUND )
 	qt5_wrap_cpp( QT_WIDGETS_MOC_SOURCES ${QT_WIDGETS_HEADERS})
 
 	list( APPEND SOURCES ${QT_WIDGETS_SOURCES} ${QT_WIDGETS_MOC_SOURCES} )
-else()
-	message( "Building without QtWidgets!" )
 endif()
 
 # Setup library build:
@@ -230,10 +247,8 @@ endif()
 
 ########################### Setup testAidKit ##################################
 
-find_package( Qt5Test QUIET )
+FindPackage( Qt5Test )
 if ( Qt5Test_FOUND )
-	message( "Building with QtTest." )
-
 	link_libraries( Qt5::Test )
 
 	# Prepare the 'normal' test files:
@@ -257,6 +272,4 @@ if ( Qt5Test_FOUND )
 	include_directories( tests/ )
 	add_executable( testAidKit ${TEST_SOURCES} )
 	target_link_libraries( testAidKit AidKit )
-else()
-	message( "Building without QtTest!" )
 endif()
