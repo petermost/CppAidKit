@@ -26,11 +26,13 @@ namespace pera_software { namespace aidkit { namespace qt {
 class Test : public QObject {
 	Q_OBJECT
 	public:
-		static int executeTests( const QStringList &arguments );
+		static int main( int argc, char *argv[] );
 
 	protected:
 		Test();
 		virtual ~Test();
+
+		static int executeTests( const QStringList &arguments );
 
 	private:
 		static QVector< Test * > &tests();

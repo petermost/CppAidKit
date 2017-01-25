@@ -17,6 +17,8 @@
 
 #include "Test.hpp"
 #include <QTest>
+#include <exception>
+#include <QApplication>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
@@ -38,6 +40,29 @@ Test::~Test() {
 	// Remove this test from the list of tests:
 
 	tests().removeOne( this );
+}
+
+//==================================================================================================
+
+int Test::main( int argc, char *argv[] ) {
+
+	set_terminate( __gnu_cxx::__verbose_terminate_handler );
+
+	QApplication application( argc, argv );
+	QStringList arguments = application.arguments();
+
+	// if there aren't any parameters then we want the 'silent' mode:
+	// http://doc.qt.io/qt-5/qtest-overview.html#qt-test-command-line-arguments
+
+	if ( arguments.length() == 1 ) {
+		arguments.append( "-silent" );
+	}
+
+	// TODO: Print the list of the failed tests:
+
+	auto failedTests = executeTests( arguments );
+
+	return failedTests;
 }
 
 //==================================================================================================
@@ -64,5 +89,6 @@ QVector< Test * > &Test::tests() {
 
 	return s_tests;
 }
+
 
 } } }
