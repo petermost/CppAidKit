@@ -117,25 +117,6 @@ set( TEST_SOURCES
 	tests/pera_software/aidkit/io/file_test.cpp
 )
 
-################################ Setup Boost ##################################
-
-#FindPackage( Boost )
-find_package( Boost COMPONENTS test )
-if ( Boost_FOUND )
-#	find_package( Boost COMPONENTS test )
-	include_directories( ${Boost_INCLUDE_DIRS} )
-	link_directories( ${Boost_LIBRARY_DIRS} )
-
-	message( "Include: ${Boost_INCLUDE_DIRS}, Library: ${Boost_LIBRARY_DIRS}, Libraries: ${Boost_LIBRARIES}")
-
-	set( BOOST_HEADERS
-		src/pera_software/aidkit/boost/formatter.hpp
-	)
-	set( BOOST_SOURCES
-		src/pera_software/aidkit/boost/formatter.cpp
-	)
-	list( APPEND SOURCES ${BOOST_SOURCES})
-endif()
 
 ############################# Setup Qt5 usage #################################
 # See: http://doc.qt.io/qt-5/cmake-manual.html
@@ -231,9 +212,43 @@ if ( Qt5Widgets_FOUND )
 	list( APPEND SOURCES ${QT_WIDGETS_SOURCES} ${QT_WIDGETS_MOC_SOURCES} )
 endif()
 
-# Setup library build:
+################################ Setup Boost ##################################
 
-# message( "${SOURCES}" )
+FindPackage( Boost )
+#find_package( Boost COMPONENTS test )
+if ( Boost_FOUND )
+#	find_package( Boost COMPONENTS test )
+	include_directories( ${Boost_INCLUDE_DIRS} )
+	link_directories( ${Boost_LIBRARY_DIRS} )
+
+	#message( "Include: ${Boost_INCLUDE_DIRS}, Library: ${Boost_LIBRARY_DIRS}, Libraries: ${Boost_LIBRARIES}")
+
+	# Normal source files:
+
+	set( BOOST_HEADERS
+		src/pera_software/aidkit/boost/formatter.hpp
+	)
+	set( BOOST_SOURCES
+		src/pera_software/aidkit/boost/formatter.cpp
+	)
+	list( APPEND SOURCES ${BOOST_SOURCES} )
+
+	# Test source files:
+
+	set( BOOST_TEST_HEADERS
+		tests/pera_software/aidkit/boost/formatter_test.hpp
+	)
+	set( BOOST_TEST_SOURCES
+		tests/pera_software/aidkit/boost/formatter_test.cpp
+	)
+	qt5_wrap_cpp( BOOST_MOC_SOURCES ${BOOST_TEST_HEADERS} )
+
+	list( APPEND TEST_SOURCES ${BOOST_TEST_SOURCES} ${BOOST_MOC_SOURCES} )
+endif()
+
+############################## Setup AidKit ###################################
+
+#message( "${SOURCES}" )
 include_directories( src/ )
 add_library( AidKit SHARED ${SOURCES} ${RESOURCES} )
 target_link_libraries( AidKit )
@@ -245,7 +260,7 @@ if ( MINGW )
 	# target_link_libraries( AidKit msvcr110 )
 endif()
 
-########################### Setup testAidKit ##################################
+########################### Setup AidKit unit tests ###########################
 
 FindPackage( Qt5Test )
 if ( Qt5Test_FOUND )
@@ -268,7 +283,7 @@ if ( Qt5Test_FOUND )
 
 	list( APPEND TEST_SOURCES ${QT_TEST_SOURCES} ${QT_TEST_MOC_SOURCES} )
 
-	# message( "${TEST_SOURCES}" )
+#	message( "${TEST_SOURCES}" )
 	include_directories( tests/ )
 	add_executable( testAidKit ${TEST_SOURCES} )
 	target_link_libraries( testAidKit AidKit )
