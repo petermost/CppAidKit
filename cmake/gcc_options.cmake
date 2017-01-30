@@ -2,6 +2,10 @@
 
 message( "C++ compiler is: " ${CMAKE_CXX_COMPILER_ID} ", version: " ${CMAKE_CXX_COMPILER_VERSION})
 
+if ( MINGW )
+	add_definitions( -D__USE_MINGW_ANSI_STDIO )
+endif()
+
 # Add GCC specific switches:
 
 add_compile_options(

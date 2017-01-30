@@ -18,7 +18,7 @@
 #include "Test.hpp"
 #include <QTest>
 #include <exception>
-#include <QApplication>
+#include <QCoreApplication>
 #include <pera_software/aidkit/qt/io/Console.hpp>
 
 namespace pera_software { namespace aidkit { namespace qt {
@@ -50,7 +50,7 @@ int Test::main( int argc, char *argv[] ) noexcept {
 
 	set_terminate( __gnu_cxx::__verbose_terminate_handler );
 
-	QApplication application( argc, argv );
+	QCoreApplication application( argc, argv );
 	QStringList arguments = application.arguments();
 
 	// if there aren't any parameters then we want the 'silent' mode:

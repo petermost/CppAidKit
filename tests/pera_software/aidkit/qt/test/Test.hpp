@@ -20,10 +20,11 @@
 #include <QObject>
 #include <QVector>
 #include <QStringList>
+#include <pera_software/aidkit/aidkit.hpp>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-class Test : public QObject {
+class AIDKIT_API Test : public QObject {
 	Q_OBJECT
 	public:
 		static int main( int argc, char *argv[] ) noexcept;
