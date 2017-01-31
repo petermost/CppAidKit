@@ -162,10 +162,10 @@ set( BOOST_TEST_SOURCES
 # Test Library Sources
 
 set( TESTLIB_HEADERS
-	tests/pera_software/aidkit/qt/test/Test.hpp
+	src/pera_software/aidkit/qt/test/Test.hpp
 )
 set( TESTLIB_SOURCES
-	tests/pera_software/aidkit/qt/test/Test.cpp
+	src/pera_software/aidkit/qt/test/Test.cpp
 )
 
 
@@ -222,8 +222,8 @@ endif()
 
 ############################## Setup AidKit ###################################
 
-include_directories( src/ )
 add_library( AidKit SHARED ${SOURCES} ${RESOURCES} )
+target_include_directories( AidKit PUBLIC src/ )
 if ( Qt5Core_FOUND )
 	target_link_libraries( AidKit Qt5::Core )
 endif()
@@ -242,6 +242,7 @@ if ( Qt5Test_FOUND )
 	qt5_wrap_cpp( TESTLIB_MOC_SOURCES ${TESTLIB_HEADERS} )
 
 	add_library( AidKitTest SHARED ${TESTLIB_SOURCES} ${TESTLIB_MOC_SOURCES} )
+	target_include_directories( AidKitTest PUBLIC src/ )
 	target_link_libraries( AidKitTest Qt5::Test Qt5::Core )
 endif()
 
@@ -254,7 +255,6 @@ if ( Qt5Test_FOUND )
 	qt5_wrap_cpp( TEST_MOC_SOURCES ${TEST_HEADERS} )
 	list( APPEND TEST_SOURCES ${TEST_MOC_SOURCES} )
 
-	include_directories( tests/ )
 	add_executable( testAidKit ${TEST_SOURCES} )
 	target_link_libraries( testAidKit AidKitTest AidKit )
 endif()
