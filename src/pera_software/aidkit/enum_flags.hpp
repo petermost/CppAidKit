@@ -25,7 +25,7 @@ namespace pera_software { namespace aidkit {
 	template < typename E >
 		class enum_flags {
 			public:
-				typedef typename std::underlying_type< E >::type int_type;
+				using int_type = typename std::underlying_type< E >::type;
 
 				static_assert( std::is_enum< E >::value, "enum_flags: Type must be an enum!" );
 				static_assert( std::is_unsigned< int_type >::value, "enum_flags: Underlying enum type must be unsigned!" );

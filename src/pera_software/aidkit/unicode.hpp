@@ -23,8 +23,8 @@
 
 namespace pera_software { namespace aidkit {
 
-	typedef unsigned char char8_t;
-	typedef std::basic_string< char8_t, std::char_traits< char8_t >, std::allocator< char8_t >> u8string;
+	using char8_t = unsigned char;
+	using u8string = std::basic_string< char8_t, std::char_traits< char8_t >, std::allocator< char8_t >>;
 
 #if __GLIBCXX__ == 20160427
 	AIDKIT_API std::wstring u8string_to_wstring( const u8string & )

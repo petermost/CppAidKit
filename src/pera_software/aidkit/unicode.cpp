@@ -32,7 +32,7 @@ static_assert( sizeof( char8_t ) == sizeof( char ), "Wrong size for char8_t" );
 
 #if __GNUC__ >= 5
 
-typedef wstring_convert< codecvt_utf8< wchar_t >, wchar_t > wstring_u8string_converter;
+using wstring_u8string_converter = wstring_convert< codecvt_utf8< wchar_t >, wchar_t >;
 
 // https://sourceforge.net/p/mingw-w64/bugs/538/
 // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69703
@@ -75,8 +75,8 @@ template < typename Facet >
 		using Facet::Facet;
 	};
 
-typedef destructable_facet< codecvt< wchar_t, char, mbstate_t >> codecvt_facet;
-typedef wstring_convert< codecvt_facet > wstring_string_converter;
+using codecvt_facet = destructable_facet< codecvt< wchar_t, char, mbstate_t >>;
+using wstring_string_converter = wstring_convert< codecvt_facet >;
 
 wstring string_to_wstring( const string &s ) {
 	wstring_string_converter converter;

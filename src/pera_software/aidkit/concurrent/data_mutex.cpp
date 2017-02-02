@@ -21,8 +21,8 @@
 template < typename Resource, typename Mutex = boost::recursive_mutex >
 	class ThreadResourceLock : private boost::noncopyable {
 		public:
-			typedef boost::shared_ptr< Resource > Pointer;
-			typedef boost::shared_ptr< const Resource > ConstPointer;
+			using Pointer = boost::shared_ptr< Resource >;
+			using ConstPointer = boost::shared_ptr< const Resource >;
 
 			Pointer lock( void )
 			{

@@ -37,7 +37,7 @@ enum class open_mode : unsigned {
 
 template class enum_flags< open_mode >;
 
-typedef enum_flags< open_mode > open_modes;
+using open_modes = enum_flags< open_mode >;
 
 static void open_file( const open_modes modes  ) {
 	if (( modes & open_mode::append ) == open_mode::append ) {

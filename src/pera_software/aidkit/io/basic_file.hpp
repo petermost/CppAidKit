@@ -113,7 +113,7 @@ namespace pera_software { namespace aidkit { namespace io {
 	template <>
 		class file_functions< char, file_locked_category > : public basic_file_functions< file_locked_category > {
 			public:
-				typedef std::char_traits< char > char_traits_t;
+				using char_traits_t = std::char_traits< char >;
 
 				static int do_not_eof( int result ) noexcept {
 					return char_traits_t::not_eof( result );
@@ -159,7 +159,7 @@ namespace pera_software { namespace aidkit { namespace io {
 	template <>
 		class file_functions< wchar_t, file_locked_category > : public basic_file_functions< file_locked_category > {
 			public:
-				typedef std::char_traits< wchar_t > char_traits_t;
+				using char_traits_t = std::char_traits< wchar_t >;
 
 				static wint_t do_not_eof( wint_t result ) noexcept {
 					return char_traits_t::not_eof( result );
@@ -205,15 +205,15 @@ namespace pera_software { namespace aidkit { namespace io {
 	template < typename Char, typename Category = file_locked_category, typename Functions = file_functions< Char, Category >>
 		class basic_file {
 			public:
-				typedef typename Functions::char_traits_t char_traits_t;
+				using char_traits_t = typename Functions::char_traits_t;
 
 				/// Represents an int which can hold a char or an EOF value:
 
-				typedef typename char_traits_t::int_type char_int_t;
+				using char_int_t = typename char_traits_t::int_type;
 
 				/// Represents an offset to be used by seek/tell:
 
-				typedef long offset_t;
+				using offset_t = long;
 
 				/// The constant for checking with char_int_t get() methods:
 
@@ -253,7 +253,7 @@ namespace pera_software { namespace aidkit { namespace io {
 					binary
 				};
 
-				typedef enum_flags< open_mode > open_modes;
+				using open_modes = enum_flags< open_mode >;
 
 				basic_file() {
 					file_ = nullptr;
