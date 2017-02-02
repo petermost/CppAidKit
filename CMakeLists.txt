@@ -158,10 +158,6 @@ set( testLibSources
 
 # Find the different packages but evaluate the results later:
 
-#find_package( Qt5Core )
-#find_package( Qt5Gui )
-#find_package( Qt5Widgets )
-#find_package( Qt5Test )
 find_package( Qt5 COMPONENTS Core Gui Widgets Test )
 find_package( Boost )
 
