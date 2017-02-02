@@ -27,221 +27,194 @@ set( OTHER_FILES
 
 # Library Sources:
 
-set( HEADERS
-	src/pera_software/aidkit/aidkit.hpp
-	src/pera_software/aidkit/containers.hpp
-	src/pera_software/aidkit/debug.hpp
-	src/pera_software/aidkit/enum_class.hpp
-	src/pera_software/aidkit/enum_flags.hpp
-	src/pera_software/aidkit/exception.hpp
-	src/pera_software/aidkit/unicode.hpp
-	src/pera_software/aidkit/platform.hpp
-	src/pera_software/aidkit/strings.hpp
-	src/pera_software/aidkit/string_ref.hpp
-	src/pera_software/aidkit/vectors.hpp
-	src/pera_software/aidkit/io/errno.hpp
-	src/pera_software/aidkit/io/file.hpp
-	src/pera_software/aidkit/io/basic_file.hpp
-	src/pera_software/aidkit/io/file_error.hpp
-	src/pera_software/aidkit/io/system_error.hpp
-	src/pera_software/aidkit/concurrent/data_mutex.hpp
-	src/pera_software/company/PERA.hpp
-)
-set( SOURCES
+set( sources
 	src/pera_software/pera_software.cpp
+	src/pera_software/aidkit/aidkit.hpp
 	src/pera_software/aidkit/aidkit.cpp
+	src/pera_software/aidkit/containers.hpp
 	src/pera_software/aidkit/containers.cpp
+	src/pera_software/aidkit/debug.hpp
 	src/pera_software/aidkit/debug.cpp
+	src/pera_software/aidkit/enum_class.hpp
 	src/pera_software/aidkit/enum_class.cpp
+	src/pera_software/aidkit/enum_flags.hpp
 	src/pera_software/aidkit/enum_flags.cpp
+	src/pera_software/aidkit/exception.hpp
 	src/pera_software/aidkit/exception.cpp
+	src/pera_software/aidkit/unicode.hpp
 	src/pera_software/aidkit/unicode.cpp
+	src/pera_software/aidkit/platform.hpp
 	src/pera_software/aidkit/platform.cpp
+	src/pera_software/aidkit/strings.hpp
 	src/pera_software/aidkit/strings.cpp
+	src/pera_software/aidkit/string_ref.hpp
 	src/pera_software/aidkit/string_ref.cpp
+	src/pera_software/aidkit/vectors.hpp
 	src/pera_software/aidkit/vectors.cpp
+	src/pera_software/aidkit/io/errno.hpp
 	src/pera_software/aidkit/io/errno.cpp
+	src/pera_software/aidkit/io/file.hpp
 	src/pera_software/aidkit/io/file.cpp
+	src/pera_software/aidkit/io/basic_file.hpp
 	src/pera_software/aidkit/io/basic_file.cpp
+	src/pera_software/aidkit/io/file_error.hpp
 	src/pera_software/aidkit/io/file_error.cpp
+	src/pera_software/aidkit/io/system_error.hpp
 	src/pera_software/aidkit/io/system_error.cpp
+	src/pera_software/aidkit/concurrent/data_mutex.hpp
 	src/pera_software/aidkit/concurrent/data_mutex.cpp
+	src/pera_software/company/PERA.hpp
 	src/pera_software/company/PERA.cpp
 )
 
-set( TEST_HEADERS
-	tests/pera_software/aidkit/enum_class_test.hpp
-	tests/pera_software/aidkit/enum_flags_test.hpp
-	tests/pera_software/aidkit/strings_test.hpp
-	tests/pera_software/aidkit/unicode_test.hpp
-	tests/pera_software/aidkit/vectors_test.hpp
-	tests/pera_software/aidkit/concurrent/data_mutex_test.hpp
-	tests/pera_software/aidkit/io/file_test.hpp
-)
-set( TEST_SOURCES
+set( testSources
 	tests/pera_software/aidkit/test_main.cpp
+	tests/pera_software/aidkit/enum_class_test.hpp
 	tests/pera_software/aidkit/enum_class_test.cpp
+	tests/pera_software/aidkit/enum_flags_test.hpp
 	tests/pera_software/aidkit/enum_flags_test.cpp
+	tests/pera_software/aidkit/strings_test.hpp
 	tests/pera_software/aidkit/strings_test.cpp
+	tests/pera_software/aidkit/unicode_test.hpp
 	tests/pera_software/aidkit/unicode_test.cpp
+	tests/pera_software/aidkit/vectors_test.hpp
 	tests/pera_software/aidkit/vectors_test.cpp
+	tests/pera_software/aidkit/concurrent/data_mutex_test.hpp
 	tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
+	tests/pera_software/aidkit/io/file_test.hpp
 	tests/pera_software/aidkit/io/file_test.cpp
 )
 
 # Library QtCore Sources:
 
-set( QT_CORE_HEADERS
+set( qtCoreSources
+	# Sources:
+
 	src/pera_software/aidkit/qt/io/Console.hpp
-	src/pera_software/aidkit/qt/net/Endian.hpp
-	src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
-	src/pera_software/aidkit/qt/core/Enums.hpp
-	src/pera_software/aidkit/qt/core/IniSettings.hpp
-)
-set( QT_CORE_SOURCES
 	src/pera_software/aidkit/qt/io/Console.cpp
+	src/pera_software/aidkit/qt/net/Endian.hpp
 	src/pera_software/aidkit/qt/net/Endian.cpp
+	src/pera_software/aidkit/qt/net/Socket.hpp
+	src/pera_software/aidkit/qt/net/Socket.cpp
+	src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
 	src/pera_software/aidkit/qt/core/DirectoryGuide.cpp
+	src/pera_software/aidkit/qt/core/Enums.hpp
 	src/pera_software/aidkit/qt/core/Enums.cpp
+	src/pera_software/aidkit/qt/core/IniSettings.hpp
 	src/pera_software/aidkit/qt/core/IniSettings.cpp
-)
-set( QT_CORE_RESOURCES
+
+	# Resources:
+
 	resources/pera_software/aidkit/AidKitResources.qrc
 	resources/pera_software/company/CompanyResources.qrc
 )
-set( QT_CORE_TEST_HEADERS
+
+set( qtCoreTestSources
 	tests/pera_software/aidkit/qt/net/EndianTest.hpp
-)
-set( QT_CORE_TEST_SOURCES
 	tests/pera_software/aidkit/qt/net/EndianTest.cpp
 )
 
 # Library QtGui Sources:
 
-set( QT_GUI_HEADERS
+set( qtGuiSources
 	src/pera_software/aidkit/qt/Resources.hpp
-)
-set( QT_GUI_SOURCES
 	src/pera_software/aidkit/qt/Resources.cpp
 )
 
 # Library QtWidgets Sources:
 
-set( QT_WIDGETS_HEADERS
+set( qtWidgetsSources
 	src/pera_software/aidkit/qt/widgets/MainWindow.hpp
-	src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
-	src/pera_software/aidkit/qt/widgets/QuitAction.hpp
-	src/pera_software/company/qt/PERAAboutDialog.hpp
-	src/pera_software/company/qt/PERAApplication.hpp
-	src/pera_software/company/qt/PERAMainWindow.hpp
-)
-set( QT_WIDGETS_SOURCES
 	src/pera_software/aidkit/qt/widgets/MainWindow.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
+	src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
+	src/pera_software/aidkit/qt/widgets/QuitAction.hpp
 	src/pera_software/aidkit/qt/widgets/QuitAction.cpp
+	src/pera_software/company/qt/PERAAboutDialog.hpp
 	src/pera_software/company/qt/PERAAboutDialog.cpp
+	src/pera_software/company/qt/PERAApplication.hpp
 	src/pera_software/company/qt/PERAApplication.cpp
+	src/pera_software/company/qt/PERAMainWindow.hpp
 	src/pera_software/company/qt/PERAMainWindow.cpp
 )
 
 # Library Boost Sources:
 
-set( BOOST_HEADERS
+set( boostSources
 	src/pera_software/aidkit/boost/formatter.hpp
-)
-set( BOOST_SOURCES
 	src/pera_software/aidkit/boost/formatter.cpp
 )
-set( BOOST_TEST_HEADERS
+set( boostTestSources
 	tests/pera_software/aidkit/boost/formatter_test.hpp
-)
-set( BOOST_TEST_SOURCES
 	tests/pera_software/aidkit/boost/formatter_test.cpp
 )
 
 # Test Library Sources
 
-set( TESTLIB_HEADERS
+set( testLibSources
 	src/pera_software/aidkit/qt/test/Test.hpp
-)
-set( TESTLIB_SOURCES
 	src/pera_software/aidkit/qt/test/Test.cpp
 )
 
+# Find the different packages but evaluate the results later:
 
-macro( FindPackage packageName )
-	find_package( ${packageName} QUIET )
-	if ( ${packageName}_FOUND )
-		message( "Building with ${packageName}." )
-	else()
-		message( "Building without ${packageName}!" )
-	endif()
-endmacro()
+find_package( Qt5Core )
+find_package( Qt5Gui )
+find_package( Qt5Widgets )
+find_package( Qt5Test )
+find_package( Boost )
 
-
-
-FindPackage( Qt5Core )
 if ( Qt5Core_FOUND )
+	set( CMAKE_AUTOMOC ON )
+	set( CMAKE_AUTORCC ON )
+	# set( CMAKE_AUTOUIC ON )
+	# set( CMAKE_INCLUDE_CURRENT_DIR ON )
 
 	# Disable the slot, signal, emit etc. keywords:
 	add_definitions( -DQT_NO_KEYWORDS )
 
-	qt5_add_resources( RESOURCES ${QT_CORE_RESOURCES} )
-
-	qt5_wrap_cpp( QT_CORE_MOC_SOURCES ${QT_CORE_HEADERS} )
-	list( APPEND SOURCES ${QT_CORE_SOURCES} ${QT_CORE_MOC_SOURCES} )
-
-	qt5_wrap_cpp( QT_CORE_TEST_MOC_SOURCES ${QT_CORE_TEST_HEADERS} )
-	list( APPEND TEST_SOURCES ${QT_CORE_TEST_SOURCES} ${QT_CORE_TEST_MOC_SOURCES} )
+	list( APPEND sources ${qtCoreSources})
+	list( APPEND testSources ${qtCoreTestSources})
 endif()
 
-FindPackage( Qt5Gui )
 if ( Qt5Gui_FOUND )
-	qt5_wrap_cpp( QT_GUI_MOC_SOURCES ${QT_GUI_HEADERS})
-	list( APPEND SOURCES ${QT_GUI_SOURCES} ${QT_GUI_MOC_SOURCES} )
+	list( APPEND sources ${qtGuiSources})
 endif()
 
-FindPackage( Qt5Widgets )
 if ( Qt5Widgets_FOUND )
-	qt5_wrap_cpp( QT_WIDGETS_MOC_SOURCES ${QT_WIDGETS_HEADERS})
-	list( APPEND SOURCES ${QT_WIDGETS_SOURCES} ${QT_WIDGETS_MOC_SOURCES} )
+	list( APPEND sources ${qtWidgetsSources})
 endif()
 
 ################################ Setup Boost ##################################
 
-FindPackage( Boost )
 if ( Boost_FOUND )
 #	include_directories( ${Boost_INCLUDE_DIRS} )
 #	link_directories( ${Boost_LIBRARY_DIRS} )
 
-	list( APPEND SOURCES ${BOOST_SOURCES} )
-
-	qt5_wrap_cpp( BOOST_MOC_SOURCES ${BOOST_TEST_HEADERS} )
-	list( APPEND TEST_SOURCES ${BOOST_TEST_SOURCES} ${BOOST_MOC_SOURCES} )
+	list( APPEND sources ${boostSources} )
+	list( APPEND testSources ${boostTestSources})
 endif()
 
 ############################## Setup AidKit ###################################
 
-add_library( AidKit SHARED ${SOURCES} ${RESOURCES} )
+add_library( AidKit SHARED ${sources} ${RESOURCES} )
 target_include_directories( AidKit PUBLIC src/ )
-if ( Qt5Core_FOUND )
-	target_link_libraries( AidKit Qt5::Core )
-endif()
-if ( Qt5Gui_FOUND )
-	target_link_libraries( AidKit Qt5::Gui )
-endif()
 if ( Qt5Widgets_FOUND )
 	target_link_libraries( AidKit Qt5::Widgets )
+elseif ( Qt5Gui_FOUND )
+	target_link_libraries( AidKit Qt5::Gui )
+elseif ( Qt5Core_FOUND )
+	target_link_libraries( AidKit Qt5::Core )
+endif()
+
+if ( Boost_FOUND )
+	#target_link_libraries( AidKit Boost::format )
 endif()
 
 ############################## Setup AidKitTest ###############################
 
-FindPackage( Qt5Test )
-
 if ( Qt5Test_FOUND )
-	qt5_wrap_cpp( TESTLIB_MOC_SOURCES ${TESTLIB_HEADERS} )
-
-	add_library( AidKitTest SHARED ${TESTLIB_SOURCES} ${TESTLIB_MOC_SOURCES} )
+	add_library( AidKitTest SHARED ${testLibSources})
 	target_include_directories( AidKitTest PUBLIC src/ )
 	target_link_libraries( AidKitTest Qt5::Test Qt5::Core )
 endif()
@@ -249,12 +222,6 @@ endif()
 ########################### Setup AidKit unit tests ###########################
 
 if ( Qt5Test_FOUND )
-
-	# Prepare the 'normal' test files:
-
-	qt5_wrap_cpp( TEST_MOC_SOURCES ${TEST_HEADERS} )
-	list( APPEND TEST_SOURCES ${TEST_MOC_SOURCES} )
-
-	add_executable( testAidKit ${TEST_SOURCES} )
+	add_executable( testAidKit ${testSources} )
 	target_link_libraries( testAidKit AidKitTest AidKit )
 endif()
