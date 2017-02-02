@@ -22,9 +22,9 @@ namespace pera_software { namespace aidkit { namespace qt { namespace io {
 
 using namespace std;
 
-QTextStream cin( stdin );
-QTextStream cout( stdout );
-QTextStream cerr( stderr );
+AIDKIT_API QTextStream cin( stdin );
+AIDKIT_API QTextStream cout( stdout );
+AIDKIT_API QTextStream cerr( stderr );
 
 } } } }
 
