@@ -20,11 +20,6 @@ project( AidKit )
 
 include( cmake/all_options.cmake )
 
-set( OTHER_FILES
-	lgpl.txt
-	src/pera_software/aidkit/qt/qt.cpp
-)
-
 # Library Sources:
 
 set( sources
@@ -90,6 +85,7 @@ set( testSources
 set( qtCoreSources
 	# Sources:
 
+	src/pera_software/aidkit/qt/qt.cpp
 	src/pera_software/aidkit/qt/io/Console.hpp
 	src/pera_software/aidkit/qt/io/Console.cpp
 	src/pera_software/aidkit/qt/net/Endian.hpp
@@ -182,7 +178,8 @@ if ( Qt5Widgets_FOUND )
 	list( APPEND sources ${qtWidgetsSources})
 endif()
 
-################################ Setup Boost ##################################
+###############################################################################
+# Setup Boost
 
 if ( Boost_FOUND )
 #	include_directories( ${Boost_INCLUDE_DIRS} )
@@ -192,7 +189,8 @@ if ( Boost_FOUND )
 	list( APPEND testSources ${boostTestSources})
 endif()
 
-############################## Setup AidKit ###################################
+###############################################################################
+# Setup AidKit
 
 add_library( AidKit SHARED ${sources} ${RESOURCES} )
 target_include_directories( AidKit PUBLIC src/ )
@@ -208,15 +206,17 @@ if ( Boost_FOUND )
 	#target_link_libraries( AidKit Boost::format )
 endif()
 
-############################## Setup AidKitTest ###############################
+###############################################################################
+# Setup AidKitTest
 
 if ( Qt5Test_FOUND )
 	add_library( AidKitTest SHARED ${testLibSources})
 	target_include_directories( AidKitTest PUBLIC src/ )
-	target_link_libraries( AidKitTest Qt5::Test Qt5::Core )
+	target_link_libraries( AidKitTest AidKit Qt5::Test Qt5::Core )
 endif()
 
-########################### Setup AidKit unit tests ###########################
+###############################################################################
+# Setup AidKit unit tests
 
 if ( Qt5Test_FOUND )
 	add_executable( testAidKit ${testSources} )
