@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2017 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,27 +15,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "PERAActions.hpp"
+#include <QAction>
 
-#include <pera_software/aidkit/aidkit.hpp>
-#include <QMainWindow>
+namespace pera_software { namespace company { namespace qt {
 
-namespace pera_software { namespace aidkit { namespace qt {
+QAction *PERAActions::aboutPERAAction( QObject *parent ) {
+	QAction *action = new QAction( parent );
+	action->setText( QObject::tr( "&About &PERA..." ));
+	action->setMenuRole( QAction::MenuRole::AboutRole );
 
-	class AIDKIT_API MainWindow : public QMainWindow {
-		Q_OBJECT
-		public:
-			explicit MainWindow( QWidget *parent = nullptr );
-
-		Q_SIGNALS:
-			void showed();
-			void closed();
-
-		public Q_SLOTS:
-
-		protected:
-			void showEvent( QShowEvent *showEvent ) override;
-			void closeEvent( QCloseEvent *closeEvent ) override;
-	};
+	return action;
+}
 
 } } }

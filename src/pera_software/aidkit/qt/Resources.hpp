@@ -25,6 +25,8 @@ namespace pera_software { namespace aidkit { namespace qt {
 
 	class AIDKIT_API Resources {
 		public:
+			Resources() = delete;
+
 			static QIcon quitIcon();
 
 			static QIcon debugIcon();

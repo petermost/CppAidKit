@@ -128,8 +128,8 @@ set( qtWidgetsSources
 	src/pera_software/aidkit/qt/widgets/MainWindow.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
-	src/pera_software/company/qt/PERAAboutAction.hpp
-	src/pera_software/company/qt/PERAAboutAction.cpp
+	src/pera_software/company/qt/PERAActions.hpp
+	src/pera_software/company/qt/PERAActions.cpp
 	src/pera_software/company/qt/PERAAboutDialog.hpp
 	src/pera_software/company/qt/PERAAboutDialog.cpp
 	src/pera_software/company/qt/PERAApplication.hpp

@@ -17,7 +17,7 @@
 
 #include "PERAMainWindow.hpp"
 #include "PERAAboutDialog.hpp"
-#include "PERAAboutAction.hpp"
+#include "PERAActions.hpp"
 
 #include <QMenu>
 #include <QMenuBar>
@@ -105,7 +105,7 @@ QAction *PERAMainWindow::quitAction() {
 
 QAction *PERAMainWindow::aboutPERAAction() {
 	if ( aboutPERAAction_ == nullptr ) {
-		aboutPERAAction_ = new PERAAboutAction( this );
+		aboutPERAAction_ = PERAActions::aboutPERAAction( this );
 		connect( aboutPERAAction_, &QAction::triggered, this, &PERAMainWindow::aboutPERA );
 	}
 	return aboutPERAAction_;
