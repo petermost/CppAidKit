@@ -19,13 +19,16 @@
 
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QListWidget>
+#include <pera_software/aidkit/std/optional.hpp>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
 	class AIDKIT_API MessagesWidget : public QListWidget {
 		Q_OBJECT
 		public:
-			explicit MessagesWidget( QWidget *parent = 0 );
+			explicit MessagesWidget( QWidget *parent = nullptr );
+
+			void setMaximumItemCount( int maximumItemCount );
 
 			void showInformation( const QString &message );
 			void showWarning( const QString &message );
@@ -37,6 +40,9 @@ namespace pera_software { namespace aidkit { namespace qt {
 		public Q_SLOTS:
 
 		private:
+			void showItem( QListWidgetItem *item );
+
+			std::optional< int > maximumItemCount_;
 	};
 
 } } }

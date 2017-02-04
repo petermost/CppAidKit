@@ -18,32 +18,44 @@
 #include "MessagesWidget.hpp"
 #include <QColor>
 #include <pera_software/aidkit/qt/Resources.hpp>
+#include <limits>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-static void showItem( QListWidget *widget, QListWidgetItem *item ) {
-	widget->addItem( item );
-	widget->scrollToItem( item );
-}
+using namespace std;
 
 MessagesWidget::MessagesWidget( QWidget *parent )
 	: QListWidget( parent ) {
 }
 
+void MessagesWidget::setMaximumItemCount( int maximumItemCount ) {
+	maximumItemCount_ = maximumItemCount;
+}
+
 void MessagesWidget::showInformation( const QString &message ) {
-	showItem( this, new QListWidgetItem( Resources::informationIcon(), message ));
+	showItem( new QListWidgetItem( Resources::informationIcon(), message ));
 }
 
 void MessagesWidget::showWarning( const QString &message ) {
-	showItem( this, new QListWidgetItem( Resources::warningIcon(), message ));
+	showItem( new QListWidgetItem( Resources::warningIcon(), message ));
 }
 
 void MessagesWidget::showError( const QString &message ) {
-	showItem( this, new QListWidgetItem( Resources::errorIcon(), message ));
+	showItem( new QListWidgetItem( Resources::errorIcon(), message ));
 }
 
 void MessagesWidget::showDebug(const QString &message) {
-	showItem( this, new QListWidgetItem( Resources::debugIcon(), message ));
+	showItem( new QListWidgetItem( Resources::debugIcon(), message ));
+}
+
+void MessagesWidget::showItem( QListWidgetItem *item ) {
+	addItem( item );
+	scrollToItem( item );
+
+	if ( maximumItemCount_ ) {
+		while ( count() > *maximumItemCount_ )
+			delete takeItem( 0 );
+	}
 }
 
 } } }
