@@ -15,27 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "string_ref.hpp"
 
-#include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/std/string_ref.hpp>
-#include <sstream>
+namespace pera_software { namespace aidkit { namespace std {
 
-namespace pera_software { namespace aidkit { namespace containers {
-
-	template < typename Iterator, typename Char >
-		::std::basic_ostream< Char > &print( ::std::basic_ostream< Char > &output, Iterator begin, Iterator end,
-			std::basic_string_ref< Char > prefix, std::basic_string_ref< Char > delimiter, std::basic_string_ref< Char > suffix ) {
-
-			output << prefix;
-			auto it = begin;
-			if ( it != end ) {
-				output << *it++;
-				while ( it != end )
-					output << delimiter << *it++;
-			}
-			output << suffix;
-
-			return output;
-		}
 } } }

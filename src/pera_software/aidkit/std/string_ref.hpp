@@ -17,25 +17,19 @@
 
 #pragma once
 
-#include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/std/string_ref.hpp>
-#include <sstream>
+#include <experimental/string_view>
 
-namespace pera_software { namespace aidkit { namespace containers {
+// IMHO string_ref is a better name then string_view, but apart from that it's now only one
+// place which needs to be edited when string_view moves from experimental to std.
 
-	template < typename Iterator, typename Char >
-		::std::basic_ostream< Char > &print( ::std::basic_ostream< Char > &output, Iterator begin, Iterator end,
-			std::basic_string_ref< Char > prefix, std::basic_string_ref< Char > delimiter, std::basic_string_ref< Char > suffix ) {
+namespace pera_software { namespace aidkit { namespace std {
 
-			output << prefix;
-			auto it = begin;
-			if ( it != end ) {
-				output << *it++;
-				while ( it != end )
-					output << delimiter << *it++;
-			}
-			output << suffix;
+	template < typename Char >
+		using basic_string_ref = ::std::experimental::basic_string_view< Char >;
 
-			return output;
-		}
+	using string_ref    = ::std::experimental::string_view;
+	using wstring_ref   = ::std::experimental::wstring_view;
+	using u16string_ref = ::std::experimental::u16string_view;
+	using u32string_ref = ::std::experimental::u32string_view;
+
 } } }

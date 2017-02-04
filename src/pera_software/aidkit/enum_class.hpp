@@ -21,7 +21,7 @@
 #include <string>
 #include <algorithm>
 #include <functional>
-#include "string_ref.hpp"
+#include <pera_software/aidkit/std/string_ref.hpp>
 
 namespace pera_software { namespace aidkit {
 
@@ -35,14 +35,14 @@ namespace pera_software { namespace aidkit {
 					return value_;
 				}
 
-				basic_string_ref< Char > name() const noexcept {
+				std::basic_string_ref< Char > name() const noexcept {
 					return name_;
 				}
 
 				// Some find functions for searching via a name or a value:
 
-				static std::vector< T > find( const basic_string_ref< Char > &name ) {
-					std::vector< T > foundEnums;
+				static ::std::vector< T > find( const std::basic_string_ref< Char > &name ) {
+					::std::vector< T > foundEnums;
 
 					for_each([ & ]( const T &other ) {
 						if ( name == other.name() )
@@ -51,8 +51,8 @@ namespace pera_software { namespace aidkit {
 					return foundEnums;
 				}
 
-				static std::vector< T > find( Int value ) {
-					std::vector< T > foundEnums;
+				static ::std::vector< T > find( Int value ) {
+					::std::vector< T > foundEnums;
 
 					for_each([ & ]( const T &other ) {
 						if ( value == other.value() )
@@ -63,16 +63,16 @@ namespace pera_software { namespace aidkit {
 
 				// Allow iterating through all enum values:
 
-				static void for_each( const std::function< void ( const T & )> &function ) {
-					std::for_each( get_container().cbegin(), get_container().cend(), [ & ]( const T *t ) {
+				static void for_each( const ::std::function< void ( const T & )> &function ) {
+					::std::for_each( get_container().cbegin(), get_container().cend(), [ & ]( const T *t ) {
 						function( *t );
 					});
 				}
 
 				// Get all defined enum values:
 
-				static std::vector< T > values() {
-					std::vector< T > values;
+				static ::std::vector< T > values() {
+					::std::vector< T > values;
 					values.reserve( get_container().size() );
 
 					for_each([ & ]( const T &t ) {
@@ -90,12 +90,12 @@ namespace pera_software { namespace aidkit {
 					initialize( value, EMPTY_NAME );
 				}
 
-				template < std::size_t SIZE >
+				template < ::std::size_t SIZE >
 					enum_class( const Char ( &name )[ SIZE ]) {
 						initialize( get_next_value(), name );
 					}
 
-				template < std::size_t SIZE >
+				template < ::std::size_t SIZE >
 					enum_class( Int value, const Char ( &name )[ SIZE ]) {
 						initialize( value, name );
 					}
@@ -103,11 +103,11 @@ namespace pera_software { namespace aidkit {
 			private:
 				static const Char EMPTY_NAME[];
 
-				static std::vector< const T * > &get_container() {
+				static ::std::vector< const T * > &get_container() {
 					// - Use a function level static container so we don't get a problem with the
 					//   undefined initialization order of file level statics.
 					// - If using a std::vector<> is inconvenient then boost contains a small_vector<>.
-					static std::vector< const T * > s_values;
+					static ::std::vector< const T * > s_values;
 
 					return s_values;
 				}
@@ -135,13 +135,13 @@ namespace pera_software { namespace aidkit {
 	// #include <utility>
 	// using namespace rel_ops;
 
-	template < typename T, typename Integer, typename Char >
-		bool operator == ( const enum_class< T, Integer, Char > &left, const enum_class< T, Integer, Char > &right ) {
+	template < typename T, typename Int, typename Char >
+		bool operator == ( const enum_class< T, Int, Char > &left, const enum_class< T, Int, Char > &right ) {
 			return left.value() == right.value();
 		}
 
-	template < typename T, typename Integer, typename Char >
-		bool operator < ( const enum_class< T, Integer, Char > &left, const enum_class< T, Integer, Char > &right ) {
+	template < typename T, typename Int, typename Char >
+		bool operator < ( const enum_class< T, Int, Char > &left, const enum_class< T, Int, Char > &right ) {
 			return left.value() < right.value();
 		}
 } }

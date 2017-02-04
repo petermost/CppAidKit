@@ -42,8 +42,6 @@ set( sources
 	src/pera_software/aidkit/platform.cpp
 	src/pera_software/aidkit/strings.hpp
 	src/pera_software/aidkit/strings.cpp
-	src/pera_software/aidkit/string_ref.hpp
-	src/pera_software/aidkit/string_ref.cpp
 	src/pera_software/aidkit/vectors.hpp
 	src/pera_software/aidkit/vectors.cpp
 	src/pera_software/aidkit/io/errno.hpp
@@ -56,6 +54,10 @@ set( sources
 	src/pera_software/aidkit/io/file_error.cpp
 	src/pera_software/aidkit/io/system_error.hpp
 	src/pera_software/aidkit/io/system_error.cpp
+	src/pera_software/aidkit/std/optional.cpp
+	src/pera_software/aidkit/std/optional.hpp
+	src/pera_software/aidkit/std/string_ref.hpp
+	src/pera_software/aidkit/std/string_ref.cpp
 	src/pera_software/aidkit/concurrent/data_mutex.hpp
 	src/pera_software/aidkit/concurrent/data_mutex.cpp
 	src/pera_software/company/PERA.hpp
@@ -124,8 +126,12 @@ set( qtWidgetsSources
 	src/pera_software/aidkit/qt/widgets/MainWindow.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
+	src/pera_software/aidkit/qt/widgets/AboutQtAction.hpp
+	src/pera_software/aidkit/qt/widgets/AboutQtAction.cpp
 	src/pera_software/aidkit/qt/widgets/QuitAction.hpp
 	src/pera_software/aidkit/qt/widgets/QuitAction.cpp
+	src/pera_software/company/qt/PERAAboutAction.hpp
+	src/pera_software/company/qt/PERAAboutAction.cpp
 	src/pera_software/company/qt/PERAAboutDialog.hpp
 	src/pera_software/company/qt/PERAAboutDialog.cpp
 	src/pera_software/company/qt/PERAApplication.hpp

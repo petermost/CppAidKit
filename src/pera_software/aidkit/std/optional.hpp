@@ -15,8 +15,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "string_ref.hpp"
+#pragma once
 
-namespace pera_software { namespace aidkit {
+#include <experimental/optional>
 
-} }
+// IMHO string_ref is a better name then string_view, but apart from that it's now only one
+// place which needs to be edited when string_view moves from experimental to std.
+
+namespace pera_software { namespace aidkit { namespace std {
+
+	template < typename T >
+		using optional = ::std::experimental::optional< T >;
+
+} } }

@@ -18,8 +18,8 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
+#include <pera_software/aidkit/std/string_ref.hpp>
 #include "containers.hpp"
-#include "string_ref.hpp"
 #include <vector>
 #include <algorithm>
 #include <sstream>
@@ -29,17 +29,17 @@ namespace pera_software { namespace aidkit { namespace vectors {
 	/// Prints the content of a vector to the output.
 
 	template < typename T, typename Char >
-		std::basic_ostream< Char > &print( std::basic_ostream< Char > &output, const std::vector< T > &values,
-			basic_string_ref< Char > prefix, basic_string_ref< Char > delimiter, basic_string_ref< Char > suffix ) {
+		::std::basic_ostream< Char > &print( ::std::basic_ostream< Char > &output, const ::std::vector< T > &values,
+			std::basic_string_ref< Char > prefix, std::basic_string_ref< Char > delimiter, std::basic_string_ref< Char > suffix ) {
 
 			return containers::print( output, values.begin(), values.end(), prefix, delimiter, suffix );
 		}
 
 	template < typename T, typename Char >
-		std::basic_string< Char > join_implementation( const std::vector< T > &values,
-			basic_string_ref< Char > prefix, basic_string_ref< Char > delimiter, basic_string_ref< Char > suffix ) {
+		::std::basic_string< Char > join_implementation( const ::std::vector< T > &values,
+			std::basic_string_ref< Char > prefix, std::basic_string_ref< Char > delimiter, std::basic_string_ref< Char > suffix ) {
 
-			std::basic_ostringstream< Char > valueStream;
+			::std::basic_ostringstream< Char > valueStream;
 
 			print( valueStream, values, prefix, delimiter, suffix );
 
@@ -47,24 +47,24 @@ namespace pera_software { namespace aidkit { namespace vectors {
 		}
 
 	template < typename T >
-		std::string join( const std::vector< T > &values, string_ref prefix, string_ref delimiter, string_ref suffix ) {
-			return join_implementation< T, string_ref::value_type >( values, prefix, delimiter, suffix );
+		::std::string join( const ::std::vector< T > &values, std::string_ref prefix,std:: string_ref delimiter, std::string_ref suffix ) {
+			return join_implementation< T, std::string_ref::value_type >( values, prefix, delimiter, suffix );
 		}
 
 	template < typename T >
-		std::wstring wjoin( const std::vector< T > &values, wstring_ref prefix, wstring_ref delimiter, wstring_ref suffix ) {
-			return join_implementation< T, wstring_ref::value_type >( values, prefix, delimiter, suffix );
+		::std::wstring wjoin( const ::std::vector< T > &values, std::wstring_ref prefix, std::wstring_ref delimiter, std::wstring_ref suffix ) {
+			return join_implementation< T, std::wstring_ref::value_type >( values, prefix, delimiter, suffix );
 		}
 
 	template < typename T, typename C >
-		void remove_if( std::vector< T > *values, C condition )
+		void remove_if( ::std::vector< T > *values, C condition )
 		{
-			auto newEnd = std::remove_if( values->begin(), values->end(), condition );
+			auto newEnd = ::std::remove_if( values->begin(), values->end(), condition );
 			values->erase( newEnd, values->end() );
 		}
 
 	template < typename T >
-		void remove( std::vector< T > *values, const T &value ) {
+		void remove( ::std::vector< T > *values, const T &value ) {
 			remove_if( values, [ = ]( const T &currentValue ) {
 				return currentValue == value;
 			});
