@@ -122,14 +122,12 @@ set( qtGuiSources
 # Library QtWidgets Sources:
 
 set( qtWidgetsSources
+	src/pera_software/aidkit/qt/widgets/Actions.hpp
+	src/pera_software/aidkit/qt/widgets/Actions.cpp
 	src/pera_software/aidkit/qt/widgets/MainWindow.hpp
 	src/pera_software/aidkit/qt/widgets/MainWindow.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
-	src/pera_software/aidkit/qt/widgets/AboutQtAction.hpp
-	src/pera_software/aidkit/qt/widgets/AboutQtAction.cpp
-	src/pera_software/aidkit/qt/widgets/QuitAction.hpp
-	src/pera_software/aidkit/qt/widgets/QuitAction.cpp
 	src/pera_software/company/qt/PERAAboutAction.hpp
 	src/pera_software/company/qt/PERAAboutAction.cpp
 	src/pera_software/company/qt/PERAAboutDialog.hpp

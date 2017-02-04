@@ -1,4 +1,4 @@
-// Copyright 2015 Peter Most, PERA Software Solutions GmbH
+// Copyright 2017 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,17 +15,30 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <pera_software/aidkit/aidkit.hpp>
+#include "Actions.hpp"
+#include <pera_software/aidkit/qt/Resources.hpp>
 #include <QAction>
+#include <QApplication>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-	class AIDKIT_API QuitAction : public QAction {
-		Q_OBJECT
-		public:
-			explicit QuitAction( QObject *parent = nullptr );
-	};
+QAction *Actions::quitAction( QObject *parent ) {
+	QAction *action = new QAction( parent );
+	action->setText( QObject::tr( "&Quit" ));
+	action->setIcon( Resources::quitIcon() );
+	action->setShortcut( QKeySequence::Quit );
+	action->setMenuRole( QAction::MenuRole::QuitRole );
+
+	return action;
+}
+
+
+QAction *Actions::aboutQtAction( QObject *parent ) {
+	QAction *action = new QAction( parent );
+	action->setText( QObject::tr( "About &Qt..." ));
+	action->setMenuRole( QAction::MenuRole::AboutQtRole );
+
+	return action;
+}
 
 } } }

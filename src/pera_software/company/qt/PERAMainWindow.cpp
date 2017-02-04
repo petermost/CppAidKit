@@ -17,6 +17,7 @@
 
 #include "PERAMainWindow.hpp"
 #include "PERAAboutDialog.hpp"
+#include "PERAAboutAction.hpp"
 
 #include <QMenu>
 #include <QMenuBar>
@@ -25,7 +26,7 @@
 
 #include <pera_software/company/PERA.hpp>
 #include <pera_software/aidkit/qt/core/IniSettings.hpp>
-#include <pera_software/aidkit/qt/widgets/QuitAction.hpp>
+#include <pera_software/aidkit/qt/widgets/Actions.hpp>
 
 namespace pera_software { namespace company { namespace qt {
 
@@ -94,8 +95,8 @@ QMenu *PERAMainWindow::helpMenu() {
 
 QAction *PERAMainWindow::quitAction() {
 	if ( quitAction_ == nullptr ) {
-		quitAction_ = new QuitAction( this );
-		connect( quitAction_, &QAction::triggered, this, &PERAMainWindow::close );
+		quitAction_ = Actions::quitAction( this );
+		connect( quitAction_, &QAction::triggered, &QApplication::quit );
 	}
 	return quitAction_;
 }
@@ -104,7 +105,7 @@ QAction *PERAMainWindow::quitAction() {
 
 QAction *PERAMainWindow::aboutPERAAction() {
 	if ( aboutPERAAction_ == nullptr ) {
-		aboutPERAAction_ = new QAction( tr( "&About &PERA..." ), this );
+		aboutPERAAction_ = new PERAAboutAction( this );
 		connect( aboutPERAAction_, &QAction::triggered, this, &PERAMainWindow::aboutPERA );
 	}
 	return aboutPERAAction_;
@@ -114,7 +115,7 @@ QAction *PERAMainWindow::aboutPERAAction() {
 
 QAction *PERAMainWindow::aboutQtAction() {
 	if ( aboutQtAction_ == nullptr ) {
-		aboutQtAction_ = new QAction( tr( "About &Qt..." ), this );
+		aboutQtAction_ = Actions::aboutQtAction( this );
 		connect( aboutQtAction_, &QAction::triggered, &QApplication::aboutQt );
 	}
 	return aboutQtAction_;
@@ -155,7 +156,7 @@ void PERAMainWindow::writeSettings( IniSettings *settings ) const {
 //==================================================================================================
 
 void PERAMainWindow::aboutPERA() {
-	PERAAboutDialog aboutPERADialog;
+	PERAAboutDialog aboutPERADialog( this );
 
 	aboutPERADialog.exec();
 }
