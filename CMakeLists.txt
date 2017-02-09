@@ -158,7 +158,7 @@ set( testLibSources
 
 # Find the different packages but evaluate the results later:
 
-find_package( Qt5 COMPONENTS Core Gui Widgets Test )
+find_package( Qt5 5.8 COMPONENTS Core Gui Widgets Test )
 find_package( Boost )
 
 if ( Qt5Core_FOUND )
