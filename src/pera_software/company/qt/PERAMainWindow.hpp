@@ -46,6 +46,7 @@ namespace pera_software { namespace company { namespace qt {
 
 		public Q_SLOTS:
 			void aboutPERA();
+			static void aboutPERA( QWidget *parent );
 
 		private Q_SLOTS:
 			void onShowed();

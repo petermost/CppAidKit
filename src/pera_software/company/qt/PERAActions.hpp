@@ -18,6 +18,7 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
+#include <pera_software/aidkit/qt/widgets/Actions.hpp>
 
 class QObject;
 class QAction;
@@ -28,7 +29,7 @@ namespace pera_software { namespace company { namespace qt {
 		public:
 			PERAActions() = delete;
 
-			static QAction *aboutPERAAction( QObject *parent );
+			static QAction *aboutPERAAction( QObject *parent, aidkit::qt::SlotConnection connection = aidkit::qt::SlotConnection::None );
 	};
 
 } } }

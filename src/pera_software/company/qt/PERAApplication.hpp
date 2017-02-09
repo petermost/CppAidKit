@@ -30,6 +30,7 @@ namespace pera_software { namespace company { namespace qt {
 		Q_SIGNALS:
 
 		public Q_SLOTS:
+			static void aboutPERA();
 	};
 
 } } }

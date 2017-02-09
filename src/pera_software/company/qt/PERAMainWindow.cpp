@@ -95,8 +95,7 @@ QMenu *PERAMainWindow::helpMenu() {
 
 QAction *PERAMainWindow::quitAction() {
 	if ( quitAction_ == nullptr ) {
-		quitAction_ = Actions::quitAction( this );
-		connect( quitAction_, &QAction::triggered, &QApplication::quit );
+		quitAction_ = Actions::quitAction( this, SlotConnection::Default );
 	}
 	return quitAction_;
 }
@@ -105,8 +104,7 @@ QAction *PERAMainWindow::quitAction() {
 
 QAction *PERAMainWindow::aboutPERAAction() {
 	if ( aboutPERAAction_ == nullptr ) {
-		aboutPERAAction_ = PERAActions::aboutPERAAction( this );
-		connect( aboutPERAAction_, &QAction::triggered, this, &PERAMainWindow::aboutPERA );
+		aboutPERAAction_ = PERAActions::aboutPERAAction( this, SlotConnection::Default );
 	}
 	return aboutPERAAction_;
 }
@@ -115,8 +113,7 @@ QAction *PERAMainWindow::aboutPERAAction() {
 
 QAction *PERAMainWindow::aboutQtAction() {
 	if ( aboutQtAction_ == nullptr ) {
-		aboutQtAction_ = Actions::aboutQtAction( this );
-		connect( aboutQtAction_, &QAction::triggered, &QApplication::aboutQt );
+		aboutQtAction_ = Actions::aboutQtAction( this, SlotConnection::Default );
 	}
 	return aboutQtAction_;
 }
@@ -153,10 +150,17 @@ void PERAMainWindow::writeSettings( IniSettings *settings ) const {
 		settings->setValue( POSITION_KEY, pos() );
 	settings->endGroup();
 }
+
 //==================================================================================================
 
 void PERAMainWindow::aboutPERA() {
-	PERAAboutDialog aboutPERADialog( this );
+	aboutPERA( this );
+}
+
+//==================================================================================================
+
+void PERAMainWindow::aboutPERA( QWidget *parent ) {
+	PERAAboutDialog aboutPERADialog( parent );
 
 	aboutPERADialog.exec();
 }

@@ -16,6 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "PERAApplication.hpp"
+#include "PERAMainWindow.hpp"
 #include <pera_software/aidkit/qt/core/IniSettings.hpp>
 #include <pera_software/company/PERA.hpp>
 #include <QIcon>
@@ -33,6 +34,10 @@ PERAApplication::PERAApplication(int &argc, char *argv[])
 	setWindowIcon( QIcon( PERA::ICON_NAME ));
 
 	IniSettings::setDefaultPathAndFormat();
+}
+
+void PERAApplication::aboutPERA() {
+	PERAMainWindow::aboutPERA( activeWindow() );
 }
 
 } } }

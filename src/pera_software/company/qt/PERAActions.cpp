@@ -16,14 +16,20 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "PERAActions.hpp"
+#include "PERAApplication.hpp"
 #include <QAction>
 
 namespace pera_software { namespace company { namespace qt {
 
-QAction *PERAActions::aboutPERAAction( QObject *parent ) {
+using namespace aidkit::qt;
+
+QAction *PERAActions::aboutPERAAction( QObject *parent, SlotConnection connection ) {
 	QAction *action = new QAction( parent );
 	action->setText( QObject::tr( "&About &PERA..." ));
 	action->setMenuRole( QAction::MenuRole::AboutRole );
+
+	if ( connection == SlotConnection::Default )
+		QObject::connect( action, &QAction::triggered, &PERAApplication::aboutPERA );
 
 	return action;
 }
