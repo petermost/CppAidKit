@@ -22,21 +22,27 @@
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-QAction *Actions::quitAction( QObject *parent ) {
+QAction *Actions::quitAction( QObject *parent, SlotConnection connection ) {
 	QAction *action = new QAction( parent );
 	action->setText( QObject::tr( "&Quit" ));
 	action->setIcon( Resources::quitIcon() );
 	action->setShortcut( QKeySequence::Quit );
 	action->setMenuRole( QAction::MenuRole::QuitRole );
 
+	if ( connection == SlotConnection::Default )
+		QObject::connect( action, &QAction::triggered, &QApplication::quit );
+
 	return action;
 }
 
 
-QAction *Actions::aboutQtAction( QObject *parent ) {
+QAction *Actions::aboutQtAction(QObject *parent, SlotConnection connection ) {
 	QAction *action = new QAction( parent );
 	action->setText( QObject::tr( "About &Qt..." ));
 	action->setMenuRole( QAction::MenuRole::AboutQtRole );
+
+	if ( connection == SlotConnection::Default )
+		QObject::connect( action, &QAction::triggered, &QApplication::aboutQt );
 
 	return action;
 }
