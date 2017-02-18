@@ -23,4 +23,7 @@ namespace pera_software { namespace aidkit { namespace qt { namespace net {
 
 using Port = quint16;
 
+constexpr Port PORT_MIN = 0;
+constexpr Port PORT_MAX = 65535;
+
 } } } }
