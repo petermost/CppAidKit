@@ -29,6 +29,7 @@ MainWindow::MainWindow( QWidget *parent )
 
 void MainWindow::showEvent( QShowEvent *showEvent ) {
 	QMainWindow::showEvent( showEvent );
+
 	Q_EMIT showed();
 }
 
@@ -36,6 +37,7 @@ void MainWindow::showEvent( QShowEvent *showEvent ) {
 
 void MainWindow::closeEvent( QCloseEvent *closeEvent ) {
 	QMainWindow::closeEvent( closeEvent );
+
 	Q_EMIT closed();
 }
 

@@ -18,7 +18,7 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/qt/widgets/Actions.hpp>
+#include <functional>
 
 class QObject;
 class QAction;
@@ -27,9 +27,11 @@ namespace pera_software { namespace company { namespace qt {
 
 	class AIDKIT_API PERAActions {
 		public:
+			static const ::std::function< void() > DEFAULT_ABOUT_PERA_SLOT;
+
 			PERAActions() = delete;
 
-			static QAction *aboutPERAAction( QObject *parent, aidkit::qt::SlotConnection connection = aidkit::qt::SlotConnection::None );
+			static QAction *aboutPERAAction( QObject *parent, ::std::function< void() > slot = ::std::function< void() >()  );
 	};
 
 } } }

@@ -21,15 +21,17 @@
 
 namespace pera_software { namespace company { namespace qt {
 
-using namespace aidkit::qt;
+using namespace ::std;
 
-QAction *PERAActions::aboutPERAAction( QObject *parent, SlotConnection connection ) {
+const function< void() > PERAActions::DEFAULT_ABOUT_PERA_SLOT = &PERAApplication::aboutPERA;
+
+QAction *PERAActions::aboutPERAAction( QObject *parent, function< void() > slot ) {
 	QAction *action = new QAction( parent );
 	action->setText( QObject::tr( "&About &PERA..." ));
 	action->setMenuRole( QAction::MenuRole::AboutRole );
 
-	if ( connection == SlotConnection::Default )
-		QObject::connect( action, &QAction::triggered, &PERAApplication::aboutPERA );
+	if ( slot )
+		QObject::connect( action, &QAction::triggered, slot );
 
 	return action;
 }

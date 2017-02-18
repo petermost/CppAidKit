@@ -18,24 +18,22 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
+#include <functional>
 
 class QObject;
 class QAction;
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-	enum class SlotConnection {
-		None,
-		Default
-	};
-
 	class AIDKIT_API Actions {
 		public:
+			static const ::std::function< void() > DEFAULT_QUIT_SLOT;
+			static const ::std::function< void() > DEFAULT_ABOUT_QT_SLOT;
 
 			Actions() = delete;
 
-			static QAction *quitAction( QObject *parent, SlotConnection connection = SlotConnection::None );
-			static QAction *aboutQtAction( QObject *parent, SlotConnection connection = SlotConnection::None );
+			static QAction *quitAction( QObject *parent, ::std::function< void() > slot = ::std::function< void() >() );
+			static QAction *aboutQtAction( QObject *parent, ::std::function< void() > slot = ::std::function< void() >() );
 	};
 
 } } }
