@@ -31,8 +31,6 @@ PERAApplication::PERAApplication(int &argc, char *argv[])
 	setOrganizationName( PERA::NAME );
 	setOrganizationDomain( PERA::DOMAIN_NAME );
 
-	setWindowIcon( QIcon( PERA::ICON_NAME ));
-
 	IniSettings::setDefaultPathAndFormat();
 }
 

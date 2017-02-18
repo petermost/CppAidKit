@@ -32,9 +32,14 @@ namespace pera_software { namespace company { namespace qt {
 
 using namespace aidkit::qt;
 
-const QString GROUP_NAME( QStringLiteral( "pera_software.company.qt.PERAMainWindow" )); // Colons (':') will be replaced with %3A!
-const QString SIZE_KEY( QStringLiteral( "size" ));
-const QString POSITION_KEY( QStringLiteral( "position" ));
+// Colons (':') would be stored as %3A so we replace them with a dot ('.'):
+
+static const QLatin1Literal COLONS( "::" );
+static const QLatin1Literal DOT( "." );
+
+static const QString GROUP_NAME( QString( PERAMainWindow::staticMetaObject.className() ).replace( COLONS, DOT ));
+static const QString SIZE_KEY( QStringLiteral( "size" ));
+static const QString POSITION_KEY( QStringLiteral( "position" ));
 
 //==================================================================================================
 
@@ -49,7 +54,10 @@ PERAMainWindow::PERAMainWindow( QWidget *parent )
 	connect( this, &MainWindow::showed, this, &PERAMainWindow::onShowed );
 	connect( this, &MainWindow::closed, this, &PERAMainWindow::onClosed );
 
-	// Default window icon is set in Application::Application().
+	// I couldn't quite figure out the difference between QApplication::setWindowIcon(), QWidget::setWindowIcon()
+	// and QWindow::setIcon(), so for now we set the icon here, were it is probably most expected:
+
+	setWindowIcon( QIcon( PERA::ICON_NAME ));
 }
 
 //==================================================================================================
@@ -95,7 +103,7 @@ QMenu *PERAMainWindow::helpMenu() {
 
 QAction *PERAMainWindow::quitAction() {
 	if ( quitAction_ == nullptr ) {
-		quitAction_ = Actions::quitAction( this, SlotConnection::Default );
+		quitAction_ = Actions::quitAction( this, Actions::DEFAULT_QUIT_SLOT );
 	}
 	return quitAction_;
 }
@@ -104,7 +112,7 @@ QAction *PERAMainWindow::quitAction() {
 
 QAction *PERAMainWindow::aboutPERAAction() {
 	if ( aboutPERAAction_ == nullptr ) {
-		aboutPERAAction_ = PERAActions::aboutPERAAction( this, SlotConnection::Default );
+		aboutPERAAction_ = PERAActions::aboutPERAAction( this, PERAActions::DEFAULT_ABOUT_PERA_SLOT );
 	}
 	return aboutPERAAction_;
 }
@@ -113,7 +121,7 @@ QAction *PERAMainWindow::aboutPERAAction() {
 
 QAction *PERAMainWindow::aboutQtAction() {
 	if ( aboutQtAction_ == nullptr ) {
-		aboutQtAction_ = Actions::aboutQtAction( this, SlotConnection::Default );
+		aboutQtAction_ = Actions::aboutQtAction( this, Actions::DEFAULT_ABOUT_QT_SLOT );
 	}
 	return aboutQtAction_;
 }
