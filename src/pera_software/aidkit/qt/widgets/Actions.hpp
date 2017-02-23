@@ -27,13 +27,13 @@ namespace pera_software { namespace aidkit { namespace qt {
 
 	class AIDKIT_API Actions {
 		public:
-			static const ::std::function< void() > DEFAULT_QUIT_SLOT;
-			static const ::std::function< void() > DEFAULT_ABOUT_QT_SLOT;
+			static const std::function< void() > DEFAULT_QUIT_SLOT;
+			static const std::function< void() > DEFAULT_ABOUT_QT_SLOT;
 
 			Actions() = delete;
 
-			static QAction *quitAction( QObject *parent, ::std::function< void() > slot = ::std::function< void() >() );
-			static QAction *aboutQtAction( QObject *parent, ::std::function< void() > slot = ::std::function< void() >() );
+			static QAction *quitAction( QObject *parent, const std::function< void() > &slot = std::function< void() >() );
+			static QAction *aboutQtAction( QObject *parent, const std::function< void() > &slot = std::function< void() >() );
 	};
 
 } } }

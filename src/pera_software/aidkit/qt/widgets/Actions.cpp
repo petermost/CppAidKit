@@ -22,14 +22,14 @@
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-using namespace ::std;
+using namespace std;
 
 const function< void() > Actions::DEFAULT_QUIT_SLOT = &QApplication::quit;
 const function< void() > Actions::DEFAULT_ABOUT_QT_SLOT = &QApplication::aboutQt;
 
 //==================================================================================================
 
-QAction *Actions::quitAction(QObject *parent, function< void() > slot ) {
+QAction *Actions::quitAction( QObject *parent, const function< void() > &slot ) {
 	QAction *action = new QAction( parent );
 	action->setText( QObject::tr( "&Quit" ));
 	action->setIcon( Resources::quitIcon() );
@@ -44,7 +44,7 @@ QAction *Actions::quitAction(QObject *parent, function< void() > slot ) {
 
 //==================================================================================================
 
-QAction *Actions::aboutQtAction( QObject *parent, function< void()> slot ) {
+QAction *Actions::aboutQtAction( QObject *parent, const function< void()> &slot ) {
 	QAction *action = new QAction( parent );
 	action->setText( QObject::tr( "About &Qt..." ));
 	action->setMenuRole( QAction::MenuRole::AboutQtRole );

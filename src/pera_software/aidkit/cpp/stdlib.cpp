@@ -15,25 +15,4 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "PERAActions.hpp"
-#include "PERAApplication.hpp"
-#include <QAction>
-
-namespace pera_software { namespace company { namespace qt {
-
-using namespace std;
-
-const function< void() > PERAActions::DEFAULT_ABOUT_PERA_SLOT = &PERAApplication::aboutPERA;
-
-QAction *PERAActions::aboutPERAAction( QObject *parent, const function< void() > &slot ) {
-	QAction *action = new QAction( parent );
-	action->setText( QObject::tr( "&About &PERA..." ));
-	action->setMenuRole( QAction::MenuRole::AboutRole );
-
-	if ( slot )
-		QObject::connect( action, &QAction::triggered, slot );
-
-	return action;
-}
-
-} } }
+#include "stdlib.hpp"

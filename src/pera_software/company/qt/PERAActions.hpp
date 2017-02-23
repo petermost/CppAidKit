@@ -27,11 +27,11 @@ namespace pera_software { namespace company { namespace qt {
 
 	class AIDKIT_API PERAActions {
 		public:
-			static const ::std::function< void() > DEFAULT_ABOUT_PERA_SLOT;
+			static const std::function< void() > DEFAULT_ABOUT_PERA_SLOT;
 
 			PERAActions() = delete;
 
-			static QAction *aboutPERAAction( QObject *parent, ::std::function< void() > slot = ::std::function< void() >()  );
+			static QAction *aboutPERAAction(QObject *parent, const std::function< void() > &slot = std::function< void() >()  );
 	};
 
 } } }

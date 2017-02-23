@@ -18,7 +18,7 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/std/string_ref.hpp>
+#include <pera_software/aidkit/cpp/string_ref.hpp>
 #include <boost/format.hpp>
 #include <string>
 
@@ -32,19 +32,19 @@ namespace pera_software { namespace aidkit { namespace boost {
 	template< typename Char >
 		class basic_formatter {
 			public:
-				basic_formatter( std::basic_string_ref< Char > formatString ) noexcept {
+				basic_formatter( cpp::basic_string_ref< Char > formatString ) noexcept {
 					format_.exceptions( ::boost::io::no_error_bits );
 					format_.parse( formatString.to_string() );
 				}
 
 				template< class T >
 					basic_formatter &operator % ( T &&x ) {
-						format_ % ::std::forward< T >( x );
+						format_ % std::forward< T >( x );
 
 						return *this;
 					}
 
-				::std::basic_string< Char > str() const noexcept {
+				std::basic_string< Char > str() const noexcept {
 					return format_.str();
 				}
 

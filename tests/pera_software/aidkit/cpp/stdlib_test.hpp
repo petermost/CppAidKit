@@ -15,8 +15,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "optional.hpp"
+#pragma once
 
-namespace pera_software { namespace aidkit { namespace std {
+#include <pera_software/aidkit/qt/test/Test.hpp>
+
+namespace pera_software { namespace aidkit { namespace cpp {
+
+	class StdLibTest : public qt::Test {
+			Q_OBJECT
+
+		private Q_SLOTS:
+			void testCountOf();
+			void testSize();
+	};
 
 } } }

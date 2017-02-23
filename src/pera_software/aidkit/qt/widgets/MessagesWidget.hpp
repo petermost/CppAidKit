@@ -19,7 +19,7 @@
 
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QListWidget>
-#include <pera_software/aidkit/std/optional.hpp>
+#include <pera_software/aidkit/cpp/optional.hpp>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
@@ -42,7 +42,7 @@ namespace pera_software { namespace aidkit { namespace qt {
 		private:
 			void showItem( QListWidgetItem *item );
 
-			std::optional< int > maximumItemCount_;
+			cpp::optional< int > maximumItemCount_;
 	};
 
 } } }

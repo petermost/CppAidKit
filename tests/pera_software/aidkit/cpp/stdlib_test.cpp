@@ -15,27 +15,28 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "stdlib_test.hpp"
+#include <pera_software/aidkit/cpp/stdlib.hpp>
+#include <QTest>
+#include <vector>
+#include <iterator>
 
-#include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/cpp/string_ref.hpp>
-#include <sstream>
+namespace pera_software { namespace aidkit { namespace cpp {
 
-namespace pera_software { namespace aidkit { namespace containers {
+using namespace std;
 
-	template < typename Iterator, typename Char >
-		std::basic_ostream< Char > &print( std::basic_ostream< Char > &output, Iterator begin, Iterator end,
-			cpp::basic_string_ref< Char > prefix, cpp::basic_string_ref< Char > delimiter, cpp::basic_string_ref< Char > suffix ) {
+static StdLibTest stdLibTest;
 
-			output << prefix;
-			auto it = begin;
-			if ( it != end ) {
-				output << *it++;
-				while ( it != end )
-					output << delimiter << *it++;
-			}
-			output << suffix;
+void StdLibTest::testCountOf() {
+	int ints[] = { 1, 2, 2, 2, 3 };
 
-			return output;
-		}
+	QCOMPARE( countof( ints ), size_t( 5 ));
+}
+
+void StdLibTest::testSize() {
+	vector< int > ints = { 1, 2, 3 };
+
+	QCOMPARE( std::size( ints ), size_t( 3 ));
+}
+
 } } }

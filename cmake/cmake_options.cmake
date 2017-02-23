@@ -1,5 +1,7 @@
 # Contains general options for cmake
 
+message( "CMake version: ${CMAKE_VERSION}")
+
 set( CMAKE_WARN_DEPRECATED ON )
 
 if ( NOT CMAKE_BUILD_TYPE )

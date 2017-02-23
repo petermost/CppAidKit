@@ -1,6 +1,6 @@
 # Show the compilers name and version:
 
-message( "C++ compiler is: " ${CMAKE_CXX_COMPILER_ID} ", version: " ${CMAKE_CXX_COMPILER_VERSION})
+message( "C++ compiler: " ${CMAKE_CXX_COMPILER_ID} ", version: " ${CMAKE_CXX_COMPILER_VERSION})
 
 if ( MINGW )
 	add_definitions( -D__USE_MINGW_ANSI_STDIO )

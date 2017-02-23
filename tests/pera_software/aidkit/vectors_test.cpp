@@ -22,7 +22,7 @@
 
 namespace pera_software { namespace aidkit {
 
-using namespace ::std;
+using namespace std;
 
 static VectorsTest vectorsTest;
 

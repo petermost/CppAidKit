@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2017 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,8 +15,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "string_ref.hpp"
+#pragma once
 
-namespace pera_software { namespace aidkit { namespace std {
+#include <cstdlib>
+#include <iterator>
+
+namespace pera_software { namespace aidkit { namespace cpp {
+
+	// Make an 'alias function' from countof() to std::size():
+
+	template < typename... Args >
+		auto countof( Args&&... args ) -> decltype( std::size( std::forward< Args >( args )... )) {
+			return std::size( std::forward< Args >( args )... );
+		}
 
 } } }
