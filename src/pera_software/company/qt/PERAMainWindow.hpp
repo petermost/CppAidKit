@@ -19,14 +19,13 @@
 
 #include <pera_software/aidkit/aidkit.hpp>
 #include <pera_software/aidkit/qt/widgets/MainWindow.hpp>
+#include <pera_software/aidkit/qt/core/Persistable.hpp>
 
-namespace pera_software { namespace aidkit { namespace qt {
-	class IniSettings;
-} } }
+class QSettings;
 
 namespace pera_software { namespace company { namespace qt {
 
-	class AIDKIT_API PERAMainWindow : public aidkit::qt::MainWindow {
+	class AIDKIT_API PERAMainWindow : public aidkit::qt::MainWindow, public aidkit::qt::Persistable {
 		Q_OBJECT
 		public:
 			PERAMainWindow( QWidget *parent = nullptr );
@@ -41,16 +40,12 @@ namespace pera_software { namespace company { namespace qt {
 			QAction *aboutPERAAction();
 			QAction *aboutQtAction();
 
-			virtual void readSettings( aidkit::qt::IniSettings *settings );
-			virtual void writeSettings( aidkit::qt::IniSettings *settings ) const;
+			void readSettings( QSettings *settings ) noexcept override;
+			void writeSettings( QSettings *settings ) const noexcept override;
 
 		public Q_SLOTS:
 			void aboutPERA();
 			static void aboutPERA( QWidget *parent );
-
-		private Q_SLOTS:
-			void onShowed();
-			void onClosed();
 
 		private:
 			QMenu *fileMenu_ = nullptr;

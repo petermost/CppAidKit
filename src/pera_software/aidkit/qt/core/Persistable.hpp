@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2017 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -18,30 +18,18 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <QListWidget>
-#include <pera_software/aidkit/cpp/optional.hpp>
+
+class QSettings;
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-	class AIDKIT_API MessagesWidget : public QListWidget {
-		Q_OBJECT
+	class AIDKIT_API Persistable {
 		public:
-			explicit MessagesWidget( QWidget *parent = nullptr );
+			virtual void readSettings( QSettings *settings ) noexcept = 0;
+			virtual void writeSettings( QSettings *settings ) const noexcept = 0;
 
-			void setMaximumItemCount( int maximumItemCount );
-
-		Q_SIGNALS:
-
-		public Q_SLOTS:
-			void showInformation( const QString &message );
-			void showWarning( const QString &message );
-			void showError( const QString &message );
-			void showDebug( const QString &message );
-
-		private:
-			void showItem( QListWidgetItem *item );
-
-			cpp::optional< int > maximumItemCount_;
+		protected:
+			virtual ~Persistable();
 	};
 
 } } }

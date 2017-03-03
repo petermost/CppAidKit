@@ -104,6 +104,8 @@ set( qtCoreSources
 	src/pera_software/aidkit/qt/core/Enums.cpp
 	src/pera_software/aidkit/qt/core/IniSettings.hpp
 	src/pera_software/aidkit/qt/core/IniSettings.cpp
+	src/pera_software/aidkit/qt/core/Persistable.hpp
+	src/pera_software/aidkit/qt/core/Persistable.cpp
 
 	# Resources:
 

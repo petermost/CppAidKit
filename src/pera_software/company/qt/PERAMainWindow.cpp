@@ -19,13 +19,13 @@
 #include "PERAAboutDialog.hpp"
 #include "PERAActions.hpp"
 
+#include <QApplication>
 #include <QMenu>
 #include <QMenuBar>
+#include <QSettings>
 #include <QString>
-#include <QApplication>
 
 #include <pera_software/company/PERA.hpp>
-#include <pera_software/aidkit/qt/core/IniSettings.hpp>
 #include <pera_software/aidkit/qt/widgets/Actions.hpp>
 
 namespace pera_software { namespace company { namespace qt {
@@ -50,9 +50,6 @@ PERAMainWindow::PERAMainWindow( QWidget *parent )
 		.arg( QApplication::applicationName() )
 		.arg( QApplication::organizationName() )
 		.arg( QApplication::organizationDomain() ));
-
-	connect( this, &MainWindow::showed, this, &PERAMainWindow::onShowed );
-	connect( this, &MainWindow::closed, this, &PERAMainWindow::onClosed );
 
 	// I couldn't quite figure out the difference between QApplication::setWindowIcon(), QWidget::setWindowIcon()
 	// and QWindow::setIcon(), so for now we set the icon here, were it is probably most expected:
@@ -126,24 +123,9 @@ QAction *PERAMainWindow::aboutQtAction() {
 	return aboutQtAction_;
 }
 
-
 //==================================================================================================
 
-void PERAMainWindow::onShowed() {
-	IniSettings settings;
-	readSettings( &settings );
-}
-
-//==================================================================================================
-
-void PERAMainWindow::onClosed() {
-	IniSettings settings;
-	writeSettings( &settings );
-}
-
-//==================================================================================================
-
-void PERAMainWindow::readSettings( IniSettings *settings ) {
+void PERAMainWindow::readSettings( QSettings *settings ) noexcept {
 	settings->beginGroup( GROUP_NAME );
 		resize( settings->value( SIZE_KEY, size() ).toSize() );
 		move( settings->value( POSITION_KEY, pos() ).toPoint() );
@@ -152,7 +134,7 @@ void PERAMainWindow::readSettings( IniSettings *settings ) {
 
 //==================================================================================================
 
-void PERAMainWindow::writeSettings( IniSettings *settings ) const {
+void PERAMainWindow::writeSettings( QSettings *settings ) const noexcept {
 	settings->beginGroup( GROUP_NAME );
 		settings->setValue( SIZE_KEY, size() );
 		settings->setValue( POSITION_KEY, pos() );
