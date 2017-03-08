@@ -36,52 +36,59 @@ set( sources
 	src/pera_software/aidkit/enum_flags.cpp
 	src/pera_software/aidkit/exception.hpp
 	src/pera_software/aidkit/exception.cpp
-	src/pera_software/aidkit/unicode.hpp
-	src/pera_software/aidkit/unicode.cpp
 	src/pera_software/aidkit/platform.hpp
 	src/pera_software/aidkit/platform.cpp
 	src/pera_software/aidkit/strings.hpp
 	src/pera_software/aidkit/strings.cpp
+	src/pera_software/aidkit/unicode.hpp
+	src/pera_software/aidkit/unicode.cpp
 	src/pera_software/aidkit/vectors.hpp
 	src/pera_software/aidkit/vectors.cpp
+
+	src/pera_software/aidkit/io/basic_file.hpp
+	src/pera_software/aidkit/io/basic_file.cpp
 	src/pera_software/aidkit/io/errno.hpp
 	src/pera_software/aidkit/io/errno.cpp
 	src/pera_software/aidkit/io/file.hpp
 	src/pera_software/aidkit/io/file.cpp
-	src/pera_software/aidkit/io/basic_file.hpp
-	src/pera_software/aidkit/io/basic_file.cpp
 	src/pera_software/aidkit/io/file_error.hpp
 	src/pera_software/aidkit/io/file_error.cpp
 	src/pera_software/aidkit/io/system_error.hpp
 	src/pera_software/aidkit/io/system_error.cpp
-	src/pera_software/aidkit/cpp/stdlib.hpp
-	src/pera_software/aidkit/cpp/stdlib.cpp
+
 	src/pera_software/aidkit/cpp/optional.cpp
 	src/pera_software/aidkit/cpp/optional.hpp
+	src/pera_software/aidkit/cpp/stdlib.hpp
+	src/pera_software/aidkit/cpp/stdlib.cpp
 	src/pera_software/aidkit/cpp/string_ref.hpp
 	src/pera_software/aidkit/cpp/string_ref.cpp
+
 	src/pera_software/aidkit/concurrent/data_mutex.hpp
 	src/pera_software/aidkit/concurrent/data_mutex.cpp
+
 	src/pera_software/company/PERA.hpp
 	src/pera_software/company/PERA.cpp
 )
 
 set( testSources
-	tests/pera_software/aidkit/test_main.cpp
 	tests/pera_software/aidkit/enum_class_test.hpp
 	tests/pera_software/aidkit/enum_class_test.cpp
 	tests/pera_software/aidkit/enum_flags_test.hpp
 	tests/pera_software/aidkit/enum_flags_test.cpp
 	tests/pera_software/aidkit/strings_test.hpp
 	tests/pera_software/aidkit/strings_test.cpp
+	tests/pera_software/aidkit/test_main.cpp
 	tests/pera_software/aidkit/unicode_test.hpp
 	tests/pera_software/aidkit/unicode_test.cpp
 	tests/pera_software/aidkit/vectors_test.hpp
 	tests/pera_software/aidkit/vectors_test.cpp
+
 	tests/pera_software/aidkit/concurrent/data_mutex_test.hpp
 	tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
+
 	tests/pera_software/aidkit/io/file_test.hpp
 	tests/pera_software/aidkit/io/file_test.cpp
+
 	tests/pera_software/aidkit/cpp/stdlib_test.hpp
 	tests/pera_software/aidkit/cpp/stdlib_test.cpp
 )
@@ -89,33 +96,35 @@ set( testSources
 # Library QtCore Sources:
 
 set( qtCoreSources
-	# Sources:
-
 	src/pera_software/aidkit/qt/qt.cpp
-	src/pera_software/aidkit/qt/io/Console.hpp
-	src/pera_software/aidkit/qt/io/Console.cpp
-	src/pera_software/aidkit/qt/net/Endian.hpp
-	src/pera_software/aidkit/qt/net/Endian.cpp
-	src/pera_software/aidkit/qt/net/Socket.hpp
-	src/pera_software/aidkit/qt/net/Socket.cpp
+
+	src/pera_software/aidkit/qt/core/Console.hpp
+	src/pera_software/aidkit/qt/core/Console.cpp
 	src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
 	src/pera_software/aidkit/qt/core/DirectoryGuide.cpp
+	src/pera_software/aidkit/qt/core/Endian.hpp
+	src/pera_software/aidkit/qt/core/Endian.cpp
 	src/pera_software/aidkit/qt/core/Enums.hpp
 	src/pera_software/aidkit/qt/core/Enums.cpp
 	src/pera_software/aidkit/qt/core/IniSettings.hpp
 	src/pera_software/aidkit/qt/core/IniSettings.cpp
 	src/pera_software/aidkit/qt/core/Persistable.hpp
 	src/pera_software/aidkit/qt/core/Persistable.cpp
+	src/pera_software/aidkit/qt/core/Socket.hpp
+	src/pera_software/aidkit/qt/core/Socket.cpp
 
 	# Resources:
 
 	resources/pera_software/aidkit/AidKitResources.qrc
+
 	resources/pera_software/company/CompanyResources.qrc
 )
 
 set( qtCoreTestSources
-	tests/pera_software/aidkit/qt/net/EndianTest.hpp
-	tests/pera_software/aidkit/qt/net/EndianTest.cpp
+	tests/pera_software/aidkit/qt/core/ConsoleTest.hpp
+	tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
+	tests/pera_software/aidkit/qt/core/EndianTest.hpp
+	tests/pera_software/aidkit/qt/core/EndianTest.cpp
 )
 
 # Library QtGui Sources:
@@ -128,19 +137,20 @@ set( qtGuiSources
 # Library QtWidgets Sources:
 
 set( qtWidgetsSources
-	src/pera_software/aidkit/qt/widgets/ForwardDeclarations.hpp
 	src/pera_software/aidkit/qt/widgets/Actions.hpp
 	src/pera_software/aidkit/qt/widgets/Actions.cpp
+	src/pera_software/aidkit/qt/widgets/ForwardDeclarations.hpp
 	src/pera_software/aidkit/qt/widgets/IntegerSpinBox.hpp
 	src/pera_software/aidkit/qt/widgets/IntegerSpinBox.cpp
 	src/pera_software/aidkit/qt/widgets/MainWindow.hpp
 	src/pera_software/aidkit/qt/widgets/MainWindow.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
-	src/pera_software/company/qt/PERAActions.hpp
-	src/pera_software/company/qt/PERAActions.cpp
+
 	src/pera_software/company/qt/PERAAboutDialog.hpp
 	src/pera_software/company/qt/PERAAboutDialog.cpp
+	src/pera_software/company/qt/PERAActions.hpp
+	src/pera_software/company/qt/PERAActions.cpp
 	src/pera_software/company/qt/PERAApplication.hpp
 	src/pera_software/company/qt/PERAApplication.cpp
 	src/pera_software/company/qt/PERAMainWindow.hpp

@@ -19,11 +19,10 @@
 #include <QTest>
 #include <exception>
 #include <QCoreApplication>
-#include <pera_software/aidkit/qt/io/Console.hpp>
+#include <pera_software/aidkit/qt/core/Console.hpp>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-using namespace io;
 using namespace std;
 
 //==================================================================================================

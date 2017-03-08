@@ -15,16 +15,4 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "Console.hpp"
-#include <cstdio>
-
-namespace pera_software { namespace aidkit { namespace qt { namespace io {
-
-using namespace std;
-
-AIDKIT_API QTextStream cin( stdin );
-AIDKIT_API QTextStream cout( stdout );
-AIDKIT_API QTextStream cerr( stderr );
-
-} } } }
-
+#include "Endian.hpp"

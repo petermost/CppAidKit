@@ -1,4 +1,4 @@
-// Copyright 2017 Peter Most, PERA Software Solutions GmbH
+// Copyright 2015 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,15 +15,30 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "ConsoleTest.hpp"
+#include <pera_software/aidkit/qt/core/Console.hpp>
+#include <QString>
 
-#include <QtGlobal>
+namespace pera_software { namespace aidkit { namespace qt {
 
-namespace pera_software { namespace aidkit { namespace qt { namespace net {
+// This is more of a compile test then runtime test, so we don't instantiate ConsoleTest.
 
-using Port = quint16;
+void ConsoleTest::testOutStream() {
+	QString text( "" );
 
-constexpr Port PORT_MIN = 0;
-constexpr Port PORT_MAX = 65535;
+	cout << text;
+}
 
-} } } }
+void ConsoleTest::testErrStream() {
+	QString text( "" );
+
+	cerr << text;
+}
+
+void ConsoleTest::testInStream() {
+	QString text;
+
+	cin >> text;
+}
+
+} } }

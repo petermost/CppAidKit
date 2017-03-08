@@ -15,30 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "ConsoleTest.hpp"
-#include <pera_software/aidkit/qt/console/Streams.hpp>
-#include <QString>
+#pragma once
 
-namespace pera_software { namespace aidkit { namespace qt { namespace console {
+#include <pera_software/aidkit/qt/test/Test.hpp>
 
-// This is more of a compile test then runtime test, so we don't instantiate ConsoleTest.
+namespace pera_software { namespace aidkit { namespace qt {
 
-void ConsoleTest::testOutStream() {
-	QString text( "" );
+class ConsoleTest : public Test {
+	Q_OBJECT
+	public:
+		ConsoleTest();
 
-	console::out << text;
-}
+	private Q_SLOTS:
+		void testOutStream();
+		void testErrStream();
+		void testInStream();
+};
 
-void ConsoleTest::testErrStream() {
-	QString text( "" );
-
-	console::err << text;
-}
-
-void ConsoleTest::testInStream() {
-	QString text;
-
-	text << console::in;
-}
-
-} } } }
+} } }

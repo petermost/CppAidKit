@@ -15,22 +15,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "Console.hpp"
+#include <cstdio>
 
-#include <pera_software/aidkit/qt/test/Test.hpp>
+namespace pera_software { namespace aidkit { namespace qt {
 
-namespace pera_software { namespace aidkit { namespace qt { namespace net {
+using namespace std;
 
-	class EndianTest : public qt::Test {
-		Q_OBJECT
+AIDKIT_API QTextStream cin( stdin );
+AIDKIT_API QTextStream cout( stdout );
+AIDKIT_API QTextStream cerr( stderr );
 
-		private Q_SLOTS:
-			void test_hton_ntoh_8();
-			void test_hton_ntoh_16();
-			void test_hton_ntoh_32();
-			void test_hton_ntoh_64();
-			void testCompilation();
-	};
-
-} } } }
+} } }
 

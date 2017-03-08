@@ -1,4 +1,4 @@
-// Copyright 2015 Peter Most, PERA Software Solutions GmbH
+// Copyright 2017 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -17,19 +17,13 @@
 
 #pragma once
 
-#include <pera_software/aidkit/qt/test/Test.hpp>
+#include <QtGlobal>
 
-namespace pera_software { namespace aidkit { namespace qt { namespace console {
+namespace pera_software { namespace aidkit { namespace qt {
 
-class ConsoleTest : public Test {
-	Q_OBJECT
-	public:
-		ConsoleTest();
+using Port = quint16;
 
-	private slots:
-		void testOutStream();
-		void testErrStream();
-		void testInStream();
-};
+constexpr Port PORT_MIN = 0;
+constexpr Port PORT_MAX = 65535;
 
-} } } }
+} } }

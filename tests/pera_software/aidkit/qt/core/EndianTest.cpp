@@ -16,10 +16,12 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "EndianTest.hpp"
-#include <pera_software/aidkit/qt/net/Endian.hpp>
+#include <pera_software/aidkit/qt/core/Endian.hpp>
 #include <QTest>
 
-namespace pera_software { namespace aidkit { namespace qt { namespace net {
+namespace pera_software { namespace aidkit { namespace qt {
+
+static EndianTest endianTest;
 
 template < typename T >
 	void assert_hton_ntoh( T expectedHostValue, T expectedNetValue ) {
@@ -80,6 +82,4 @@ void EndianTest::testCompilation() {
 	ntoh( 1ull );
 }
 
-static EndianTest endianTest;
-
-} } } }
+} } }
