@@ -128,8 +128,11 @@ set( qtGuiSources
 # Library QtWidgets Sources:
 
 set( qtWidgetsSources
+	src/pera_software/aidkit/qt/widgets/ForwardDeclarations.hpp
 	src/pera_software/aidkit/qt/widgets/Actions.hpp
 	src/pera_software/aidkit/qt/widgets/Actions.cpp
+	src/pera_software/aidkit/qt/widgets/IntegerSpinBox.hpp
+	src/pera_software/aidkit/qt/widgets/IntegerSpinBox.cpp
 	src/pera_software/aidkit/qt/widgets/MainWindow.hpp
 	src/pera_software/aidkit/qt/widgets/MainWindow.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
