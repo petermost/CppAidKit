@@ -98,6 +98,8 @@ set( testSources
 set( qtCoreSources
 	src/pera_software/aidkit/qt/qt.cpp
 
+	src/pera_software/aidkit/qt/core/Chrono.hpp
+	src/pera_software/aidkit/qt/core/Chrono.cpp
 	src/pera_software/aidkit/qt/core/Console.hpp
 	src/pera_software/aidkit/qt/core/Console.cpp
 	src/pera_software/aidkit/qt/core/DirectoryGuide.hpp
