@@ -16,22 +16,26 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "IniSettings.hpp"
+#include <QDir>
 #include <QString>
+#include <QFileInfo>
+#include <QCoreApplication>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-const QString DEFAULT_PATH( QStringLiteral( "settings.ini" ));
-const QSettings::Format DEFAULT_FORMAT = QSettings::IniFormat;
 
-void IniSettings::setDefaultPathAndFormat() {
-	QSettings::setDefaultFormat( DEFAULT_FORMAT );
-	QSettings::setPath( DEFAULT_FORMAT, QSettings::UserScope, DEFAULT_PATH );
+QString IniSettings::defaultFileName() {
+
+	// Create a filename from the application directory and 'settings.ini':
+
+	return QFileInfo( QCoreApplication::applicationDirPath(), QStringLiteral( "settings.ini" )).absoluteFilePath();
 }
 
-IniSettings::IniSettings()
-	: QSettings( DEFAULT_PATH, DEFAULT_FORMAT ) {
 
-	setDefaultPathAndFormat();
+IniSettings::IniSettings( const QString &fileName )
+	: QSettings( fileName, QSettings::IniFormat ) {
+
+	Q_ASSERT( scope() == QSettings::UserScope );
 }
 
 } } }

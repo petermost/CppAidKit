@@ -17,7 +17,6 @@
 
 #include "PERAApplication.hpp"
 #include "PERAMainWindow.hpp"
-#include <pera_software/aidkit/qt/core/IniSettings.hpp>
 #include <pera_software/company/PERA.hpp>
 #include <QIcon>
 
@@ -30,8 +29,6 @@ PERAApplication::PERAApplication(int &argc, char *argv[])
 
 	setOrganizationName( PERA::NAME );
 	setOrganizationDomain( PERA::DOMAIN_NAME );
-
-	IniSettings::setDefaultPathAndFormat();
 }
 
 void PERAApplication::aboutPERA() {

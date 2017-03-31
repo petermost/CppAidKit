@@ -24,9 +24,9 @@ namespace pera_software { namespace aidkit { namespace qt {
 
 	class AIDKIT_API IniSettings : public QSettings {
 		public:
-			static void setDefaultPathAndFormat();
+			static QString defaultFileName();
 
-			IniSettings();
+			IniSettings( const QString &fileName = defaultFileName() );
 	};
 
 } } }
