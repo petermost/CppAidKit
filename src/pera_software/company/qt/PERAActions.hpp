@@ -18,20 +18,18 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
+#include <QAction>
 #include <functional>
-
-class QObject;
-class QAction;
 
 namespace pera_software { namespace company { namespace qt {
 
-	class AIDKIT_API PERAActions {
+	class AIDKIT_API AboutPERAAction : public QAction {
+		Q_OBJECT
+
 		public:
-			static const std::function< void() > DEFAULT_ABOUT_PERA_SLOT;
+			static const std::function< void() > DEFAULT_SLOT;
 
-			PERAActions() = delete;
-
-			static QAction *aboutPERAAction(QObject *parent, const std::function< void() > &slot = std::function< void() >()  );
+			explicit AboutPERAAction( QObject *parent = nullptr );
 	};
 
 } } }

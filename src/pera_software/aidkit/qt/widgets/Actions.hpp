@@ -18,22 +18,41 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
+#include <QAction>
 #include <functional>
-
-class QObject;
-class QAction;
 
 namespace pera_software { namespace aidkit { namespace qt {
 
+	class AIDKIT_API QuitAction : public QAction {
+		Q_OBJECT
+
+		public:
+			static const std::function< void() > DEFAULT_SLOT;
+
+			explicit QuitAction( QObject *parent = nullptr );
+	};
+
+	class AIDKIT_API AboutQtAction : public QAction {
+		Q_OBJECT
+
+		public:
+			static const std::function< void() > DEFAULT_SLOT;
+
+			explicit AboutQtAction( QObject *parent = nullptr );
+	};
+
 	class AIDKIT_API Actions {
 		public:
-			static const std::function< void() > DEFAULT_QUIT_SLOT;
-			static const std::function< void() > DEFAULT_ABOUT_QT_SLOT;
-
 			Actions() = delete;
 
-			static QAction *quitAction( QObject *parent, const std::function< void() > &slot = std::function< void() >() );
-			static QAction *aboutQtAction( QObject *parent, const std::function< void() > &slot = std::function< void() >() );
+			template < typename Action >
+				static Action *create( QObject *parent, const std::function< void() > &slot = std::function< void() >() ) {
+					auto *action = new Action( parent );
+					if ( slot )
+						QObject::connect( action, &QAction::triggered, slot );
+
+					return action;
+				}
 	};
 
 } } }

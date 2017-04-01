@@ -100,7 +100,7 @@ QMenu *PERAMainWindow::helpMenu() {
 
 QAction *PERAMainWindow::quitAction() {
 	if ( quitAction_ == nullptr ) {
-		quitAction_ = Actions::quitAction( this, Actions::DEFAULT_QUIT_SLOT );
+		quitAction_ = Actions::create< QuitAction >( this, QuitAction::DEFAULT_SLOT );
 	}
 	return quitAction_;
 }
@@ -109,7 +109,7 @@ QAction *PERAMainWindow::quitAction() {
 
 QAction *PERAMainWindow::aboutPERAAction() {
 	if ( aboutPERAAction_ == nullptr ) {
-		aboutPERAAction_ = PERAActions::aboutPERAAction( this, PERAActions::DEFAULT_ABOUT_PERA_SLOT );
+		aboutPERAAction_ = Actions::create< AboutPERAAction >( this, AboutPERAAction::DEFAULT_SLOT );
 	}
 	return aboutPERAAction_;
 }
@@ -118,7 +118,7 @@ QAction *PERAMainWindow::aboutPERAAction() {
 
 QAction *PERAMainWindow::aboutQtAction() {
 	if ( aboutQtAction_ == nullptr ) {
-		aboutQtAction_ = Actions::aboutQtAction( this, Actions::DEFAULT_ABOUT_QT_SLOT );
+		aboutQtAction_ = Actions::create< AboutQtAction >( this, AboutQtAction::DEFAULT_SLOT );
 	}
 	return aboutQtAction_;
 }

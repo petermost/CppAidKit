@@ -23,17 +23,15 @@ namespace pera_software { namespace company { namespace qt {
 
 using namespace std;
 
-const function< void() > PERAActions::DEFAULT_ABOUT_PERA_SLOT = &PERAApplication::aboutPERA;
+//==================================================================================================
 
-QAction *PERAActions::aboutPERAAction( QObject *parent, const function< void() > &slot ) {
-	QAction *action = new QAction( parent );
-	action->setText( QObject::tr( "&About &PERA..." ));
-	action->setMenuRole( QAction::MenuRole::AboutRole );
+const function< void() > AboutPERAAction::DEFAULT_SLOT = &PERAApplication::aboutPERA;
 
-	if ( slot )
-		QObject::connect( action, &QAction::triggered, slot );
+AboutPERAAction::AboutPERAAction( QObject *parent )
+	: QAction( parent ) {
 
-	return action;
+	setText( QObject::tr( "About &PERA..." ));
+	setMenuRole( QAction::MenuRole::AboutRole );
 }
 
 } } }

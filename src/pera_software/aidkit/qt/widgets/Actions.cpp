@@ -24,35 +24,28 @@ namespace pera_software { namespace aidkit { namespace qt {
 
 using namespace std;
 
-const function< void() > Actions::DEFAULT_QUIT_SLOT = &QApplication::quit;
-const function< void() > Actions::DEFAULT_ABOUT_QT_SLOT = &QApplication::aboutQt;
-
 //==================================================================================================
 
-QAction *Actions::quitAction( QObject *parent, const function< void() > &slot ) {
-	QAction *action = new QAction( parent );
-	action->setText( QObject::tr( "&Quit" ));
-	action->setIcon( Resources::quitIcon() );
-	action->setShortcut( QKeySequence::Quit );
-	action->setMenuRole( QAction::MenuRole::QuitRole );
+const function< void() > QuitAction::DEFAULT_SLOT = &QApplication::quit;
 
-	if ( slot )
-		QObject::connect( action, &QAction::triggered, slot );
+QuitAction::QuitAction( QObject *parent )
+	: QAction( parent ) {
 
-	return action;
+	setText( QObject::tr( "&Quit" ));
+	setIcon( Resources::quitIcon() );
+	setShortcut( QKeySequence::Quit );
+	setMenuRole( QAction::MenuRole::QuitRole );
 }
 
 //==================================================================================================
 
-QAction *Actions::aboutQtAction( QObject *parent, const function< void()> &slot ) {
-	QAction *action = new QAction( parent );
-	action->setText( QObject::tr( "About &Qt..." ));
-	action->setMenuRole( QAction::MenuRole::AboutQtRole );
+const function< void() > AboutQtAction::DEFAULT_SLOT = &QApplication::aboutQt;
 
-	if ( slot )
-		QObject::connect( action, &QAction::triggered, slot );
+AboutQtAction::AboutQtAction( QObject *parent )
+	: QAction( parent ) {
 
-	return action;
+	setText( QObject::tr( "About &Qt..." ));
+	setMenuRole( QAction::MenuRole::AboutQtRole );
 }
 
 } } }
