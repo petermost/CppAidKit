@@ -17,15 +17,21 @@
 
 #pragma once
 
-/// Most of the time only widgets pointers are used and a simple forward declaration would be enough.
-/// The AidKit widgets however are in nested namespaces and it involves a lot of typing for 'manual
-/// forward declarations', so we provide this header.
+#include <pera_software/aidkit/aidkit.hpp>
+#include <QListView>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-	class IntegerSpinBox;
-	class MainWindow;
-	class MessagesWidget;
-	class MessagesView;
+	class AIDKIT_API MessagesView : public QListView {
+		Q_OBJECT
+		public:
+			explicit MessagesView( QWidget *parent = nullptr );
+
+			virtual void setModel( QAbstractItemModel *model ) override;
+
+		Q_SIGNALS:
+
+		public Q_SLOTS:
+	};
 
 } } }

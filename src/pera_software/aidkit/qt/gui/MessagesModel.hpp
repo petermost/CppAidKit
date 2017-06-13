@@ -1,4 +1,4 @@
-// Copyright 2017 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -17,15 +17,28 @@
 
 #pragma once
 
-/// Most of the time only widgets pointers are used and a simple forward declaration would be enough.
-/// The AidKit widgets however are in nested namespaces and it involves a lot of typing for 'manual
-/// forward declarations', so we provide this header.
+#include <pera_software/aidkit/aidkit.hpp>
+#include <QStandardItemModel>
+#include <pera_software/aidkit/cpp/optional.hpp>
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-	class IntegerSpinBox;
-	class MainWindow;
-	class MessagesWidget;
-	class MessagesView;
+	class AIDKIT_API MessagesModel : public QStandardItemModel {
+		Q_OBJECT
+		public:
+			explicit MessagesModel( QObject *parent = nullptr );
+
+			void setMaximumItemCount( int maximumItemCount );
+
+			void showInformation( const QString &message );
+			void showWarning( const QString &message );
+			void showError( const QString &message );
+			void showDebug( const QString &message );
+
+		private:
+			void showItem( QStandardItem *item );
+
+			cpp::optional< int > maximumItemCount_;
+	};
 
 } } }

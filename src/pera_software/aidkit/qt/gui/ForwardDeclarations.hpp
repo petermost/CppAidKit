@@ -23,9 +23,6 @@
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-	class IntegerSpinBox;
-	class MainWindow;
-	class MessagesWidget;
-	class MessagesView;
+	class MessagesModel;
 
 } } }

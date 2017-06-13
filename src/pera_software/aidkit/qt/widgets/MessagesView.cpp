@@ -15,17 +15,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-/// Most of the time only widgets pointers are used and a simple forward declaration would be enough.
-/// The AidKit widgets however are in nested namespaces and it involves a lot of typing for 'manual
-/// forward declarations', so we provide this header.
+#include "MessagesView.hpp"
 
 namespace pera_software { namespace aidkit { namespace qt {
 
-	class IntegerSpinBox;
-	class MainWindow;
-	class MessagesWidget;
-	class MessagesView;
+using namespace std;
+
+MessagesView::MessagesView( QWidget *parent )
+	: QListView( parent ) {
+}
+
+void MessagesView::setModel( QAbstractItemModel *model ) {
+	QListView::setModel( model );
+
+	connect( model, &QAbstractItemModel::rowsInserted, [ this ]( const QModelIndex &parent, int /* first */, int last ) {
+		scrollTo( this->model()->index( last, 0, parent ));
+	});
+}
 
 } } }

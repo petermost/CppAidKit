@@ -134,6 +134,9 @@ set( qtCoreTestSources
 set( qtGuiSources
 	src/pera_software/aidkit/qt/Resources.hpp
 	src/pera_software/aidkit/qt/Resources.cpp
+	src/pera_software/aidkit/qt/gui/ForwardDeclarations.hpp
+	src/pera_software/aidkit/qt/gui/MessagesModel.cpp
+	src/pera_software/aidkit/qt/gui/MessagesModel.hpp
 )
 
 # Library QtWidgets Sources:
@@ -146,6 +149,8 @@ set( qtWidgetsSources
 	src/pera_software/aidkit/qt/widgets/IntegerSpinBox.cpp
 	src/pera_software/aidkit/qt/widgets/MainWindow.hpp
 	src/pera_software/aidkit/qt/widgets/MainWindow.cpp
+	src/pera_software/aidkit/qt/widgets/MessagesView.cpp
+	src/pera_software/aidkit/qt/widgets/MessagesView.hpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
 
