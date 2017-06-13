@@ -73,7 +73,7 @@ QMenu *PERAMainWindow::addHelpMenu() {
 	helpMenu()->addAction( aboutPERAAction() );
 	helpMenu()->addAction( aboutQtAction() );
 
-	menuBar()->addMenu( helpMenu_ );
+	menuBar()->addMenu( helpMenu() );
 
 	return helpMenu();
 }
