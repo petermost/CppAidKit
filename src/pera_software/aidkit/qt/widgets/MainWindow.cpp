@@ -30,7 +30,16 @@ MainWindow::MainWindow( QWidget *parent )
 void MainWindow::showEvent( QShowEvent *showEvent ) {
 	QMainWindow::showEvent( showEvent );
 
-	Q_EMIT showed();
+	Q_EMIT visibleChanged( true );
+}
+
+//==================================================================================================
+
+void MainWindow::hideEvent( QHideEvent *hideEvent ) {
+	QMainWindow::hideEvent( hideEvent );
+
+	Q_EMIT visibleChanged( false );
+
 }
 
 //==================================================================================================
