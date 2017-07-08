@@ -19,6 +19,7 @@
 
 #include <cstdlib>
 #include <iterator>
+#include <limits>
 
 namespace pera_software { namespace aidkit { namespace cpp {
 
@@ -29,4 +30,13 @@ namespace pera_software { namespace aidkit { namespace cpp {
 			return std::size( std::forward< Args >( args )... );
 		}
 
+	template < typename D, typename S >
+		D int_cast( S s ) {
+			if ( s > std::numeric_limits< D >::max() )
+				throw std::out_of_range( "Source type value is too large for destination type" );
+			else if ( s < std::numeric_limits< D >::min() )
+				throw std::out_of_range( "Source type value is too small for destination type" );
+			else
+				return static_cast< D >( s );
+		}
 } } }

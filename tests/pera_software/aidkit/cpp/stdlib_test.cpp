@@ -39,4 +39,14 @@ void StdLibTest::testSize() {
 	QCOMPARE( std::size( ints ), size_t( 3 ));
 }
 
+void StdLibTest::testIntCastTooLarge() {
+	const long l = std::numeric_limits< int >::max() + 1l;
+	QVERIFY_EXCEPTION_THROWN( int_cast< int >( l ), out_of_range );
+}
+
+void StdLibTest::testIntCastTooSmall() {
+	const long l = std::numeric_limits< int >::min() - 1l;
+	QVERIFY_EXCEPTION_THROWN( int_cast< int >( l ), out_of_range );
+}
+
 } } }

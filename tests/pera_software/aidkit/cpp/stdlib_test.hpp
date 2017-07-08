@@ -27,6 +27,8 @@ namespace pera_software { namespace aidkit { namespace cpp {
 		private Q_SLOTS:
 			void testCountOf();
 			void testSize();
+			void testIntCastTooLarge();
+			void testIntCastTooSmall();
 	};
 
 } } }
