@@ -10,12 +10,16 @@
 # preliminary checks here:
 
 if ( NOT DEFINED ENV{Qt5_DIR})
-	message( WARNING "Environment variable 'Qt5_DIR' not found!" )
+	message( WARNING "The environment variable 'Qt5_DIR' was not found!" )
 elseif( NOT EXISTS "$ENV{Qt5_DIR}")
-	message( FATAL_ERROR "Path '$ENV{Qt5_DIR}' from environment variable 'Qt5_DIR' doesn't exist!" )
+	message( FATAL_ERROR "The stored path '$ENV{Qt5_DIR}' in the environment variable 'Qt5_DIR' doesn't exist!" )
+else()
+	message( "Appending '$ENV{Qt5_DIR}' to CMAKE_PREFIX_PATH." )
+	list( APPEND CMAKE_PREFIX_PATH $ENV{Qt5_DIR} )
 endif()
 
 # Enable C++17 support:
+
 if ( ${CMAKE_VERSION} VERSION_LESS 3.8.0 )
 	# From https://gitlab.kitware.com/cmake/cmake/issues/16468
 	find_package( Qt5Core )
