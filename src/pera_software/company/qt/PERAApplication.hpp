@@ -25,7 +25,7 @@ namespace pera_software { namespace company { namespace qt {
 	class AIDKIT_API PERAApplication : public QApplication {
 		Q_OBJECT
 		public:
-			PERAApplication( int &argc, char *argv[] );
+			PERAApplication( const QString &applicationName, int &argc, char *argv[] );
 
 		Q_SIGNALS:
 

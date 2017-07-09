@@ -21,8 +21,8 @@
 
 namespace pera_software { namespace company { namespace qt {
 
-PERAIniSettings::PERAIniSettings(const QString &application, QObject *parent)
-	: IniSettings( PERA::NAME, application, parent ){
+PERAIniSettings::PERAIniSettings(const QString &applicationName, QObject *parent)
+	: IniSettings( PERA::NAME, applicationName, parent ){
 }
 
 

@@ -18,17 +18,23 @@
 #include "PERAApplication.hpp"
 #include "PERAMainWindow.hpp"
 #include <pera_software/company/PERA.hpp>
-#include <QIcon>
+#include <QSettings>
 
 namespace pera_software { namespace company { namespace qt {
 
 using namespace aidkit::qt;
 
-PERAApplication::PERAApplication(int &argc, char *argv[])
+PERAApplication::PERAApplication( const QString &applicationName, int &argc, char *argv[] )
 	: QApplication( argc, argv ) {
+
+	setApplicationName( applicationName ); // This sets also the system tray entry label!
 
 	setOrganizationName( PERA::NAME );
 	setOrganizationDomain( PERA::DOMAIN_NAME );
+
+	// If we use the PERAApplication then we want the IniFormat as the default format:
+
+	QSettings::setDefaultFormat( QSettings::IniFormat );
 }
 
 void PERAApplication::aboutPERA() {
