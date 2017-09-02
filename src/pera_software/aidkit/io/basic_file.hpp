@@ -200,7 +200,8 @@ namespace pera_software { namespace aidkit { namespace io {
 					}
 		};
 
-	// TODO: Should we name the methods the same (without the prefixed 'f') as the C-functions?
+	// We can't name the methods the same as the C-functions without the f-prefix because then
+	// we have to handle macro name conflicts!
 
 	template < typename Char, typename Category = file_locked_category, typename Functions = file_functions< Char, Category >>
 		class basic_file {

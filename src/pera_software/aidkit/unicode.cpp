@@ -17,26 +17,25 @@
 
 #include "unicode.hpp"
 #include <locale>
+#include <codecvt>
+#include <pera_software/aidkit/io/errno.hpp>
 
-#if __GNUC__ >= 5
-	#include <codecvt>
-#endif
+// TODO: Check which codecvt-templates are deprecated in C++17
 
 namespace pera_software { namespace aidkit {
 
+using namespace io;
 using namespace std;
 
 static_assert( sizeof( char8_t ) == sizeof( char ), "Wrong size for char8_t" );
 
 //==================================================================================================
 
-#if __GNUC__ >= 5
-
-using wstring_u8string_converter = wstring_convert< codecvt_utf8< wchar_t >, wchar_t >;
-
 // https://sourceforge.net/p/mingw-w64/bugs/538/
 // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69703
 // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66855
+
+using wstring_u8string_converter = wstring_convert< codecvt_utf8< wchar_t >, wchar_t >;
 
 wstring u8string_to_wstring( const u8string &s ) {
 	wstring_u8string_converter converter;
@@ -52,66 +51,53 @@ u8string wstring_to_u8string( const wstring &s ) {
 	return u8string( bytes.begin(), bytes.end() );
 }
 
-#else
-
-wstring u8string_to_wstring( const u8string &s ) {
-	return wstring( s.begin(), s.end() );
-}
-
-u8string wstring_to_u8string( const wstring &s ) {
-	return u8string( s.begin(), s.end() );
-}
-
-#endif
-
 //==================================================================================================
 
-#if __GNUC__ >= 5
+template < typename TargetChar, typename SourceChar >
+	basic_string< TargetChar > convert( const basic_string< SourceChar > &sourceString,
+			size_t ( *convertFunction )( TargetChar *dst, const SourceChar **src, size_t len, mbstate_t *state )) {
 
-// Wrapper to get access to the protected destructor of a facet:
+		constexpr auto LENGTH_ERROR = static_cast< size_t >( -1 );
 
-template < typename Facet >
-	struct destructable_facet : Facet {
-		using Facet::Facet;
-	};
+		mbstate_t state = mbstate_t();
 
-using codecvt_facet = destructable_facet< codecvt< wchar_t, char, mbstate_t >>;
-using wstring_string_converter = wstring_convert< codecvt_facet >;
+		// Find out how much space we need:
 
-wstring string_to_wstring( const string &s ) {
-	wstring_string_converter converter;
+		const SourceChar *sourceStringData = sourceString.data();
+		size_t expectedTargetStringLength = convertFunction( nullptr, &sourceStringData, sourceString.length(), &state );
+		if ( expectedTargetStringLength == LENGTH_ERROR )
+			throw make_errno_system_error();
 
-	return converter.from_bytes( s );
+		// Convert the string:
+
+		basic_string< TargetChar > targetString( expectedTargetStringLength, TargetChar() );
+		size_t actualTargetStringLength = convertFunction( &targetString[ 0 ], &sourceStringData, sourceString.length(), &state );
+		if ( actualTargetStringLength == LENGTH_ERROR )
+			throw make_errno_system_error();
+
+		// Could all characters be converted?
+
+		if ( expectedTargetStringLength != actualTargetStringLength )
+			throw system_error( make_error_code( errc::illegal_byte_sequence ));
+
+		return targetString;
+	}
+
+string wstring_to_string( const wstring &wideString ) {
+	return convert< char, wchar_t >( wideString, wcsrtombs );
 }
 
-string wstring_to_string( const wstring &s ) {
-	wstring_string_converter converter;
-
-	return converter.to_bytes( s );
+wstring string_to_wstring( const string &narrowString ) {
+	return convert< wchar_t, char >( narrowString, mbsrtowcs );
 }
-
-#else
-
-wstring string_to_wstring( const string &s ) {
-	return wstring( s.begin(), s.end() );
-}
-
-string wstring_to_string( const wstring &s ) {
-	return string( s.begin(), s.end() );
-}
-
-#endif
 
 } }
 
 namespace std {
 
-#if __GNUC__ >= 5
-
-wostream &operator << ( wostream &outputStream, const string &str ) {
-	return outputStream << ::pera_software::aidkit::string_to_wstring( str );
-}
-
-#endif
+	wostream &operator << ( wostream &outputStream, const string &str ) {
+		return outputStream << ::pera_software::aidkit::string_to_wstring( str );
+	}
 
 }
+

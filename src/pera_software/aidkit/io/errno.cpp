@@ -29,5 +29,13 @@ error_code make_errno_error_code( int errnoCode ) {
 	return error_code( errnoCode, generic_category() );
 }
 
+system_error make_errno_system_error() {
+	return system_error( make_errno_error_code() );
+}
+
+system_error make_errno_system_error( int errnoCode ) {
+	return system_error( make_errno_error_code( errnoCode ));
+}
+
 } } }
 

@@ -32,4 +32,7 @@ namespace pera_software { namespace aidkit { namespace io {
 	AIDKIT_API std::error_code make_errno_error_code();
 	AIDKIT_API std::error_code make_errno_error_code( int errnoCode );
 
+	AIDKIT_API std::system_error make_errno_system_error();
+	AIDKIT_API std::system_error make_errno_system_error( int errnoCode );
+
 } } }
