@@ -115,10 +115,13 @@ set( qtCoreSources
 	src/pera_software/aidkit/qt/core/Socket.hpp
 	src/pera_software/aidkit/qt/core/Socket.cpp
 
+	src/pera_software/company/qt/ForwardDeclarations.hpp
+	src/pera_software/company/qt/PERAIniSettings.cpp
+	src/pera_software/company/qt/PERAIniSettings.hpp
+
 	# Resources:
 
 	resources/pera_software/aidkit/AidKitResources.qrc
-
 	resources/pera_software/company/CompanyResources.qrc
 )
 

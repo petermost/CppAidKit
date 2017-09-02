@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2017 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,19 +15,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "IniSettings.hpp"
+#pragma once
 
-namespace pera_software { namespace aidkit { namespace qt {
+/// Most of the time only widgets pointers are used and a simple forward declaration would be enough.
+/// The AidKit widgets however are in nested namespaces and it involves a lot of typing for 'manual
+/// forward declarations', so we provide this header.
 
-//QString IniSettings::defaultFileName() {
+namespace pera_software { namespace company { namespace qt {
 
-//	// Create a filename from the application directory and 'settings.ini':
-
-//	return QFileInfo( QCoreApplication::applicationDirPath(), QStringLiteral( "settings.ini" )).absoluteFilePath();
-//}
-
-IniSettings::IniSettings(const QString &organizationName, const QString &applicationName, QObject *parent)
-	: QSettings( Format::IniFormat, Scope::UserScope, organizationName, applicationName, parent ) {
-}
+	class PERAAboutDialog;
+	class AboutPERAAction;
+	class PERAApplication;
+	class PERAIniSettings;
+	class PERAMainWindow;
 
 } } }

@@ -15,19 +15,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "IniSettings.hpp"
+#pragma once
 
-namespace pera_software { namespace aidkit { namespace qt {
+#include <pera_software/aidkit/aidkit.hpp>
+#include <pera_software/aidkit/qt/core/IniSettings.hpp>
 
-//QString IniSettings::defaultFileName() {
+namespace pera_software { namespace company { namespace qt {
 
-//	// Create a filename from the application directory and 'settings.ini':
-
-//	return QFileInfo( QCoreApplication::applicationDirPath(), QStringLiteral( "settings.ini" )).absoluteFilePath();
-//}
-
-IniSettings::IniSettings(const QString &organizationName, const QString &applicationName, QObject *parent)
-	: QSettings( Format::IniFormat, Scope::UserScope, organizationName, applicationName, parent ) {
-}
+	class AIDKIT_API PERAIniSettings : public aidkit::qt::IniSettings {
+		public:
+			PERAIniSettings( const QString &applicationName, QObject *parent = nullptr );
+	};
 
 } } }
+
