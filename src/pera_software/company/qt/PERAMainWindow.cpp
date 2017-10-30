@@ -27,19 +27,11 @@
 
 #include <pera_software/company/PERA.hpp>
 #include <pera_software/aidkit/qt/widgets/Actions.hpp>
+#include <pera_software/aidkit/qt/widgets/Widgets.hpp>
 
 namespace pera_software { namespace company { namespace qt {
 
 using namespace aidkit::qt;
-
-// Colons (':') would be stored as %3A so we replace them with a dot ('.'):
-
-static const QLatin1Literal COLONS( "::" );
-static const QLatin1Literal DOT( "." );
-
-static const QString GROUP_NAME( QString( PERAMainWindow::staticMetaObject.className() ).replace( COLONS, DOT ));
-static const QString SIZE_KEY( QStringLiteral( "size" ));
-static const QString POSITION_KEY( QStringLiteral( "position" ));
 
 //==================================================================================================
 
@@ -126,19 +118,13 @@ QAction *PERAMainWindow::aboutQtAction() {
 //==================================================================================================
 
 void PERAMainWindow::readSettings( QSettings *settings ) noexcept {
-	settings->beginGroup( GROUP_NAME );
-		resize( settings->value( SIZE_KEY, size() ).toSize() );
-		move( settings->value( POSITION_KEY, pos() ).toPoint() );
-	settings->endGroup();
+	Widgets::readGeometry(this, settings);
 }
 
 //==================================================================================================
 
 void PERAMainWindow::writeSettings( QSettings *settings ) const noexcept {
-	settings->beginGroup( GROUP_NAME );
-		settings->setValue( SIZE_KEY, size() );
-		settings->setValue( POSITION_KEY, pos() );
-	settings->endGroup();
+	Widgets::writeGeometry(this, settings);
 }
 
 //==================================================================================================

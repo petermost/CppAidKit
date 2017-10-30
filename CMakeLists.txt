@@ -156,6 +156,8 @@ set( qtWidgetsSources
 	src/pera_software/aidkit/qt/widgets/MessagesView.hpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
 	src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
+	src/pera_software/aidkit/qt/widgets/Widgets.hpp
+	src/pera_software/aidkit/qt/widgets/Widgets.cpp
 
 	src/pera_software/company/qt/PERAAboutDialog.hpp
 	src/pera_software/company/qt/PERAAboutDialog.cpp

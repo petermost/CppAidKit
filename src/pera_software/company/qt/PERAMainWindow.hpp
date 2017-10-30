@@ -40,12 +40,13 @@ namespace pera_software { namespace company { namespace qt {
 			QAction *aboutPERAAction();
 			QAction *aboutQtAction();
 
-			void readSettings( QSettings *settings ) noexcept override;
-			void writeSettings( QSettings *settings ) const noexcept override;
-
 		public Q_SLOTS:
 			void aboutPERA();
 			static void aboutPERA( QWidget *parent );
+
+		protected:
+			void readSettings( QSettings *settings ) noexcept override;
+			void writeSettings( QSettings *settings ) const noexcept override;
 
 		private:
 			QMenu *fileMenu_ = nullptr;

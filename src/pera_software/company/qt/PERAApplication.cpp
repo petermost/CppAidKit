@@ -28,7 +28,6 @@ PERAApplication::PERAApplication( const QString &applicationName, int &argc, cha
 	: QApplication( argc, argv ) {
 
 	setApplicationName( applicationName ); // This sets also the system tray entry label!
-
 	setOrganizationName( PERA::NAME );
 	setOrganizationDomain( PERA::DOMAIN_NAME );
 
