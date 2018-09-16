@@ -1,22 +1,12 @@
-# Instead of hard coding the Qt path like this:
-#
-#if ( UNIX )
-#	set( CMAKE_PREFIX_PATH "/home/peter/Qt/5.6/gcc_64/lib/cmake" )
-#elseif( WIN32 )
-#	# set( CMAKE_PREFIX_PATH "C:/Qt/Qt5.5.1/5.5/mingw492_32/lib/cmake" )
-#endif()
-#
-# we rely on the existence of the Qt5_DIR environment variable. For easier debugging we do some
-# preliminary checks here:
-
-if ( NOT DEFINED ENV{Qt5_DIR})
-	message( WARNING "The environment variable 'Qt5_DIR' was not found!" )
-elseif( NOT EXISTS "$ENV{Qt5_DIR}")
-	message( FATAL_ERROR "The stored path '$ENV{Qt5_DIR}' in the environment variable 'Qt5_DIR' doesn't exist!" )
-else()
-	message( "Appending '$ENV{Qt5_DIR}' to CMAKE_PREFIX_PATH." )
-	list( APPEND CMAKE_PREFIX_PATH $ENV{Qt5_DIR} )
+if ( NOT DEFINED QT_CMAKE_DIR )
+	set( QT_CMAKE_DIR "" CACHE PATH "Select Qt5 cmake directory (e.g.: ~/Qt/5.11.1/gcc_64/lib/cmake)" )
 endif()
+if( NOT EXISTS ${QT_CMAKE_DIR} )
+	message( FATAL_ERROR "The path '${QT_CMAKE_DIR}' in 'QT_CMAKE_DIR' doesn't exist!" )
+endif()
+
+message( "Appending '${QT_CMAKE_DIR}' to CMAKE_PREFIX_PATH." )
+list( APPEND CMAKE_PREFIX_PATH ${QT_CMAKE_DIR} )
 
 # If this macro is defined, the compiler will generate warnings if API declared as deprecated by Qt
 # is used.
