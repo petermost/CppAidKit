@@ -56,8 +56,6 @@ set( sources
 	src/pera_software/aidkit/io/system_error.hpp
 	src/pera_software/aidkit/io/system_error.cpp
 
-	src/pera_software/aidkit/cpp/optional.cpp
-	src/pera_software/aidkit/cpp/optional.hpp
 	src/pera_software/aidkit/cpp/stdlib.hpp
 	src/pera_software/aidkit/cpp/stdlib.cpp
 	src/pera_software/aidkit/cpp/string_ref.hpp

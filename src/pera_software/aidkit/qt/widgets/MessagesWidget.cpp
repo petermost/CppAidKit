@@ -20,7 +20,7 @@
 #include <pera_software/aidkit/qt/Resources.hpp>
 #include <limits>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 using namespace std;
 
@@ -52,10 +52,10 @@ void MessagesWidget::showItem( QListWidgetItem *item ) {
 	addItem( item );
 	scrollToItem( item );
 
-	if ( maximumItemCount_ ) {
+	if ( maximumItemCount_.has_value() ) {
 		while ( count() > *maximumItemCount_ )
 			delete takeItem( 0 );
 	}
 }
 
-} } }
+}

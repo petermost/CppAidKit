@@ -20,10 +20,9 @@
 #include <pera_software/aidkit/qt/Resources.hpp>
 #include <limits>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 using namespace std;
-using namespace cpp;
 
 MessagesModel::MessagesModel( QObject *parent )
 	: QStandardItemModel( parent ) {
@@ -52,10 +51,10 @@ void MessagesModel::showDebug(const QString &message) {
 void MessagesModel::showItem( QStandardItem *item ) {
 	appendRow( item );
 
-	if ( has_value( maximumItemCount_ )) {
+	if ( maximumItemCount_.has_value() ) {
 		while ( rowCount() > *maximumItemCount_ )
 			delete takeItem( 0 );
 	}
 }
 
-} } }
+}

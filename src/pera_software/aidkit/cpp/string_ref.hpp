@@ -17,19 +17,19 @@
 
 #pragma once
 
-#include <experimental/string_view>
+#include <string_view>
 
 // IMHO string_ref is a better name then string_view, but apart from that it's now only one
 // place which needs to be edited when string_view moves from experimental to std.
 
-namespace pera_software { namespace aidkit { namespace cpp {
+namespace pera_software::aidkit::cpp {
 
 	template < typename Char >
-		using basic_string_ref = std::experimental::basic_string_view< Char >;
+		using basic_string_ref = std::basic_string_view< Char >;
 
-	using string_ref    = std::experimental::string_view;
-	using wstring_ref   = std::experimental::wstring_view;
-	using u16string_ref = std::experimental::u16string_view;
-	using u32string_ref = std::experimental::u32string_view;
+	using string_ref    = std::string_view;
+	using wstring_ref   = std::wstring_view;
+	using u16string_ref = std::u16string_view;
+	using u32string_ref = std::u32string_view;
 
-} } }
+}

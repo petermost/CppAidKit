@@ -17,6 +17,6 @@
 
 #include "string_ref.hpp"
 
-namespace pera_software { namespace aidkit { namespace cpp {
+namespace pera_software::aidkit::cpp {
 
-} } }
+}

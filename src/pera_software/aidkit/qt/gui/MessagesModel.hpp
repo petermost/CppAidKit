@@ -19,9 +19,9 @@
 
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QStandardItemModel>
-#include <pera_software/aidkit/cpp/optional.hpp>
+#include <optional>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 	class AIDKIT_API MessagesModel : public QStandardItemModel {
 		Q_OBJECT
@@ -38,7 +38,7 @@ namespace pera_software { namespace aidkit { namespace qt {
 		private:
 			void showItem( QStandardItem *item );
 
-			cpp::optional< int > maximumItemCount_;
+			std::optional< int > maximumItemCount_;
 	};
 
-} } }
+}
