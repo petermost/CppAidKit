@@ -23,6 +23,9 @@ IniSettings::IniSettings(const QString &organizationName, const QString &applica
 	: QSettings( Format::IniFormat, Scope::UserScope, organizationName, applicationName, parent ) {
 }
 
+IniSettings::~IniSettings() {
+}
+
 } } }
 
 //QString IniSettings::defaultFileName() {

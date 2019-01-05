@@ -190,7 +190,6 @@ set( testLibSources
 # Find the different packages but evaluate the results later:
 
 find_package( Qt5 COMPONENTS Core Gui Widgets Test )
-find_package( Boost )
 
 if ( Qt5Core_FOUND )
 	set( CMAKE_AUTOMOC ON )
@@ -216,6 +215,7 @@ endif()
 ###############################################################################
 # Setup Boost
 
+find_package( Boost 1.69.0 QUIET )
 if ( Boost_FOUND )
 #	include_directories( ${Boost_INCLUDE_DIRS} )
 #	link_directories( ${Boost_LIBRARY_DIRS} )

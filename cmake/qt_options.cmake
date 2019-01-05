@@ -1,12 +1,15 @@
-if ( NOT DEFINED QT_CMAKE_DIR )
-	set( QT_CMAKE_DIR "" CACHE PATH "Select Qt5 cmake directory (e.g.: ~/Qt/5.11.1/gcc_64/lib/cmake)" )
-endif()
-if( NOT EXISTS ${QT_CMAKE_DIR} )
+message( "QT_QMAKE_EXECUTABLE = '${QT_QMAKE_EXECUTABLE}'" )
+
+#if ( NOT DEFINED QT_CMAKE_DIR )
+	set( QT_CMAKE_DIR "" CACHE PATH "Select Qt5 cmake directory" )
+#endif()
+if( QT_CMAKE_DIR AND NOT EXISTS ${QT_CMAKE_DIR} )
 	message( FATAL_ERROR "The path '${QT_CMAKE_DIR}' in 'QT_CMAKE_DIR' doesn't exist!" )
+else()
+	message( "Appending '${QT_CMAKE_DIR}' to CMAKE_PREFIX_PATH." )
+	list( APPEND CMAKE_PREFIX_PATH ${QT_CMAKE_DIR} )
 endif()
 
-message( "Appending '${QT_CMAKE_DIR}' to CMAKE_PREFIX_PATH." )
-list( APPEND CMAKE_PREFIX_PATH ${QT_CMAKE_DIR} )
 
 # If this macro is defined, the compiler will generate warnings if API declared as deprecated by Qt
 # is used.

@@ -32,6 +32,8 @@ namespace pera_software { namespace aidkit { namespace qt {
 
 	template <>
 		struct ByteSwapper< sizeof( quint8 )> {
+			using value_type = quint8;
+
 			// No need to swap, but this way hton/ntoh works for every datatype in generic code.
 
 			static quint8 hton( quint8 value ) {
@@ -46,6 +48,8 @@ namespace pera_software { namespace aidkit { namespace qt {
 	template <>
 		struct ByteSwapper< sizeof( quint16 )> {
 
+			using value_type = quint16;
+
 			static quint16 hton( quint16 value ) {
 				return qToBigEndian( value );
 			}
@@ -58,6 +62,8 @@ namespace pera_software { namespace aidkit { namespace qt {
 	template <>
 		struct ByteSwapper< sizeof( quint32 )> {
 
+			using value_type = quint32;
+
 			static quint32 hton( quint32 value ) {
 				return qToBigEndian( value );
 			}
@@ -69,6 +75,8 @@ namespace pera_software { namespace aidkit { namespace qt {
 
 	template <>
 		struct ByteSwapper< sizeof( quint64 )> {
+
+			using value_type = quint64;
 
 			static quint64 hton( quint64 value ) {
 				return qToBigEndian( value );
@@ -84,7 +92,8 @@ namespace pera_software { namespace aidkit { namespace qt {
 		{
 			Q_STATIC_ASSERT_X( std::is_integral< T >::value, "hton: T is not an integer!" );
 
-			return ByteSwapper< sizeof( T )>::hton( value );
+			using byteSwapper = ByteSwapper< sizeof( T )>;
+			return static_cast< T >( byteSwapper::hton( static_cast< typename byteSwapper::value_type >( value )));
 		}
 
 	template < typename T >
@@ -92,7 +101,8 @@ namespace pera_software { namespace aidkit { namespace qt {
 		{
 			Q_STATIC_ASSERT_X( std::is_integral< T >::value, "ntoh: T is not an integer!" );
 
-			return ByteSwapper< sizeof( T )>::ntoh( value );
+			using byteSwapper = ByteSwapper< sizeof( T )>;
+			return static_cast< T >( byteSwapper::ntoh( static_cast< typename byteSwapper::value_type >( value )));
 		}
 
 } } }

@@ -25,6 +25,7 @@ namespace pera_software { namespace aidkit { namespace qt {
 	class AIDKIT_API IniSettings : public QSettings {
 		public:
 			IniSettings(const QString &organizationName, const QString &applicationName, QObject *parent = nullptr);
+			~IniSettings();
 	};
 
 } } }

@@ -25,6 +25,10 @@ namespace pera_software { namespace aidkit { namespace qt {
 
 	class AIDKIT_API Persistable {
 		public:
+			Persistable() = default;
+			Persistable(const Persistable & ) = default;
+			Persistable &operator = (const Persistable & ) = default;
+
 			virtual void readSettings( QSettings *settings ) noexcept = 0;
 			virtual void writeSettings( QSettings *settings ) const noexcept = 0;
 

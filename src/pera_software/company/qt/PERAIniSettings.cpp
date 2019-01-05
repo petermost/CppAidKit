@@ -25,5 +25,7 @@ PERAIniSettings::PERAIniSettings(const QString &applicationName, QObject *parent
 	: IniSettings( PERA::NAME, applicationName, parent ){
 }
 
+PERAIniSettings::~PERAIniSettings() {
+}
 
 } } }

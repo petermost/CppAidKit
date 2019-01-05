@@ -36,7 +36,7 @@ void DataMutexTest::testLock() {
 
 	// Must initially not be locked yet:
 
-	data_mutex< vector< string >> names( 20, "empty" );
+	data_mutex< vector< string >> names( 20u, "empty" );
 	QVERIFY( !names.is_locked() );
 
 	// Lock the data:
@@ -54,7 +54,7 @@ void DataMutexTest::testLock() {
 }
 
 void DataMutexTest::testReset() {
-	data_mutex< vector< string >> names( 20, "empty" );
+	data_mutex< vector< string >> names( 20u, "empty" );
 
 	// Lock the data:
 
