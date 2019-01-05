@@ -20,12 +20,16 @@
 #include <pera_software/aidkit/aidkit.hpp>
 
 class QIcon;
+class QString;
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 	class AIDKIT_API Resources {
 		public:
 			Resources() = delete;
+
+			static void enableThemeSupport();
+			static void disableThemeSupport();
 
 			static QIcon quitIcon();
 
@@ -33,6 +37,11 @@ namespace pera_software { namespace aidkit { namespace qt {
 			static QIcon warningIcon();
 			static QIcon informationIcon();
 			static QIcon errorIcon();
+
+		private:
+			static bool isThemeSupportEnabled;
+
+			static QIcon loadIcon(const QString &name, const QString &alternativeName);
 	};
 
-} } }
+}

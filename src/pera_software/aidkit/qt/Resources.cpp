@@ -20,46 +20,55 @@
 #include <QFile>
 #include <QIcon>
 
-#undef NO_THEME_SUPPORT
+namespace pera_software::aidkit::qt {
 
-namespace pera_software { namespace aidkit { namespace qt {
+bool Resources::isThemeSupportEnabled = true;
 
-static QIcon loadIcon( const QString &iconName ) {
+//##################################################################################################
+
+void Resources::enableThemeSupport() {
+	isThemeSupportEnabled = true;
+}
+
+void Resources::disableThemeSupport() {
+	isThemeSupportEnabled = false;
+}
+
+QIcon Resources::quitIcon() {
+	return loadIcon( QStringLiteral( "application-exit" ), QStringLiteral( ":/system-shutdown-16x16.png" ));
+}
+
+QIcon Resources::debugIcon() {
+	return loadIcon( QStringLiteral( ":/Debug.png" ), QStringLiteral( ":/Debug.png" ));
+}
+
+QIcon Resources::warningIcon() {
+	return loadIcon( QStringLiteral( "dialog-warning" ), QStringLiteral( ":/dialog-warning-16x16.png" ));
+}
+
+QIcon Resources::informationIcon() {
+	return loadIcon( QStringLiteral( "dialog-information" ), QStringLiteral( ":/dialog-information-16x16.png" ));
+}
+
+QIcon Resources::errorIcon() {
+	return loadIcon( QStringLiteral( "dialog-error" ), QStringLiteral( ":/dialog-error-16x16.png" ));
+}
+
+static QIcon loadExistingIcon( const QString &iconName ) {
 	Q_ASSERT( QFile::exists( iconName ));
 	return QIcon( iconName );
 }
 
-static QIcon loadThemeIcon( const QString &name, const QString &alternativeName ) {
-	#if defined( NO_THEME_SUPPORT )
-		return loadIcon( fallbackName );
-	#else
+QIcon Resources::loadIcon( const QString &name, const QString &alternativeName ) {
+	if ( !isThemeSupportEnabled )
+		return loadExistingIcon( alternativeName );
+	else {
 		QIcon icon = QIcon::fromTheme( name );
 		if ( icon.isNull() ) {
-			icon = loadIcon( alternativeName );
+			icon = loadExistingIcon( alternativeName );
 		}
 		return icon;
-	#endif
+	}
 }
 
-
-QIcon Resources::quitIcon() {
-	return loadThemeIcon( QStringLiteral( "application-exit" ), QStringLiteral( ":/system-shutdown-16x16.png" ));
 }
-
-QIcon Resources::debugIcon() {
-	return loadIcon( QStringLiteral( ":/Debug.png" ));
-}
-
-QIcon Resources::warningIcon() {
-	return loadThemeIcon( QStringLiteral( "dialog-warning" ), QStringLiteral( ":/dialog-warning-16x16.png" ));
-}
-
-QIcon Resources::informationIcon() {
-	return loadThemeIcon( QStringLiteral( "dialog-information" ), QStringLiteral( ":/dialog-information-16x16.png" ));
-}
-
-QIcon Resources::errorIcon() {
-	return loadThemeIcon( QStringLiteral( "dialog-error" ), QStringLiteral( ":/dialog-error-16x16.png" ));
-}
-
-} } }
