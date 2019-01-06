@@ -22,7 +22,7 @@
 #include <boost/format.hpp>
 #include <string>
 
-namespace pera_software { namespace aidkit { namespace boost {
+namespace pera_software::aidkit::boost {
 
 	// A small wrapper class which disables the exceptions in boost::format otherwise:
 	// - The constructor might throw a bad_format_string exception.
@@ -57,4 +57,4 @@ namespace pera_software { namespace aidkit { namespace boost {
 	using u16formatter = basic_formatter< char16_t >;
 	using u32formatter = basic_formatter< char32_t >;
 
-} } }
+}

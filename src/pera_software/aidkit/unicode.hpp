@@ -21,7 +21,7 @@
 #include <string>
 
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 	using char8_t = unsigned char;
 	using u8string = std::basic_string< char8_t, std::char_traits< char8_t >, std::allocator< char8_t >>;
@@ -39,7 +39,7 @@ namespace pera_software { namespace aidkit {
 	AIDKIT_API std::wstring string_to_wstring( const std::string & );
 	AIDKIT_API std::string wstring_to_string( const std::wstring & );
 
-} }
+}
 
 namespace std {
 	AIDKIT_API wostream &operator << ( wostream &outputStream, const string &str );

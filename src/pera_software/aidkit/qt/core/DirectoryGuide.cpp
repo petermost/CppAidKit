@@ -19,7 +19,7 @@
 #include <QDir>
 #include <QDirIterator>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 DirectoryGuide::DirectoryGuide( QObject *parent )
 	: QObject( parent ) {
@@ -76,4 +76,4 @@ bool DirectoryVisitor::leaveDirectory( const QFileInfo &/* parentDirectory */, c
 	return true;
 }
 
-} } }
+}

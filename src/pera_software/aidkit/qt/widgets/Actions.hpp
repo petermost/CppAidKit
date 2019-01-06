@@ -21,7 +21,7 @@
 #include <QAction>
 #include <functional>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 	class AIDKIT_API QuitAction : public QAction {
 		Q_OBJECT
@@ -55,4 +55,4 @@ namespace pera_software { namespace aidkit { namespace qt {
 				}
 	};
 
-} } }
+}

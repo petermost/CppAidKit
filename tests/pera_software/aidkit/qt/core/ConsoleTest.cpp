@@ -19,7 +19,7 @@
 #include <pera_software/aidkit/qt/core/Console.hpp>
 #include <QString>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 // This is more of a compile test then runtime test, so we don't instantiate ConsoleTest.
 
@@ -41,4 +41,4 @@ void ConsoleTest::testInStream() {
 	cin >> text;
 }
 
-} } }
+}

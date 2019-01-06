@@ -19,7 +19,7 @@
 
 #include <pera_software/aidkit/qt/test/Test.hpp>
 
-namespace pera_software { namespace aidkit { namespace concurrent {
+namespace pera_software::aidkit::concurrent {
 
 	class DataMutexTest : public qt::Test {
 			Q_OBJECT
@@ -30,4 +30,4 @@ namespace pera_software { namespace aidkit { namespace concurrent {
 			void testResetWithUnknownPointer();
 	};
 
-} } }
+}

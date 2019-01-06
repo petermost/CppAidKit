@@ -19,7 +19,7 @@
 
 #include <pera_software/aidkit/qt/test/Test.hpp>
 
-namespace pera_software { namespace aidkit { namespace cpp {
+namespace pera_software::aidkit::cpp {
 
 	class StdLibTest : public qt::Test {
 			Q_OBJECT
@@ -31,4 +31,4 @@ namespace pera_software { namespace aidkit { namespace cpp {
 			void testIntCastTooSmall();
 	};
 
-} } }
+}

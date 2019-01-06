@@ -16,9 +16,9 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 #include "Persistable.hpp"
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 Persistable::~Persistable()  {
 }
 
-} } }
+}

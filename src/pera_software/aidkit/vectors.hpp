@@ -24,7 +24,7 @@
 #include <algorithm>
 #include <sstream>
 
-namespace pera_software { namespace aidkit { namespace vectors {
+namespace pera_software::aidkit::vectors {
 
 	/// Prints the content of a vector to the output.
 
@@ -69,7 +69,7 @@ namespace pera_software { namespace aidkit { namespace vectors {
 				return currentValue == value;
 			});
 		}
-} } }
+}
 
 namespace std {
 

@@ -17,7 +17,7 @@
 
 #include "errno.hpp"
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
 using namespace std;
 
@@ -37,5 +37,5 @@ system_error make_errno_system_error( int errnoCode ) {
 	return system_error( make_errno_error_code( errnoCode ));
 }
 
-} } }
+}
 

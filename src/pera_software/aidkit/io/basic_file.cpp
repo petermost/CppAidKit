@@ -17,6 +17,6 @@
 
 #include "basic_file.hpp"
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
-} } }
+}

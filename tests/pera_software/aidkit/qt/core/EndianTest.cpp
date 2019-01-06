@@ -19,7 +19,7 @@
 #include <pera_software/aidkit/qt/core/Endian.hpp>
 #include <QTest>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 static EndianTest endianTest;
 
@@ -82,4 +82,4 @@ void EndianTest::testCompilation() {
 	ntoh( 1ull );
 }
 
-} } }
+}

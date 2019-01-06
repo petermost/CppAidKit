@@ -22,7 +22,7 @@
 
 // TODO: Check which codecvt-templates are deprecated in C++17
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 using namespace io;
 using namespace std;
@@ -91,7 +91,7 @@ wstring string_to_wstring( const string &narrowString ) {
 	return convert< wchar_t, char >( narrowString, mbsrtowcs );
 }
 
-} }
+}
 
 namespace std {
 

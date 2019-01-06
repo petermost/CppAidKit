@@ -23,7 +23,7 @@
 
 class QSettings;
 
-namespace pera_software { namespace company { namespace qt {
+namespace pera_software::company::qt {
 
 	class AIDKIT_API PERAMainWindow : public aidkit::qt::MainWindow, public aidkit::qt::Persistable {
 		Q_OBJECT
@@ -57,5 +57,5 @@ namespace pera_software { namespace company { namespace qt {
 			QAction *aboutQtAction_ = nullptr;
 	};
 
-} } }
+}
 

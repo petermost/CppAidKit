@@ -24,7 +24,7 @@ class QObject;
 class QWidget;
 class QSettings;
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 class AIDKIT_API Widgets final
 {
@@ -36,4 +36,4 @@ class AIDKIT_API Widgets final
 		static void writeGeometry(const QWidget *widget, QSettings *settings) noexcept;
 };
 
-} } }
+}

@@ -20,7 +20,7 @@
 #include <QTest>
 #include <sstream>
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 using namespace std;
 
@@ -111,6 +111,6 @@ void VectorsTest::testWStreamOperatorWithMultipleElements() {
 
 
 
-} }
+}
 
 

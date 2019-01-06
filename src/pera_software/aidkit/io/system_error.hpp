@@ -19,7 +19,7 @@
 
 #include <system_error>
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
 	template < typename Functor >
 		auto call_and_throw_if_error( Functor &&functor ) -> decltype( functor( static_cast< std::error_code * >( nullptr ))) {
@@ -32,4 +32,4 @@ namespace pera_software { namespace aidkit { namespace io {
 			return result;
 		}
 
-} } }
+}

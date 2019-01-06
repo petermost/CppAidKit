@@ -19,7 +19,7 @@
 
 #include <pera_software/aidkit/qt/test/Test.hpp>
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
 	class FileTest : public qt::Test {
 		Q_OBJECT
@@ -45,4 +45,4 @@ namespace pera_software { namespace aidkit { namespace io {
 			void testOpenReadWrite();
 	};
 
-} } }
+}

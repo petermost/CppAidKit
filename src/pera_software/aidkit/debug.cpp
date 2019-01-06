@@ -17,7 +17,7 @@
 
 #include "debug.hpp"
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 using namespace std;
 
@@ -53,4 +53,4 @@ const string &assertion_exception::message() const noexcept {
 	return message_;
 }
 
-} }
+}

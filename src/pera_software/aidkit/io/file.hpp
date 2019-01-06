@@ -21,7 +21,7 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <string>
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
 	using file = basic_file< char >;
 	using wfile = basic_file< wchar_t >;
@@ -46,4 +46,4 @@ namespace pera_software { namespace aidkit { namespace io {
 			std::string fileName_;
 	};
 
-} } }
+}

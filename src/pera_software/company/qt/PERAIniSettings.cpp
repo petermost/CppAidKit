@@ -19,7 +19,7 @@
 #include <pera_software/company/PERA.hpp>
 #include <pera_software/company/qt/PERAApplication.hpp>
 
-namespace pera_software { namespace company { namespace qt {
+namespace pera_software::company::qt {
 
 PERAIniSettings::PERAIniSettings(const QString &applicationName, QObject *parent)
 	: IniSettings( PERA::NAME, applicationName, parent ){
@@ -28,4 +28,4 @@ PERAIniSettings::PERAIniSettings(const QString &applicationName, QObject *parent
 PERAIniSettings::~PERAIniSettings() {
 }
 
-} } }
+}

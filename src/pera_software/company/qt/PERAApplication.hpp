@@ -20,7 +20,7 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QApplication>
 
-namespace pera_software { namespace company { namespace qt {
+namespace pera_software::company::qt {
 
 	class AIDKIT_API PERAApplication : public QApplication {
 		Q_OBJECT
@@ -33,4 +33,4 @@ namespace pera_software { namespace company { namespace qt {
 			static void aboutPERA();
 	};
 
-} } }
+}

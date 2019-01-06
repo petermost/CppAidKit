@@ -18,7 +18,7 @@
 #include "Console.hpp"
 #include <cstdio>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 using namespace std;
 
@@ -26,5 +26,5 @@ AIDKIT_API QTextStream cin( stdin );
 AIDKIT_API QTextStream cout( stdout );
 AIDKIT_API QTextStream cerr( stderr );
 
-} } }
+}
 

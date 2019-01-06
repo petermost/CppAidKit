@@ -29,7 +29,7 @@
 #include <pera_software/aidkit/qt/widgets/Actions.hpp>
 #include <pera_software/aidkit/qt/widgets/Widgets.hpp>
 
-namespace pera_software { namespace company { namespace qt {
+namespace pera_software::company::qt {
 
 using namespace aidkit::qt;
 
@@ -142,4 +142,4 @@ void PERAMainWindow::aboutPERA( QWidget *parent ) {
 }
 
 
-} } }
+}

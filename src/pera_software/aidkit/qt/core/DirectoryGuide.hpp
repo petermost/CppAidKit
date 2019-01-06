@@ -23,7 +23,7 @@
 class QString;
 class QFileInfo;
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 	class AIDKIT_API DirectoryGuide : public QObject {
 		Q_OBJECT
@@ -52,4 +52,4 @@ namespace pera_software { namespace aidkit { namespace qt {
 			virtual bool leaveDirectory( const QFileInfo &parentDirectory, const QFileInfo &currentDirectory );
 	};
 
-} } }
+}

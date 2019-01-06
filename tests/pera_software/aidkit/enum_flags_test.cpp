@@ -19,7 +19,7 @@
 #include <pera_software/aidkit/enum_flags.hpp>
 #include <QTest>
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 using namespace std;
 
@@ -86,4 +86,4 @@ void EnumFlagsTest::testAnd() {
 	QVERIFY( result == open_mode::binary );
 }
 
-} }
+}

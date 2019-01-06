@@ -44,7 +44,7 @@ QDataStream &operator >> ( QDataStream &in, milliseconds &value ) {
 
 
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 int MetaTypeRegistration::s_registrationCounter = 0;
 
@@ -64,4 +64,4 @@ MetaTypeRegistration::~MetaTypeRegistration() {
 	}
 }
 
-} } }
+}

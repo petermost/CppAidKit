@@ -17,8 +17,8 @@
 
 #include "system_error.hpp"
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
 using namespace std;
 
-} } }
+}

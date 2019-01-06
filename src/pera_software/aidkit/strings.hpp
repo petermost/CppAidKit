@@ -32,7 +32,7 @@
 #define WSTRINGIZE_SYMBOL( symbol ) WSTRINGIZE( symbol )
 
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 	// General trim_left, trim_right functions:
 
@@ -174,5 +174,5 @@ namespace pera_software { namespace aidkit {
 
 
 
-} }
+}
 

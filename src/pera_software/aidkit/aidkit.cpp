@@ -21,6 +21,6 @@
 \namespace pera_software::aidkit
 */
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
-} }
+}

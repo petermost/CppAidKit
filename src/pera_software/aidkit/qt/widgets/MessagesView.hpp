@@ -20,7 +20,7 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QListView>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 	class AIDKIT_API MessagesView : public QListView {
 		Q_OBJECT
@@ -34,4 +34,4 @@ namespace pera_software { namespace aidkit { namespace qt {
 		public Q_SLOTS:
 	};
 
-} } }
+}

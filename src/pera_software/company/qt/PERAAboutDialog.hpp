@@ -20,7 +20,7 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QDialog>
 
-namespace pera_software { namespace company { namespace qt {
+namespace pera_software::company::qt {
 
 	class AIDKIT_API PERAAboutDialog : public QDialog {
 		Q_OBJECT
@@ -32,4 +32,4 @@ namespace pera_software { namespace company { namespace qt {
 		public Q_SLOTS:
 	};
 
-} } }
+}

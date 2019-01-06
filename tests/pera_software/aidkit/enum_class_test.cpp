@@ -19,7 +19,7 @@
 #include <pera_software/aidkit/enum_class.hpp>
 #include <QTest>
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 using namespace std;
 
@@ -207,4 +207,4 @@ void FruitEnumTest::test() {
 	QVERIFY( name == lemonName );
 }
 
-} }
+}

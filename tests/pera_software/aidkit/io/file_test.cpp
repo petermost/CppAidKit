@@ -19,7 +19,7 @@
 #include "file_test.hpp"
 #include <QTest>
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
 using namespace std;
 
@@ -221,4 +221,4 @@ void FileTest::testOpenReadWrite() {
 	});
 }
 
-} } }
+}

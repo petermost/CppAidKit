@@ -17,7 +17,7 @@
 
 #include "exception.hpp"
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 exception::exception() noexcept {
 }
@@ -26,4 +26,4 @@ const char *exception::what() const noexcept {
 	return message().c_str();
 }
 
-} }
+}

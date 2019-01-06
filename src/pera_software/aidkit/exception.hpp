@@ -21,7 +21,7 @@
 #include <string>
 #include <pera_software/aidkit/aidkit.hpp>
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 	class AIDKIT_API exception : public std::exception {
 		public:
@@ -32,4 +32,4 @@ namespace pera_software { namespace aidkit {
 			virtual const char *what() const noexcept override final;
 	};
 
-} }
+}

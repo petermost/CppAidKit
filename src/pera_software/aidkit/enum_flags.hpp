@@ -20,7 +20,7 @@
 #include <initializer_list>
 #include <type_traits>
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 	template < typename E >
 		class enum_flags {
@@ -127,4 +127,4 @@ namespace pera_software { namespace aidkit {
 	//			return ~enum_flags< E >( lhs );
 	//		}
 
-} }
+}

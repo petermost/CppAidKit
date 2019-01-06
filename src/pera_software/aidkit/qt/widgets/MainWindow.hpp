@@ -20,7 +20,7 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QMainWindow>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 	class AIDKIT_API MainWindow : public QMainWindow {
 		Q_OBJECT
@@ -39,4 +39,4 @@ namespace pera_software { namespace aidkit { namespace qt {
 			void closeEvent( QCloseEvent *closeEvent ) override;
 	};
 
-} } }
+}

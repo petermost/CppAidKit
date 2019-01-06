@@ -17,7 +17,7 @@
 
 #include "MessagesView.hpp"
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 using namespace std;
 
@@ -33,4 +33,4 @@ void MessagesView::setModel( QAbstractItemModel *model ) {
 	});
 }
 
-} } }
+}

@@ -21,7 +21,7 @@
 #include <pera_software/aidkit/cpp/string_ref.hpp>
 #include <sstream>
 
-namespace pera_software { namespace aidkit { namespace containers {
+namespace pera_software::aidkit::containers {
 
 	template < typename Iterator, typename Char >
 		std::basic_ostream< Char > &print( std::basic_ostream< Char > &output, Iterator begin, Iterator end,
@@ -38,4 +38,4 @@ namespace pera_software { namespace aidkit { namespace containers {
 
 			return output;
 		}
-} } }
+}

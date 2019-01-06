@@ -17,7 +17,7 @@
 
 #include "PERA.hpp"
 
-namespace pera_software { namespace company {
+namespace pera_software::company {
 
 const char PERA::NAME[] = "PERA Software Solutions";
 const char PERA::FULL_NAME[] = "PERA Software Solutions GmbH";
@@ -28,4 +28,4 @@ const char PERA::FULL_DOMAIN_NAME[] = "http://www.PERA-Software.com";
 const char PERA::ICON_NAME[] = ":/Icon.png";
 const char PERA::LOGO_NAME[] = ":/Logo.png";
 
-} }
+}

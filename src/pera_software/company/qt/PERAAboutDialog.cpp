@@ -25,7 +25,7 @@
 #include <QPushButton>
 #include <QDialogButtonBox>
 
-namespace pera_software { namespace company { namespace qt {
+namespace pera_software::company::qt {
 
 PERAAboutDialog::PERAAboutDialog( QWidget *parent )
 	: QDialog( parent ) {
@@ -51,4 +51,4 @@ PERAAboutDialog::PERAAboutDialog( QWidget *parent )
 	setLayout( layout );
 }
 
-} } }
+}

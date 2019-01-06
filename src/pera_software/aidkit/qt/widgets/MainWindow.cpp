@@ -17,7 +17,7 @@
 
 #include "MainWindow.hpp"
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 //==================================================================================================
 
@@ -50,4 +50,4 @@ void MainWindow::closeEvent( QCloseEvent *closeEvent ) {
 	Q_EMIT closed();
 }
 
-} } }
+}

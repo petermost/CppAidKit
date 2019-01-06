@@ -21,7 +21,7 @@
 /// The AidKit widgets however are in nested namespaces and it involves a lot of typing for 'manual
 /// forward declarations', so we provide this header.
 
-namespace pera_software { namespace company { namespace qt {
+namespace pera_software::company::qt {
 
 	class PERAAboutDialog;
 	class AboutPERAAction;
@@ -29,4 +29,4 @@ namespace pera_software { namespace company { namespace qt {
 	class PERAIniSettings;
 	class PERAMainWindow;
 
-} } }
+}

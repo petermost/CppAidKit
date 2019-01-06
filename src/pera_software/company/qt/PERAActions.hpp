@@ -21,7 +21,7 @@
 #include <QAction>
 #include <functional>
 
-namespace pera_software { namespace company { namespace qt {
+namespace pera_software::company::qt {
 
 	class AIDKIT_API AboutPERAAction : public QAction {
 		Q_OBJECT
@@ -32,4 +32,4 @@ namespace pera_software { namespace company { namespace qt {
 			explicit AboutPERAAction( QObject *parent = nullptr );
 	};
 
-} } }
+}

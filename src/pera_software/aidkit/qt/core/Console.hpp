@@ -20,10 +20,10 @@
 #include <QTextStream>
 #include <pera_software/aidkit/aidkit.hpp>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 extern AIDKIT_API QTextStream cin;
 extern AIDKIT_API QTextStream cout;
 extern AIDKIT_API QTextStream cerr;
 
-} } }
+}

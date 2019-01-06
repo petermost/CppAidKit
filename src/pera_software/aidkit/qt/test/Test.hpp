@@ -22,7 +22,7 @@
 #include <QStringList>
 #include <pera_software/aidkit/aidkit.hpp>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 class AIDKIT_API Test : public QObject {
 	Q_OBJECT
@@ -41,4 +41,4 @@ class AIDKIT_API Test : public QObject {
 		static QVector< Test * > &tests() noexcept;
 };
 
-} } }
+}

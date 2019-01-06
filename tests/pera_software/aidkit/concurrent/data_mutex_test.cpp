@@ -21,7 +21,7 @@
 #include <vector>
 #include <string>
 
-namespace pera_software { namespace aidkit { namespace concurrent {
+namespace pera_software::aidkit::concurrent {
 
 using namespace std;
 
@@ -87,4 +87,4 @@ void DataMutexTest::testResetWithUnknownPointer() {
 }
 
 
-} } }
+}

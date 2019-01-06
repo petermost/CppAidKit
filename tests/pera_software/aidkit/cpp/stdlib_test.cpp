@@ -21,7 +21,7 @@
 #include <vector>
 #include <iterator>
 
-namespace pera_software { namespace aidkit { namespace cpp {
+namespace pera_software::aidkit::cpp {
 
 using namespace std;
 
@@ -49,4 +49,4 @@ void StdLibTest::testIntCastTooSmall() {
 	QVERIFY_EXCEPTION_THROWN( int_cast< int >( l ), out_of_range );
 }
 
-} } }
+}

@@ -18,7 +18,7 @@
 #include "IntegerSpinBox.hpp"
 #include <limits>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 using namespace std;
 
@@ -42,4 +42,4 @@ IntegerSpinBox::IntegerSpinBox( int value, QWidget *parent )
 	setValue( value );
 }
 
-} } }
+}

@@ -19,7 +19,7 @@
 #include "system_error.hpp"
 #include <cstdio>
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
 using namespace std;
 
@@ -65,7 +65,7 @@ file_deleter::~file_deleter() noexcept( false ) {
 }
 
 
-} } }
+}
 
 /*
 Under gcc/glibc the usage of tmpnam() results in the linker! warning:

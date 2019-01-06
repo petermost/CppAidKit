@@ -28,7 +28,7 @@ Q_DECLARE_METATYPE( std::chrono::milliseconds )
 QDataStream AIDKIT_API &operator << ( QDataStream &out, const std::chrono::milliseconds &value );
 QDataStream AIDKIT_API &operator >> ( QDataStream &in, std::chrono::milliseconds &value );
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 	class AIDKIT_API MetaTypeRegistration {
 		public:
@@ -41,4 +41,4 @@ namespace pera_software { namespace aidkit { namespace qt {
 
 	static const MetaTypeRegistration metaTypeRegistration;
 
-} } }
+}

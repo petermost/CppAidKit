@@ -20,7 +20,7 @@
 #include <QAction>
 #include <QApplication>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 using namespace std;
 
@@ -48,4 +48,4 @@ AboutQtAction::AboutQtAction( QObject *parent )
 	setMenuRole( QAction::MenuRole::AboutQtRole );
 }
 
-} } }
+}

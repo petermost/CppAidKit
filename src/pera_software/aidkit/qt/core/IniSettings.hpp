@@ -20,7 +20,7 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QSettings>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 	class AIDKIT_API IniSettings : public QSettings {
 		public:
@@ -28,5 +28,5 @@ namespace pera_software { namespace aidkit { namespace qt {
 			~IniSettings();
 	};
 
-} } }
+}
 

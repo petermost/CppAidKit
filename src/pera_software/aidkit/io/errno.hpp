@@ -21,7 +21,7 @@
 #include <system_error>
 #include <pera_software/aidkit/aidkit.hpp>
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
 	// There is no error constant for no error so we define our own:
 
@@ -35,4 +35,4 @@ namespace pera_software { namespace aidkit { namespace io {
 	AIDKIT_API std::system_error make_errno_system_error();
 	AIDKIT_API std::system_error make_errno_system_error( int errnoCode );
 
-} } }
+}

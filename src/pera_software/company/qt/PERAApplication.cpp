@@ -20,7 +20,7 @@
 #include <pera_software/company/PERA.hpp>
 #include <QSettings>
 
-namespace pera_software { namespace company { namespace qt {
+namespace pera_software::company::qt {
 
 using namespace aidkit::qt;
 
@@ -40,4 +40,4 @@ void PERAApplication::aboutPERA() {
 	PERAMainWindow::aboutPERA( activeWindow() );
 }
 
-} } }
+}

@@ -22,7 +22,7 @@
 
 #include <QTest>
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 using namespace io;
 using namespace std;
@@ -165,4 +165,4 @@ void UnicodeTest::testUmlauteWideStringToNarrowString() {
 	}
 }
 
-} }
+}

@@ -20,7 +20,7 @@
 #include <QtEndian>
 #include <QtGlobal>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 	// Select the correct hton*()/ntoh*() function based on the size of the value:
 
@@ -105,4 +105,4 @@ namespace pera_software { namespace aidkit { namespace qt {
 			return static_cast< T >( byteSwapper::ntoh( static_cast< typename byteSwapper::value_type >( value )));
 		}
 
-} } }
+}

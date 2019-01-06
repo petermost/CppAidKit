@@ -19,7 +19,7 @@
 
 #include <pera_software/aidkit/qt/test/Test.hpp>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 class ConsoleTest : public Test {
 	Q_OBJECT
@@ -32,4 +32,4 @@ class ConsoleTest : public Test {
 		void testInStream();
 };
 
-} } }
+}

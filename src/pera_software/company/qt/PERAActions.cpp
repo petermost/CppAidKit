@@ -19,7 +19,7 @@
 #include "PERAApplication.hpp"
 #include <QAction>
 
-namespace pera_software { namespace company { namespace qt {
+namespace pera_software::company::qt {
 
 using namespace std;
 
@@ -34,4 +34,4 @@ AboutPERAAction::AboutPERAAction( QObject *parent )
 	setMenuRole( QAction::MenuRole::AboutRole );
 }
 
-} } }
+}

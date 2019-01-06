@@ -23,7 +23,7 @@
 // Define a file error code:
 // http://blog.think-async.com/2010/04/system-error-support-in-c0x-part-4.html
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
 	enum class file_error {
 		unspecific = 1,
@@ -43,7 +43,7 @@ namespace pera_software { namespace aidkit { namespace io {
 
 	AIDKIT_API std::error_code get_file_error_code( bool success ) noexcept;
 
-} } }
+}
 
 namespace std {
 	template <>

@@ -21,7 +21,7 @@
 #include <memory>
 #include <functional>
 
-namespace pera_software { namespace aidkit { namespace concurrent {
+namespace pera_software::aidkit::concurrent {
 
 	/// A compile time guaranteed mutex.
 	/**
@@ -116,4 +116,4 @@ namespace pera_software { namespace aidkit { namespace concurrent {
 				mutable Mutex mutex_;
 				mutable int lockCount_;
 		};
-} } }
+}

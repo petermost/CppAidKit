@@ -24,7 +24,7 @@
 #include <pera_software/aidkit/enum_flags.hpp>
 #include <cstdio>
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
 	struct file_category {
 	};
@@ -704,5 +704,5 @@ namespace pera_software { namespace aidkit { namespace io {
 
 				std::FILE *file_;
 			};
-} } }
+}
 

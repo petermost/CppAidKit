@@ -21,7 +21,7 @@
 #include <QCoreApplication>
 #include <pera_software/aidkit/qt/core/Console.hpp>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 using namespace std;
 
@@ -100,4 +100,4 @@ QVector< Test * > &Test::tests() noexcept {
 }
 
 
-} } }
+}

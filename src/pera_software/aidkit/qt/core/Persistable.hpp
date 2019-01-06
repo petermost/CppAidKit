@@ -21,7 +21,7 @@
 
 class QSettings;
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 	class AIDKIT_API Persistable {
 		public:
@@ -36,4 +36,4 @@ namespace pera_software { namespace aidkit { namespace qt {
 			virtual ~Persistable();
 	};
 
-} } }
+}

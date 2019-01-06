@@ -19,7 +19,7 @@
 #include <QWidget>
 #include <QSettings>
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 // Colons (':') would be stored as %3A so we replace them with a dot ('.'):
 
@@ -47,4 +47,4 @@ void Widgets::writeGeometry(const QWidget *widget, QSettings *settings) noexcept
 	settings->endGroup();
 }
 
-} } }
+}

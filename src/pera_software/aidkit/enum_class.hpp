@@ -23,7 +23,7 @@
 #include <functional>
 #include <pera_software/aidkit/cpp/string_ref.hpp>
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 	template< typename T, typename Int = int, typename Char = char >
 		class enum_class {
@@ -144,4 +144,4 @@ namespace pera_software { namespace aidkit {
 		bool operator < ( const enum_class< T, Int, Char > &left, const enum_class< T, Int, Char > &right ) {
 			return left.value() < right.value();
 		}
-} }
+}

@@ -21,7 +21,7 @@
 #include "exception.hpp"
 #include <string>
 
-namespace pera_software { namespace aidkit {
+namespace pera_software::aidkit {
 
 	void AIDKIT_API check_assertion( bool condition, const std::string &expression, const std::string &fileName,
 			int lineNumber, const std::string &functionName );
@@ -50,7 +50,7 @@ namespace pera_software { namespace aidkit {
 			std::string message_;
 	};
 
-} }
+}
 
 #define AIDKIT_VERIFY( expression ) \
 	pera_software::aidkit::check_assertion( expression, #expression, __FILE__, __LINE__, __func__ )

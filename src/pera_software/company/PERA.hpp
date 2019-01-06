@@ -19,20 +19,18 @@
 
 #include <pera_software/aidkit/aidkit.hpp>
 
-namespace pera_software {
-	namespace company {
+namespace pera_software::company {
 
-		class AIDKIT_API PERA {
-			public:
-				static const char NAME[];
-				static const char FULL_NAME[];
+	class AIDKIT_API PERA {
+		public:
+			static const char NAME[];
+			static const char FULL_NAME[];
 
-				static const char DOMAIN_NAME[];
-				static const char FULL_DOMAIN_NAME[];
+			static const char DOMAIN_NAME[];
+			static const char FULL_DOMAIN_NAME[];
 
-				static const char ICON_NAME[];
-				static const char LOGO_NAME[];
-		};
-	}
+			static const char ICON_NAME[];
+			static const char LOGO_NAME[];
+	};
 }
 

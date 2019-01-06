@@ -21,7 +21,7 @@
 #include <iterator>
 #include <limits>
 
-namespace pera_software { namespace aidkit { namespace cpp {
+namespace pera_software::aidkit::cpp {
 
 	// Make an 'alias function' from countof() to std::size():
 
@@ -39,4 +39,4 @@ namespace pera_software { namespace aidkit { namespace cpp {
 			else
 				return static_cast< D >( s );
 		}
-} } }
+}

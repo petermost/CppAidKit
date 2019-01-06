@@ -18,7 +18,7 @@
 #include "file_error.hpp"
 #include "errno.hpp"
 
-namespace pera_software { namespace aidkit { namespace io {
+namespace pera_software::aidkit::io {
 
 using namespace std;
 
@@ -68,4 +68,4 @@ error_code get_file_error_code( bool success ) noexcept {
 	}
 }
 
-} } }
+}

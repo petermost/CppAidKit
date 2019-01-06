@@ -17,7 +17,7 @@
 
 #include "IniSettings.hpp"
 
-namespace pera_software { namespace aidkit { namespace qt {
+namespace pera_software::aidkit::qt {
 
 IniSettings::IniSettings(const QString &organizationName, const QString &applicationName, QObject *parent)
 	: QSettings( Format::IniFormat, Scope::UserScope, organizationName, applicationName, parent ) {
@@ -26,7 +26,7 @@ IniSettings::IniSettings(const QString &organizationName, const QString &applica
 IniSettings::~IniSettings() {
 }
 
-} } }
+}
 
 //QString IniSettings::defaultFileName() {
 
