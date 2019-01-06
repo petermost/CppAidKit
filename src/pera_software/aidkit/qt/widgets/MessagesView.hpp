@@ -27,7 +27,7 @@ namespace pera_software::aidkit::qt {
 		public:
 			explicit MessagesView( QWidget *parent = nullptr );
 
-			virtual void setModel( QAbstractItemModel *model ) override;
+			void setModel( QAbstractItemModel *model ) override;
 
 		Q_SIGNALS:
 

@@ -33,7 +33,7 @@ class AIDKIT_API Test : public QObject {
 
 	protected:
 		Test() noexcept;
-		virtual ~Test();
+		~Test() override;
 
 		static QVector< Test * > executeTests( const QStringList &arguments ) noexcept;
 

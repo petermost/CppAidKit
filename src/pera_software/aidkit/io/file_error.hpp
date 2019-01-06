@@ -34,8 +34,8 @@ namespace pera_software::aidkit::io {
 		public:
 			static const file_error_category &instance();
 
-			virtual const char *name() const noexcept override;
-			virtual std::string message( int error ) const override;
+			const char *name() const noexcept override;
+			std::string message( int error ) const override;
 	};
 
 	AIDKIT_API std::error_code make_error_code( file_error error );
