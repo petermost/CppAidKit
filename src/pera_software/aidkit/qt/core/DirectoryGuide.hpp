@@ -42,7 +42,7 @@ namespace pera_software { namespace aidkit { namespace qt {
 		Q_OBJECT
 		public:
 			explicit DirectoryVisitor( QObject *parent = nullptr );
-			virtual ~DirectoryVisitor();
+			~DirectoryVisitor() override;
 
 		protected:
 			friend DirectoryGuide;
