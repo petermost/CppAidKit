@@ -19,6 +19,7 @@ cmake_minimum_required( VERSION 3.5 )
 project( AidKit )
 
 include( cmake/all_options.cmake )
+enable_testing()
 
 # Library Sources:
 
@@ -236,7 +237,7 @@ elseif ( Qt5Core_FOUND )
 endif()
 
 if ( Boost_FOUND )
-	#target_link_libraries( AidKit Boost::format )
+	target_link_libraries( AidKit Boost::boost )
 endif()
 
 ###############################################################################
@@ -254,4 +255,5 @@ endif()
 if ( Qt5Test_FOUND )
 	add_executable( testAidKit ${testSources} )
 	target_link_libraries( testAidKit AidKitTest AidKit )
+	add_test( aidKitTests testAidKit )
 endif()
