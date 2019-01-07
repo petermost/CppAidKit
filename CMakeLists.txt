@@ -91,7 +91,7 @@ set( testSources
 	tests/pera_software/aidkit/cpp/stdlib_test.cpp
 )
 
-# Library QtCore Sources:
+# QtCore Sources:
 
 set( qtCoreSources
 	src/pera_software/aidkit/qt/qt.cpp
@@ -130,7 +130,7 @@ set( qtCoreTestSources
 	tests/pera_software/aidkit/qt/core/EndianTest.cpp
 )
 
-# Library QtGui Sources:
+# QtGui Sources:
 
 set( qtGuiSources
 	src/pera_software/aidkit/qt/Resources.hpp
@@ -140,7 +140,7 @@ set( qtGuiSources
 	src/pera_software/aidkit/qt/gui/MessagesModel.hpp
 )
 
-# Library QtWidgets Sources:
+# QtWidgets Sources:
 
 set( qtWidgetsSources
 	src/pera_software/aidkit/qt/widgets/Actions.hpp
@@ -167,12 +167,13 @@ set( qtWidgetsSources
 	src/pera_software/company/qt/PERAMainWindow.cpp
 )
 
-# Library Boost Sources:
+# Boost Sources:
 
 set( boostSources
 	src/pera_software/aidkit/boost/formatter.hpp
 	src/pera_software/aidkit/boost/formatter.cpp
 )
+
 set( boostTestSources
 	tests/pera_software/aidkit/boost/formatter_test.hpp
 	tests/pera_software/aidkit/boost/formatter_test.cpp
@@ -188,7 +189,6 @@ set( testLibSources
 # Find the different packages but evaluate the results later:
 
 find_package( Qt5 COMPONENTS Core Gui Widgets Test )
-
 if ( Qt5Core_FOUND )
 	set( CMAKE_AUTOMOC ON )
 	set( CMAKE_AUTORCC ON )
@@ -213,7 +213,7 @@ endif()
 ###############################################################################
 # Setup Boost
 
-find_package( Boost 1.69.0 QUIET )
+find_package( Boost )
 if ( Boost_FOUND )
 #	include_directories( ${Boost_INCLUDE_DIRS} )
 #	link_directories( ${Boost_LIBRARY_DIRS} )

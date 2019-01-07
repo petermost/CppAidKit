@@ -34,7 +34,7 @@ namespace pera_software::aidkit::boost {
 			public:
 				basic_formatter( cpp::basic_string_ref< Char > formatString ) noexcept {
 					format_.exceptions( ::boost::io::no_error_bits );
-					format_.parse( formatString.to_string() );
+					format_.parse( std::basic_string< Char >( formatString ));
 				}
 
 				template< class T >
