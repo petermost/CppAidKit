@@ -17,3 +17,15 @@
 
 #include "formatter.hpp"
 
+namespace pera_software::aidkit::boost {
+
+formatter::formatter(pera_software::aidkit::cpp::string_ref formatString) noexcept {
+	format_.exceptions( ::boost::io::no_error_bits );
+	format_.parse( std::string( formatString ));
+}
+
+std::string formatter::str() const noexcept {
+	return format_.str();
+}
+
+}

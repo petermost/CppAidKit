@@ -32,13 +32,8 @@ namespace pera_software::aidkit::io {
 	struct file_locked_category : file_category {
 	};
 
-
-
 	template < typename Category >
 		class basic_file_functions;
-
-	template < typename Char, typename Category >
-		class file_functions;
 
 	/**
 	 * file functions which don't depend on the character type:
@@ -46,9 +41,46 @@ namespace pera_software::aidkit::io {
 	template <>
 		class basic_file_functions< file_locked_category > {
 			public:
+				static int do_not_eof( int result ) noexcept {
+					return result != EOF;
+				}
+
+				static std::FILE *do_open( const char fileName[], const char openMode[] ) noexcept {
+					return std::fopen( fileName, openMode );
+				}
+
 				static int do_close( std::FILE *fp ) noexcept {
 					return std::fclose( fp );
 				}
+
+				static int do_putc( std::FILE *fp, char c ) noexcept {
+					return std::putc( c, fp );
+				}
+
+				static int do_getc( std::FILE *fp ) noexcept {
+					return std::getc( fp );
+				}
+
+				static int do_ungetc( std::FILE *fp, int c ) noexcept {
+					return std::ungetc( c, fp );
+				}
+
+				static int do_puts( std::FILE *fp, const char s[] ) noexcept {
+					return std::fputs( s, fp );
+				}
+
+				static char *do_gets( std::FILE *fp, char *str, int count ) noexcept {
+					return std::fgets( str, count, fp );
+				}
+
+				static int do_vprintf( std::FILE *fp, const char format[], va_list args ) noexcept {
+					return std::vfprintf( fp, format, args );
+				}
+
+				template < typename ... Args >
+					static int do_printf( std::FILE *fp, const char format[], Args && ... args ) noexcept {
+						return std::fprintf( fp, format, std::forward< Args >( args ) ... );
+					}
 
 				static int do_wide( std::FILE *fp, int mode ) noexcept {
 					return std::fwide( fp, mode );
@@ -107,110 +139,15 @@ namespace pera_software::aidkit::io {
 				}
 		};
 
-	/**
-	 * file functions for char(s):
-	 */
-	template <>
-		class file_functions< char, file_locked_category > : public basic_file_functions< file_locked_category > {
-			public:
-				using char_traits_t = std::char_traits< char >;
-
-				static int do_not_eof( int result ) noexcept {
-					return char_traits_t::not_eof( result );
-				}
-
-				static std::FILE *do_open( const char fileName[], const char openMode[] ) noexcept {
-					return std::fopen( fileName, openMode );
-				}
-
-				static int do_putc( std::FILE *fp, char c ) noexcept {
-					return std::putc( c, fp );
-				}
-
-				static int do_getc( std::FILE *fp ) noexcept {
-					return std::getc( fp );
-				}
-
-				static int do_ungetc( std::FILE *fp, int c ) noexcept {
-					return std::ungetc( c, fp );
-				}
-
-				static int do_puts( std::FILE *fp, const char s[] ) noexcept {
-					return std::fputs( s, fp );
-				}
-
-				static char *do_gets( std::FILE *fp, char *str, int count ) noexcept {
-					return std::fgets( str, count, fp );
-				}
-
-				static int do_vprintf( std::FILE *fp, const char format[], va_list args ) noexcept {
-					return std::vfprintf( fp, format, args );
-				}
-
-				template < typename ... Args >
-					static int do_printf( std::FILE *fp, const char format[], Args && ... args ) noexcept {
-						return std::fprintf( fp, format, std::forward< Args >( args ) ... );
-					}
-		};
-
-	/**
-	 * file functions for wchar_t(s)
-	 */
-	template <>
-		class file_functions< wchar_t, file_locked_category > : public basic_file_functions< file_locked_category > {
-			public:
-				using char_traits_t = std::char_traits< wchar_t >;
-
-				static wint_t do_not_eof( wint_t result ) noexcept {
-					return char_traits_t::not_eof( result );
-				}
-
-				// There is no wfopen function, so we only provide a char based version:
-				static std::FILE *do_open( const char fileName[], const char openMode[] ) noexcept {
-					return std::fopen( fileName, openMode );
-				}
-
-				static wint_t do_putc( std::FILE *fp, wchar_t c ) noexcept {
-					return std::putwc( c, fp );
-				}
-
-				static wint_t do_getc( std::FILE *fp ) noexcept {
-					return std::getwc( fp );
-				}
-
-				static wint_t do_ungetc( std::FILE *fp, wint_t c ) noexcept {
-					return std::ungetwc( c, fp );
-				}
-
-				static int do_puts( std::FILE *fp, const wchar_t s[] ) noexcept {
-					return std::fputws( s, fp );
-				}
-
-				static wchar_t *do_gets( std::FILE *fp, wchar_t *str, int count ) noexcept {
-					return std::fgetws( str, count, fp );
-				}
-
-				static int do_vprintf( std::FILE *fp, const wchar_t format[], va_list args ) noexcept {
-					return std::vfwprintf( fp, format, args );
-				}
-
-				template < typename ... Args >
-					static int do_printf( std::FILE *fp, const wchar_t format[], Args && ... args ) noexcept {
-						return std::fwprintf( fp, format, std::forward< Args >( args ) ... );
-					}
-		};
-
 	// We can't name the methods the same as the C-functions without the f-prefix because then
 	// we have to handle macro name conflicts!
 
-	template < typename Char, typename Category = file_locked_category, typename Functions = file_functions< Char, Category >>
+	template < typename Category = file_locked_category, typename Functions = basic_file_functions< Category >>
 		class basic_file {
 			public:
-				using char_traits_t = typename Functions::char_traits_t;
-
 				/// Represents an int which can hold a char or an EOF value:
 
-				using char_int_t = typename char_traits_t::int_type;
+				using char_int_t = int;
 
 				/// Represents an offset to be used by seek/tell:
 
@@ -218,7 +155,7 @@ namespace pera_software::aidkit::io {
 
 				/// The constant for checking with char_int_t get() methods:
 
-				static const char_int_t eof = char_traits_t::eof();
+				static constexpr char_int_t eof = EOF;
 
 				/// Indicates from where to start the seek:
 
@@ -340,13 +277,13 @@ namespace pera_software::aidkit::io {
 
 				// Putting a char:
 
-				char_int_t put( Char c ) {
+				char_int_t put( char c ) {
 					return call_and_throw_if_error([ & ]( std::error_code *errorCode ) {
 						return put( c, errorCode );
 					});
 				}
 
-				char_int_t put( Char c, std::error_code *errorCode ) noexcept {
+				char_int_t put( char c, std::error_code *errorCode ) noexcept {
 					auto result = Functions::do_putc( file_, c );
 					bool success = Functions::do_not_eof( result );
 
@@ -376,13 +313,13 @@ namespace pera_software::aidkit::io {
 
 				// Ungetting a char:
 
-				char_int_t unget( Char c ) {
+				char_int_t unget( char c ) {
 					return call_and_throw_if_error([ & ]( std::error_code *errorCode ) {
 						return unget( c, errorCode );
 					});
 				}
 
-				char_int_t unget( Char c, std::error_code *errorCode ) noexcept {
+				char_int_t unget( char c, std::error_code *errorCode ) noexcept {
 					auto result = Functions::do_ungetc( file_, c );
 					bool success = Functions::do_not_eof( result );
 
@@ -392,13 +329,13 @@ namespace pera_software::aidkit::io {
 
 				// Putting a string:
 
-				const Char *put( const Char s[] ) {
+				const char *put( const char s[] ) {
 					return call_and_throw_if_error([ & ]( std::error_code *errorCode ) {
 						return put( s, errorCode );
 					});
 				}
 
-				const Char *put( const Char s[], std::error_code *errorCode ) noexcept {
+				const char *put( const char s[], std::error_code *errorCode ) noexcept {
 					auto result = Functions::do_puts( file_, s );
 					bool success = Functions::do_not_eof( result );
 
@@ -408,14 +345,14 @@ namespace pera_software::aidkit::io {
 
 				// Getting a string:
 
-				Char *get( Char *s, int count ) {
+				char *get( char *s, int count ) {
 					return call_and_throw_if_error([ & ]( std::error_code *errorCode ) {
 						return get( s, count, errorCode );
 					});
 				}
 
-				Char *get( Char *s, int count, std::error_code *errorCode ) noexcept {
-					Char *result = Functions::do_gets( file_, s, count );
+				char *get( char *s, int count, std::error_code *errorCode ) noexcept {
+					char *result = Functions::do_gets( file_, s, count );
 					bool success = ( result != nullptr );
 
 					*errorCode = get_error_code( success );
@@ -448,13 +385,13 @@ namespace pera_software::aidkit::io {
 
 				// Printing a formatted string:
 
-				int print( const Char format[], va_list args ) {
+				int print( const char format[], va_list args ) {
 					return call_and_throw_if_error([ & ]( std::error_code *errorCode ) {
 						return print( format, args, errorCode );
 					});
 				}
 
-				int print( const Char format[], va_list args, std::error_code *errorCode ) noexcept {
+				int print( const char format[], va_list args, std::error_code *errorCode ) noexcept {
 					auto result = Functions::do_vprintf( file_, format, args );
 					bool success = Functions::do_not_eof( result );
 
@@ -463,14 +400,14 @@ namespace pera_software::aidkit::io {
 				}
 
 				template < typename ... Args >
-					int print( const Char format[], Args && ... args ) {
+					int print( const char format[], Args && ... args ) {
 						return call_and_throw_if_error([ & ]( std::error_code *errorCode ) {
 							return print( errorCode, format, std::forward< Args >( args ) ... );
 						});
 					}
 
 				template < typename ... Args >
-					int print( std::error_code *errorCode, const Char format[], Args && ... args ) noexcept {
+					int print( std::error_code *errorCode, const char format[], Args && ... args ) noexcept {
 						auto result = Functions::do_printf( file_, format, std::forward< Args >( args ) ... );
 						bool success = Functions::do_not_eof( result );
 

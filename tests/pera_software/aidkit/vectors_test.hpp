@@ -28,15 +28,10 @@ namespace pera_software::aidkit {
 			void testRemove();
 
 			void testJoin();
-			void testWJoin();
 
 			void testStreamOperatorWithEmptyVector();
 			void testStreamOperatorWithOneElement();
 			void testStreamOperatorWithMultipleElements();
-
-			void testWStreamOperatorWithEmptyVector();
-			void testWStreamOperatorWithOneElement();
-			void testWStreamOperatorWithMultipleElements();
 	};
 
 }

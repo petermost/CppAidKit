@@ -41,8 +41,6 @@ set( sources
 	src/pera_software/aidkit/platform.cpp
 	src/pera_software/aidkit/strings.hpp
 	src/pera_software/aidkit/strings.cpp
-	src/pera_software/aidkit/unicode.hpp
-	src/pera_software/aidkit/unicode.cpp
 	src/pera_software/aidkit/vectors.hpp
 	src/pera_software/aidkit/vectors.cpp
 
@@ -77,8 +75,6 @@ set( testSources
 	tests/pera_software/aidkit/strings_test.hpp
 	tests/pera_software/aidkit/strings_test.cpp
 	tests/pera_software/aidkit/test_main.cpp
-	tests/pera_software/aidkit/unicode_test.hpp
-	tests/pera_software/aidkit/unicode_test.cpp
 	tests/pera_software/aidkit/vectors_test.hpp
 	tests/pera_software/aidkit/vectors_test.cpp
 

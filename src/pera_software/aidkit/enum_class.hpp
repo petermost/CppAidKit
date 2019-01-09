@@ -25,7 +25,7 @@
 
 namespace pera_software::aidkit {
 
-	template< typename T, typename Int = int, typename Char = char >
+	template< typename T, typename Int = int >
 		class enum_class {
 			public:
 				enum_class( const enum_class &other ) = default;
@@ -35,13 +35,13 @@ namespace pera_software::aidkit {
 					return value_;
 				}
 
-				cpp::basic_string_ref< Char > name() const noexcept {
+				cpp::string_ref name() const noexcept {
 					return name_;
 				}
 
 				// Some find functions for searching via a name or a value:
 
-				static std::vector< T > find( const cpp::basic_string_ref< Char > &name ) {
+				static std::vector< T > find( cpp::string_ref name ) {
 					std::vector< T > foundEnums;
 
 					for_each([ & ]( const T &other ) {
@@ -61,14 +61,6 @@ namespace pera_software::aidkit {
 					return foundEnums;
 				}
 
-				// Allow iterating through all enum values:
-
-				static void for_each( const std::function< void ( const T & )> &function ) {
-					std::for_each( get_container().cbegin(), get_container().cend(), [ & ]( const T *t ) {
-						function( *t );
-					});
-				}
-
 				// Get all defined enum values:
 
 				static std::vector< T > values() {
@@ -81,27 +73,40 @@ namespace pera_software::aidkit {
 					return values;
 				}
 
+				// Allow iterating through all enum values:
+
+				static void for_each( const std::function< void ( const T & )> &function ) {
+					std::for_each( get_container().cbegin(), get_container().cend(), [ & ]( const T *t ) {
+						function( *t );
+					});
+				}
+
 			protected:
-				enum_class() {
-					initialize( get_next_value(), EMPTY_NAME );
+				enum_class()
+					: enum_class( get_next_value(), EMPTY_NAME ) {
 				}
 
-				enum_class( Int value ) {
-					initialize( value, EMPTY_NAME );
+				enum_class( Int value )
+					: enum_class( value, EMPTY_NAME ) {
 				}
 
-				template < std::size_t SIZE >
-					enum_class( const Char ( &name )[ SIZE ]) {
-						initialize( get_next_value(), name );
-					}
+				enum_class( const std::string &name )
+					: enum_class( get_next_value(), name ) {
+				}
 
-				template < std::size_t SIZE >
-					enum_class( Int value, const Char ( &name )[ SIZE ]) {
-						initialize( value, name );
-					}
+				enum_class( Int value, const std::string &name ) {
+					value_ = value;
+					name_ = name;
+
+					get_container().push_back( static_cast< const T * >( this ));
+				}
 
 			private:
-				static const Char EMPTY_NAME[];
+				static const std::string EMPTY_NAME;
+
+				static Int get_next_value() {
+					return get_container().empty() ? 0 : get_container().back()->value_ + 1;
+				}
 
 				static std::vector< const T * > &get_container() {
 					// - Use a function level static container so we don't get a problem with the
@@ -112,36 +117,25 @@ namespace pera_software::aidkit {
 					return s_values;
 				}
 
-				static Int get_next_value() {
-					return get_container().empty() ? 0 : get_container().back()->value_ + 1;
-				}
-
-				void initialize( Int value, const Char name[] ) {
-					value_ = value;
-					name_ = name;
-
-					get_container().push_back( static_cast< const T * >( this ));
-				}
-
 				Int value_;
-				const Char *name_;
+				std::string name_;
 		};
 
-	template < typename T, typename Int, typename Char >
-		const Char enum_class< T, Int, Char >::EMPTY_NAME[] = { 0 };
+	template < typename T, typename Int >
+		const std::string enum_class< T, Int >::EMPTY_NAME;
 
 	// We only define the equal and less-then operator because if the other ones are needed then
 	// do:
 	// #include <utility>
 	// using namespace rel_ops;
 
-	template < typename T, typename Int, typename Char >
-		bool operator == ( const enum_class< T, Int, Char > &left, const enum_class< T, Int, Char > &right ) {
+	template < typename T, typename Int >
+		bool operator == ( const enum_class< T, Int > &left, const enum_class< T, Int > &right ) {
 			return left.value() == right.value();
 		}
 
-	template < typename T, typename Int, typename Char >
-		bool operator < ( const enum_class< T, Int, Char > &left, const enum_class< T, Int, Char > &right ) {
+	template < typename T, typename Int >
+		bool operator < ( const enum_class< T, Int > &left, const enum_class< T, Int > &right ) {
 			return left.value() < right.value();
 		}
 }

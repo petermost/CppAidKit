@@ -18,71 +18,24 @@
 #pragma once
 
 #include <string>
-#include <locale>
 #include <limits>
-#include <cstddef>
 #include <functional>
-#include <algorithm>
 #include <pera_software/aidkit/io/errno.hpp>
 
 #define STRINGIZE( name ) #name
 #define STRINGIZE_SYMBOL( symbol ) STRINGIZE( symbol )
 
-#define WSTRINGIZE( name ) L#name
-#define WSTRINGIZE_SYMBOL( symbol ) WSTRINGIZE( symbol )
-
-
 namespace pera_software::aidkit {
 
 	// General trim_left, trim_right functions:
 
-	template < typename Char, typename Predicate >
-		const std::basic_string< Char > trim_left( const std::basic_string< Char > &s, Predicate predicate ) {
-			return std::basic_string< Char >( std::find_if( s.begin(), s.end(), predicate ), s.end() );
-		}
+	AIDKIT_API const std::string trim_left( const std::string &s );
+	AIDKIT_API const std::string trim_left( const std::string &s, char c );
+	AIDKIT_API const std::string trim_left( const std::string &s, const std::function< bool ( char ) > &predicate );
 
-	template < typename Char, typename Predicate >
-		const std::basic_string< Char > trim_right( const std::basic_string< Char > &s, Predicate predicate ) {
-			return std::basic_string< Char >( s.begin(), std::find_if( s.rbegin(), s.rend(), predicate ).base() );
-		}
-
-	// More specialized trim_left, trim_right functions:
-
-	template < typename Char >
-		bool is_space( Char c ) {
-			return std::isspace( c, std::locale() );
-		}
-
-	template < typename Char >
-		bool is_not_space( Char c ) {
-			return !is_space( c );
-		}
-
-	template < typename Char >
-		bool is_not_char( Char c, Char oc ) {
-			return c != oc;
-		}
-
-	template < typename Char >
-		const std::basic_string< Char > trim_left( const std::basic_string< Char > &s ) {
-			return trim_left( s, is_not_space< Char > );
-		}
-
-	template < typename Char >
-		const std::basic_string< Char > trim_right( const std::basic_string< Char > &s ) {
-			return trim_right( s, is_not_space< Char > );
-		}
-
-	template< typename Char >
-		const std::basic_string< Char > trim_left( const std::basic_string< Char > &s, Char c ) {
-			return trim_left( s, std::bind( std::not_equal_to< Char >(), c, std::placeholders::_1 ));
-		}
-
-	template< typename Char >
-		const std::basic_string< Char > trim_right( const std::basic_string< Char > &s, Char c ) {
-			return trim_right( s, std::bind( std::not_equal_to< Char >(), c, std::placeholders::_1 ));
-		}
-
+	AIDKIT_API const std::string trim_right( const std::string &s );
+	AIDKIT_API const std::string trim_right( const std::string &s, char c );
+	AIDKIT_API const std::string trim_right( const std::string &s, const std::function< bool ( char ) > &predicate );
 
 	template < typename Char, size_t SIZE >
 		constexpr bool is_string_literal( const Char ( & )[ SIZE ] ) noexcept {
@@ -96,73 +49,52 @@ namespace pera_software::aidkit {
 
 	//=============================================================================================
 
-	template < typename Int, typename Char >
+	template < typename Int >
 		struct StringToInteger;
 
 	template <>
-		struct StringToInteger< long, char > {
+		struct StringToInteger< int > {
+			static int convert( const char *str, char **str_end, int base ) {
+				return static_cast< int >( std::strtol( str, str_end, base ));
+			}
+		};
+
+	template <>
+		struct StringToInteger< long > {
 			static long convert( const char *str, char **str_end, int base ) {
 				return std::strtol( str, str_end, base );
 			}
 		};
 
 	template <>
-		struct StringToInteger< long long, char > {
+		struct StringToInteger< long long > {
 			static long long convert( const char *str, char **str_end, int base ) {
 				return std::strtoll( str, str_end, base );
 			}
 		};
 
 	template <>
-		struct StringToInteger< unsigned long, char > {
+		struct StringToInteger< unsigned long > {
 			static unsigned long convert( const char *str, char **str_end, int base ) {
 				return std::strtoul( str, str_end, base );
 			}
 		};
 
 	template <>
-		struct StringToInteger< unsigned long long, char > {
+		struct StringToInteger< unsigned long long > {
 			static unsigned long long convert( const char *str, char **str_end, int base ) {
 				return std::strtoull( str, str_end, base );
 			}
 		};
 
-	template <>
-		struct StringToInteger< long, wchar_t > {
-			static long convert( const wchar_t *str, wchar_t **str_end, int base ) {
-				return std::wcstol( str, str_end, base );
-			}
-		};
-
-	template <>
-		struct StringToInteger< long long, wchar_t > {
-			static long long convert( const wchar_t *str, wchar_t **str_end, int base ) {
-				return std::wcstoll( str, str_end, base );
-			}
-		};
-
-	template <>
-		struct StringToInteger< unsigned long, wchar_t > {
-			static unsigned long convert( const wchar_t *str, wchar_t **str_end, int base ) {
-				return std::wcstoul( str, str_end, base );
-			}
-		};
-
-	template <>
-		struct StringToInteger< unsigned long long, wchar_t > {
-			static unsigned long long convert( const wchar_t *str, wchar_t **str_end, int base ) {
-				return std::wcstoull( str, str_end, base );
-			}
-		};
-
-	template < typename Int, typename Char >
-		bool try_stoi( const std::basic_string< Char > &str, Int *integer, std::error_code *errorCode ) {
-			const Char *begin = str.c_str();
-			const Char *end = begin + str.size();
-			Char *ptr;
+	template < typename Int >
+		bool try_stoi( const std::string &str, Int *integer, std::error_code *errorCode ) {
+			const char *begin = str.c_str();
+			const char *end = begin + str.size();
+			char *ptr;
 
 			errno = 0;
-			auto result = StringToInteger< Int, Char >::convert( begin, &ptr, 10 );
+			auto result = StringToInteger< Int >::convert( begin, &ptr, 10 );
 			if ( errno == 0 && ptr == end && std::numeric_limits< Int >::min() <= result && result <= std::numeric_limits< Int >::max() ) {
 				*integer = static_cast< Int >( result );
 				return true;
@@ -171,8 +103,5 @@ namespace pera_software::aidkit {
 				return false;
 			}
 		}
-
-
-
 }
 

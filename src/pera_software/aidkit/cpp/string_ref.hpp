@@ -24,9 +24,6 @@
 
 namespace pera_software::aidkit::cpp {
 
-	template < typename Char >
-		using basic_string_ref = std::basic_string_view< Char >;
-
 	using string_ref    = std::string_view;
 	using wstring_ref   = std::wstring_view;
 	using u16string_ref = std::u16string_view;

@@ -29,32 +29,21 @@ namespace pera_software::aidkit::boost {
 	// - The operator % () might throw a too_many_args exception.
 	// - The method str() might throw a too_few_args exception.
 
-	template< typename Char >
-		class basic_formatter {
-			public:
-				basic_formatter( cpp::basic_string_ref< Char > formatString ) noexcept {
-					format_.exceptions( ::boost::io::no_error_bits );
-					format_.parse( std::basic_string< Char >( formatString ));
+	class formatter {
+		public:
+			formatter( cpp::string_ref formatString ) noexcept;
+
+			template< class T >
+				formatter &operator % ( T &&x ) {
+					format_ % std::forward< T >( x );
+
+					return *this;
 				}
 
-				template< class T >
-					basic_formatter &operator % ( T &&x ) {
-						format_ % std::forward< T >( x );
+			std::string  str() const noexcept;
 
-						return *this;
-					}
-
-				std::basic_string< Char > str() const noexcept {
-					return format_.str();
-				}
-
-			private:
-				::boost::basic_format< Char > format_;
+		private:
+			::boost::format format_;
 	};
-
-	using formatter    = basic_formatter< char >;
-	using wformatter   = basic_formatter< wchar_t >;
-	using u16formatter = basic_formatter< char16_t >;
-	using u32formatter = basic_formatter< char32_t >;
 
 }

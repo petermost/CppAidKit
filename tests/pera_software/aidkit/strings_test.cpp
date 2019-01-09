@@ -25,23 +25,11 @@ using namespace std;
 
 // Explicitly instantiate the templates to detect compiler errors:
 
-template const string trim_left( const string & );
-template const string trim_right( const string & );
-template const string trim_left( const string &, char c );
-template const string trim_right( const string &, char c );
-template const wstring trim_left( const wstring & );
-template const wstring trim_right( const wstring & );
-template const wstring trim_left( const wstring &, wchar_t c );
-template const wstring trim_right( const wstring &, wchar_t c );
-
+template bool try_stoi( const string &, int *, error_code * );
 template bool try_stoi( const string &, long *, error_code * );
 template bool try_stoi( const string &, long long *, error_code *  );
 template bool try_stoi( const string &, unsigned long *, error_code *  );
 template bool try_stoi( const string &, unsigned long long *, error_code *  );
-template bool try_stoi( const wstring &, long *, error_code *  );
-template bool try_stoi( const wstring &, long long *, error_code *  );
-template bool try_stoi( const wstring &, unsigned long *, error_code *  );
-template bool try_stoi( const wstring &, unsigned long long *, error_code *  );
 
 static StringsTest stringsTest;
 

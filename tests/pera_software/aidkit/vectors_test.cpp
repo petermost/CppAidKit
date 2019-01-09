@@ -46,14 +46,6 @@ void VectorsTest::testJoin() {
 	QVERIFY( str == "[1,2,3]" );
 }
 
-void VectorsTest::testWJoin() {
-	vector< int > ints = { 1, 2, 3 };
-
-	wstring str = vectors::wjoin( ints, L"[", L",", L"]" );
-
-	QVERIFY( str == L"[1,2,3]" );
-}
-
 void VectorsTest::testStreamOperatorWithEmptyVector() {
 	vector< int > ints;
 	stringstream output;
@@ -80,36 +72,6 @@ void VectorsTest::testStreamOperatorWithMultipleElements() {
 
 	QVERIFY( output.str() == "1, 2, 3" );
 }
-
-void VectorsTest::testWStreamOperatorWithEmptyVector() {
-	vector< int > ints;
-	wstringstream output;
-
-	output << ints;
-
-	QVERIFY( output.str() == L"" );
-}
-
-void VectorsTest::testWStreamOperatorWithOneElement() {
-	vector< int > ints = { 1 };
-	wstringstream output;
-
-	output << ints;
-
-	QVERIFY( output.str() == L"1" );
-}
-
-void VectorsTest::testWStreamOperatorWithMultipleElements() {
-	vector< int > ints = { 1, 2, 3 };
-	wstringstream output;
-
-	output << ints;
-
-	QVERIFY( output.str() == L"1, 2, 3" );
-}
-
-
-
 
 }
 

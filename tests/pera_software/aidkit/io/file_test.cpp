@@ -25,8 +25,7 @@ using namespace std;
 
 // Explicit template instantiations to catch compiler errors early:
 
-template class basic_file< char, file_locked_category >;
-template class basic_file< wchar_t, file_locked_category >;
+template class basic_file< file_locked_category >;
 
 static FileTest fileTest;
 

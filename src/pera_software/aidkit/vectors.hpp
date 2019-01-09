@@ -28,18 +28,18 @@ namespace pera_software::aidkit::vectors {
 
 	/// Prints the content of a vector to the output.
 
-	template < typename T, typename Char >
-		std::basic_ostream< Char > &print( std::basic_ostream< Char > &output, const std::vector< T > &values,
-			cpp::basic_string_ref< Char > prefix, cpp::basic_string_ref< Char > delimiter, cpp::basic_string_ref< Char > suffix ) {
+	template < typename T >
+		std::ostream &print( std::ostream &output, const std::vector< T > &values,
+			cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix ) {
 
 			return containers::print( output, values.begin(), values.end(), prefix, delimiter, suffix );
 		}
 
-	template < typename T, typename Char >
-		std::basic_string< Char > join_implementation( const std::vector< T > &values,
-			cpp::basic_string_ref< Char > prefix, cpp::basic_string_ref< Char > delimiter, cpp::basic_string_ref< Char > suffix ) {
+	template < typename T >
+		std::string join_implementation( const std::vector< T > &values,
+			cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix ) {
 
-			std::basic_ostringstream< Char > valueStream;
+			std::ostringstream valueStream;
 
 			print( valueStream, values, prefix, delimiter, suffix );
 
@@ -48,12 +48,7 @@ namespace pera_software::aidkit::vectors {
 
 	template < typename T >
 		std::string join( const std::vector< T > &values, cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix ) {
-			return join_implementation< T, cpp::string_ref::value_type >( values, prefix, delimiter, suffix );
-		}
-
-	template < typename T >
-		std::wstring wjoin( const std::vector< T > &values, cpp::wstring_ref prefix, cpp::wstring_ref delimiter, cpp::wstring_ref suffix ) {
-			return join_implementation< T, cpp::wstring_ref::value_type >( values, prefix, delimiter, suffix );
+			return join_implementation( values, prefix, delimiter, suffix );
 		}
 
 	template < typename T, typename C >
@@ -73,11 +68,11 @@ namespace pera_software::aidkit::vectors {
 
 namespace std {
 
-	template < typename T, typename Char >
-		basic_ostream< Char > &operator << ( basic_ostream< Char > &output, const vector< T > &values ) {
-			const Char EMPTY[] = { '\0' };
-			const Char COMMA[] = { ',', ' ', '\0' };
+	template < typename T >
+		ostream &operator << ( ostream &output, const vector< T > &values ) {
+			constexpr char EMPTY[] = { '\0' };
+			constexpr char COMMA[] = { ',', ' ', '\0' };
 
-			return pera_software::aidkit::vectors::print< T, Char >( output, values, EMPTY, COMMA, EMPTY );
+			return pera_software::aidkit::vectors::print( output, values, EMPTY, COMMA, EMPTY );
 		}
 }

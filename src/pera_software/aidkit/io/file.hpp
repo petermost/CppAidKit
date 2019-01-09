@@ -23,8 +23,7 @@
 
 namespace pera_software::aidkit::io {
 
-	using file = basic_file< char >;
-	using wfile = basic_file< wchar_t >;
+	using file = basic_file<>;
 
 	AIDKIT_API bool remove_file( const char fileName[] );
 	AIDKIT_API bool remove_file( const char fileName[], std::error_code *errorCode ) noexcept;

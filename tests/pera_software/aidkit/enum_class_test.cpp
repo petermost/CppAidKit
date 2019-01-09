@@ -32,7 +32,7 @@ static FruitEnumTest fruitEnumTest;
 
 // Enum for testing default value assignment:
 
-class Color : public enum_class< Color, int, wchar_t > {
+class Color : public enum_class< Color, int > {
 	public:
 		static const Color Red;
 		static const Color Green;
@@ -40,14 +40,14 @@ class Color : public enum_class< Color, int, wchar_t > {
 
 	private:
 		template < size_t SIZE >
-			Color( const wchar_t ( &name )[ SIZE ])
+			Color( const char ( &name )[ SIZE ])
 				: enum_class( name ) {
 			}
 };
 
-const Color Color::Red( L"Red" );
-const Color Color::Green( L"Green" );
-const Color Color::Blue( L"Blue" );
+const Color Color::Red( "Red" );
+const Color Color::Green( "Green" );
+const Color Color::Blue( "Blue" );
 
 static void colorFunction( Color ) {
 }
@@ -68,9 +68,9 @@ void ColorEnumTest::testValues() {
 }
 
 void ColorEnumTest::testName() {
-	QVERIFY( Color::Red.name() == L"Red" );
-	QVERIFY( Color::Green.name() == L"Green" );
-	QVERIFY( Color::Blue.name() == L"Blue" );
+	QVERIFY( Color::Red.name() == "Red" );
+	QVERIFY( Color::Green.name() == "Green" );
+	QVERIFY( Color::Blue.name() == "Blue" );
 }
 
 void ColorEnumTest::testFindByValue() {
@@ -80,7 +80,7 @@ void ColorEnumTest::testFindByValue() {
 }
 
 void ColorEnumTest::testFindByName() {
-	vector< Color > result = Color::find( L"Green" );
+	vector< Color > result = Color::find( "Green" );
 	QCOMPARE( result.size(), static_cast< size_t >( 1 ));
 	QVERIFY( result[ 0 ] == Color::Green );
 }
@@ -116,10 +116,9 @@ class Number : public enum_class< Number > {
 		static const Number TwentyToo;
 
 	private:
-		template < size_t SIZE >
-			Number( int value, const char ( &name )[ SIZE ])
-				: enum_class( value, name ) {
-			}
+		Number( int value, const string &name )
+			: enum_class( value, name ) {
+		}
 };
 
 const Number Number::Ten(       10, "Ten" );
@@ -178,32 +177,35 @@ void AnimalEnumTest::testName() {
 // Because the enum_class<> is now using string_ref<> (a.k.a string_view<>) only some functionality
 // is available for QChar/QString.
 
-class Fruit : public enum_class< Fruit, int, QChar > {
+class Fruit : public enum_class< Fruit, int > {
 	public:
 		static const Fruit Apple;
 		static const Fruit Orange;
 		static const Fruit Lemon;
 
 	private:
-		template < size_t SIZE >
-			Fruit( const QChar ( &name )[ SIZE ])
-				: enum_class( name ) {
-			}
+		Fruit( const string &name )
+			: enum_class( name ) {
+		}
 };
 
-const QChar appleName[] = { 'A', 'p', 'p', 'l', 'e', '\0' };
-const QChar orangeName[] = { 'O', 'r', 'a', 'n', 'g', 'e', '\0' };
-const QChar lemonName[] = { 'L', 'e', 'm', 'o', 'n', '\0' };
+const QChar appleNameChars[] = { 'A', 'p', 'p', 'l', 'e', '\0' };
+const QChar orangeNameChars[] = { 'O', 'r', 'a', 'n', 'g', 'e', '\0' };
+const QChar lemonNameChars[] = { 'L', 'e', 'm', 'o', 'n', '\0' };
 
-const Fruit Fruit::Apple( appleName );
-const Fruit Fruit::Orange( orangeName );
-const Fruit Fruit::Lemon( lemonName );
+const QString appleName( appleNameChars );
+const QString orangeName( orangeNameChars );
+const QString lemonName( lemonNameChars );
+
+const Fruit Fruit::Apple( appleName.toUtf8().toStdString() );
+const Fruit Fruit::Orange( orangeName.toUtf8().toStdString() );
+const Fruit Fruit::Lemon( lemonName.toUtf8().toStdString() );
 
 void FruitEnumTest::test() {
 	auto value = Fruit::Orange.value();
 	QVERIFY( value == 1 );
 
-	auto name = Fruit::Lemon.name();
+	QString name = QString::fromUtf8( Fruit::Lemon.name().data(), static_cast< int >( Fruit::Lemon.name().size() ));
 	QVERIFY( name == lemonName );
 }
 

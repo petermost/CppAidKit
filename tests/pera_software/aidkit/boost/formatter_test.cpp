@@ -23,13 +23,6 @@ namespace pera_software { namespace aidkit { namespace boost {
 
 using namespace std;
 
-// Explicit template instantion to detect compile errors early:
-
-template class basic_formatter< char >;
-template class basic_formatter< wchar_t >;
-template class basic_formatter< char16_t >;
-template class basic_formatter< char32_t >;
-
 static FormatterTest formatterTest;
 
 void FormatterTest::testBadFormatString() {

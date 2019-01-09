@@ -23,9 +23,9 @@
 
 namespace pera_software::aidkit::containers {
 
-	template < typename Iterator, typename Char >
-		std::basic_ostream< Char > &print( std::basic_ostream< Char > &output, Iterator begin, Iterator end,
-			cpp::basic_string_ref< Char > prefix, cpp::basic_string_ref< Char > delimiter, cpp::basic_string_ref< Char > suffix ) {
+	template < typename Iterator >
+		std::ostream &print( std::ostream &output, Iterator begin, Iterator end,
+			cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix ) {
 
 			output << prefix;
 			auto it = begin;

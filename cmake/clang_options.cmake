@@ -18,6 +18,7 @@ if( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" )
 		-Wno-covered-switch-default
 		-Wno-switch-enum
 		-Wno-used-but-marked-unused
+		-Wno-missing-prototypes
 	)
 endif()
 
