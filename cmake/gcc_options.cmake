@@ -44,9 +44,9 @@ if( CMAKE_CXX_COMPILER_ID STREQUAL "GNU" )
 		-Wlogical-op
 		-Wmissing-field-initializers
 		-Wpacked
-		-Wpadded
+		# -Wpadded
 		-Winvalid-pch
-		-Wabi
+		# -Wabi
 		-Wctor-dtor-privacy
 		-Wnoexcept
 		-Wnoexcept-type

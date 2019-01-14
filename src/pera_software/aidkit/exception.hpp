@@ -29,7 +29,7 @@ namespace pera_software::aidkit {
 
 			virtual const std::string &message() const noexcept = 0;
 
-			const char *what() const noexcept final;
+			const char *what() const noexcept override final;
 	};
 
 }
