@@ -38,6 +38,16 @@ void VectorsTest::testRemove() {
 	QVERIFY( ints.at( 1 ) == 3 );
 }
 
+void VectorsTest::testPopFront() {
+	vector< int > ints = { 1, 2, 3 };
+
+	vectors::pop_front( &ints );
+
+	QVERIFY( ints.size() == 2 );
+	QVERIFY( ints.at( 0 ) == 2 );
+	QVERIFY( ints.at( 1 ) == 3 );
+}
+
 void VectorsTest::testJoin() {
 	vector< int > ints = { 1, 2, 3 };
 

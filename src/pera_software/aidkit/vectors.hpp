@@ -64,6 +64,11 @@ namespace pera_software::aidkit::vectors {
 				return currentValue == value;
 			});
 		}
+
+	template < typename T >
+		void pop_front( std::vector< T > *values ) {
+			values->erase( values->begin() );
+		}
 }
 
 namespace std {

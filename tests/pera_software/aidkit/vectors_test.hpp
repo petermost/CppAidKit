@@ -26,6 +26,7 @@ namespace pera_software::aidkit {
 
 		private Q_SLOTS:
 			void testRemove();
+			void testPopFront();
 
 			void testJoin();
 
