@@ -185,7 +185,7 @@ set( testLibSources
 
 # Find the different packages but evaluate the results later:
 
-find_package( Qt5 COMPONENTS Core Gui Widgets Test )
+find_package( Qt5 QUIET COMPONENTS Core Gui Widgets Test )
 if ( Qt5Core_FOUND )
 	set( CMAKE_AUTOMOC ON )
 	set( CMAKE_AUTORCC ON )
@@ -210,11 +210,8 @@ endif()
 ###############################################################################
 # Setup Boost
 
-find_package( Boost )
+find_package( Boost QUIET )
 if ( Boost_FOUND )
-#	include_directories( ${Boost_INCLUDE_DIRS} )
-#	link_directories( ${Boost_LIBRARY_DIRS} )
-
 	list( APPEND sources ${boostSources} )
 	list( APPEND testSources ${boostTestSources})
 endif()
@@ -222,7 +219,9 @@ endif()
 ###############################################################################
 # Setup AidKit
 
-add_library( AidKit SHARED ${sources} ${RESOURCES} )
+# If we don't specify the type (SHARED or STATIC) then the variable BUILD_SHARED_LIBS
+# determines the type!
+add_library( AidKit ${sources} ${RESOURCES} )
 target_include_directories( AidKit PUBLIC src/ )
 if ( Qt5Widgets_FOUND )
 	target_link_libraries( AidKit Qt5::Widgets )
