@@ -197,14 +197,20 @@ if ( Qt5Core_FOUND )
 
 	list( APPEND sources ${qtCoreSources})
 	list( APPEND testSources ${qtCoreTestSources})
+else()
+    message( WARNING "Qt5 Core not found, building without it!" )
 endif()
 
 if ( Qt5Gui_FOUND )
 	list( APPEND sources ${qtGuiSources})
+else()
+    message( WARNING "Qt5 Gui not found, building without it!" )
 endif()
 
 if ( Qt5Widgets_FOUND )
 	list( APPEND sources ${qtWidgetsSources})
+else()
+    message( WARNING "Qt5 Widgets not found, building without it!" )
 endif()
 
 ###############################################################################
@@ -214,6 +220,8 @@ find_package( Boost QUIET )
 if ( Boost_FOUND )
 	list( APPEND sources ${boostSources} )
 	list( APPEND testSources ${boostTestSources})
+else()
+    message( WARNING "Boost not found, building without it!" )
 endif()
 
 ###############################################################################
