@@ -235,7 +235,8 @@ endif()
 
 add_library( AidKit ${sources} ${RESOURCES} )
 generate_export_header( AidKit
-	EXPORT_FILE_NAME cmake_aidkit_api.hpp
+	EXPORT_FILE_NAME cmake_generated_aidkit_api.hpp
+	INCLUDE_GUARD_NAME CMAKE_GENERATED_AIDKIT_API_HPP
 	EXPORT_MACRO_NAME AIDKIT_API
 )
 

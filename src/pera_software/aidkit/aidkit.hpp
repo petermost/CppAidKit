@@ -18,7 +18,7 @@
 #pragma once
 
 // Include the cmake generated file. See generate_export_header() in the master CMakeLists.txt.
-#include "cmake_aidkit_api.hpp"
+#include "cmake_generated_aidkit_api.hpp"
 
 #ifndef AIDKIT_API
     // Fail early if this symbol isn't defined.
