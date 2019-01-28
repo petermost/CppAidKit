@@ -17,21 +17,27 @@
 
 #pragma once
 
-#include "platform.hpp"
+// Include the cmake generated file. See generate_export_header() in the master CMakeLists.txt.
+#include "cmake_aidkit_api.hpp"
 
-#if defined( AIDKIT_GCC )
-	#define AIDKIT_DECLARE_EXPORT __attribute__(( visibility( "default" )))
-	#define AIDKIT_DECLARE_IMPORT __attribute__(( visibility( "default" )))
-#elif defined( AIDKIT_MSVC )
-	#define AIDKIT_DECLARE_EXPORT __declspec( dllexport )
-	#define AIDKIT_DECLARE_IMPORT __declspec( dllimport )
+#ifndef AIDKIT_API
+    // Fail early if this symbol isn't defined.
+    #error AIDKIT_API is not defined!
 #endif
 
-#if defined( AidKit_EXPORTS ) // Will be defined by cmake
-	#define AIDKIT_API AIDKIT_DECLARE_EXPORT
-#else
-	#define AIDKIT_API AIDKIT_DECLARE_IMPORT
-#endif
+//#if defined( AIDKIT_GCC )
+//	#define AIDKIT_DECLARE_EXPORT __attribute__(( visibility( "default" )))
+//	#define AIDKIT_DECLARE_IMPORT __attribute__(( visibility( "default" )))
+//#elif defined( AIDKIT_MSVC )
+//	#define AIDKIT_DECLARE_EXPORT __declspec( dllexport )
+//	#define AIDKIT_DECLARE_IMPORT __declspec( dllimport )
+//#endif
+
+//#if defined( AidKit_EXPORTS ) // Will be defined by cmake
+//	#define AIDKIT_API AIDKIT_DECLARE_EXPORT
+//#else
+//	#define AIDKIT_API AIDKIT_DECLARE_IMPORT
+//#endif
 
 namespace pera_software::aidkit {
 

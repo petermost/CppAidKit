@@ -19,7 +19,10 @@ cmake_minimum_required( VERSION 3.5 )
 project( AidKit )
 
 include( cmake/all_options.cmake )
+include( GenerateExportHeader )
+
 enable_testing()
+
 
 # Library Sources:
 
@@ -229,8 +232,17 @@ endif()
 
 # If we don't specify the type (SHARED or STATIC) then the variable BUILD_SHARED_LIBS
 # determines the type!
+
 add_library( AidKit ${sources} ${RESOURCES} )
-target_include_directories( AidKit PUBLIC src/ )
+generate_export_header( AidKit
+	EXPORT_FILE_NAME cmake_aidkit_api.hpp
+	EXPORT_MACRO_NAME AIDKIT_API
+)
+
+target_include_directories( AidKit PUBLIC
+	src/
+	"${CMAKE_CURRENT_BINARY_DIR}"
+)
 if ( Qt5Widgets_FOUND )
 	target_link_libraries( AidKit Qt5::Widgets )
 elseif ( Qt5Gui_FOUND )

@@ -5,12 +5,17 @@ message( "C++ compiler: " ${CMAKE_CXX_COMPILER_ID} ", version: " ${CMAKE_CXX_COM
 
 include( ${CMAKE_CURRENT_LIST_DIR}/cmake_options.cmake )
 include( ${CMAKE_CURRENT_LIST_DIR}/cpp_options.cmake )
-include( ${CMAKE_CURRENT_LIST_DIR}/gcc_options.cmake )
-include( ${CMAKE_CURRENT_LIST_DIR}/clang_options.cmake )
-include( ${CMAKE_CURRENT_LIST_DIR}/glibc_options.cmake )
 include( ${CMAKE_CURRENT_LIST_DIR}/qt_options.cmake )
-include( ${CMAKE_CURRENT_LIST_DIR}/rpath_options.cmake )
 include( ${CMAKE_CURRENT_LIST_DIR}/output_options.cmake )
+
+if ( CMAKE_CXX_COMPILER_ID STREQUAL "GNU" )
+	include( ${CMAKE_CURRENT_LIST_DIR}/gcc_options.cmake )
+	include( ${CMAKE_CURRENT_LIST_DIR}/rpath_options.cmake )
+elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	include( ${CMAKE_CURRENT_LIST_DIR}/clang_options.cmake )
+elseif( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	include( ${CMAKE_CURRENT_LIST_DIR}/msvc_options.cmake )
+endif()
 
 # We don't include the aidkit_options.cmake because the add_subdirectory call
 # in it leads to an endless recursion!

@@ -47,8 +47,9 @@ Test::~Test() {
 
 int Test::main( int argc, char *argv[] ) noexcept {
 
+#ifdef AIDKIT_GCC
 	set_terminate( __gnu_cxx::__verbose_terminate_handler );
-
+#endif
 	QCoreApplication application( argc, argv );
 	QStringList arguments = application.arguments();
 
