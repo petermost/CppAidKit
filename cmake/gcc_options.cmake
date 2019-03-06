@@ -52,7 +52,6 @@ add_compile_options(
 	-Woverloaded-virtual
 
 	-pipe                       # Avoid temporary files, speeding up builds.
-	-fvisibility=hidden         # Make symbols hidden by default i.e. must be explicitly exported
 	-fdiagnostics-show-option   # Show which compiler switch caused a warning
 	-pthread                    # Adds support for multithreading with the pthreads library. This option sets flags for both the preprocessor and linker
 )

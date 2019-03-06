@@ -19,7 +19,6 @@ cmake_minimum_required( VERSION 3.5 )
 project( AidKit )
 
 include( cmake/all_options.cmake )
-include( GenerateExportHeader )
 
 enable_testing()
 
