@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required( VERSION 3.5 )
+cmake_minimum_required( VERSION 3.12 )
 project( AidKit )
 
 include( cmake/all_options.cmake )
@@ -200,19 +200,19 @@ if ( Qt5Core_FOUND )
 	list( APPEND sources ${qtCoreSources})
 	list( APPEND testSources ${qtCoreTestSources})
 else()
-    message( WARNING "Qt5 Core not found, building without it!" )
+	message( WARNING "Qt5 Core not found, building without it!" )
 endif()
 
 if ( Qt5Gui_FOUND )
 	list( APPEND sources ${qtGuiSources})
 else()
-    message( WARNING "Qt5 Gui not found, building without it!" )
+	message( WARNING "Qt5 Gui not found, building without it!" )
 endif()
 
 if ( Qt5Widgets_FOUND )
 	list( APPEND sources ${qtWidgetsSources})
 else()
-    message( WARNING "Qt5 Widgets not found, building without it!" )
+	message( WARNING "Qt5 Widgets not found, building without it!" )
 endif()
 
 ###############################################################################
@@ -223,7 +223,7 @@ if ( Boost_FOUND )
 	list( APPEND sources ${boostSources} )
 	list( APPEND testSources ${boostTestSources})
 else()
-    message( WARNING "Boost not found, building without it!" )
+	message( WARNING "Boost not found, building without it!" )
 endif()
 
 ###############################################################################

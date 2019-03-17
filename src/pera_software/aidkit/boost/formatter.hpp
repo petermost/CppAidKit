@@ -29,7 +29,7 @@ namespace pera_software::aidkit::boost {
 	// - The operator % () might throw a too_many_args exception.
 	// - The method str() might throw a too_few_args exception.
 
-	class formatter {
+	class AIDKIT_API formatter {
 		public:
 			formatter( cpp::string_ref formatString ) noexcept;
 
