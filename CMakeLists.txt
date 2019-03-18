@@ -57,6 +57,8 @@ set( sources
 	src/pera_software/aidkit/io/system_error.hpp
 	src/pera_software/aidkit/io/system_error.cpp
 
+	src/pera_software/aidkit/cpp/new.hpp
+	src/pera_software/aidkit/cpp/new.cpp
 	src/pera_software/aidkit/cpp/stdlib.hpp
 	src/pera_software/aidkit/cpp/stdlib.cpp
 	src/pera_software/aidkit/cpp/string_ref.hpp
@@ -86,6 +88,8 @@ set( testSources
 	tests/pera_software/aidkit/io/file_test.hpp
 	tests/pera_software/aidkit/io/file_test.cpp
 
+	tests/pera_software/aidkit/cpp/new_test.hpp
+	tests/pera_software/aidkit/cpp/new_test.cpp
 	tests/pera_software/aidkit/cpp/stdlib_test.hpp
 	tests/pera_software/aidkit/cpp/stdlib_test.cpp
 )
