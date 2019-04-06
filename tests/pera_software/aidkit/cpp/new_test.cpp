@@ -17,6 +17,7 @@
 
 #include "new_test.hpp"
 #include <pera_software/aidkit/cpp/new.hpp>
+#include <memory>
 #include <QTest>
 
 namespace pera_software::aidkit::cpp {
@@ -24,16 +25,16 @@ namespace pera_software::aidkit::cpp {
 using namespace std;
 
 struct UserObject {
-    static int constructorDesctructorCounter;
+	static int constructorDesctructorCounter;
 
-    char unusedData[10];
+	char unusedData[10];
 
-    UserObject() {
-        ++constructorDesctructorCounter;
-    }
-    ~UserObject() {
-        --constructorDesctructorCounter;
-    }
+	UserObject() {
+		++constructorDesctructorCounter;
+	}
+	~UserObject() {
+		--constructorDesctructorCounter;
+	}
 };
 
 int UserObject::constructorDesctructorCounter = 0;
@@ -44,23 +45,23 @@ static constexpr size_t MAX_MEMORY = 100;
 static_assert(MAX_MEMORY >= sizeof(UserObject), "MAX_MEMORY isn't big enough!");
 
 void NewTest::testPlacementDelete() {
-    QCOMPARE(0, UserObject::constructorDesctructorCounter);
-    {
-        char memory[MAX_MEMORY];
-        unique_ptr<UserObject, placement_delete> obj(new(memory)UserObject);
-        QCOMPARE(1, UserObject::constructorDesctructorCounter);
-    }
-    QCOMPARE(0, UserObject::constructorDesctructorCounter);
+	QCOMPARE(0, UserObject::constructorDesctructorCounter);
+	{
+		char memory[MAX_MEMORY];
+		unique_ptr<UserObject, placement_delete> obj(new(memory)UserObject);
+		QCOMPARE(1, UserObject::constructorDesctructorCounter);
+	}
+	QCOMPARE(0, UserObject::constructorDesctructorCounter);
 }
 
 void NewTest::testConstPlacementDelete() {
-    QCOMPARE(0, UserObject::constructorDesctructorCounter);
-    {
-        char memory[MAX_MEMORY];
-        const unique_ptr<UserObject, placement_delete> obj(new(memory)UserObject);
-        QCOMPARE(1, UserObject::constructorDesctructorCounter);
-    }
-    QCOMPARE(0, UserObject::constructorDesctructorCounter);
+	QCOMPARE(0, UserObject::constructorDesctructorCounter);
+	{
+		char memory[MAX_MEMORY];
+		const unique_ptr<UserObject, placement_delete> obj(new(memory)UserObject);
+		QCOMPARE(1, UserObject::constructorDesctructorCounter);
+	}
+	QCOMPARE(0, UserObject::constructorDesctructorCounter);
 }
 
 }
