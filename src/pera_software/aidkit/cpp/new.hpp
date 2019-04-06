@@ -19,11 +19,11 @@
 
 namespace pera_software::aidkit::cpp {
 
-    struct placement_delete {
-        template <typename T>
-            void operator ()(T *pointer) const {
-            pointer->~T();
-        }
-    };
+	struct placement_new_deleter {
+		template <typename T>
+			void operator ()(T *pointer) const {
+			pointer->~T();
+		}
+	};
 
 }

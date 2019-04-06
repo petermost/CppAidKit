@@ -24,44 +24,53 @@ namespace pera_software::aidkit::cpp {
 
 using namespace std;
 
-struct UserObject {
-	static int constructorDesctructorCounter;
+struct SomeObject {
+	static int instanceCounter;
 
 	char unusedData[10];
 
-	UserObject() {
-		++constructorDesctructorCounter;
+	SomeObject() {
+		++instanceCounter;
 	}
-	~UserObject() {
-		--constructorDesctructorCounter;
+
+	~SomeObject() {
+		--instanceCounter;
 	}
 };
 
-int UserObject::constructorDesctructorCounter = 0;
+int SomeObject::instanceCounter = 0;
 
 static NewTest newTest;
 
-static constexpr size_t MAX_MEMORY = 100;
-static_assert(MAX_MEMORY >= sizeof(UserObject), "MAX_MEMORY isn't big enough!");
+static constexpr size_t MEMORY_SIZE = 100;
+static_assert(MEMORY_SIZE >= sizeof(SomeObject), "MEMORY_SIZE isn't big enough!");
 
 void NewTest::testPlacementDelete() {
-	QCOMPARE(0, UserObject::constructorDesctructorCounter);
+	QCOMPARE(0, SomeObject::instanceCounter);
 	{
-		char memory[MAX_MEMORY];
-		unique_ptr<UserObject, placement_delete> obj(new(memory)UserObject);
-		QCOMPARE(1, UserObject::constructorDesctructorCounter);
+		char sharedMemory[MEMORY_SIZE];
+		char uniqueMemory[MEMORY_SIZE];
+
+		shared_ptr<SomeObject> sharedObj(new(sharedMemory)SomeObject, placement_new_deleter());
+		unique_ptr<SomeObject, placement_new_deleter> uniqueObj(new(uniqueMemory)SomeObject);
+
+		QCOMPARE(2, SomeObject::instanceCounter);
 	}
-	QCOMPARE(0, UserObject::constructorDesctructorCounter);
+	QCOMPARE(0, SomeObject::instanceCounter);
 }
 
 void NewTest::testConstPlacementDelete() {
-	QCOMPARE(0, UserObject::constructorDesctructorCounter);
+	QCOMPARE(0, SomeObject::instanceCounter);
 	{
-		char memory[MAX_MEMORY];
-		const unique_ptr<UserObject, placement_delete> obj(new(memory)UserObject);
-		QCOMPARE(1, UserObject::constructorDesctructorCounter);
+		char sharedMemory[MEMORY_SIZE];
+		char uniqueMemory[MEMORY_SIZE];
+
+		const shared_ptr<SomeObject> sharedObj(new(sharedMemory)SomeObject, placement_new_deleter());
+		const unique_ptr<SomeObject, placement_new_deleter> uniqueObj(new(uniqueMemory)SomeObject);
+
+		QCOMPARE(2, SomeObject::instanceCounter);
 	}
-	QCOMPARE(0, UserObject::constructorDesctructorCounter);
+	QCOMPARE(0, SomeObject::instanceCounter);
 }
 
 }
