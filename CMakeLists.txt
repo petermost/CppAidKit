@@ -20,9 +20,6 @@ project( AidKit )
 
 include( cmake/all_options.cmake )
 
-enable_testing()
-
-
 # Library Sources:
 
 set( sources
