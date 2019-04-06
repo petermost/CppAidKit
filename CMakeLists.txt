@@ -54,6 +54,8 @@ set( sources
 	src/pera_software/aidkit/io/file.cpp
 	src/pera_software/aidkit/io/file_error.hpp
 	src/pera_software/aidkit/io/file_error.cpp
+	src/pera_software/aidkit/io/file_ptr.hpp
+	src/pera_software/aidkit/io/file_ptr.cpp
 	src/pera_software/aidkit/io/system_error.hpp
 	src/pera_software/aidkit/io/system_error.cpp
 
@@ -87,6 +89,8 @@ set( testSources
 
 	tests/pera_software/aidkit/io/file_test.hpp
 	tests/pera_software/aidkit/io/file_test.cpp
+	tests/pera_software/aidkit/io/file_ptr_test.hpp
+	tests/pera_software/aidkit/io/file_ptr_test.cpp
 
 	tests/pera_software/aidkit/cpp/new_test.hpp
 	tests/pera_software/aidkit/cpp/new_test.cpp
