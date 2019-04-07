@@ -17,15 +17,33 @@
 
 #include "MessagesModel.hpp"
 #include <QColor>
-#include <pera_software/aidkit/qt/Resources.hpp>
+#include <QTime>
+#include <pera_software/aidkit/qt/gui/Resources.hpp>
 #include <limits>
 
 namespace pera_software::aidkit::qt {
 
 using namespace std;
 
+static QStandardItem *disableFeatures(QStandardItem *item) {
+	item->setEditable(false);
+	item->setSelectable(false);
+	return item;
+}
+
+static QList<QStandardItem *> makeRowItems(const QIcon &icon, const QString &message) {
+	QList<QStandardItem *> rowItems;
+
+	rowItems.append(disableFeatures(new QStandardItem(Resources::clockIcon(), QTime::currentTime().toString())));
+	rowItems.append(disableFeatures(new QStandardItem(icon, message)));
+
+	return rowItems;
+}
+
 MessagesModel::MessagesModel( QObject *parent )
 	: QStandardItemModel( parent ) {
+
+	setHorizontalHeaderLabels(QList<QString>({"Time", "Text"}));
 }
 
 void MessagesModel::setMaximumItemCount( int maximumItemCount ) {
@@ -33,23 +51,25 @@ void MessagesModel::setMaximumItemCount( int maximumItemCount ) {
 }
 
 void MessagesModel::showInformation( const QString &message ) {
-	showItem( new QStandardItem( Resources::informationIcon(), message ));
+	showItem( makeRowItems( Resources::informationIcon(), message ));
 }
 
 void MessagesModel::showWarning( const QString &message ) {
-	showItem( new QStandardItem( Resources::warningIcon(), message ));
+	showItem( makeRowItems( Resources::warningIcon(), message ));
 }
 
 void MessagesModel::showError( const QString &message ) {
-	showItem( new QStandardItem( Resources::errorIcon(), message ));
+	showItem( makeRowItems( Resources::errorIcon(), message ));
 }
 
 void MessagesModel::showDebug(const QString &message) {
-	showItem( new QStandardItem( Resources::debugIcon(), message ));
+	showItem( makeRowItems( Resources::debugIcon(), message ));
 }
 
-void MessagesModel::showItem( QStandardItem *item ) {
-	appendRow( item );
+void MessagesModel::showItem(const QList<QStandardItem *> items ) {
+	QList<QStandardItem *> rowItems;
+
+	appendRow( items );
 
 	if ( maximumItemCount_.has_value() ) {
 		while ( rowCount() > *maximumItemCount_ )

@@ -16,17 +16,27 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "MessagesView.hpp"
+#include <QHeaderView>
 
 namespace pera_software::aidkit::qt {
 
 using namespace std;
 
 MessagesView::MessagesView( QWidget *parent )
-	: QListView( parent ) {
+	: QTableView( parent ) {
+
+	setSelectionBehavior(QTableView::SelectionBehavior::SelectRows);
+
+	verticalHeader()->hide();
+
+	horizontalHeader()->hide();
+	horizontalHeader()->setStretchLastSection(true);
+	horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
+	horizontalHeader()->setSelectionMode(QHeaderView::SelectionMode::NoSelection);
 }
 
 void MessagesView::setModel( QAbstractItemModel *model ) {
-	QListView::setModel( model );
+	QTableView::setModel( model );
 
 	connect( model, &QAbstractItemModel::rowsInserted, [ this ]( const QModelIndex &parent, int /* first */, int last ) {
 		scrollTo( this->model()->index( last, 0, parent ));

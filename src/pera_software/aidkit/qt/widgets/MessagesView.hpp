@@ -18,11 +18,11 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <QListView>
+#include <QTableView>
 
 namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API MessagesView : public QListView {
+	class AIDKIT_API MessagesView : public QTableView {
 		Q_OBJECT
 		public:
 			explicit MessagesView( QWidget *parent = nullptr );

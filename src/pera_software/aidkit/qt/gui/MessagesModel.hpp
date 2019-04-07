@@ -36,7 +36,7 @@ namespace pera_software::aidkit::qt {
 			void showDebug( const QString &message );
 
 		private:
-			void showItem( QStandardItem *item );
+			void showItem(const QList<QStandardItem *> items);
 
 			std::optional< int > maximumItemCount_;
 	};
