@@ -18,7 +18,7 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/qt/Resources.hpp>
+#include <pera_software/aidkit/qt/gui/Resources.hpp>
 
 class QPixmap;
 

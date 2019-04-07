@@ -22,14 +22,20 @@
 
 namespace pera_software::company::qt {
 
+using namespace aidkit::qt;
+
 static const QString PREFIX(QStringLiteral(":/pera_software/company/resources/"));
 
+static QString prependPrefix(const QString &iconName) {
+	return PREFIX + iconName;
+}
+
 QIcon PERAResources::icon() {
-	return QIcon(PREFIX + QStringLiteral("Icon.png"));
+	return loadIcon(prependPrefix(QStringLiteral("Icon.png")));
 }
 
 QPixmap PERAResources::logo() {
-	return QPixmap(PREFIX + QStringLiteral("Logo.png"));
+	return QPixmap(prependPrefix(QStringLiteral("Logo.png")));
 }
 
 }

@@ -16,6 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "PERAResourcesTest.hpp"
+#include <pera_software/aidkit/qt/gui/ResourcesTest.hpp>
 #include <pera_software/company/qt/PERAResources.hpp>
 #include <QTest>
 

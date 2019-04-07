@@ -137,16 +137,16 @@ set( qtCoreTestSources
 # QtGui Sources:
 
 set( qtGuiSources
-	src/pera_software/aidkit/qt/Resources.hpp
-	src/pera_software/aidkit/qt/Resources.cpp
 	src/pera_software/aidkit/qt/gui/ForwardDeclarations.hpp
 	src/pera_software/aidkit/qt/gui/MessagesModel.cpp
 	src/pera_software/aidkit/qt/gui/MessagesModel.hpp
+	src/pera_software/aidkit/qt/gui/Resources.hpp
+	src/pera_software/aidkit/qt/gui/Resources.cpp
 )
 
 set( qtGuiTestSources
-	tests/pera_software/aidkit/qt/ResourcesTest.hpp
-	tests/pera_software/aidkit/qt/ResourcesTest.cpp
+	tests/pera_software/aidkit/qt/gui/ResourcesTest.hpp
+	tests/pera_software/aidkit/qt/gui/ResourcesTest.cpp
 
 	tests/pera_software/company/qt/PERAResourcesTest.hpp
 	tests/pera_software/company/qt/PERAResourcesTest.cpp

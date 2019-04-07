@@ -16,7 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "Actions.hpp"
-#include <pera_software/aidkit/qt/Resources.hpp>
+#include <pera_software/aidkit/qt/gui/Resources.hpp>
 #include <QAction>
 #include <QApplication>
 

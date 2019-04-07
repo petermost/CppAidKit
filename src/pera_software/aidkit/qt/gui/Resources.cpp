@@ -26,32 +26,43 @@ namespace pera_software::aidkit::qt {
 
 static const QString PREFIX(QStringLiteral(":/pera_software/aidkit/resources/"));
 
-static QIcon loadIcon(const QString &iconName) {
-	return QIcon(PREFIX + iconName);
+QIcon loadIcon(const QString &iconName) {
+	if (QFile::exists(iconName))
+		return QIcon(iconName);
+	else
+		return QIcon();
+}
+
+static QString prependPrefix(const QString &iconName) {
+	return PREFIX + iconName;
 }
 
 QIcon Resources::quitIcon() {
-	return loadIcon(QStringLiteral("system-shutdown-16x16.png"));
+	return loadIcon(prependPrefix(QStringLiteral("system-shutdown-16x16.png")));
 }
 
 QIcon Resources::debugIcon() {
-	return loadIcon(QStringLiteral("Debug.png"));
+	return loadIcon(prependPrefix(QStringLiteral("Debug.png")));
 }
 
 QIcon Resources::warningIcon() {
-	return loadIcon(QStringLiteral("dialog-warning-16x16.png"));
+	return loadIcon(prependPrefix(QStringLiteral("dialog-warning-16x16.png")));
 }
 
 QIcon Resources::informationIcon() {
-	return loadIcon(QStringLiteral("dialog-information-16x16.png"));
+	return loadIcon(prependPrefix(QStringLiteral("dialog-information-16x16.png")));
 }
 
 QIcon Resources::errorIcon() {
-	return loadIcon(QStringLiteral("dialog-error-16x16.png"));
+	return loadIcon(prependPrefix(QStringLiteral("dialog-error-16x16.png")));
 }
 
 QIcon Resources::clockIcon() {
-	return loadIcon(QStringLiteral("clock-16x16.png"));
+	return loadIcon(prependPrefix(QStringLiteral("clock-16x16.png")));
+}
+
+QIcon Resources::settingsIcon() {
+	return loadIcon(prependPrefix(QStringLiteral("configure-16x16.png")));
 }
 
 

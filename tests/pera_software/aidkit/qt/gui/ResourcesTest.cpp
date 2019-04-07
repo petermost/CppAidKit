@@ -15,21 +15,29 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <pera_software/aidkit/qt/test/Test.hpp>
-
-#define ASSERT_IMAGE(icon) \
-	QVERIFY(!icon.isNull())
+#include "ResourcesTest.hpp"
+#include <pera_software/aidkit/qt/gui/Resources.hpp>
+#include <QTest>
 
 namespace pera_software::aidkit::qt {
 
-	class ResourcesTest : public qt::Test {
-			Q_OBJECT
+using namespace std;
 
-		private Q_SLOTS:
-			void testMissingIcon();
-			void testLoadIcons();
-	};
+static ResourcesTest resourceTest;
+
+void ResourcesTest::testMissingIcon() {
+	QIcon missingIcon = loadIcon(QStringLiteral(":/missing.png"));
+	QVERIFY(missingIcon.isNull());
+}
+
+void ResourcesTest::testLoadIcons() {
+	ASSERT_IMAGE(Resources::quitIcon());
+	ASSERT_IMAGE(Resources::debugIcon());
+	ASSERT_IMAGE(Resources::warningIcon());
+	ASSERT_IMAGE(Resources::informationIcon());
+	ASSERT_IMAGE(Resources::errorIcon());
+	ASSERT_IMAGE(Resources::clockIcon());
+	ASSERT_IMAGE(Resources::settingsIcon());
+}
 
 }

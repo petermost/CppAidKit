@@ -18,7 +18,6 @@
 #pragma once
 
 #include <pera_software/aidkit/qt/test/Test.hpp>
-#include <pera_software/aidkit/qt/ResourcesTest.hpp>
 
 namespace pera_software::company::qt {
 

@@ -17,7 +17,7 @@
 
 #include "MessagesWidget.hpp"
 #include <QColor>
-#include <pera_software/aidkit/qt/Resources.hpp>
+#include <pera_software/aidkit/qt/gui/Resources.hpp>
 #include <limits>
 
 namespace pera_software::aidkit::qt {

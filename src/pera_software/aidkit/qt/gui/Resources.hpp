@@ -1,4 +1,4 @@
-// Copyright 2019 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,28 +15,29 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "ResourcesTest.hpp"
-#include <pera_software/aidkit/qt/Resources.hpp>
-#include <QTest>
+#pragma once
+
+#include <pera_software/aidkit/aidkit.hpp>
+
+class QIcon;
+class QString;
 
 namespace pera_software::aidkit::qt {
 
-using namespace std;
+	AIDKIT_API QIcon loadIcon(const QString &iconName);
 
-static ResourcesTest resourceTest;
+	class AIDKIT_API Resources {
+		public:
+			Resources() = delete;
 
-void ResourcesTest::testMissingIcon() {
-	QIcon missingIcon("");
-	QVERIFY(missingIcon.isNull());
-}
+			static QIcon quitIcon();
 
-void ResourcesTest::testLoadIcons() {
-	ASSERT_IMAGE(Resources::quitIcon());
-	ASSERT_IMAGE(Resources::debugIcon());
-	ASSERT_IMAGE(Resources::warningIcon());
-	ASSERT_IMAGE(Resources::informationIcon());
-	ASSERT_IMAGE(Resources::errorIcon());
-	ASSERT_IMAGE(Resources::clockIcon());
-}
+			static QIcon debugIcon();
+			static QIcon warningIcon();
+			static QIcon informationIcon();
+			static QIcon errorIcon();
 
+			static QIcon clockIcon();
+			static QIcon settingsIcon();
+	};
 }
