@@ -24,7 +24,7 @@ class QString;
 
 namespace pera_software::aidkit::qt {
 
-	AIDKIT_API QIcon loadIcon(const QString &iconName);
+	QIcon AIDKIT_API loadIcon(const QString &iconName);
 
 	class AIDKIT_API Resources {
 		public:
