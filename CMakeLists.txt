@@ -128,6 +128,8 @@ set( qtCoreSources
 )
 
 set( qtCoreTestSources
+	tests/pera_software/aidkit/qt/ResourcesTest.hpp
+	tests/pera_software/aidkit/qt/ResourcesTest.cpp
 	tests/pera_software/aidkit/qt/core/ConsoleTest.hpp
 	tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
 	tests/pera_software/aidkit/qt/core/EndianTest.hpp
@@ -266,7 +268,7 @@ endif()
 if ( Qt5Test_FOUND )
 	add_library( AidKitTest ${testLibSources})
 	target_include_directories( AidKitTest PUBLIC src/ )
-	target_link_libraries( AidKitTest AidKit Qt5::Test Qt5::Core )
+	target_link_libraries( AidKitTest AidKit Qt5::Test Qt5::Core Qt5::Gui )
 endif()
 
 ###############################################################################

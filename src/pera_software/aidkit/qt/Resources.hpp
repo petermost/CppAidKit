@@ -28,9 +28,6 @@ namespace pera_software::aidkit::qt {
 		public:
 			Resources() = delete;
 
-			static void enableThemeSupport();
-			static void disableThemeSupport();
-
 			static QIcon quitIcon();
 
 			static QIcon debugIcon();
@@ -38,10 +35,7 @@ namespace pera_software::aidkit::qt {
 			static QIcon informationIcon();
 			static QIcon errorIcon();
 
-		private:
-			static bool isThemeSupportEnabled;
-
-			static QIcon loadIcon(const QString &name, const QString &alternativeName);
+			static QIcon clockIcon();
 	};
 
 }

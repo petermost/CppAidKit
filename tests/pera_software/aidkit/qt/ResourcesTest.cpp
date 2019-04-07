@@ -1,4 +1,4 @@
-// Copyright 2014 Peter Most, PERA Software Solutions GmbH
+// Copyright 2019 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,17 +15,31 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "PERA.hpp"
+#include "ResourcesTest.hpp"
+#include <pera_software/aidkit/qt/Resources.hpp>
+#include <QTest>
 
-namespace pera_software::company {
+namespace pera_software::aidkit::qt {
 
-const char PERA::NAME[] = "PERA Software Solutions";
-const char PERA::FULL_NAME[] = "PERA Software Solutions GmbH";
+using namespace std;
 
-const char PERA::DOMAIN_NAME[] = "PERA-Software.com";
-const char PERA::FULL_DOMAIN_NAME[] = "http://www.PERA-Software.com";
+static ResourceTest resourceTest;
 
-const char PERA::ICON_NAME[] = ":/pera_software/company/resources/Icon.png";
-const char PERA::LOGO_NAME[] = ":/pera_software/company/resources/Logo.png";
+#define ASSERT_ICON(icon) \
+	QVERIFY(!icon.isNull())
+
+void ResourceTest::testMissingIcon() {
+	QIcon missingIcon("");
+	QVERIFY(missingIcon.isNull());
+}
+
+void ResourceTest::testLoadIcons() {
+	ASSERT_ICON(Resources::quitIcon());
+	ASSERT_ICON(Resources::debugIcon());
+	ASSERT_ICON(Resources::warningIcon());
+	ASSERT_ICON(Resources::informationIcon());
+	ASSERT_ICON(Resources::errorIcon());
+	ASSERT_ICON(Resources::clockIcon());
+}
 
 }

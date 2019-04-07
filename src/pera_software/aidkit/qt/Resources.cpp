@@ -20,55 +20,39 @@
 #include <QFile>
 #include <QIcon>
 
+// The icons are from 'Oxygen'.
+
 namespace pera_software::aidkit::qt {
 
-bool Resources::isThemeSupportEnabled = true;
+static const QString PREFIX(QStringLiteral(":/pera_software/aidkit/resources/"));
 
-//##################################################################################################
-
-void Resources::enableThemeSupport() {
-	isThemeSupportEnabled = true;
-}
-
-void Resources::disableThemeSupport() {
-	isThemeSupportEnabled = false;
+static QIcon loadIcon(const QString &iconName) {
+	return QIcon(PREFIX + iconName);
 }
 
 QIcon Resources::quitIcon() {
-	return loadIcon( QStringLiteral( "application-exit" ), QStringLiteral( ":/system-shutdown-16x16.png" ));
+	return loadIcon(QStringLiteral("system-shutdown-16x16.png"));
 }
 
 QIcon Resources::debugIcon() {
-	return loadIcon( QStringLiteral( ":/Debug.png" ), QStringLiteral( ":/Debug.png" ));
+	return loadIcon(QStringLiteral("Debug.png"));
 }
 
 QIcon Resources::warningIcon() {
-	return loadIcon( QStringLiteral( "dialog-warning" ), QStringLiteral( ":/dialog-warning-16x16.png" ));
+	return loadIcon(QStringLiteral("dialog-warning-16x16.png"));
 }
 
 QIcon Resources::informationIcon() {
-	return loadIcon( QStringLiteral( "dialog-information" ), QStringLiteral( ":/dialog-information-16x16.png" ));
+	return loadIcon(QStringLiteral("dialog-information-16x16.png"));
 }
 
 QIcon Resources::errorIcon() {
-	return loadIcon( QStringLiteral( "dialog-error" ), QStringLiteral( ":/dialog-error-16x16.png" ));
+	return loadIcon(QStringLiteral("dialog-error-16x16.png"));
 }
 
-static QIcon loadExistingIcon( const QString &iconName ) {
-	Q_ASSERT( QFile::exists( iconName ));
-	return QIcon( iconName );
+QIcon Resources::clockIcon() {
+	return loadIcon(QStringLiteral("clock-16x16.png"));
 }
 
-QIcon Resources::loadIcon( const QString &name, const QString &alternativeName ) {
-	if ( !isThemeSupportEnabled )
-		return loadExistingIcon( alternativeName );
-	else {
-		QIcon icon = QIcon::fromTheme( name );
-		if ( icon.isNull() ) {
-			icon = loadExistingIcon( alternativeName );
-		}
-		return icon;
-	}
-}
 
 }

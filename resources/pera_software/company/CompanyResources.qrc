@@ -18,7 +18,7 @@ along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <RCC>
-	<qresource>
+	<qresource prefix="/pera_software/company/resources/">
 		<file>Icon.ico</file>
 		<file>Icon.png</file>
 		<file>Logo.png</file>
