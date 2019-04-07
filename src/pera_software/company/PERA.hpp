@@ -28,9 +28,6 @@ namespace pera_software::company {
 
 			static const char DOMAIN_NAME[];
 			static const char FULL_DOMAIN_NAME[];
-
-			static const char ICON_NAME[];
-			static const char LOGO_NAME[];
 	};
 }
 

@@ -15,11 +15,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
+#pragma once
+
 #include <pera_software/aidkit/qt/test/Test.hpp>
+
+#define ASSERT_IMAGE(icon) \
+	QVERIFY(!icon.isNull())
 
 namespace pera_software::aidkit::qt {
 
-	class ResourceTest : public qt::Test {
+	class ResourcesTest : public qt::Test {
 			Q_OBJECT
 
 		private Q_SLOTS:

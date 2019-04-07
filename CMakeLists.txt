@@ -128,8 +128,6 @@ set( qtCoreSources
 )
 
 set( qtCoreTestSources
-	tests/pera_software/aidkit/qt/ResourcesTest.hpp
-	tests/pera_software/aidkit/qt/ResourcesTest.cpp
 	tests/pera_software/aidkit/qt/core/ConsoleTest.hpp
 	tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
 	tests/pera_software/aidkit/qt/core/EndianTest.hpp
@@ -144,6 +142,14 @@ set( qtGuiSources
 	src/pera_software/aidkit/qt/gui/ForwardDeclarations.hpp
 	src/pera_software/aidkit/qt/gui/MessagesModel.cpp
 	src/pera_software/aidkit/qt/gui/MessagesModel.hpp
+)
+
+set( qtGuiTestSources
+	tests/pera_software/aidkit/qt/ResourcesTest.hpp
+	tests/pera_software/aidkit/qt/ResourcesTest.cpp
+
+	tests/pera_software/company/qt/PERAResourcesTest.hpp
+	tests/pera_software/company/qt/PERAResourcesTest.cpp
 )
 
 # QtWidgets Sources:
@@ -171,6 +177,8 @@ set( qtWidgetsSources
 	src/pera_software/company/qt/PERAApplication.cpp
 	src/pera_software/company/qt/PERAMainWindow.hpp
 	src/pera_software/company/qt/PERAMainWindow.cpp
+	src/pera_software/company/qt/PERAResources.hpp
+	src/pera_software/company/qt/PERAResources.cpp
 )
 
 # Boost Sources:
@@ -212,6 +220,7 @@ endif()
 
 if ( Qt5Gui_FOUND )
 	list( APPEND sources ${qtGuiSources})
+	list( APPEND testSources ${qtGuiTestSources})
 else()
 	message( WARNING "Qt5 Gui not found, building without it!" )
 endif()
@@ -267,7 +276,7 @@ endif()
 
 if ( Qt5Test_FOUND )
 	add_library( AidKitTest ${testLibSources})
-	target_include_directories( AidKitTest PUBLIC src/ )
+	target_include_directories( AidKitTest PUBLIC src/ tests/ )
 	target_link_libraries( AidKitTest AidKit Qt5::Test Qt5::Core Qt5::Gui )
 endif()
 

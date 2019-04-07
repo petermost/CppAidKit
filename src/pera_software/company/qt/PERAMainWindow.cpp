@@ -25,7 +25,7 @@
 #include <QSettings>
 #include <QString>
 
-#include <pera_software/company/PERA.hpp>
+#include <pera_software/company/qt/PERAResources.hpp>
 #include <pera_software/aidkit/qt/widgets/Actions.hpp>
 #include <pera_software/aidkit/qt/widgets/Widgets.hpp>
 
@@ -46,7 +46,7 @@ PERAMainWindow::PERAMainWindow( QWidget *parent )
 	// I couldn't quite figure out the difference between QApplication::setWindowIcon(), QWidget::setWindowIcon()
 	// and QWindow::setIcon(), so for now we set the icon here, were it is probably most expected:
 
-	setWindowIcon( QIcon( PERA::ICON_NAME ));
+	setWindowIcon(PERAResources::icon());
 }
 
 //==================================================================================================

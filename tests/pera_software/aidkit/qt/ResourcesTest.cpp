@@ -23,23 +23,20 @@ namespace pera_software::aidkit::qt {
 
 using namespace std;
 
-static ResourceTest resourceTest;
+static ResourcesTest resourceTest;
 
-#define ASSERT_ICON(icon) \
-	QVERIFY(!icon.isNull())
-
-void ResourceTest::testMissingIcon() {
+void ResourcesTest::testMissingIcon() {
 	QIcon missingIcon("");
 	QVERIFY(missingIcon.isNull());
 }
 
-void ResourceTest::testLoadIcons() {
-	ASSERT_ICON(Resources::quitIcon());
-	ASSERT_ICON(Resources::debugIcon());
-	ASSERT_ICON(Resources::warningIcon());
-	ASSERT_ICON(Resources::informationIcon());
-	ASSERT_ICON(Resources::errorIcon());
-	ASSERT_ICON(Resources::clockIcon());
+void ResourcesTest::testLoadIcons() {
+	ASSERT_IMAGE(Resources::quitIcon());
+	ASSERT_IMAGE(Resources::debugIcon());
+	ASSERT_IMAGE(Resources::warningIcon());
+	ASSERT_IMAGE(Resources::informationIcon());
+	ASSERT_IMAGE(Resources::errorIcon());
+	ASSERT_IMAGE(Resources::clockIcon());
 }
 
 }

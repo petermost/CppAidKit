@@ -1,4 +1,4 @@
-// Copyright 2014 Peter Most, PERA Software Solutions GmbH
+// Copyright 2019 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,14 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "PERA.hpp"
+#include "PERAResources.hpp"
+#include <QString>
+#include <QFile>
+#include <QIcon>
 
-namespace pera_software::company {
+namespace pera_software::company::qt {
 
-const char PERA::NAME[] = "PERA Software Solutions";
-const char PERA::FULL_NAME[] = "PERA Software Solutions GmbH";
+static const QString PREFIX(QStringLiteral(":/pera_software/company/resources/"));
 
-const char PERA::DOMAIN_NAME[] = "PERA-Software.com";
-const char PERA::FULL_DOMAIN_NAME[] = "http://www.PERA-Software.com";
+QIcon PERAResources::icon() {
+	return QIcon(PREFIX + QStringLiteral("Icon.png"));
+}
+
+QPixmap PERAResources::logo() {
+	return QPixmap(PREFIX + QStringLiteral("Logo.png"));
+}
 
 }

@@ -17,6 +17,7 @@
 
 #include "PERAAboutDialog.hpp"
 #include <pera_software/company/PERA.hpp>
+#include <pera_software/company/qt/PERAResources.hpp>
 #include <QFile>
 #include <QLabel>
 #include <QPixmap>
@@ -32,8 +33,7 @@ PERAAboutDialog::PERAAboutDialog( QWidget *parent )
 
 	QLabel *peraLogo = new QLabel;
 	peraLogo->setAlignment( Qt::AlignHCenter );
-	Q_ASSERT( QFile::exists( PERA::LOGO_NAME ));
-	peraLogo->setPixmap( QPixmap( PERA::LOGO_NAME ));
+	peraLogo->setPixmap(PERAResources::logo());
 
 	auto peraUrl = new QLabel;
 	peraUrl->setOpenExternalLinks( true );
