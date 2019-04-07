@@ -24,53 +24,51 @@ namespace pera_software::aidkit::cpp {
 
 using namespace std;
 
-struct SomeObject {
-	static int instanceCounter;
+class InstanceCounter {
+	public:
+		InstanceCounter(int *counter)
+			: counter_(counter) {
+			++(*counter_);
+		}
 
-	char unusedData[10];
-
-	SomeObject() {
-		++instanceCounter;
-	}
-
-	~SomeObject() {
-		--instanceCounter;
-	}
+		~InstanceCounter() {
+			--(*counter_);
+		}
+	private:
+		int *const counter_;
 };
-
-int SomeObject::instanceCounter = 0;
 
 static NewTest newTest;
 
 static constexpr size_t MEMORY_SIZE = 100;
-static_assert(MEMORY_SIZE >= sizeof(SomeObject), "MEMORY_SIZE isn't big enough!");
+static_assert(MEMORY_SIZE >= sizeof(InstanceCounter), "MEMORY_SIZE isn't big enough!");
 
 void NewTest::testPlacementDelete() {
-	QCOMPARE(0, SomeObject::instanceCounter);
+	int counter = 0;
 	{
 		char sharedMemory[MEMORY_SIZE];
 		char uniqueMemory[MEMORY_SIZE];
 
-		shared_ptr<SomeObject> sharedObj(new(sharedMemory)SomeObject, placement_new_deleter());
-		unique_ptr<SomeObject, placement_new_deleter> uniqueObj(new(uniqueMemory)SomeObject);
+		shared_ptr<InstanceCounter> sharedObj(new(sharedMemory)InstanceCounter(&counter), placement_new_deleter());
+		unique_ptr<InstanceCounter, placement_new_deleter> uniqueObj(new(uniqueMemory)InstanceCounter(&counter));
 
-		QCOMPARE(2, SomeObject::instanceCounter);
+		QCOMPARE(2, counter);
 	}
-	QCOMPARE(0, SomeObject::instanceCounter);
+	QCOMPARE(0, counter);
 }
 
 void NewTest::testConstPlacementDelete() {
-	QCOMPARE(0, SomeObject::instanceCounter);
+	int counter = 0;
 	{
 		char sharedMemory[MEMORY_SIZE];
 		char uniqueMemory[MEMORY_SIZE];
 
-		const shared_ptr<SomeObject> sharedObj(new(sharedMemory)SomeObject, placement_new_deleter());
-		const unique_ptr<SomeObject, placement_new_deleter> uniqueObj(new(uniqueMemory)SomeObject);
+		const shared_ptr<InstanceCounter> sharedObj(new(sharedMemory)InstanceCounter(&counter), placement_new_deleter());
+		const unique_ptr<InstanceCounter, placement_new_deleter> uniqueObj(new(uniqueMemory)InstanceCounter(&counter));
 
-		QCOMPARE(2, SomeObject::instanceCounter);
+		QCOMPARE(2, counter);
 	}
-	QCOMPARE(0, SomeObject::instanceCounter);
+	QCOMPARE(0, counter);
 }
 
 }
