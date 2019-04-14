@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "vectors_test.hpp"
+#include "containers_test.hpp"
 #include <pera_software/aidkit/vectors.hpp>
 #include <QTest>
 #include <sstream>
@@ -24,28 +24,41 @@ namespace pera_software::aidkit {
 
 using namespace std;
 
-static VectorsTest vectorsTest;
+static ContainersTest containersTest;
 
-void VectorsTest::testRemove() {
-	vector< int > ints = { 1, 2, 2, 2, 3 };
-
-	// It is enough to test remove() because it calls remove_if():
-
-	vectors::remove( &ints, 2 );
-
-	QVERIFY( ints.size() == 2 );
-	QVERIFY( ints.at( 0 ) == 1 );
-	QVERIFY( ints.at( 1 ) == 3 );
-}
-
-void VectorsTest::testPopFront() {
+void ContainersTest::testJoin() {
 	vector< int > ints = { 1, 2, 3 };
 
-	vectors::pop_front( &ints );
+	string str = containers::print( ints, "[", ",", "]" );
 
-	QVERIFY( ints.size() == 2 );
-	QVERIFY( ints.at( 0 ) == 2 );
-	QVERIFY( ints.at( 1 ) == 3 );
+	QVERIFY( str == "[1,2,3]" );
+}
+
+void ContainersTest::testStreamOperatorWithEmptyVector() {
+	vector< int > ints;
+	stringstream output;
+
+	output << ints;
+
+	QVERIFY( output.str() == "" );
+}
+
+void ContainersTest::testStreamOperatorWithOneElement() {
+	vector< int > ints = { 1 };
+	stringstream output;
+
+	output << ints;
+
+	QVERIFY( output.str() == "1" );
+}
+
+void ContainersTest::testStreamOperatorWithMultipleElements() {
+	vector< int > ints = { 1, 2, 3 };
+	stringstream output;
+
+	output << ints;
+
+	QVERIFY( output.str() == "1, 2, 3" );
 }
 
 }

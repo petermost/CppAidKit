@@ -71,6 +71,8 @@ set( sources
 )
 
 set( testSources
+	tests/pera_software/aidkit/containers_test.hpp
+	tests/pera_software/aidkit/containers_test.cpp
 	tests/pera_software/aidkit/enum_class_test.hpp
 	tests/pera_software/aidkit/enum_class_test.cpp
 	tests/pera_software/aidkit/enum_flags_test.hpp

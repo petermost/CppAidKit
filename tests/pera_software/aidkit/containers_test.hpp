@@ -21,11 +21,15 @@
 
 namespace pera_software::aidkit {
 
-	class VectorsTest : public qt::Test {
+	class ContainersTest : public qt::Test {
 			Q_OBJECT
 
 		private Q_SLOTS:
-			void testRemove();
-			void testPopFront();
+			void testJoin();
+
+			void testStreamOperatorWithEmptyVector();
+			void testStreamOperatorWithOneElement();
+			void testStreamOperatorWithMultipleElements();
 	};
+
 }

@@ -25,8 +25,8 @@ namespace pera_software::aidkit::containers {
 
 	template < typename Iterator >
 		std::ostream &print( std::ostream &output, Iterator begin, Iterator end,
-			cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix ) {
-
+			cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix )
+		{
 			output << prefix;
 			auto it = begin;
 			if ( it != end ) {
@@ -37,5 +37,30 @@ namespace pera_software::aidkit::containers {
 			output << suffix;
 
 			return output;
+		}
+
+	template < typename Container >
+		std::ostream &print( std::ostream &output, const Container &container,
+			cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix )
+		{
+			return print( output, container.begin(), container.end(), prefix, delimiter, suffix );
+		}
+
+	template < typename Iterator >
+		std::string print(Iterator begin, Iterator end,
+			cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix )
+		{
+			std::ostringstream valueStream;
+
+			print( valueStream, begin, end, prefix, delimiter, suffix );
+
+			return valueStream.str();
+		}
+
+	template < typename Container >
+		std::string print(const Container &container,
+			cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix )
+		{
+			return print(container.begin(), container.end(), prefix, delimiter, suffix);
 		}
 }

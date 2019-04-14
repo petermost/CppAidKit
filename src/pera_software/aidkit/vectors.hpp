@@ -26,31 +26,6 @@
 
 namespace pera_software::aidkit::vectors {
 
-	/// Prints the content of a vector to the output.
-
-	template < typename T >
-		std::ostream &print( std::ostream &output, const std::vector< T > &values,
-			cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix ) {
-
-			return containers::print( output, values.begin(), values.end(), prefix, delimiter, suffix );
-		}
-
-	template < typename T >
-		std::string join_implementation( const std::vector< T > &values,
-			cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix ) {
-
-			std::ostringstream valueStream;
-
-			print( valueStream, values, prefix, delimiter, suffix );
-
-			return valueStream.str();
-		}
-
-	template < typename T >
-		std::string join( const std::vector< T > &values, cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix ) {
-			return join_implementation( values, prefix, delimiter, suffix );
-		}
-
 	template < typename T, typename C >
 		void remove_if( std::vector< T > *values, C condition )
 		{
@@ -59,14 +34,16 @@ namespace pera_software::aidkit::vectors {
 		}
 
 	template < typename T >
-		void remove( std::vector< T > *values, const T &value ) {
+		void remove( std::vector< T > *values, const T &value )
+		{
 			remove_if( values, [ = ]( const T &currentValue ) {
 				return currentValue == value;
 			});
 		}
 
 	template < typename T >
-		void pop_front( std::vector< T > *values ) {
+		void pop_front( std::vector< T > *values )
+		{
 			values->erase( values->begin() );
 		}
 }
@@ -78,6 +55,6 @@ namespace std {
 			constexpr char EMPTY[] = { '\0' };
 			constexpr char COMMA[] = { ',', ' ', '\0' };
 
-			return pera_software::aidkit::vectors::print( output, values, EMPTY, COMMA, EMPTY );
+			return pera_software::aidkit::containers::print( output, values, EMPTY, COMMA, EMPTY );
 		}
 }
