@@ -20,6 +20,7 @@
 #include <QTest>
 #include <vector>
 #include <string>
+#include <map>
 
 namespace pera_software::aidkit::concurrent {
 
@@ -27,64 +28,98 @@ using namespace std;
 
 static DataMutexTest mutexTest;
 
+
+class Image {
+};
+
+shared_ptr<Image> loadImageFromFile(const string & /* fileName */)
+{
+	return make_shared<Image>();
+}
+
+class ExplicitLockedImageCache {
+	public:
+		shared_ptr<Image> loadImage(const string &name)
+		{
+			lock_guard lock(mutex_);
+
+			auto position = cachedImages.find(name);
+			if (position == cachedImages.end()) {
+				shared_ptr<Image> image = loadImageFromFile(name);
+				cachedImages.insert({name, image});
+				return image;
+			} else {
+				return position->second;
+			}
+		}
+
+		void removeImage(const string &name)
+		{
+			auto position = cachedImages.find(name);
+			if (position != cachedImages.end()) {
+				cachedImages.erase(position);
+			}
+		}
+
+	private:
+		mutex mutex_;
+		map<string, shared_ptr<Image>> cachedImages;
+};
+
+class ImplicitLockedImageCache {
+	public:
+		shared_ptr<Image> loadImage(const string &name)
+		{
+			data_ptr images(&cachedImages);
+
+			auto position = images->find(name);
+			if (position == images->end()) {
+				shared_ptr<Image> image = loadImageFromFile(name);
+				images->insert({name, image});
+				return image;
+			} else {
+				return position->second;
+			}
+		}
+
+		void removeImage(const string &name)
+		{
+			data_ptr images(&cachedImages);
+
+			auto position = images->find(name);
+			if (position != images->end()) {
+				images->erase(position);
+			}
+		}
+
+	private:
+		data_mutex<map<string, shared_ptr<Image>>> cachedImages;
+};
+
+
+
+
 //#########################################################################################################
 
 // Explicit template instantiation to detect syntax errors:
-template class data_mutex< vector< string >>;
+using StringVectorDataMutex = class data_mutex< vector< string >>;
 
-void DataMutexTest::testLock() {
+void DataMutexTest::testRegularLocking()
+{
+	StringVectorDataMutex names( 20u, "empty" );
 
-	// Must initially not be locked yet:
-
-	data_mutex< vector< string >> names( 20u, "empty" );
-	QVERIFY( !names.is_locked() );
-
-	// Lock the data:
-
-	{
-		auto names_ptr = names.lock();
-		QVERIFY( static_cast< bool >( names_ptr ));
-		QVERIFY( names.is_locked() );
-
-		// The names_ptr destructor will unlock the mutex.
-	}
-	// Must now be unlocked again:
-
-	QVERIFY( !names.is_locked() );
+	data_ptr names_ptr(&names);
+	names_ptr->at(0) = "";
+	(*names_ptr)[0] = "";
 }
 
-void DataMutexTest::testReset() {
-	data_mutex< vector< string >> names( 20u, "empty" );
+void DataMutexTest::testConstLocking()
+{
+	const StringVectorDataMutex names( 20u, "empty" );
 
-	// Lock the data:
-
-	auto p = names.lock();
-	QVERIFY( names.is_locked() );
-
-	// Unlock manually:
-
-	p.reset();
-	QVERIFY( !names.is_locked() );
+	const_data_ptr names_ptr(&names);
+	string first = names_ptr->at(0);
+	first = (*names_ptr)[0];
 }
-
-
-void DataMutexTest::testResetWithUnknownPointer() {
-	data_mutex< vector< string >> names;
-
-	// Lock the data:
-
-	auto p = names.lock();
-	QVERIFY( names.is_locked() );
-
-	// Unlock manually but with an unknown pointer:
-
-	vector< string > someData;
-	p.reset( &someData );
-	QVERIFY( !names.is_locked() );
-
-	p.reset();
-	QCOMPARE( names.lock_count(), 0 );
-}
-
 
 }

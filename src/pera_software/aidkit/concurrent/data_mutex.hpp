@@ -1,4 +1,4 @@
-// Copyright 2015 Peter Most, PERA Software Solutions GmbH
+// Copyright 2019 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -18,102 +18,114 @@
 #pragma once
 
 #include <mutex>
-#include <memory>
-#include <functional>
 
 namespace pera_software::aidkit::concurrent {
 
+	template < typename T, typename Mutex >
+		class data_ptr;
+
+	template < typename T, typename Mutex >
+		class const_data_ptr;
+
 	/// A compile time guaranteed mutex.
 	/**
-	 * This special mutex guarantees that the embedded resource can only be accessed after the
+	 * This special mutex guarantees that the embedded data can only be accessed after the
 	 * associated mutex has been successfully locked.
 	 */
-	template < typename T, typename Mutex = std::recursive_mutex >
+	template < typename T, typename Mutex = std::mutex >
 		class data_mutex {
 			public:
-				using native_handle_type = typename Mutex::native_handle_type;
-				using pointer = std::unique_ptr< T, std::function< void ( T * ) >>;
-				using const_pointer = std::unique_ptr< const T, std::function< void ( const T * ) >>;
-
 				/// Initialize the embedded resource with the given parameters.
 				template < typename ... Args >
 					data_mutex( Args && ... args )
-						: data_( std::forward< Args >( args ) ... ) {
-						lockCount_ = 0;
+						: data_( std::forward< Args >( args ) ... )
+					{
 					}
 
-				/// Lock the mutex and return a pointer for accessing the embedded resource.
-				pointer lock() {
-					mutex_.lock();
-					return make_pointer();
-				}
-
-				pointer try_lock() noexcept {
-					if ( mutex_.try_lock() )
-						return make_pointer();
-					else
-						return pointer();
-				}
-
-				const_pointer lock() const {
-					mutex_.lock();
-					return make_const_pointer();
-				}
-
-				const_pointer try_lock() const noexcept {
-					if ( mutex_.try_lock() )
-						return make_const_pointer();
-					else
-						return const_pointer();
-				}
-
-				native_handle_type native_handle() {
-					return mutex_.native_handle();
-				}
-
-				// These methods follow the same idea then those in shared_ptr<> where unique() is
-				// implemented in terms of use_count():
-
-				bool is_locked() const noexcept {
-					return lock_count() > 0;
-				}
-
-				int lock_count() const noexcept {
-					return lockCount_;
-				}
+				data_mutex( const data_mutex & ) = delete;
+				data_mutex &operator = ( const data_mutex & ) = delete;
 
 			private:
-				void unlock( const T *data_ptr ) const {
+				friend data_ptr< T, Mutex >;
+				friend const_data_ptr< T, Mutex >;
 
-					// Protect against pointer.reset( some_pointer ):
-
-					if ( data_ptr == &data_ ) {
-						--lockCount_;
-						mutex_.unlock();
-					}
+				void lock() const noexcept
+				{
+					mutex_.lock();
 				}
 
-				// If a pointer is requested, then we know that locking has succeeded and we can
-				// increment the lock counter:
-
-				pointer make_pointer() noexcept {
-					++lockCount_;
-					auto unlocker = [ = ]( T *data_ptr ) {
-						unlock( data_ptr );
-					};
-					return pointer( &data_, unlocker );
-				}
-
-				const_pointer make_const_pointer() const noexcept {
-					++lockCount_;
-					auto unlocker = [ = ]( const T *data_ptr ) {
-						unlock( data_ptr );
-					};
-					return const_pointer( &data_, unlocker );
+				void unlock() const noexcept
+				{
+					mutex_.unlock();
 				}
 
 				T data_;
 				mutable Mutex mutex_;
-				mutable int lockCount_;
 		};
+
+	template < typename T, typename Mutex = std::mutex >
+		class data_ptr {
+			public:
+				explicit data_ptr( data_mutex< T, Mutex > *dataMutex ) noexcept
+					: data_( &dataMutex->data_ ), mutex_( &dataMutex->mutex_ )
+				{
+					mutex_->lock();
+				}
+
+				~data_ptr()
+				{
+					mutex_->unlock();
+				}
+
+				T *operator -> () noexcept
+				{
+					return data_;
+				}
+
+				T &operator * () noexcept
+				{
+					return *data_;
+				}
+
+				data_ptr( const data_ptr & ) = delete;
+				data_ptr &operator = ( const data_ptr & ) = delete;
+
+			private:
+				T *data_;
+				mutable Mutex *mutex_;
+		};
+
+	template < typename T, typename Mutex = std::mutex >
+		class const_data_ptr {
+			public:
+				explicit const_data_ptr( const data_mutex< T, Mutex > *dataMutex ) noexcept
+					: data_( &dataMutex->data_ ), mutex_( &dataMutex->mutex_ )
+				{
+					mutex_->lock();
+				}
+
+				~const_data_ptr()
+				{
+					mutex_->unlock();
+				}
+
+				const T *operator -> () const noexcept
+				{
+					return data_;
+				}
+
+				const T &operator * () const noexcept
+				{
+					return *data_;
+				}
+
+				const_data_ptr( const const_data_ptr & ) = delete;
+				const_data_ptr &operator = ( const const_data_ptr & ) = delete;
+
+			private:
+				const T *data_;
+				mutable Mutex *mutex_;
+		};
+
+
 }

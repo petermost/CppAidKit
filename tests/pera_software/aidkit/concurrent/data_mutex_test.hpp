@@ -25,9 +25,8 @@ namespace pera_software::aidkit::concurrent {
 			Q_OBJECT
 
 		private Q_SLOTS:
-			void testLock();
-			void testReset();
-			void testResetWithUnknownPointer();
+			void testRegularLocking();
+			void testConstLocking();
 	};
 
 }
