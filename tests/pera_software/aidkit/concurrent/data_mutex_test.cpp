@@ -21,83 +21,13 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <memory>
 
 namespace pera_software::aidkit::concurrent {
 
 using namespace std;
 
 static DataMutexTest mutexTest;
-
-
-class Image {
-};
-
-shared_ptr<Image> loadImageFromFile(const string & /* fileName */)
-{
-	return make_shared<Image>();
-}
-
-class ExplicitLockedImageCache {
-	public:
-		shared_ptr<Image> loadImage(const string &name)
-		{
-			lock_guard lock(mutex_);
-
-			auto position = cachedImages.find(name);
-			if (position == cachedImages.end()) {
-				shared_ptr<Image> image = loadImageFromFile(name);
-				cachedImages.insert({name, image});
-				return image;
-			} else {
-				return position->second;
-			}
-		}
-
-		void removeImage(const string &name)
-		{
-			auto position = cachedImages.find(name);
-			if (position != cachedImages.end()) {
-				cachedImages.erase(position);
-			}
-		}
-
-	private:
-		mutex mutex_;
-		map<string, shared_ptr<Image>> cachedImages;
-};
-
-class ImplicitLockedImageCache {
-	public:
-		shared_ptr<Image> loadImage(const string &name)
-		{
-			data_ptr images(&cachedImages);
-
-			auto position = images->find(name);
-			if (position == images->end()) {
-				shared_ptr<Image> image = loadImageFromFile(name);
-				images->insert({name, image});
-				return image;
-			} else {
-				return position->second;
-			}
-		}
-
-		void removeImage(const string &name)
-		{
-			data_ptr images(&cachedImages);
-
-			auto position = images->find(name);
-			if (position != images->end()) {
-				images->erase(position);
-			}
-		}
-
-	private:
-		data_mutex<map<string, shared_ptr<Image>>> cachedImages;
-};
-
-
-
 
 //#########################################################################################################
 
@@ -106,20 +36,20 @@ using StringVectorDataMutex = class data_mutex< vector< string >>;
 
 void DataMutexTest::testRegularLocking()
 {
-	StringVectorDataMutex names( 20u, "empty" );
+    StringVectorDataMutex names( 20u, "empty" );
 
-	data_ptr names_ptr(&names);
-	names_ptr->at(0) = "";
-	(*names_ptr)[0] = "";
+    data_mutex_ptr names_ptr(&names);
+    names_ptr->at(0) = "";
+    (*names_ptr)[0] = "";
 }
 
 void DataMutexTest::testConstLocking()
 {
-	const StringVectorDataMutex names( 20u, "empty" );
+    const StringVectorDataMutex names( 20u, "empty" );
 
-	const_data_ptr names_ptr(&names);
-	string first = names_ptr->at(0);
-	first = (*names_ptr)[0];
+    const_data_mutex_ptr names_ptr(&names);
+    string first = names_ptr->at(0);
+    first = (*names_ptr)[0];
 }
 
 }

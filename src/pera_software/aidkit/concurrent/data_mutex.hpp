@@ -56,7 +56,7 @@ namespace pera_software::aidkit::concurrent {
                     mutex_->lock();
                 }
 
-                ~data_mutex_ptr()
+                ~data_mutex_ptr() noexcept
                 {
                     mutex_->unlock();
                 }
@@ -88,7 +88,7 @@ namespace pera_software::aidkit::concurrent {
                     mutex_->lock();
                 }
 
-                ~const_data_mutex_ptr()
+                ~const_data_mutex_ptr() noexcept
                 {
                     mutex_->unlock();
                 }
