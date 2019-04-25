@@ -21,111 +21,111 @@
 
 namespace pera_software::aidkit::concurrent {
 
-	template < typename T, typename Mutex >
-		class data_ptr;
+    template < typename T, typename Mutex >
+        class data_mutex_ptr;
 
-	template < typename T, typename Mutex >
-		class const_data_ptr;
+    template < typename T, typename Mutex >
+        class const_data_mutex_ptr;
 
-	/// A compile time guaranteed mutex.
-	/**
-	 * This special mutex guarantees that the embedded data can only be accessed after the
-	 * associated mutex has been successfully locked.
-	 */
-	template < typename T, typename Mutex = std::mutex >
-		class data_mutex {
-			public:
-				/// Initialize the embedded resource with the given parameters.
-				template < typename ... Args >
-					data_mutex( Args && ... args )
-						: data_( std::forward< Args >( args ) ... )
-					{
-					}
+    /// A compile time guaranteed mutex.
+    /**
+     * This special mutex guarantees that the embedded data can only be accessed after the
+     * associated mutex has been successfully locked.
+     */
+    template < typename T, typename Mutex = std::mutex >
+        class data_mutex {
+            public:
+                /// Initialize the embedded resource with the given parameters.
+                template < typename ... Args >
+                    data_mutex( Args && ... args )
+                        : data_( std::forward< Args >( args ) ... )
+                    {
+                    }
 
-				data_mutex( const data_mutex & ) = delete;
-				data_mutex &operator = ( const data_mutex & ) = delete;
+                data_mutex( const data_mutex & ) = delete;
+                data_mutex &operator = ( const data_mutex & ) = delete;
 
-			private:
-				friend data_ptr< T, Mutex >;
-				friend const_data_ptr< T, Mutex >;
+            private:
+                friend data_mutex_ptr< T, Mutex >;
+                friend const_data_mutex_ptr< T, Mutex >;
 
-				void lock() const noexcept
-				{
-					mutex_.lock();
-				}
+                void lock() const noexcept
+                {
+                    mutex_.lock();
+                }
 
-				void unlock() const noexcept
-				{
-					mutex_.unlock();
-				}
+                void unlock() const noexcept
+                {
+                    mutex_.unlock();
+                }
 
-				T data_;
-				mutable Mutex mutex_;
-		};
+                T data_;
+                mutable Mutex mutex_;
+        };
 
-	template < typename T, typename Mutex = std::mutex >
-		class data_ptr {
-			public:
-				explicit data_ptr( data_mutex< T, Mutex > *dataMutex ) noexcept
-					: data_( &dataMutex->data_ ), mutex_( &dataMutex->mutex_ )
-				{
-					mutex_->lock();
-				}
+    template < typename T, typename Mutex = std::mutex >
+        class data_mutex_ptr {
+            public:
+                explicit data_mutex_ptr( data_mutex< T, Mutex > *dataMutex ) noexcept
+                    : data_( &dataMutex->data_ ), mutex_( &dataMutex->mutex_ )
+                {
+                    mutex_->lock();
+                }
 
-				~data_ptr()
-				{
-					mutex_->unlock();
-				}
+                ~data_mutex_ptr()
+                {
+                    mutex_->unlock();
+                }
 
-				T *operator -> () noexcept
-				{
-					return data_;
-				}
+                T *operator -> () noexcept
+                {
+                    return data_;
+                }
 
-				T &operator * () noexcept
-				{
-					return *data_;
-				}
+                T &operator * () noexcept
+                {
+                    return *data_;
+                }
 
-				data_ptr( const data_ptr & ) = delete;
-				data_ptr &operator = ( const data_ptr & ) = delete;
+                data_mutex_ptr( const data_mutex_ptr & ) = delete;
+                data_mutex_ptr &operator = ( const data_mutex_ptr & ) = delete;
 
-			private:
-				T *data_;
-				mutable Mutex *mutex_;
-		};
+            private:
+                T *data_;
+                mutable Mutex *mutex_;
+        };
 
-	template < typename T, typename Mutex = std::mutex >
-		class const_data_ptr {
-			public:
-				explicit const_data_ptr( const data_mutex< T, Mutex > *dataMutex ) noexcept
-					: data_( &dataMutex->data_ ), mutex_( &dataMutex->mutex_ )
-				{
-					mutex_->lock();
-				}
+    template < typename T, typename Mutex = std::mutex >
+        class const_data_mutex_ptr {
+            public:
+                explicit const_data_mutex_ptr( const data_mutex< T, Mutex > *dataMutex ) noexcept
+                    : data_( &dataMutex->data_ ), mutex_( &dataMutex->mutex_ )
+                {
+                    mutex_->lock();
+                }
 
-				~const_data_ptr()
-				{
-					mutex_->unlock();
-				}
+                ~const_data_mutex_ptr()
+                {
+                    mutex_->unlock();
+                }
 
-				const T *operator -> () const noexcept
-				{
-					return data_;
-				}
+                const T *operator -> () const noexcept
+                {
+                    return data_;
+                }
 
-				const T &operator * () const noexcept
-				{
-					return *data_;
-				}
+                const T &operator * () const noexcept
+                {
+                    return *data_;
+                }
 
-				const_data_ptr( const const_data_ptr & ) = delete;
-				const_data_ptr &operator = ( const const_data_ptr & ) = delete;
+                const_data_mutex_ptr( const const_data_mutex_ptr & ) = delete;
+                const_data_mutex_ptr &operator = ( const const_data_mutex_ptr & ) = delete;
 
-			private:
-				const T *data_;
-				mutable Mutex *mutex_;
-		};
+            private:
+                const T *data_;
+                mutable Mutex *mutex_;
+        };
 
 
 }
