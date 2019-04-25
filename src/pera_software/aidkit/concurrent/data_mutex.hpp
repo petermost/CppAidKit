@@ -27,15 +27,9 @@ namespace pera_software::aidkit::concurrent {
     template < typename T, typename Mutex >
         class const_data_mutex_ptr;
 
-    /// A compile time guaranteed mutex.
-    /**
-     * This special mutex guarantees that the embedded data can only be accessed after the
-     * associated mutex has been successfully locked.
-     */
     template < typename T, typename Mutex = std::mutex >
         class data_mutex {
             public:
-                /// Initialize the embedded resource with the given parameters.
                 template < typename ... Args >
                     data_mutex( Args && ... args )
                         : data_( std::forward< Args >( args ) ... )
@@ -48,16 +42,6 @@ namespace pera_software::aidkit::concurrent {
             private:
                 friend data_mutex_ptr< T, Mutex >;
                 friend const_data_mutex_ptr< T, Mutex >;
-
-                void lock() const noexcept
-                {
-                    mutex_.lock();
-                }
-
-                void unlock() const noexcept
-                {
-                    mutex_.unlock();
-                }
 
                 T data_;
                 mutable Mutex mutex_;
@@ -126,6 +110,4 @@ namespace pera_software::aidkit::concurrent {
                 const T *data_;
                 mutable Mutex *mutex_;
         };
-
-
 }
