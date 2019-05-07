@@ -39,16 +39,14 @@ wstring from_utf8( const string &s )
 {
     wstring_utf8_converter converter;
 
-    string bytes( s.begin(), s.end() );
-    return converter.from_bytes( bytes );
+    return converter.from_bytes( s );
 }
 
 string to_utf8( const wstring &s )
 {
     wstring_utf8_converter converter;
 
-    string bytes( converter.to_bytes( s ));
-    return string( bytes.begin(), bytes.end() );
+    return converter.to_bytes( s );
 }
 
 //==================================================================================================
