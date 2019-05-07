@@ -17,23 +17,20 @@
 
 #pragma once
 
-#include <pera_software/aidkit/qt/test/Test.hpp>
+#include <pera_software/aidkit/aidkit.hpp>
+#include <string>
+
 
 namespace pera_software::aidkit {
 
-	class UnicodeTest : public qt::Test {
-		Q_OBJECT
+    AIDKIT_API std::wstring from_utf8( const std::string & );
+    AIDKIT_API std::string to_utf8( const std::wstring & );
 
-		private Q_SLOTS:
-			void testNarrowStringToWideString();
-			void testWideStringToNarrowString();
-			void testEmptyNarrowStringToWideString();
-			void testEmptyWideStringToNarrowString();
-			void testUmlauteWideStringToU8String();
-			void testUmlauteU8StringToWideString();
+    AIDKIT_API std::wstring from_mbs( const std::string & );
+    AIDKIT_API std::string to_mbs( const std::wstring & );
 
-			void testUmlauteNarrowStringToWideString();
-			void testUmlauteWideStringToNarrowString();
-	};
+}
 
+namespace std {
+    AIDKIT_API ostream &operator << ( ostream &outputStream, const wstring &str );
 }

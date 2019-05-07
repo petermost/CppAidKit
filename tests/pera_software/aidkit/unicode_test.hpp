@@ -17,30 +17,23 @@
 
 #pragma once
 
-#include <pera_software/aidkit/aidkit.hpp>
-#include <string>
-
+#include <pera_software/aidkit/qt/test/Test.hpp>
 
 namespace pera_software::aidkit {
 
-	using char8_t = unsigned char;
-	using u8string = std::basic_string< char8_t, std::char_traits< char8_t >, std::allocator< char8_t >>;
+	class UnicodeTest : public qt::Test {
+		Q_OBJECT
 
-#if __GLIBCXX__ == 20160427
-	AIDKIT_API std::wstring u8string_to_wstring( const u8string & )
-		__attribute__(( warning( "doesn't work correctly with this glibc version!" )));
+		private Q_SLOTS:
+			void testNarrowStringToWideString();
+			void testWideStringToNarrowString();
+			void testEmptyNarrowStringToWideString();
+			void testEmptyWideStringToNarrowString();
+			void testUmlauteWideStringToUtf8();
+			void testUmlauteUtf8ToWideString();
 
-#else
-		AIDKIT_API std::wstring u8string_to_wstring( const u8string & );
-#endif
+			void testUmlauteNarrowStringToWideString();
+			void testUmlauteWideStringToNarrowString();
+	};
 
-	AIDKIT_API u8string wstring_to_u8string( const std::wstring & );
-
-	AIDKIT_API std::wstring string_to_wstring( const std::string & );
-	AIDKIT_API std::string wstring_to_string( const std::wstring & );
-
-}
-
-namespace std {
-	AIDKIT_API wostream &operator << ( wostream &outputStream, const string &str );
 }
