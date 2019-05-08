@@ -20,7 +20,8 @@
 #include <codecvt>
 #include <pera_software/aidkit/io/errno.hpp>
 
-// TODO: Check which codecvt-templates are deprecated in C++17
+// TODO: Check what is the replacement for codecvt_utf8?
+// TODO: Howto convert local platform characters to UTF-8?
 
 namespace pera_software::aidkit {
 
@@ -51,9 +52,9 @@ string to_utf8( const wstring &s )
 
 //==================================================================================================
 
-template < typename TargetChar, typename SourceChar >
-    basic_string< TargetChar > convert( const basic_string< SourceChar > &sourceString,
-            size_t ( *convertFunction )( TargetChar *dst, const SourceChar **src, size_t len, mbstate_t *state ))
+template < typename SrcChar, typename DstChar >
+	basic_string< DstChar > convert( const basic_string< SrcChar > &sourceString,
+			size_t ( *convertFunction )( DstChar *dst, const SrcChar **src, size_t len, mbstate_t *state ))
     {
         constexpr auto LENGTH_ERROR = static_cast< size_t >( -1 );
 
@@ -61,14 +62,14 @@ template < typename TargetChar, typename SourceChar >
 
         // Find out how much space we need:
 
-        const SourceChar *sourceStringData = sourceString.data();
+		const SrcChar *sourceStringData = sourceString.data();
         size_t expectedTargetStringLength = convertFunction( nullptr, &sourceStringData, sourceString.length(), &state );
         if ( expectedTargetStringLength == LENGTH_ERROR )
             throw make_errno_system_error();
 
         // Convert the string:
 
-        basic_string< TargetChar > targetString( expectedTargetStringLength, TargetChar() );
+		basic_string< DstChar > targetString( expectedTargetStringLength, DstChar() );
         size_t actualTargetStringLength = convertFunction( &targetString[ 0 ], &sourceStringData, sourceString.length(), &state );
         if ( actualTargetStringLength == LENGTH_ERROR )
             throw make_errno_system_error();
@@ -83,12 +84,12 @@ template < typename TargetChar, typename SourceChar >
 
 string to_mbs( const wstring &wideString )
 {
-    return convert< char, wchar_t >( wideString, wcsrtombs );
+	return convert( wideString, wcsrtombs );
 }
 
 wstring from_mbs( const string &narrowString )
 {
-    return convert< wchar_t, char >( narrowString, mbsrtowcs );
+	return convert( narrowString, mbsrtowcs );
 }
 
 }
@@ -96,7 +97,7 @@ wstring from_mbs( const string &narrowString )
 namespace std {
 
     ostream &operator << ( ostream &outputStream, const wstring &str ) {
-        return outputStream << ::pera_software::aidkit::to_mbs( str );
+		return outputStream << ::pera_software::aidkit::to_utf8( str );
     }
 
 }

@@ -19,8 +19,10 @@
 #include <pera_software/aidkit/unicode.hpp>
 #include <pera_software/aidkit/io/errno.hpp>
 #include <system_error>
-
+#include <sstream>
 #include <QTest>
+
+// TODO: Find better unicode examples.
 
 namespace pera_software::aidkit {
 
@@ -97,14 +99,14 @@ static UnicodeTest unicodeTest;
 
 //=================================================================================================
 
-void UnicodeTest::testNarrowStringToWideString() {
+void UnicodeTest::testFromMbs() {
     string narrowString( "abcdef" );
     wstring wideString = from_mbs( narrowString );
 
     QCOMPARE( wideString, wstring( L"abcdef" ));
 }
 
-void UnicodeTest::testWideStringToNarrowString() {
+void UnicodeTest::testToMbs() {
     wstring wideString( L"12345" );
     string narrowString = to_mbs( wideString );
 
@@ -113,14 +115,14 @@ void UnicodeTest::testWideStringToNarrowString() {
 
 //=================================================================================================
 
-void UnicodeTest::testEmptyNarrowStringToWideString() {
+void UnicodeTest::testEmptyFromMbs() {
     string narrowString( "" );
     wstring wideString = from_mbs( narrowString );
 
     QCOMPARE( wideString, wstring( L"" ));
 }
 
-void UnicodeTest::testEmptyWideStringToNarrowString() {
+void UnicodeTest::testEmptyToMbs() {
     wstring wideString( L"" );
     string narrowString = to_mbs( wideString );
 
@@ -129,13 +131,13 @@ void UnicodeTest::testEmptyWideStringToNarrowString() {
 
 //=================================================================================================
 
-void UnicodeTest::testUmlauteWideStringToUtf8() {
+void UnicodeTest::testToUtf8() {
     string utf8Umlaute = to_utf8( UTF16_CHARACTERS );
 
     QCOMPARE( UTF8_CHARACTERS, utf8Umlaute );
 }
 
-void UnicodeTest::testUmlauteUtf8ToWideString() {
+void UnicodeTest::testFromUtf8() {
     wstring utf16Umlaute = from_utf8( UTF8_CHARACTERS );
 
     QCOMPARE( UTF16_CHARACTERS, utf16Umlaute );
@@ -147,7 +149,7 @@ void UnicodeTest::testUmlauteUtf8ToWideString() {
 // A: The encoding of the umlaute is in ISO-8859-1 (Latin-1)!
 
 
-void UnicodeTest::testUmlauteNarrowStringToWideString() {
+void UnicodeTest::testIso_8859_1_FromMbs() {
     try {
         wstring wideUmlaute = from_mbs( ISO_8859_1_NARROW_CHARACTERS );
         QFAIL( "Must throw errc::illegal_byte_sequence!");
@@ -156,13 +158,24 @@ void UnicodeTest::testUmlauteNarrowStringToWideString() {
     }
 }
 
-void UnicodeTest::testUmlauteWideStringToNarrowString() {
+void UnicodeTest::testIso_8859_1_ToMbs() {
     try {
         string narrowUmlaute = to_mbs( ISO_8859_1_WIDE_CHARACTERS );
         QFAIL( "Must throw errc::illegal_byte_sequence!");
     } catch ( const system_error &systemError ) {
         QCOMPARE( systemError.code(), make_error_code( errc::illegal_byte_sequence ));
-    }
+	}
+}
+
+//=================================================================================================
+
+void UnicodeTest::testStdStreamOperator()
+{
+	ostringstream output;
+
+	output << UTF16_CHARACTERS;
+
+	QVERIFY( output.str() == UTF8_CHARACTERS );
 }
 
 }

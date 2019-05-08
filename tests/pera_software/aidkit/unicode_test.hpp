@@ -25,15 +25,17 @@ namespace pera_software::aidkit {
 		Q_OBJECT
 
 		private Q_SLOTS:
-			void testNarrowStringToWideString();
-			void testWideStringToNarrowString();
-			void testEmptyNarrowStringToWideString();
-			void testEmptyWideStringToNarrowString();
-			void testUmlauteWideStringToUtf8();
-			void testUmlauteUtf8ToWideString();
+			void testFromMbs();
+			void testToMbs();
+			void testEmptyFromMbs();
+			void testEmptyToMbs();
+			void testToUtf8();
+			void testFromUtf8();
 
-			void testUmlauteNarrowStringToWideString();
-			void testUmlauteWideStringToNarrowString();
+			void testIso_8859_1_FromMbs();
+			void testIso_8859_1_ToMbs();
+
+			void testStdStreamOperator();
 	};
 
 }
