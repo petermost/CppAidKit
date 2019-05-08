@@ -36,7 +36,7 @@ void ContainersTest::testJoin() {
 
 void ContainersTest::testStreamOperatorWithEmptyVector() {
 	vector< int > ints;
-	stringstream output;
+	ostringstream output;
 
 	output << ints;
 
@@ -45,7 +45,7 @@ void ContainersTest::testStreamOperatorWithEmptyVector() {
 
 void ContainersTest::testStreamOperatorWithOneElement() {
 	vector< int > ints = { 1 };
-	stringstream output;
+	ostringstream output;
 
 	output << ints;
 
@@ -54,7 +54,7 @@ void ContainersTest::testStreamOperatorWithOneElement() {
 
 void ContainersTest::testStreamOperatorWithMultipleElements() {
 	vector< int > ints = { 1, 2, 3 };
-	stringstream output;
+	ostringstream output;
 
 	output << ints;
 
