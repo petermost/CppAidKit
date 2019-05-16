@@ -17,47 +17,47 @@
 
 #pragma once
 
-#include "aidkit.hpp"
-#include "exception.hpp"
+#include <pera_software/aidkit/aidkit.hpp>
+#include <pera_software/aidkit/exception.hpp>
 #include <string>
 
 namespace pera_software::aidkit {
 
-	void AIDKIT_API check_assertion( bool condition, const std::string &expression, const std::string &fileName,
-			int lineNumber, const std::string &functionName );
+    void AIDKIT_API check_assertion( bool condition, const std::string &expression, const std::string &fileName,
+            int lineNumber, const std::string &functionName );
 
-	class AIDKIT_API assertion_exception : public aidkit::exception {
-		public:
-			assertion_exception( const std::string &expression, const std::string &file_name,
-					int line_number, const std::string &function_name );
+    class AIDKIT_API assertion_exception : public aidkit::exception {
+        public:
+            assertion_exception( const std::string &expression, const std::string &file_name,
+                    int line_number, const std::string &function_name );
 
-			const std::string &expression() const noexcept;
+            const std::string &expression() const noexcept;
 
-			const std::string &file_name() const noexcept;
+            const std::string &file_name() const noexcept;
 
-			const std::string &function_name() const noexcept;
+            const std::string &function_name() const noexcept;
 
-			int line_number() const noexcept;
+            int line_number() const noexcept;
 
-			const std::string &message() const noexcept override;
+            const std::string &message() const noexcept override;
 
-		private:
-			std::string expression_;
-			std::string fileName_;
-			int lineNumber_;
-			std::string functionName_;
+        private:
+            std::string expression_;
+            std::string fileName_;
+            int lineNumber_;
+            std::string functionName_;
 
-			std::string message_;
-	};
+            std::string message_;
+    };
 
 }
 
 #define AIDKIT_VERIFY( expression ) \
-	pera_software::aidkit::check_assertion( expression, #expression, __FILE__, __LINE__, __func__ )
+    pera_software::aidkit::check_assertion( expression, #expression, __FILE__, __LINE__, __func__ )
 
 #if defined( AIDKIT_DEBUG )
-	#define AIDKIT_ASSERT( expression ) \
-		AIDKIT_VERIFY( expression )
+    #define AIDKIT_ASSERT( expression ) \
+        AIDKIT_VERIFY( expression )
 #else
-	#define AIDKIT_ASSERT( expression )
+    #define AIDKIT_ASSERT( expression )
 #endif
