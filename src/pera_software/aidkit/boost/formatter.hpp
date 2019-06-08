@@ -24,26 +24,26 @@
 
 namespace pera_software::aidkit::boost {
 
-	// A small wrapper class which disables the exceptions in boost::format otherwise:
-	// - The constructor might throw a bad_format_string exception.
-	// - The operator % () might throw a too_many_args exception.
-	// - The method str() might throw a too_few_args exception.
+    // A small wrapper class which disables the exceptions in boost::format otherwise:
+    // - The constructor might throw a bad_format_string exception.
+    // - The operator % () might throw a too_many_args exception.
+    // - The method str() might throw a too_few_args exception.
 
-	class AIDKIT_API formatter {
-		public:
-			formatter( cpp::string_ref formatString ) noexcept;
+    class AIDKIT_API formatter {
+        public:
+            formatter( cpp::string_ref formatString ) noexcept;
 
-			template< class T >
-				formatter &operator % ( T &&x ) {
-					format_ % std::forward< T >( x );
+            template< class T >
+                formatter &operator % ( T &&x ) {
+                    format_ % std::forward< T >( x );
 
-					return *this;
-				}
+                    return *this;
+                }
 
-			std::string  str() const noexcept;
+            std::string str() const noexcept;
 
-		private:
-			::boost::format format_;
-	};
+        private:
+            ::boost::format format_;
+    };
 
 }

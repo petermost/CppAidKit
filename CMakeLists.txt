@@ -20,6 +20,24 @@ project( AidKit )
 
 include( cmake/all_options.cmake )
 
+find_package( Boost QUIET COMPONENTS filesystem )
+find_package( Qt5 QUIET COMPONENTS Core Gui Widgets Test )
+
+if ( Qt5Core_FOUND )
+	# Setting the Qt 'AUTO'-properties *after* the targets are already defined seems not to work.
+	# According	to https://cmake.org/cmake/help/latest/prop_tgt/AUTOMOC.html:
+	# "This property is initialized by the value of the CMAKE_AUTOMOC variable *if it is set* when
+	# a target is created."
+	# An alternative would be:
+	# set_target_properties( AidKit     PROPERTIES AUTOMOC ON AUTORCC ON )
+	# set_target_properties( testAidKit PROPERTIES AUTOMOC ON AUTORCC ON )
+	# set_target_properties( AidKitTest PROPERTIES AUTOMOC ON AUTORCC ON )
+
+	set( CMAKE_AUTOMOC ON )
+	set( CMAKE_AUTORCC ON )
+	# set( CMAKE_AUTOUIC ON )
+endif()
+
 ###############################################################################
 # Setup AidKit:
 # If we don't specify the type (SHARED or STATIC) then the variable BUILD_SHARED_LIBS
@@ -134,23 +152,24 @@ target_include_directories( AidKitTest PUBLIC src/ tests/ )
 
 ###############################################################################
 
-find_package( Boost QUIET )
 if ( Boost_FOUND )
 	target_sources( AidKit PRIVATE
 		src/pera_software/aidkit/boost/formatter.hpp
 		src/pera_software/aidkit/boost/formatter.cpp
+		src/pera_software/aidkit/boost/directory_guide.hpp
+		src/pera_software/aidkit/boost/directory_guide.cpp
 	)
 	target_sources( testAidKit PRIVATE
 		tests/pera_software/aidkit/boost/formatter_test.hpp
 		tests/pera_software/aidkit/boost/formatter_test.cpp
 	)
-	target_link_libraries( AidKit Boost::boost )
+	target_compile_definitions( AidKit PRIVATE BOOST_FILESYSTEM_NO_DEPRECATED )
+	target_link_libraries( AidKit Boost::boost Boost::filesystem )
 else()
 	message( WARNING "Boost not found, building without it!" )
 endif()
 
 
-find_package( Qt5 QUIET COMPONENTS Core Gui Widgets Test )
 if ( Qt5Core_FOUND )
 	target_sources( AidKit PRIVATE
 		src/pera_software/aidkit/qt/qt.cpp
@@ -187,19 +206,6 @@ if ( Qt5Core_FOUND )
 		tests/pera_software/aidkit/qt/core/EndianTest.hpp
 		tests/pera_software/aidkit/qt/core/EndianTest.cpp
 	)
-
-	# Setting the Qt 'AUTO'-properties *after* the targets are already defined seems not to work.
-	# According	to https://cmake.org/cmake/help/latest/prop_tgt/AUTOMOC.html:
-	# "This property is initialized by the value of the CMAKE_AUTOMOC variable *if it is set* when
-	# a target is created."
-	# set( CMAKE_AUTOMOC ON )
-	# set( CMAKE_AUTORCC ON )
-	# set( CMAKE_AUTOUIC ON )
-
-	set_target_properties( AidKit     PROPERTIES AUTOMOC ON AUTORCC ON )
-	set_target_properties( testAidKit PROPERTIES AUTOMOC ON AUTORCC ON )
-	set_target_properties( AidKitTest PROPERTIES AUTOMOC ON AUTORCC ON )
-
 	# Disable the slot, signal, emit etc. keywords:
 	target_compile_definitions( AidKit PRIVATE
 		QT_NO_KEYWORDS
