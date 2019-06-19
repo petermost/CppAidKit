@@ -8,7 +8,7 @@ endif()
 # To see all warning switches: g++ --help=warnings
 
 add_compile_options(
-	-Wall -Wextra -Wpedantic    # Enable all warnings
+	-Wall -Wextra -Wpedantic -pedantic-errors    # Enable all warnings
 	-Wimplicit-fallthrough
 	-Wmissing-include-dirs      # Warn if a user-supplied include directory does not exist.
 	-Wswitch-default

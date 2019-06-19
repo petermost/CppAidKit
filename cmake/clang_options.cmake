@@ -3,7 +3,7 @@ message( "Setting Clang options" )
 # Add Clang specific switches:
 
 add_compile_options(
-	-W -Wall -Wextra -Wpedantic
+	-Wall -Wextra -Wpedantic
 	-Weverything
 
 	-Wno-c++98-compat -Wno-c++98-compat-pedantic
