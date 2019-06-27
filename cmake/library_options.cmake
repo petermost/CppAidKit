@@ -3,6 +3,7 @@
 include(GenerateExportHeader)
 
 # Hide things by default:
+# An alternative would be: set_target_properties(<target> PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN YES)
 
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)

@@ -5,6 +5,9 @@
 # Enable RPATH handling:
 set( CMAKE_SKIP_BUILD_RPATH  FALSE )
 
+# If the internal 're-writing' of the rpath fails, then setting CMAKE_NO_BUILTIN_CHRPATH might help.
+# See: https://cmake.org/cmake/help/latest/variable/CMAKE_NO_BUILTIN_CHRPATH.html
+
 # 1) Add the current working directory so shared libraries in the current working directory are used.
 # 2) Add the lib directory from the current working directory because the Qt plugins contain an RUNPATH of
 #    '$ORIGIN/../../lib' where they expect to find the Qt libraries.
