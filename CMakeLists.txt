@@ -18,17 +18,18 @@
 cmake_minimum_required( VERSION 3.13 )
 project( AidKit VERSION 1.0.0.0 )
 
-include( cmake/all_options.cmake )
+include(GenerateExportHeader)
+include(cmake/all_options.cmake)
 
-find_package( Boost QUIET COMPONENTS filesystem )
-find_package( Qt5 QUIET COMPONENTS Core Gui Widgets Test )
+find_package(Boost QUIET COMPONENTS filesystem)
+find_package(Qt5 QUIET COMPONENTS Core Gui Widgets Test)
 
 ###############################################################################
 # Setup AidKit:
 # If we don't specify the type (SHARED or STATIC) then the variable BUILD_SHARED_LIBS
 # determines the type!
 
-add_library( AidKit
+add_library(AidKit
 	src/pera_software/pera_software.cpp
 	src/pera_software/aidkit/aidkit.hpp
 	src/pera_software/aidkit/aidkit.cpp
@@ -79,6 +80,8 @@ add_library( AidKit
 	src/pera_software/company/PERA.hpp
 	src/pera_software/company/PERA.cpp
 )
+set_default_target_options(AidKit)
+
 set_target_properties(AidKit
 	PROPERTIES
 		SOVERSION ${PROJECT_VERSION}
@@ -110,6 +113,7 @@ add_library( AidKitTest
 	src/pera_software/aidkit/qt/test/Test.hpp
 	src/pera_software/aidkit/qt/test/Test.cpp
 )
+set_default_target_options(AidKitTest)
 
 target_include_directories( AidKitTest PUBLIC src/ tests/ )
 
@@ -146,6 +150,7 @@ add_executable( testAidKit
 	tests/pera_software/aidkit/cpp/stdlib_test.hpp
 	tests/pera_software/aidkit/cpp/stdlib_test.cpp
 )
+set_default_target_options(testAidKit)
 
 ###############################################################################
 

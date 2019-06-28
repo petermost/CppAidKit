@@ -1,23 +1,17 @@
-message( "QT_QMAKE_EXECUTABLE = '${QT_QMAKE_EXECUTABLE}'" )
+function(set_default_qt_target_options targetName)
+	message("Setting default Qt options for target '${targetName}")
 
-#if ( NOT DEFINED QT_CMAKE_DIR )
-	set( QT_CMAKE_DIR "" CACHE PATH "Select Qt5 cmake directory" )
-#endif()
-if( QT_CMAKE_DIR AND NOT EXISTS ${QT_CMAKE_DIR} )
-	message( FATAL_ERROR "The path '${QT_CMAKE_DIR}' in 'QT_CMAKE_DIR' doesn't exist!" )
-else()
-	message( "Appending '${QT_CMAKE_DIR}' to CMAKE_PREFIX_PATH." )
-	list( APPEND CMAKE_PREFIX_PATH ${QT_CMAKE_DIR} )
-endif()
+	target_compile_definitions(${targetName}
+		PRIVATE
+			# If this macro is defined, the compiler will generate warnings if API declared as deprecated by Qt
+			# is used.
+			QT_DEPRECATED_WARNINGS
 
-
-# If this macro is defined, the compiler will generate warnings if API declared as deprecated by Qt
-# is used.
-add_definitions(-DQT_DEPRECATED_WARNINGS)
-
-# This macro can be defined in the project file to disable functions deprecated in a specified
-# version of Qt or any earlier version.
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x000000)
+			# This macro can be defined in the project file to disable functions deprecated in a specified
+			# version of Qt or any earlier version.
+			QT_DISABLE_DEPRECATED_BEFORE=0x000000
+	)
+endfunction()
 
 # Enable C++17 support:
 

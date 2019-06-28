@@ -1,12 +1,12 @@
 # Contains general options for cmake
 
-set( CMAKE_WARN_DEPRECATED ON )
-set( CMAKE_VERBOSE_MAKEFILE TRUE )
-set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
+set(CMAKE_WARN_DEPRECATED ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option( BUILD_SHARED_LIBS "Build shared library" ON )
 
-if ( NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES )
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	message( "Enabling debug build" )
 	set( CMAKE_BUILD_TYPE Debug CACHE STRING "Select build type" FORCE)
 	# Present a combobox in the cmake-gui (https://blog.kitware.com/cmake-and-the-default-build-type/):

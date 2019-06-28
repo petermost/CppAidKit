@@ -1,11 +1,15 @@
-# Define the C++ standard:
+function(set_default_cpp_target_options targetName)
+	message("Setting default C++ options for target '${targetName}")
 
-set( CMAKE_CXX_STANDARD 17 )
+	set_target_properties(${targetName}
+		PROPERTIES
+			# Define the C++ standard:
+			CXX_STANDARD 17
 
-# Don't fall back to an earlier standard:
+			# Don't fall back to an earlier standard:
+			CXX_STANDARD_REQUIRED YES
 
-set( CMAKE_CXX_STANDARD_REQUIRED YES )
-
-# Don't allow C++ extension:
-
-set( CMAKE_CXX_EXTENSIONS NO )
+			# Don't allow C++ extension:
+			CXX_EXTENSIONS OFF
+	)
+endfunction()
