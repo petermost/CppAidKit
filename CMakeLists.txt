@@ -319,7 +319,7 @@ endif()
 
 ###############################################################################
 # Installing
-# For testing: make DESTDIR=/home/me/staging install
+# For testing: make DESTDIR=<directory> install
 
 include(GNUInstallDirs)
 install(TARGETS AidKit EXPORT exportName
