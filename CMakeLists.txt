@@ -33,6 +33,7 @@ add_library(AidKit
 	src/pera_software/pera_software.cpp
 	src/pera_software/aidkit/aidkit.hpp
 	src/pera_software/aidkit/aidkit.cpp
+	src/pera_software/aidkit/bit_cast.hpp
 	src/pera_software/aidkit/containers.hpp
 	src/pera_software/aidkit/containers.cpp
 	src/pera_software/aidkit/debug.hpp
