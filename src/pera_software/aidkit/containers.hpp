@@ -23,6 +23,8 @@
 
 namespace pera_software::aidkit::containers {
 
+	// TODO: Rename to join?
+
 	template < typename Iterator >
 		std::ostream &print( std::ostream &output, Iterator begin, Iterator end,
 			cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix )
