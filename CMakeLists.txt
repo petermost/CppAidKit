@@ -15,14 +15,23 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required( VERSION 3.13 )
-project( AidKit VERSION 1.0.0.0 )
+cmake_minimum_required(VERSION 3.13)
+project(AidKit VERSION 1.0.0.0)
 
 include(GenerateExportHeader)
 include(cmake/all_options.cmake)
 
-find_package(Boost QUIET COMPONENTS filesystem)
-find_package(Qt5 QUIET COMPONENTS Core Gui Widgets Test)
+find_package(Boost QUIET
+	COMPONENTS
+		filesystem
+)
+find_package(Qt5 QUIET
+	COMPONENTS
+		Core
+		Gui
+		Widgets
+		Test
+)
 
 ###############################################################################
 # Setup AidKit:
@@ -90,17 +99,17 @@ set_target_properties(AidKit
 
 # Generate the 'export header' and add the generated file to the library as well:
 
-generate_export_header( AidKit
+generate_export_header(AidKit
 	EXPORT_FILE_NAME aidkit_api.hpp
 	INCLUDE_GUARD_NAME AIDKIT_API_HPP
 	EXPORT_MACRO_NAME AIDKIT_API
 )
-target_sources( AidKit
+target_sources(AidKit
 	PRIVATE
-	${CMAKE_CURRENT_BINARY_DIR}/aidkit_api.hpp
+		${CMAKE_CURRENT_BINARY_DIR}/aidkit_api.hpp
 )
 
-target_include_directories( AidKit
+target_include_directories(AidKit
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src/>
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
@@ -110,18 +119,22 @@ target_include_directories( AidKit
 ###############################################################################
 # Setup AidKitTest
 
-add_library( AidKitTest
+add_library(AidKitTest
 	src/pera_software/aidkit/qt/test/Test.hpp
 	src/pera_software/aidkit/qt/test/Test.cpp
 )
 set_default_target_options(AidKitTest)
 
-target_include_directories( AidKitTest PUBLIC src/ tests/ )
+target_include_directories(AidKitTest
+	PUBLIC
+		src/
+		tests/
+)
 
 ###############################################################################
 # Setup AidKit tests:
 
-add_executable( testAidKit
+add_executable(testAidKit
 	tests/pera_software/aidkit/containers_test.hpp
 	tests/pera_software/aidkit/containers_test.cpp
 	tests/pera_software/aidkit/enum_class_test.hpp
@@ -155,48 +168,52 @@ set_default_target_options(testAidKit)
 
 ###############################################################################
 
-if ( Boost_FOUND )
-	target_sources( AidKit
+if (Boost_FOUND)
+	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/boost/formatter.hpp
 			src/pera_software/aidkit/boost/formatter.cpp
 			src/pera_software/aidkit/boost/directory_guide.hpp
 			src/pera_software/aidkit/boost/directory_guide.cpp
 	)
-	target_sources( testAidKit
+	target_sources(testAidKit
 		PRIVATE
 			tests/pera_software/aidkit/boost/formatter_test.hpp
 			tests/pera_software/aidkit/boost/formatter_test.cpp
 	)
-	target_compile_definitions( AidKit
+	target_compile_definitions(AidKit
 		PRIVATE
+			# BOOST_ALL_DYN_LINK
 			BOOST_ASIO_NO_DEPRECATED
 			BOOST_FILESYSTEM_NO_DEPRECATED
 	)
-	target_link_libraries( AidKit
-		Boost::boost
-		Boost::filesystem
+	target_link_libraries(AidKit
+		PUBLIC
+			Boost::dynamic_linking
+			Boost::disable_autolinking
+			Boost::boost
+			Boost::filesystem
 	)
 else()
-	message( WARNING "Boost not found, building without it!" )
+	message(WARNING "Boost not found, building without it!")
 endif()
 
 
-if ( Qt5Core_FOUND )
+if (Qt5Core_FOUND)
 	# Setting the Qt 'AUTO'-properties *after* the targets are already defined seems not to work i.e.:
-	# set( CMAKE_AUTOMOC ON )
-	# set( CMAKE_AUTORCC ON )
-	# set( CMAKE_AUTOUIC ON )
+	# set(CMAKE_AUTOMOC ON)
+	# set(CMAKE_AUTORCC ON)
+	# set(CMAKE_AUTOUIC ON)
 	# According	to https://cmake.org/cmake/help/latest/prop_tgt/AUTOMOC.html:
 	# "This property is initialized by the value of the CMAKE_AUTOMOC variable *if it is set* when
 	# a target is created."
 
-	set_target_properties( AidKit AidKitTest testAidKit
+	set_target_properties(AidKit AidKitTest testAidKit
 		PROPERTIES
 			AUTOMOC ON
 			AUTORCC ON
 	)
-	target_sources( AidKit
+	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/qt/qt.cpp
 
@@ -226,7 +243,7 @@ if ( Qt5Core_FOUND )
 			resources/pera_software/aidkit/AidKitResources.qrc
 			resources/pera_software/company/CompanyResources.qrc
 	)
-	target_sources( testAidKit
+	target_sources(testAidKit
 		PRIVATE
 			tests/pera_software/aidkit/qt/core/ConsoleTest.hpp
 			tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
@@ -234,19 +251,20 @@ if ( Qt5Core_FOUND )
 			tests/pera_software/aidkit/qt/core/EndianTest.cpp
 	)
 	# Disable the slot, signal, emit etc. keywords:
-	target_compile_definitions( AidKit
+	target_compile_definitions(AidKit
 		PRIVATE
 			QT_NO_KEYWORDS
 	)
-	target_link_libraries( AidKit
-		Qt5::Core
+	target_link_libraries(AidKit
+		PUBLIC
+			Qt5::Core
 	)
 else()
-	message( WARNING "Qt5 Core not found, building without it!" )
+	message(WARNING "Qt5 Core not found, building without it!")
 endif()
 
-if ( Qt5Gui_FOUND )
-	target_sources( AidKit
+if (Qt5Gui_FOUND)
+	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/qt/gui/ForwardDeclarations.hpp
 			src/pera_software/aidkit/qt/gui/MessagesModel.cpp
@@ -254,7 +272,7 @@ if ( Qt5Gui_FOUND )
 			src/pera_software/aidkit/qt/gui/Resources.hpp
 			src/pera_software/aidkit/qt/gui/Resources.cpp
 	)
-	target_sources( testAidKit
+	target_sources(testAidKit
 		PRIVATE
 			tests/pera_software/aidkit/qt/gui/ResourcesTest.hpp
 			tests/pera_software/aidkit/qt/gui/ResourcesTest.cpp
@@ -262,15 +280,16 @@ if ( Qt5Gui_FOUND )
 			tests/pera_software/company/qt/PERAResourcesTest.hpp
 			tests/pera_software/company/qt/PERAResourcesTest.cpp
 	)
-	target_link_libraries( AidKit
-		Qt5::Gui
+	target_link_libraries(AidKit
+		PUBLIC
+			Qt5::Gui
 	)
 else()
-	message( WARNING "Qt5 Gui not found, building without it!" )
+	message(WARNING "Qt5 Gui not found, building without it!")
 endif()
 
-if ( Qt5Widgets_FOUND )
-	target_sources( AidKit
+if (Qt5Widgets_FOUND)
+	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/qt/widgets/Actions.hpp
 			src/pera_software/aidkit/qt/widgets/Actions.cpp
@@ -297,25 +316,28 @@ if ( Qt5Widgets_FOUND )
 			src/pera_software/company/qt/PERAResources.hpp
 			src/pera_software/company/qt/PERAResources.cpp
 	)
-	target_link_libraries( AidKit
-		Qt5::Widgets
+	target_link_libraries(AidKit
+		PUBLIC
+			Qt5::Widgets
 	)
 else()
-	message( WARNING "Qt5 Widgets not found, building without it!" )
+	message(WARNING "Qt5 Widgets not found, building without it!")
 endif()
 
-if ( Qt5Test_FOUND )
-	target_link_libraries( AidKitTest
-		AidKit
-		Qt5::Test
-		Qt5::Gui
+if (Qt5Test_FOUND)
+	target_link_libraries(AidKitTest
+		PUBLIC
+			AidKit
+			Qt5::Test
+			Qt5::Gui
 	)
-	target_link_libraries( testAidKit
-		AidKit
-		AidKitTest
+	target_link_libraries(testAidKit
+		PUBLIC
+			AidKit
+			AidKitTest
 	)
 else()
-	message( WARNING "Qt5 Test not found, building without it!" )
+	message(WARNING "Qt5 Test not found, building without it!")
 endif()
 
 ###############################################################################
