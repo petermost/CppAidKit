@@ -35,8 +35,8 @@ find_package(Qt5 QUIET
 
 ###############################################################################
 # Setup AidKit:
-# If we don't specify the type (SHARED or STATIC) then the variable BUILD_SHARED_LIBS
-# determines the type!
+# If no type is specified (SHARED or STATIC) then the user can define the type with the
+# BUILD_SHARED_LIBS variable!
 
 add_library(AidKit
 	src/pera_software/pera_software.cpp

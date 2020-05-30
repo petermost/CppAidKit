@@ -13,6 +13,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/gcc_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/clang_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/msvc_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/libstdcxx_options.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/libcxx_options.cmake)
 
 function(set_default_target_options targetName)
 	set_default_cpp_target_options(${targetName})
@@ -27,8 +28,10 @@ function(set_default_target_options targetName)
 		elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 			set_default_clang_target_options(${targetName})
 		endif()
-		# Both compiler link to the libstdc++, so we set the options for both:
-		set_default_libstdcxx_options()
+		# GCC and Clang link to the libstdc++, so we set the options for both:
+		set_default_libstdcxx_target_options(${targetName})
+		# But in case libc++ (clang) is being used, set those options:
+		set_default_libcxx_target_options(${targetName})
 	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 		set_default_msvc_target_options(${targetName})
 	endif()
