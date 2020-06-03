@@ -11,6 +11,15 @@ function(set_default_qt_target_options targetName)
 			# version of Qt or any earlier version.
 			QT_DISABLE_DEPRECATED_BEFORE=0x000000
 	)
+	# Get rid of compile warning: 'warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+	# https://bugreports.qt.io/browse/QTBUG-82978 "Allow "-Wextra-semi-stmt" on Q_UNUSED"
+	# According to the comments in the bugreport, this will not be fixed before Qt6.
+	if (Qt5Core_VERSION VERSION_LESS 6)
+		set_source_files_properties("${targetName}_autogen/mocs_compilation.cpp"
+			PROPERTIES
+				COMPILE_OPTIONS "-Wno-extra-semi-stmt"
+		)
+	endif()
 endfunction()
 
 # Enable C++17 support:
