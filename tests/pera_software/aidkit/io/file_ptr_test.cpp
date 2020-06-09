@@ -15,17 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "file_ptr_test.hpp"
+#include <gtest/gtest.h>
 #include <pera_software/aidkit/io/file_ptr.hpp>
-#include <QTest>
 
 namespace pera_software::aidkit::io {
 
 using namespace std;
 
-void FilePtrTest::testConstructor() {
-	file_ptr file(fopen("", ""));
-	fgetc(file.get());
+static FILE *fakeFileOpen()
+{
+	return nullptr;
+}
+
+TEST(FilePtrTest, testConstructor)
+{
+	file_ptr file(fakeFileOpen());
 }
 
 }

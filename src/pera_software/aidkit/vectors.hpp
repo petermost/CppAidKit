@@ -55,6 +55,6 @@ namespace std {
 			constexpr char EMPTY[] = { '\0' };
 			constexpr char COMMA[] = { ',', ' ', '\0' };
 
-			return pera_software::aidkit::containers::print( output, values, EMPTY, COMMA, EMPTY );
+			return pera_software::aidkit::containers::join( output, values, EMPTY, COMMA, EMPTY );
 		}
 }

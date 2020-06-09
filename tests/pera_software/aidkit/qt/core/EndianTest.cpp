@@ -15,71 +15,74 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "EndianTest.hpp"
+#include <gtest/gtest.h>
 #include <pera_software/aidkit/qt/core/Endian.hpp>
-#include <QTest>
 
 namespace pera_software::aidkit::qt {
 
-static EndianTest endianTest;
+template <typename T>
+	void assert_hton_ntoh(T expectedHostValue, T expectedNetValue)
+	{
+		T actualNetValue = hton(expectedHostValue);
+		ASSERT_EQ(actualNetValue, expectedNetValue);
 
-template < typename T >
-	void assert_hton_ntoh( T expectedHostValue, T expectedNetValue ) {
-		T actualNetValue = hton( expectedHostValue );
-		QCOMPARE( actualNetValue, expectedNetValue );
-
-		T actualHostValue = ntoh( expectedNetValue );
-		QCOMPARE( actualHostValue, expectedHostValue );
+		T actualHostValue = ntoh(expectedNetValue);
+		ASSERT_EQ(actualHostValue, expectedHostValue);
 	}
 
-void EndianTest::test_hton_ntoh_8() {
-	assert_hton_ntoh< uint8_t >( 0x01, 0x01 );
+TEST(EndianTest, test_hton_ntoh_8)
+{
+	assert_hton_ntoh<uint8_t>(0x01, 0x01);
 }
 
-void EndianTest::test_hton_ntoh_16() {
-	assert_hton_ntoh< uint16_t >( 0x0123, 0x2301 );
+TEST(EndianTest, test_hton_ntoh_16)
+{
+	assert_hton_ntoh<uint16_t>(0x0123, 0x2301);
 }
 
-void EndianTest::test_hton_ntoh_32() {
-	assert_hton_ntoh< uint32_t >( 0x01234567, 0x67452301 );
+TEST(EndianTest, test_hton_ntoh_32)
+{
+	assert_hton_ntoh<uint32_t>(0x01234567, 0x67452301);
 }
 
-void EndianTest::test_hton_ntoh_64() {
-	assert_hton_ntoh< uint64_t >( 0x0123456789ABCDEF, 0xEFCDAB8967452301 );
+TEST(EndianTest, test_hton_ntoh_64)
+{
+	assert_hton_ntoh<uint64_t>(0x0123456789ABCDEF, 0xEFCDAB8967452301);
 }
 
-void EndianTest::testCompilation() {
+TEST(EndianTest, testCompilation)
+{
 	// These should trigger (if enabled) an error because the parameter is not an integer.
-	// hton( 1.0 );
-	// ntoh( 1.0 );
+	// hton(1.0);
+	// ntoh(1.0);
 
 	// short / unsigned short
 
-	hton( short( 1 ));
-	ntoh( short( 1 ));
-	hton( ushort( 1 ));
-	ntoh( ushort( 1 ));
+	hton(short(1));
+	ntoh(short(1));
+	hton(ushort(1));
+	ntoh(ushort(1));
 
 	// int / unsigned int
 
-	hton( 1 );
-	ntoh( 1 );
-	hton( 1u );
-	ntoh( 1u );
+	hton(1);
+	ntoh(1);
+	hton(1u);
+	ntoh(1u);
 
 	// long / unsigned long
 
-	hton( 1l );
-	ntoh( 1l );
-	hton( 1ul );
-	ntoh( 1ul );
+	hton(1l);
+	ntoh(1l);
+	hton(1ul);
+	ntoh(1ul);
 
 	// long long / unsigned long long
 
-	hton( 1ll );
-	ntoh( 1ll );
-	hton( 1ull );
-	ntoh( 1ull );
+	hton(1ll);
+	ntoh(1ll);
+	hton(1ull);
+	ntoh(1ull);
 }
 
 }

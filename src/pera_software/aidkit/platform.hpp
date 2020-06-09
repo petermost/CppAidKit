@@ -17,11 +17,13 @@
 
 #pragma once
 
-// To see the predefined symbols from GCC use cpp -dM or gcc <file> -dM -M
+// To see the predefined symbols from GCC/Clang use 'compiler -dM -E - < /dev/null'
+
+#include <ciso646>
 
 // Determine what kind (DEBUG|RELEASE) build it is:
 
-#if defined( _DEBUG ) || defined( DEBUG ) || !defined( NDEBUG )
+#if defined(_DEBUG) || defined(DEBUG) || !defined(NDEBUG)
 	#define AIDKIT_DEBUG
 #else
 	#define AIDKIT_RELEASE
@@ -29,24 +31,46 @@
 
 // Determine the operating system:
 
-#if defined( _WIN32 ) || defined( WIN32 )
+#if defined(_WIN32) || defined(WIN32)
 	#define AIDKIT_WINDOWS
-#elif defined( __linux__ )
+#endif
+#if defined(__linux__)
 	#define AIDKIT_LINUX
-#else
+#endif
+#if !defined(AIDKIT_WINDOWS) && !defined(AIDKIT_LINUX)
 	#error Cannot determine operating system!
 #endif
 
 // Determine the compiler:
 
-#if defined( _MSC_VER )
+#if defined(_MSC_VER)
 	#define AIDKIT_MSVC
-#elif defined( __GNUC__ )
+#endif
+#if defined(__GNUC__)
 	#define AIDKIT_GCC
-	#if defined( __MINGW32__ ) || defined( __MINGW64__ )
+	#if defined(__MINGW32__) || defined(__MINGW64__)
 		// MinGW is a GCC variant so we define it additional to the AIDKIT_GCC symbol
 		#define AIDKIT_MINGW
 	#endif
-#else
-	#error "Cannot determine compiler!"
+#endif
+#if defined(__clang__)
+	#define AIDKIT_CLANG
+#endif
+#if !defined(AIDKIT_MSVC) && !defined(AIDKIT_GCC) && !defined(AIDKIT_CLANG)
+	#error Cannot determine compiler!
+#endif
+
+// Determine the used library:
+
+#if defined(__GLIBCXX__)
+	#define AIDKIT_GCC_STDLIB
+#endif
+#if defined(_LIBCPP_VERSION)
+	#define AIDKIT_CLANG_STDLIB
+#endif
+#if defined(_CPPLIB_VER)
+	#define AIDKIT_MSVC_STDLIB
+#endif
+#if !defined(AIDKIT_GCC_STDLIB) && !defined(AIDKIT_CLANG_STDLIB) && !defined(AIDKIT_MSVC_STDLIB)
+	#error Cannot determine compiler library!
 #endif

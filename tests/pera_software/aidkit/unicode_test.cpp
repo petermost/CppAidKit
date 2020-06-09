@@ -15,12 +15,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "unicode_test.hpp"
-#include <pera_software/aidkit/unicode.hpp>
+#include <gtest/gtest.h>
 #include <pera_software/aidkit/io/errno.hpp>
-#include <system_error>
+#include <pera_software/aidkit/unicode.hpp>
 #include <sstream>
-#include <QTest>
+#include <system_error>
 
 // TODO: Find better unicode examples.
 
@@ -41,106 +40,110 @@ using namespace std;
 // € | 0x0080 | 0xC2 0x80 | <not available>
 // =============================================
 
-const wstring UTF16_LOWER_AE( L"\x00E4" );
-const wstring UTF16_LOWER_OE( L"\x00F6" );
-const wstring UTF16_LOWER_UE( L"\x00FC" );
-const wstring UTF16_UPPER_AE( L"\x00C4" );
-const wstring UTF16_UPPER_OE( L"\x00D6" );
-const wstring UTF16_UPPER_UE( L"\x00DC" );
-const wstring UTF16_SHARP_SS( L"\x00DF" );
-const wstring UTF16_EURO(     L"\x0080" );
+const wstring UTF16_LOWER_AE(L"\x00E4");
+const wstring UTF16_LOWER_OE(L"\x00F6");
+const wstring UTF16_LOWER_UE(L"\x00FC");
+const wstring UTF16_UPPER_AE(L"\x00C4");
+const wstring UTF16_UPPER_OE(L"\x00D6");
+const wstring UTF16_UPPER_UE(L"\x00DC");
+const wstring UTF16_SHARP_SS(L"\x00DF");
+const wstring UTF16_EURO(L"\x0080");
 
 const wstring UTF16_CHARACTERS =
-    UTF16_LOWER_AE + UTF16_LOWER_OE + UTF16_LOWER_UE +
-    UTF16_UPPER_AE + UTF16_UPPER_OE + UTF16_UPPER_UE +
-    UTF16_SHARP_SS + UTF16_EURO;
+	UTF16_LOWER_AE + UTF16_LOWER_OE + UTF16_LOWER_UE +
+	UTF16_UPPER_AE + UTF16_UPPER_OE + UTF16_UPPER_UE +
+	UTF16_SHARP_SS + UTF16_EURO;
 
-const string UTF8_LOWER_AE( "\xC3\xA4" );
-const string UTF8_LOWER_OE( "\xC3\xB6" );
-const string UTF8_LOWER_UE( "\xC3\xBC" );
-const string UTF8_UPPER_AE( "\xC3\x84" );
-const string UTF8_UPPER_OE( "\xC3\x96" );
-const string UTF8_UPPER_UE( "\xC3\x9C" );
-const string UTF8_SHARP_SS( "\xC3\x9F" );
-const string UTF8_EURO(     "\xC2\x80" );
+const string UTF8_LOWER_AE("\xC3\xA4");
+const string UTF8_LOWER_OE("\xC3\xB6");
+const string UTF8_LOWER_UE("\xC3\xBC");
+const string UTF8_UPPER_AE("\xC3\x84");
+const string UTF8_UPPER_OE("\xC3\x96");
+const string UTF8_UPPER_UE("\xC3\x9C");
+const string UTF8_SHARP_SS("\xC3\x9F");
+const string UTF8_EURO("\xC2\x80");
 
 const string UTF8_CHARACTERS =
-    UTF8_LOWER_AE + UTF8_LOWER_OE + UTF8_LOWER_UE +
-    UTF8_UPPER_AE + UTF8_UPPER_OE + UTF8_UPPER_UE +
-    UTF8_SHARP_SS + UTF8_EURO;
+	UTF8_LOWER_AE + UTF8_LOWER_OE + UTF8_LOWER_UE +
+	UTF8_UPPER_AE + UTF8_UPPER_OE + UTF8_UPPER_UE +
+	UTF8_SHARP_SS + UTF8_EURO;
 
-const wstring ISO_8859_1_WIDE_LOWER_AE( L"\x00E4" );
-const wstring ISO_8859_1_WIDE_LOWER_OE( L"\x00F6" );
-const wstring ISO_8859_1_WIDE_LOWER_UE( L"\x00FC" );
-const wstring ISO_8859_1_WIDE_UPPER_AE( L"\x00C4" );
-const wstring ISO_8859_1_WIDE_UPPER_OE( L"\x00D6" );
-const wstring ISO_8859_1_WIDE_UPPER_UE( L"\x00DC" );
-const wstring ISO_8859_1_WIDE_SHARP_SS( L"\x00DF" );
+const wstring ISO_8859_1_WIDE_LOWER_AE(L"\x00E4");
+const wstring ISO_8859_1_WIDE_LOWER_OE(L"\x00F6");
+const wstring ISO_8859_1_WIDE_LOWER_UE(L"\x00FC");
+const wstring ISO_8859_1_WIDE_UPPER_AE(L"\x00C4");
+const wstring ISO_8859_1_WIDE_UPPER_OE(L"\x00D6");
+const wstring ISO_8859_1_WIDE_UPPER_UE(L"\x00DC");
+const wstring ISO_8859_1_WIDE_SHARP_SS(L"\x00DF");
 
 const wstring ISO_8859_1_WIDE_CHARACTERS =
-    ISO_8859_1_WIDE_LOWER_AE + ISO_8859_1_WIDE_LOWER_OE + ISO_8859_1_WIDE_LOWER_UE +
-    ISO_8859_1_WIDE_UPPER_AE + ISO_8859_1_WIDE_UPPER_OE + ISO_8859_1_WIDE_UPPER_UE +
-    ISO_8859_1_WIDE_SHARP_SS;
+	ISO_8859_1_WIDE_LOWER_AE + ISO_8859_1_WIDE_LOWER_OE + ISO_8859_1_WIDE_LOWER_UE +
+	ISO_8859_1_WIDE_UPPER_AE + ISO_8859_1_WIDE_UPPER_OE + ISO_8859_1_WIDE_UPPER_UE +
+	ISO_8859_1_WIDE_SHARP_SS;
 
-const string ISO_8859_1_NARROW_LOWER_AE( "\xE4" );
-const string ISO_8859_1_NARROW_LOWER_OE( "\xF6" );
-const string ISO_8859_1_NARROW_LOWER_UE( "\xFC" );
-const string ISO_8859_1_NARROW_UPPER_AE( "\xC4" );
-const string ISO_8859_1_NARROW_UPPER_OE( "\xD6" );
-const string ISO_8859_1_NARROW_UPPER_UE( "\xDC" );
-const string ISO_8859_1_NARROW_SHARP_SS( "\xDF" );
+const string ISO_8859_1_NARROW_LOWER_AE("\xE4");
+const string ISO_8859_1_NARROW_LOWER_OE("\xF6");
+const string ISO_8859_1_NARROW_LOWER_UE("\xFC");
+const string ISO_8859_1_NARROW_UPPER_AE("\xC4");
+const string ISO_8859_1_NARROW_UPPER_OE("\xD6");
+const string ISO_8859_1_NARROW_UPPER_UE("\xDC");
+const string ISO_8859_1_NARROW_SHARP_SS("\xDF");
 
 const string ISO_8859_1_NARROW_CHARACTERS =
-    ISO_8859_1_NARROW_LOWER_AE + ISO_8859_1_NARROW_LOWER_OE + ISO_8859_1_NARROW_LOWER_UE +
-    ISO_8859_1_NARROW_UPPER_AE + ISO_8859_1_NARROW_UPPER_OE + ISO_8859_1_NARROW_UPPER_UE +
-    ISO_8859_1_NARROW_SHARP_SS;
-
-static UnicodeTest unicodeTest;
+	ISO_8859_1_NARROW_LOWER_AE + ISO_8859_1_NARROW_LOWER_OE + ISO_8859_1_NARROW_LOWER_UE +
+	ISO_8859_1_NARROW_UPPER_AE + ISO_8859_1_NARROW_UPPER_OE + ISO_8859_1_NARROW_UPPER_UE +
+	ISO_8859_1_NARROW_SHARP_SS;
 
 //=================================================================================================
 
-void UnicodeTest::testFromMbs() {
-    string narrowString( "abcdef" );
-    wstring wideString = from_mbs( narrowString );
+TEST(UnicodeTest, testFromMbs)
+{
+	string narrowString("abcdef");
+	wstring wideString = from_mbs(narrowString);
 
-    QCOMPARE( wideString, wstring( L"abcdef" ));
+	ASSERT_EQ(wideString, wstring(L"abcdef"));
 }
 
-void UnicodeTest::testToMbs() {
-    wstring wideString( L"12345" );
-    string narrowString = to_mbs( wideString );
+TEST(UnicodeTest, testToMbs)
+{
+	wstring wideString(L"12345");
+	string narrowString = to_mbs(wideString);
 
-    QCOMPARE( narrowString, string( "12345" ));
-}
-
-//=================================================================================================
-
-void UnicodeTest::testEmptyFromMbs() {
-    string narrowString( "" );
-    wstring wideString = from_mbs( narrowString );
-
-    QCOMPARE( wideString, wstring( L"" ));
-}
-
-void UnicodeTest::testEmptyToMbs() {
-    wstring wideString( L"" );
-    string narrowString = to_mbs( wideString );
-
-    QCOMPARE( narrowString, string( "" ));
+	ASSERT_EQ(narrowString, string("12345"));
 }
 
 //=================================================================================================
 
-void UnicodeTest::testToUtf8() {
-    string utf8Umlaute = to_utf8( UTF16_CHARACTERS );
+TEST(UnicodeTest, testEmptyFromMbs)
+{
+	string narrowString("");
+	wstring wideString = from_mbs(narrowString);
 
-    QCOMPARE( UTF8_CHARACTERS, utf8Umlaute );
+	ASSERT_EQ(wideString, wstring(L""));
 }
 
-void UnicodeTest::testFromUtf8() {
-    wstring utf16Umlaute = from_utf8( UTF8_CHARACTERS );
+TEST(UnicodeTest, testEmptyToMbs)
+{
+	wstring wideString(L"");
+	string narrowString = to_mbs(wideString);
 
-    QCOMPARE( UTF16_CHARACTERS, utf16Umlaute );
+	ASSERT_EQ(narrowString, string(""));
+}
+
+//=================================================================================================
+
+TEST(UnicodeTest, testToUtf8)
+{
+	string utf8Umlaute = to_utf8(UTF16_CHARACTERS);
+
+	ASSERT_EQ(UTF8_CHARACTERS, utf8Umlaute);
+}
+
+TEST(UnicodeTest, testFromUtf8)
+{
+	wstring utf16Umlaute = from_utf8(UTF8_CHARACTERS);
+
+	ASSERT_EQ(UTF16_CHARACTERS, utf16Umlaute);
 }
 
 //=================================================================================================
@@ -148,34 +151,35 @@ void UnicodeTest::testFromUtf8() {
 // Q: Why do these tests throw std::range_error under Linux?
 // A: The encoding of the umlaute is in ISO-8859-1 (Latin-1)!
 
-
-void UnicodeTest::testIso_8859_1_FromMbs() {
-    try {
-        wstring wideUmlaute = from_mbs( ISO_8859_1_NARROW_CHARACTERS );
-        QFAIL( "Must throw errc::illegal_byte_sequence!");
-    } catch ( const system_error &systemError ) {
-        QCOMPARE( systemError.code(), make_error_code( errc::illegal_byte_sequence ));
-    }
+TEST(UnicodeTest, testIso_8859_1_FromMbs)
+{
+	try {
+		wstring wideUmlaute = from_mbs(ISO_8859_1_NARROW_CHARACTERS);
+		FAIL() << "Must throw errc::illegal_byte_sequence!";
+	} catch (const system_error &systemError) {
+		ASSERT_EQ(systemError.code(), make_error_code(errc::illegal_byte_sequence));
+	}
 }
 
-void UnicodeTest::testIso_8859_1_ToMbs() {
-    try {
-        string narrowUmlaute = to_mbs( ISO_8859_1_WIDE_CHARACTERS );
-        QFAIL( "Must throw errc::illegal_byte_sequence!");
-    } catch ( const system_error &systemError ) {
-        QCOMPARE( systemError.code(), make_error_code( errc::illegal_byte_sequence ));
+TEST(UnicodeTest, testIso_8859_1_ToMbs)
+{
+	try {
+		string narrowUmlaute = to_mbs(ISO_8859_1_WIDE_CHARACTERS);
+		FAIL() << "Must throw errc::illegal_byte_sequence!";
+	} catch (const system_error &systemError) {
+		ASSERT_EQ(systemError.code(), make_error_code(errc::illegal_byte_sequence));
 	}
 }
 
 //=================================================================================================
 
-void UnicodeTest::testStdStreamOperator()
+TEST(UnicodeTest, testStdStreamOperator)
 {
 	ostringstream output;
 
 	output << UTF16_CHARACTERS;
 
-	QVERIFY( output.str() == UTF8_CHARACTERS );
+	ASSERT_EQ(output.str(), UTF8_CHARACTERS);
 }
 
 }

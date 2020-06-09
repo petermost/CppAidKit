@@ -22,6 +22,8 @@
 // IMHO string_ref is a better name then string_view, but apart from that it's now only one
 // place which needs to be edited when string_view moves from experimental to std.
 
+// TODO: Remove string_ref
+
 namespace pera_software::aidkit::cpp {
 
 	using string_ref    = std::string_view;

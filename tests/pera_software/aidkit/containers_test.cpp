@@ -15,52 +15,52 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "containers_test.hpp"
+#include <gtest/gtest.h>
 #include <pera_software/aidkit/vectors.hpp>
-#include <QTest>
 #include <sstream>
 
 namespace pera_software::aidkit {
 
 using namespace std;
 
-static ContainersTest containersTest;
 
-void ContainersTest::testJoin() {
-	vector< int > ints = { 1, 2, 3 };
+TEST(ContainersTest, testJoin)
+{
+	vector<int> ints = {1, 2, 3};
 
-	string str = containers::print( ints, "[", ",", "]" );
+	string str = containers::join(ints, "[", ",", "]");
 
-	QVERIFY( str == "[1,2,3]" );
+	ASSERT_EQ(str, "[1,2,3]");
 }
 
-void ContainersTest::testStreamOperatorWithEmptyVector() {
-	vector< int > ints;
+TEST(ContainersTest, testStreamOperatorWithEmptyVector)
+{
+	vector<int> ints;
 	ostringstream output;
 
 	output << ints;
 
-	QVERIFY( output.str() == "" );
+	ASSERT_EQ(output.str(), "");
 }
 
-void ContainersTest::testStreamOperatorWithOneElement() {
-	vector< int > ints = { 1 };
+TEST(ContainersTest, testStreamOperatorWithOneElement)
+{
+	vector<int> ints = {1};
 	ostringstream output;
 
 	output << ints;
 
-	QVERIFY( output.str() == "1" );
+	ASSERT_EQ(output.str(), "1");
 }
 
-void ContainersTest::testStreamOperatorWithMultipleElements() {
-	vector< int > ints = { 1, 2, 3 };
+TEST(ContainersTest, testStreamOperatorWithMultipleElements)
+{
+	vector<int> ints = {1, 2, 3};
 	ostringstream output;
 
 	output << ints;
 
-	QVERIFY( output.str() == "1, 2, 3" );
+	ASSERT_EQ(output.str(), "1, 2, 3");
 }
 
 }
-
-

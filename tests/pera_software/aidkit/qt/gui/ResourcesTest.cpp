@@ -16,21 +16,22 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ResourcesTest.hpp"
+#include <gtest/gtest.h>
 #include <pera_software/aidkit/qt/gui/Resources.hpp>
-#include <QTest>
+#include <QIcon>
 
 namespace pera_software::aidkit::qt {
 
 using namespace std;
 
-static ResourcesTest resourceTest;
-
-void ResourcesTest::testMissingIcon() {
+TEST(ResourcesTest, testMissingIcon)
+{
 	QIcon missingIcon = loadIcon(QStringLiteral(":/missing.png"));
-	QVERIFY(missingIcon.isNull());
+	ASSERT_TRUE(missingIcon.isNull());
 }
 
-void ResourcesTest::testLoadIcons() {
+TEST(ResourcesTest, testLoadIcons)
+{
 	ASSERT_IMAGE(Resources::quitIcon());
 	ASSERT_IMAGE(Resources::debugIcon());
 	ASSERT_IMAGE(Resources::warningIcon());

@@ -15,38 +15,39 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "stdlib_test.hpp"
-#include <pera_software/aidkit/cpp/stdlib.hpp>
-#include <QTest>
-#include <vector>
+#include <gtest/gtest.h>
 #include <iterator>
+#include <pera_software/aidkit/cpp/stdlib.hpp>
+#include <vector>
 
 namespace pera_software::aidkit::cpp {
 
 using namespace std;
 
-static StdLibTest stdLibTest;
+TEST(StdLibTest, testCountOf)
+{
+	int ints[] = {1, 2, 2, 2, 3};
 
-void StdLibTest::testCountOf() {
-	int ints[] = { 1, 2, 2, 2, 3 };
-
-	QCOMPARE( countof( ints ), size_t( 5 ));
+	ASSERT_EQ(countof(ints), size_t(5));
 }
 
-void StdLibTest::testSize() {
-	vector< int > ints = { 1, 2, 3 };
+TEST(StdLibTest, testSize)
+{
+	vector<int> ints = {1, 2, 3};
 
-	QCOMPARE( std::size( ints ), size_t( 3 ));
+	ASSERT_EQ(std::size(ints), size_t(3));
 }
 
-void StdLibTest::testIntCastTooLarge() {
-	const long l = std::numeric_limits< int >::max() + 1l;
-	QVERIFY_EXCEPTION_THROWN( int_cast< int >( l ), out_of_range );
+TEST(StdLibTest, testIntCastTooLarge)
+{
+	const long l = std::numeric_limits<int>::max() + 1l;
+	ASSERT_THROW(int_cast<int>(l), out_of_range);
 }
 
-void StdLibTest::testIntCastTooSmall() {
-	const long l = std::numeric_limits< int >::min() - 1l;
-	QVERIFY_EXCEPTION_THROWN( int_cast< int >( l ), out_of_range );
+TEST(StdLibTest, testIntCastTooSmall)
+{
+	const long l = std::numeric_limits<int>::min() - 1l;
+	ASSERT_THROW(int_cast<int>(l), out_of_range);
 }
 
 }

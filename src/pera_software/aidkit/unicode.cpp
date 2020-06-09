@@ -16,8 +16,8 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "unicode.hpp"
-#include <locale>
 #include <codecvt>
+#include <locale>
 #include <pera_software/aidkit/io/errno.hpp>
 
 // TODO: Check what is the replacement for codecvt_utf8?
@@ -34,71 +34,71 @@ using namespace std;
 // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69703
 // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66855
 
-using wstring_utf8_converter = wstring_convert< codecvt_utf8< wchar_t >, wchar_t >;
+using wstring_utf8_converter = wstring_convert<codecvt_utf8<wchar_t>, wchar_t>;
 
-wstring from_utf8( const string &s )
+wstring from_utf8(string_view s)
 {
-    wstring_utf8_converter converter;
+	wstring_utf8_converter converter;
 
-    return converter.from_bytes( s );
+	return converter.from_bytes(s.begin(), s.end());
 }
 
-string to_utf8( const wstring &s )
+string to_utf8(wstring_view s)
 {
-    wstring_utf8_converter converter;
+	wstring_utf8_converter converter;
 
-    return converter.to_bytes( s );
+	return converter.to_bytes(s.begin(), s.end());
 }
 
 //==================================================================================================
 
-template < typename SrcChar, typename DstChar >
-	basic_string< DstChar > convert( const basic_string< SrcChar > &sourceString,
-			size_t ( *convertFunction )( DstChar *dst, const SrcChar **src, size_t len, mbstate_t *state ))
-    {
-        constexpr auto LENGTH_ERROR = static_cast< size_t >( -1 );
+template <typename SrcChar, typename DstChar>
+	basic_string<DstChar> convert(const basic_string_view<SrcChar> &sourceString,
+		size_t (*convertFunction)(DstChar *dst, const SrcChar **src, size_t len, mbstate_t *state))
+	{
+		constexpr auto LENGTH_ERROR = static_cast<size_t>(-1);
 
-        mbstate_t state = mbstate_t();
+		mbstate_t state = mbstate_t();
 
-        // Find out how much space we need:
+		// Find out how much space we need:
 
 		const SrcChar *sourceStringData = sourceString.data();
-        size_t expectedTargetStringLength = convertFunction( nullptr, &sourceStringData, sourceString.length(), &state );
-        if ( expectedTargetStringLength == LENGTH_ERROR )
-            throw make_errno_system_error();
+		size_t expectedTargetStringLength = convertFunction(nullptr, &sourceStringData, sourceString.length(), &state);
+		if (expectedTargetStringLength == LENGTH_ERROR)
+			throw make_errno_system_error();
 
-        // Convert the string:
+		// Convert the string:
 
-		basic_string< DstChar > targetString( expectedTargetStringLength, DstChar() );
-        size_t actualTargetStringLength = convertFunction( &targetString[ 0 ], &sourceStringData, sourceString.length(), &state );
-        if ( actualTargetStringLength == LENGTH_ERROR )
-            throw make_errno_system_error();
+		basic_string<DstChar> targetString(expectedTargetStringLength, DstChar());
+		size_t actualTargetStringLength = convertFunction(&targetString[0], &sourceStringData, sourceString.length(), &state);
+		if (actualTargetStringLength == LENGTH_ERROR)
+			throw make_errno_system_error();
 
-        // Could all characters be converted?
+		// Could all characters be converted?
 
-        if ( expectedTargetStringLength != actualTargetStringLength )
-            throw system_error( make_error_code( errc::illegal_byte_sequence ));
+		if (expectedTargetStringLength != actualTargetStringLength)
+			throw system_error(make_error_code(errc::illegal_byte_sequence));
 
-        return targetString;
-    }
+		return targetString;
+	}
 
-string to_mbs( const wstring &wideString )
+string to_mbs(wstring_view wideString)
 {
-	return convert( wideString, wcsrtombs );
+	return convert(wideString, wcsrtombs);
 }
 
-wstring from_mbs( const string &narrowString )
+wstring from_mbs(string_view narrowString)
 {
-	return convert( narrowString, mbsrtowcs );
+	return convert(narrowString, mbsrtowcs);
 }
 
 }
 
 namespace std {
 
-    ostream &operator << ( ostream &outputStream, const wstring &str ) {
-		return outputStream << ::pera_software::aidkit::to_utf8( str );
-    }
-
+ostream &operator<<(ostream &outputStream, wstring_view str)
+{
+	return outputStream << ::pera_software::aidkit::to_utf8(str);
 }
 
+}

@@ -15,9 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "strings_test.hpp"
+#include <gtest/gtest.h>
 #include <pera_software/aidkit/strings.hpp>
-#include <QTest>
 
 namespace pera_software::aidkit {
 
@@ -25,64 +24,67 @@ using namespace std;
 
 // Explicitly instantiate the templates to detect compiler errors:
 
-template bool try_stoi( const string &, int *, error_code * );
-template bool try_stoi( const string &, long *, error_code * );
-template bool try_stoi( const string &, long long *, error_code *  );
-template bool try_stoi( const string &, unsigned long *, error_code *  );
-template bool try_stoi( const string &, unsigned long long *, error_code *  );
+template bool try_stoi(const string &, int *, error_code *);
+template bool try_stoi(const string &, long *, error_code *);
+template bool try_stoi(const string &, long long *, error_code *);
+template bool try_stoi(const string &, unsigned long *, error_code *);
+template bool try_stoi(const string &, unsigned long long *, error_code *);
 
-static StringsTest stringsTest;
-
-void StringsTest::testStringLiteral() {
+TEST(StringsTest, testStringLiteral)
+{
 	const char stringLiteral[] = "unimportend";
 
-	QVERIFY( is_string_literal( stringLiteral ));
+	ASSERT_TRUE(is_string_literal(stringLiteral));
 }
 
-void StringsTest::testNonStringLiteral() {
+TEST(StringsTest, testNonStringLiteral)
+{
 	const char *nonStringLiteral = "unimportend";
 
-	QVERIFY( !is_string_literal( nonStringLiteral ));
+	ASSERT_FALSE(is_string_literal(nonStringLiteral));
 }
 
-void StringsTest::testTrimLeftSpace() {
-	string actual = trim_left( string( "\t\r\n   123   " ));
-	string expected( "123   " );
+TEST(StringsTest, testTrimLeftSpace)
+{
+	string actual = trim_left(string("\t\r\n   123   "));
+	string expected("123   ");
 
-	QCOMPARE( actual, expected );
-
+	ASSERT_EQ(actual, expected);
 }
 
-void StringsTest::testTrimRightSpace() {
-	string actual = trim_right( string( "   123\t\r\n  " ));
-	string expected( "   123" );
+TEST(StringsTest, testTrimRightSpace)
+{
+	string actual = trim_right(string("   123\t\r\n  "));
+	string expected("   123");
 
-	QCOMPARE( actual, expected );
+	ASSERT_EQ(actual, expected);
 }
 
-void StringsTest::testTrimLeftChars() {
-	string actual = trim_left( string( "...123   " ), '.' );
-	string expected( "123   " );
+TEST(StringsTest, testTrimLeftChars)
+{
+	string actual = trim_left(string("...123   "), '.');
+	string expected("123   ");
 
-	QCOMPARE( actual, expected );
+	ASSERT_EQ(actual, expected);
 }
 
-void StringsTest::testTrimRightChars() {
-	string actual = trim_right( string( "   123..." ), '.' );
-	string expected( "   123" );
+TEST(StringsTest, testTrimRightChars)
+{
+	string actual = trim_right(string("   123..."), '.');
+	string expected("   123");
 
-	QCOMPARE( actual, expected );
+	ASSERT_EQ(actual, expected);
 }
 
-void StringsTest::testTrySToI() {
-	string value( "123" );
+TEST(StringsTest, testTrySToI)
+{
+	string value("123");
 	long integer;
 	error_code errorCode;
 
-	bool success = try_stoi( value, &integer, &errorCode );
-	QVERIFY( success );
-	QCOMPARE( integer, 123l );
+	bool success = try_stoi(value, &integer, &errorCode);
+	ASSERT_TRUE(success);
+	ASSERT_EQ(integer, 123l);
 }
-
 
 }

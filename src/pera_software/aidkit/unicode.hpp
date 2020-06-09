@@ -19,18 +19,18 @@
 
 #include <pera_software/aidkit/aidkit.hpp>
 #include <string>
-
+#include <string_view>
 
 namespace pera_software::aidkit {
 
-    AIDKIT_API std::wstring from_utf8( const std::string & );
-    AIDKIT_API std::string to_utf8( const std::wstring & );
+	AIDKIT_API std::wstring from_utf8(std::string_view);
+	AIDKIT_API std::string to_utf8(std::wstring_view);
 
-    AIDKIT_API std::wstring from_mbs( const std::string & );
-    AIDKIT_API std::string to_mbs( const std::wstring & );
+	AIDKIT_API std::wstring from_mbs(std::string_view);
+	AIDKIT_API std::string to_mbs(std::wstring_view);
 
 }
 
 namespace std {
-    AIDKIT_API ostream &operator << ( ostream &outputStream, const wstring &str );
+	AIDKIT_API ostream &operator<<(ostream &outputStream, std::wstring_view);
 }

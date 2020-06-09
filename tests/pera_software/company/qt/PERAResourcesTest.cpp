@@ -15,18 +15,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "PERAResourcesTest.hpp"
 #include <pera_software/aidkit/qt/gui/ResourcesTest.hpp>
 #include <pera_software/company/qt/PERAResources.hpp>
-#include <QTest>
+#include <gtest/gtest.h>
+#include <QIcon>
 
 namespace pera_software::company::qt {
 
 using namespace std;
 
-static PERAResourcesTest resourcesTest;
-
-void PERAResourcesTest::testLoadIcons() {
+TEST(PERAResourcesTest, testLoadIcons)
+{
 	ASSERT_IMAGE(PERAResources::icon());
 	ASSERT_IMAGE(PERAResources::logo());
 }

@@ -15,26 +15,26 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "formatter_test.hpp"
+#include <gtest/gtest.h>
 #include <pera_software/aidkit/boost/formatter.hpp>
-#include <QTest>
 
-namespace pera_software { namespace aidkit { namespace boost {
+namespace pera_software::aidkit::boost {
 
 using namespace std;
 
-static FormatterTest formatterTest;
-
-void FormatterTest::testBadFormatString() {
-	formatter( "%q" ) % "1.";
+TEST(FormatterTest, testBadFormatString)
+{
+	formatter("%q") % "1.";
 }
 
-void FormatterTest::testTooFewArguments() {
-	formatter( "%s %s %s" ) % "1." % "2." % "3.";
+TEST(FormatterTest, testTooFewArguments)
+{
+	formatter("%s %s %s") % "1." % "2." % "3.";
 }
 
-void FormatterTest::testTooManyArguments() {
-	formatter( "%s" ) % "1." % "2." % "3.";
+TEST(FormatterTest, testTooManyArguments)
+{
+	formatter("%s") % "1." % "2." % "3.";
 }
 
-} } }
+}

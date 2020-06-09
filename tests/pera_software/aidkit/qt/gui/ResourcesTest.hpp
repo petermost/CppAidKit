@@ -17,19 +17,5 @@
 
 #pragma once
 
-#include <pera_software/aidkit/qt/test/Test.hpp>
-
-namespace pera_software::aidkit::qt {
-
-	class ResourcesTest : public qt::Test {
-			Q_OBJECT
-
-		private Q_SLOTS:
-			void testMissingIcon();
-			void testLoadIcons();
-	};
-
-}
-
 #define ASSERT_IMAGE(image) \
-	QVERIFY(!image.isNull())
+	ASSERT_FALSE(image.isNull())

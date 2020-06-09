@@ -15,41 +15,38 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "data_mutex_test.hpp"
-#include <pera_software/aidkit/concurrent/data_mutex.hpp>
-#include <QTest>
-#include <vector>
-#include <string>
+#include <gtest/gtest.h>
 #include <map>
 #include <memory>
+#include <pera_software/aidkit/concurrent/data_mutex.hpp>
+#include <string>
+#include <vector>
 
 namespace pera_software::aidkit::concurrent {
 
 using namespace std;
 
-static DataMutexTest mutexTest;
-
 //#########################################################################################################
 
 // Explicit template instantiation to detect syntax errors:
-using StringVectorDataMutex = class data_mutex< vector< string >>;
+using StringVectorDataMutex = class data_mutex<vector<string>>;
 
-void DataMutexTest::testRegularLocking()
+TEST(DataMutexTest, testRegularLocking)
 {
-    StringVectorDataMutex names( 20u, "empty" );
+	StringVectorDataMutex names(20u, "empty");
 
-    data_mutex_ptr names_ptr(&names);
-    names_ptr->at(0) = "";
-    (*names_ptr)[0] = "";
+	data_mutex_ptr names_ptr(&names);
+	names_ptr->at(0) = "";
+	(*names_ptr)[0] = "";
 }
 
-void DataMutexTest::testConstLocking()
+TEST(DataMutexTest, testConstLocking)
 {
-    const StringVectorDataMutex names( 20u, "empty" );
+	const StringVectorDataMutex names(20u, "empty");
 
-    const_data_mutex_ptr names_ptr(&names);
-    string first = names_ptr->at(0);
-    first = (*names_ptr)[0];
+	const_data_mutex_ptr names_ptr(&names);
+	string first = names_ptr->at(0);
+	first = (*names_ptr)[0];
 }
 
 }

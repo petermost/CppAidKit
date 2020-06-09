@@ -30,8 +30,8 @@ find_package(Qt5 QUIET
 		Core
 		Gui
 		Widgets
-		Test
 )
+add_subdirectory(/usr/src/googletest googletest)
 
 ###############################################################################
 # Setup AidKit:
@@ -117,54 +117,42 @@ target_include_directories(AidKit
 )
 
 ###############################################################################
-# Setup AidKitTest
+# Setup AidKit tests:
 
-add_library(AidKitTest
-	src/pera_software/aidkit/qt/test/Test.hpp
-	src/pera_software/aidkit/qt/test/Test.cpp
+add_executable(testAidKit
+	tests/pera_software/aidkit/test_main.cpp
+
+	tests/pera_software/aidkit/containers_test.cpp
+	tests/pera_software/aidkit/enum_class_test.cpp
+	tests/pera_software/aidkit/enum_flags_test.cpp
+	tests/pera_software/aidkit/strings_test.cpp
+	tests/pera_software/aidkit/vectors_test.cpp
+	tests/pera_software/aidkit/unicode_test.cpp
+
+	tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
+
+	tests/pera_software/aidkit/io/file_test.cpp
+	tests/pera_software/aidkit/io/file_ptr_test.cpp
+
+	tests/pera_software/aidkit/cpp/new_test.cpp
+	tests/pera_software/aidkit/cpp/memory_test.cpp
+	tests/pera_software/aidkit/cpp/stdlib_test.cpp
 )
-set_default_target_options(AidKitTest)
+set_default_target_options(testAidKit)
 
-target_include_directories(AidKitTest
+target_include_directories(testAidKit
 	PUBLIC
 		src/
 		tests/
 )
 
-###############################################################################
-# Setup AidKit tests:
-
-add_executable(testAidKit
-	tests/pera_software/aidkit/containers_test.hpp
-	tests/pera_software/aidkit/containers_test.cpp
-	tests/pera_software/aidkit/enum_class_test.hpp
-	tests/pera_software/aidkit/enum_class_test.cpp
-	tests/pera_software/aidkit/enum_flags_test.hpp
-	tests/pera_software/aidkit/enum_flags_test.cpp
-	tests/pera_software/aidkit/strings_test.hpp
-	tests/pera_software/aidkit/strings_test.cpp
-	tests/pera_software/aidkit/test_main.cpp
-	tests/pera_software/aidkit/vectors_test.hpp
-	tests/pera_software/aidkit/vectors_test.cpp
-	tests/pera_software/aidkit/unicode_test.hpp
-	tests/pera_software/aidkit/unicode_test.cpp
-
-	tests/pera_software/aidkit/concurrent/data_mutex_test.hpp
-	tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
-
-	tests/pera_software/aidkit/io/file_test.hpp
-	tests/pera_software/aidkit/io/file_test.cpp
-	tests/pera_software/aidkit/io/file_ptr_test.hpp
-	tests/pera_software/aidkit/io/file_ptr_test.cpp
-
-	tests/pera_software/aidkit/cpp/new_test.hpp
-	tests/pera_software/aidkit/cpp/new_test.cpp
-	tests/pera_software/aidkit/cpp/memory_test.hpp
-	tests/pera_software/aidkit/cpp/memory_test.cpp
-	tests/pera_software/aidkit/cpp/stdlib_test.hpp
-	tests/pera_software/aidkit/cpp/stdlib_test.cpp
+target_link_libraries(testAidKit
+	PRIVATE
+		AidKit
+		gtest
+		# gtest_main
 )
-set_default_target_options(testAidKit)
+
 
 ###############################################################################
 
@@ -178,12 +166,11 @@ if (Boost_FOUND)
 	)
 	target_sources(testAidKit
 		PRIVATE
-			tests/pera_software/aidkit/boost/formatter_test.hpp
 			tests/pera_software/aidkit/boost/formatter_test.cpp
 	)
 	target_compile_definitions(AidKit
 		PRIVATE
-			# BOOST_ALL_DYN_LINK
+			BOOST_ALL_DYN_LINK
 			BOOST_ASIO_NO_DEPRECATED
 			BOOST_FILESYSTEM_NO_DEPRECATED
 	)
@@ -208,7 +195,7 @@ if (Qt5Core_FOUND)
 	# "This property is initialized by the value of the CMAKE_AUTOMOC variable *if it is set* when
 	# a target is created."
 
-	set_target_properties(AidKit AidKitTest testAidKit
+	set_target_properties(AidKit testAidKit
 		PROPERTIES
 			AUTOMOC ON
 			AUTORCC ON
@@ -245,9 +232,7 @@ if (Qt5Core_FOUND)
 	)
 	target_sources(testAidKit
 		PRIVATE
-			tests/pera_software/aidkit/qt/core/ConsoleTest.hpp
 			tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
-			tests/pera_software/aidkit/qt/core/EndianTest.hpp
 			tests/pera_software/aidkit/qt/core/EndianTest.cpp
 	)
 	# Disable the slot, signal, emit etc. keywords:
@@ -277,7 +262,6 @@ if (Qt5Gui_FOUND)
 			tests/pera_software/aidkit/qt/gui/ResourcesTest.hpp
 			tests/pera_software/aidkit/qt/gui/ResourcesTest.cpp
 
-			tests/pera_software/company/qt/PERAResourcesTest.hpp
 			tests/pera_software/company/qt/PERAResourcesTest.cpp
 	)
 	target_link_libraries(AidKit
@@ -324,21 +308,6 @@ else()
 	message(WARNING "Qt5 Widgets not found, building without it!")
 endif()
 
-if (Qt5Test_FOUND)
-	target_link_libraries(AidKitTest
-		PUBLIC
-			AidKit
-			Qt5::Test
-			Qt5::Gui
-	)
-	target_link_libraries(testAidKit
-		PUBLIC
-			AidKit
-			AidKitTest
-	)
-else()
-	message(WARNING "Qt5 Test not found, building without it!")
-endif()
 
 ###############################################################################
 # Installing

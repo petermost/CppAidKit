@@ -15,27 +15,30 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "ConsoleTest.hpp"
-#include <pera_software/aidkit/qt/core/Console.hpp>
 #include <QString>
+#include <gtest/gtest.h>
+#include <pera_software/aidkit/qt/core/Console.hpp>
 
 namespace pera_software::aidkit::qt {
 
-// This is more of a compile test then runtime test, so we don't instantiate ConsoleTest.
+// This is more of a compile test then runtime test
 
-void ConsoleTest::testOutStream() {
-	QString text( "" );
+TEST(ConsoleTest, DISABLED_testOutStream)
+{
+	QString text("");
 
 	cout << text;
 }
 
-void ConsoleTest::testErrStream() {
-	QString text( "" );
+TEST(ConsoleTest, DISABLED_testErrStream)
+{
+	QString text("");
 
 	cerr << text;
 }
 
-void ConsoleTest::testInStream() {
+TEST(ConsoleTest, DISABLED_testInStream)
+{
 	QString text;
 
 	cin >> text;

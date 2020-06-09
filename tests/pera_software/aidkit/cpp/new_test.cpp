@@ -15,10 +15,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "new_test.hpp"
-#include <pera_software/aidkit/cpp/new.hpp>
+#include <gtest/gtest.h>
 #include <memory>
-#include <QTest>
+#include <pera_software/aidkit/cpp/new.hpp>
 
 namespace pera_software::aidkit::cpp {
 
@@ -27,48 +26,51 @@ using namespace std;
 class InstanceCounter {
 	public:
 		InstanceCounter(int *counter)
-			: counter_(counter) {
+			: counter_(counter)
+		{
 			++(*counter_);
 		}
 
-		~InstanceCounter() {
+		~InstanceCounter()
+		{
 			--(*counter_);
 		}
+
 	private:
 		int *const counter_;
 };
 
-static NewTest newTest;
-
 static constexpr size_t MEMORY_SIZE = 100;
 static_assert(MEMORY_SIZE >= sizeof(InstanceCounter), "MEMORY_SIZE isn't big enough!");
 
-void NewTest::testPlacementDelete() {
+TEST(NewTest, testPlacementDelete)
+{
 	int counter = 0;
 	{
 		char sharedMemory[MEMORY_SIZE];
 		char uniqueMemory[MEMORY_SIZE];
 
-		shared_ptr<InstanceCounter> sharedObj(new(sharedMemory)InstanceCounter(&counter), placement_new_deleter());
-		unique_ptr<InstanceCounter, placement_new_deleter> uniqueObj(new(uniqueMemory)InstanceCounter(&counter));
+		shared_ptr<InstanceCounter> sharedObj(new (sharedMemory) InstanceCounter(&counter), placement_new_deleter());
+		unique_ptr<InstanceCounter, placement_new_deleter> uniqueObj(new (uniqueMemory) InstanceCounter(&counter));
 
-		QCOMPARE(2, counter);
+		ASSERT_EQ(2, counter);
 	}
-	QCOMPARE(0, counter);
+	ASSERT_EQ(0, counter);
 }
 
-void NewTest::testConstPlacementDelete() {
+TEST(NewTest, testConstPlacementDelete)
+{
 	int counter = 0;
 	{
 		char sharedMemory[MEMORY_SIZE];
 		char uniqueMemory[MEMORY_SIZE];
 
-		const shared_ptr<InstanceCounter> sharedObj(new(sharedMemory)InstanceCounter(&counter), placement_new_deleter());
-		const unique_ptr<InstanceCounter, placement_new_deleter> uniqueObj(new(uniqueMemory)InstanceCounter(&counter));
+		const shared_ptr<InstanceCounter> sharedObj(new (sharedMemory) InstanceCounter(&counter), placement_new_deleter());
+		const unique_ptr<InstanceCounter, placement_new_deleter> uniqueObj(new (uniqueMemory) InstanceCounter(&counter));
 
-		QCOMPARE(2, counter);
+		ASSERT_EQ(2, counter);
 	}
-	QCOMPARE(0, counter);
+	ASSERT_EQ(0, counter);
 }
 
 }

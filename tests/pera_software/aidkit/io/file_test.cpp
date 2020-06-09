@@ -15,81 +15,71 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
+#include <gtest/gtest.h>
 #include <pera_software/aidkit/io/file.hpp>
-#include "file_test.hpp"
-#include <QTest>
 
 namespace pera_software::aidkit::io {
 
 using namespace std;
 
-// Explicit template instantiations to catch compiler errors early:
-
-template class basic_file< file_locked_category >;
-
-static FileTest fileTest;
-
-#if defined( AIDKIT_MINGW )
-static void nullHandler( const wchar_t *, const wchar_t *, const wchar_t *, unsigned int, uintptr_t ) {
-}
-#endif
-
-static const file::open_modes WRITE_ACCESS = file::open_modes( file::open_mode::write ) | file::open_mode::extended;
-
-static const char *makeTemporaryFilename() {
+static const char *makeTemporaryFilename()
+{
 	return "pera_software.aidkit.io.file_test.cpp.dat";
 }
 
-//==================================================================================================
+class FileTest : public testing::Test {
+	protected:
+		void SetUp() override;
+		void TearDown() override;
+};
 
-FileTest::FileTest() {
-	#if defined( AIDKIT_MINGW )
-		// Disable the invalid error handler from the msvcrt:
-
-		_set_invalid_parameter_handler( nullHandler );
-#endif
+void FileTest::SetUp()
+{
+	remove_file_if_exists(makeTemporaryFilename());
 }
 
-//==================================================================================================
-
-void FileTest::initTestCase() {
-	remove_file_if_exists( makeTemporaryFilename() );
+void FileTest::TearDown()
+{
+	remove_file_if_exists(makeTemporaryFilename());
 }
 
+// Explicit template instantiations to catch compiler errors early:
+
+template class basic_file<file_locked_category>;
+
+static const file::open_modes WRITE_ACCESS = file::open_modes(file::open_mode::write) | file::open_mode::extended;
+
 //==================================================================================================
 
-void FileTest::cleanupTestCase() {
-	remove_file_if_exists( makeTemporaryFilename() );
-}
-
-//==================================================================================================
-
-template < typename Functor >
-	void expectError( const error_code &expectedErrorCode, Functor &&functor ) {
+template <typename Functor>
+	void expectError(const error_code &expectedErrorCode, Functor &&functor)
+	{
 		try {
 			functor();
-			QFAIL( "Expected thrown system_error!" );
-		} catch ( const system_error &error ) {
-			QCOMPARE( error.code(), expectedErrorCode );
+			FAIL() << "Expected thrown 'system_error'!";
+		} catch (const system_error &error) {
+			ASSERT_EQ(error.code(), expectedErrorCode);
 		}
 	}
 
 //==================================================================================================
 
-template < typename Functor >
-	void expectSuccess( Functor &&functor ) {
+template <typename Functor>
+	void expectSuccess(Functor &&functor)
+	{
 		try {
 			functor();
-		} catch ( const system_error &error ) {
-			string failMessage = "Unexcepted system error thrown: " + error.code().message() + " !";
-			QFAIL( failMessage.c_str() );
+		} catch (const system_error &error) {
+			string failMessage = "Unexcepted 'system_error' thrown: " + error.code().message() + " !";
+			FAIL() << failMessage;
 		}
 	}
 
 //==================================================================================================
 
-void FileTest::testInvalidIsEof() {
-	expectError( make_error_code( errc::invalid_argument ), [ & ] {
+TEST_F(FileTest, testInvalidIsEof)
+{
+	expectError(make_error_code(errc::invalid_argument), [&] {
 		file file;
 		file.is_eof();
 	});
@@ -97,8 +87,9 @@ void FileTest::testInvalidIsEof() {
 
 //==================================================================================================
 
-void FileTest::testInvalidGet() {
-	expectError( make_error_code( errc::invalid_argument ), [ & ] {
+TEST_F(FileTest, testInvalidGet)
+{
+	expectError(make_error_code(errc::invalid_argument), [&] {
 		file file;
 		file.get();
 	});
@@ -106,8 +97,9 @@ void FileTest::testInvalidGet() {
 
 //==================================================================================================
 
-void FileTest::testInvalidIsError() {
-	expectError( make_error_code( errc::invalid_argument ), [ & ] {
+TEST_F(FileTest, testInvalidIsError)
+{
+	expectError(make_error_code(errc::invalid_argument), [&] {
 		file file;
 		file.is_error();
 	});
@@ -115,8 +107,9 @@ void FileTest::testInvalidIsError() {
 
 //==================================================================================================
 
-void FileTest::testInvalidClose() {
-	expectError( make_error_code( errc::invalid_argument ), [ & ] {
+TEST_F(FileTest, testInvalidClose)
+{
+	expectError(make_error_code(errc::invalid_argument), [&] {
 		file file;
 		file.close();
 	});
@@ -124,12 +117,13 @@ void FileTest::testInvalidClose() {
 
 //==================================================================================================
 
-void FileTest::testInvalidCloseAndClose() {
-	expectError( make_error_code( errc::invalid_argument ), [ & ] {
+TEST_F(FileTest, testInvalidCloseAndClose)
+{
+	expectError(make_error_code(errc::invalid_argument), [&] {
 		string fileName = makeTemporaryFilename();
-		file_deleter fileDeleter( fileName );
+		file_deleter fileDeleter(fileName);
 
-		file file( fileName.c_str(), WRITE_ACCESS );
+		file file(fileName.c_str(), WRITE_ACCESS);
 		file.close();
 		file.close();
 	});
@@ -137,87 +131,95 @@ void FileTest::testInvalidCloseAndClose() {
 
 //==================================================================================================
 
-void FileTest::testOpenFailed() {
-	expectError( make_error_code( errc::no_such_file_or_directory ), [ & ] {
+TEST_F(FileTest, testOpenFailed)
+{
+	expectError(make_error_code(errc::no_such_file_or_directory), [&] {
 		file file;
 		string fileName = makeTemporaryFilename();
-		file.open( fileName.c_str(), file::open_mode::read );
+		file.open(fileName.c_str(), file::open_mode::read);
 	});
 }
 
 //==================================================================================================
 
-void FileTest::testOpenSucceeded() {
-	expectSuccess([ & ] {
+TEST_F(FileTest, testOpenSucceeded)
+{
+	expectSuccess([&] {
 		string fileName = makeTemporaryFilename();
-		file_deleter fileDeleter( fileName );
+		file_deleter fileDeleter(fileName);
 
 		file file;
-		file.open( fileName.c_str(), file::open_mode::write );
+		file.open(fileName.c_str(), file::open_mode::write);
 	});
 }
 
 //==================================================================================================
 
-void FileTest::testGetCharReturnsEof() {
-	expectError( make_error_code( file_error::eof ), [ & ] {
+TEST_F(FileTest, testGetCharReturnsEof)
+{
+	expectError(make_error_code(file_error::eof), [&] {
 		string fileName = makeTemporaryFilename();
-		file_deleter fileDeleter( fileName );
+		file_deleter fileDeleter(fileName);
 
-		file file( fileName.c_str(), WRITE_ACCESS );
+		file file(fileName.c_str(), WRITE_ACCESS);
 		file.get();
 	});
 }
 
 //==================================================================================================
 
-void FileTest::testGetStringReturnsEof() {
-	expectError( make_error_code( file_error::eof ), [ & ] {
+TEST_F(FileTest, testGetStringReturnsEof)
+{
+	expectError(make_error_code(file_error::eof), [&] {
 		string fileName = makeTemporaryFilename();
-		file_deleter fileDeleter( fileName );
+		file_deleter fileDeleter(fileName);
 
-		file file( fileName.c_str(), WRITE_ACCESS );
+		file file(fileName.c_str(), WRITE_ACCESS);
 
-		char str[ 100 ];
-		file.get( str, 10 );
+		char str[100];
+		file.get(str, 10);
 	});
 }
 
 //==================================================================================================
 
-void FileTest::testReadReturnsEof() {
-	expectError( make_error_code( file_error::eof ), [ & ] {
+TEST_F(FileTest, testReadReturnsEof)
+{
+	expectError(make_error_code(file_error::eof), [&] {
 		string fileName = makeTemporaryFilename();
-		file_deleter fileDeleter( fileName );
+		file_deleter fileDeleter(fileName);
 
-		file file( fileName.c_str(), WRITE_ACCESS );
+		file file(fileName.c_str(), WRITE_ACCESS);
 
-		char buffer[ 100 ];
-		file.read( buffer, sizeof( buffer ), 1 );
+		char buffer[100];
+		file.read(buffer, sizeof(buffer), 1);
 	});
 }
 
 //==================================================================================================
 
-void FileTest::testCloseAndDestructor() {
-	expectSuccess([ & ] {
+TEST_F(FileTest, testCloseAndDestructor)
+{
+	expectSuccess([&] {
 		string fileName = makeTemporaryFilename();
-		file_deleter fileDeleter( fileName );
+		file_deleter fileDeleter(fileName);
 
-		file file( fileName.c_str(), WRITE_ACCESS );
+		file file(fileName.c_str(), WRITE_ACCESS);
 		file.close();
 	});
 }
 
 //==================================================================================================
 
-void FileTest::testOpenReadWrite() {
-	expectError( make_error_code( errc::no_such_file_or_directory ), [ & ] {
+TEST_F(FileTest, testOpenReadWrite)
+{
+	expectError(make_error_code(errc::no_such_file_or_directory), [&] {
 		string fileName = makeTemporaryFilename();
-		file_deleter fileDeleter( fileName );
+		file_deleter fileDeleter(fileName);
 
-		file file( fileName.c_str(), file::open_modes( file::open_mode::write ) | file::open_mode::read );
+		file file(fileName.c_str(), file::open_modes(file::open_mode::write) | file::open_mode::read);
 	});
 }
+
 
 }
