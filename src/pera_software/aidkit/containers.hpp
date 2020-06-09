@@ -18,14 +18,14 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/cpp/string_ref.hpp>
+#include <string_view>
 #include <sstream>
 
 namespace pera_software::aidkit::containers {
 
 template <typename Iterator>
 	std::ostream &join(std::ostream &output, Iterator begin, Iterator end,
-		cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix)
+		std::string_view prefix, std::string_view delimiter, std::string_view suffix)
 	{
 		output << prefix;
 		auto it = begin;
@@ -41,14 +41,14 @@ template <typename Iterator>
 
 template <typename Container>
 	std::ostream &join(std::ostream &output, const Container &container,
-		cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix)
+		std::string_view prefix, std::string_view delimiter, std::string_view suffix)
 	{
 		return join(output, container.begin(), container.end(), prefix, delimiter, suffix);
 	}
 
 template <typename Iterator>
 	std::string join(Iterator begin, Iterator end,
-		cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix)
+		std::string_view prefix, std::string_view delimiter, std::string_view suffix)
 	{
 		std::ostringstream valueStream;
 
@@ -59,7 +59,7 @@ template <typename Iterator>
 
 template <typename Container>
 	std::string join(const Container &container,
-		cpp::string_ref prefix, cpp::string_ref delimiter, cpp::string_ref suffix)
+		std::string_view prefix, std::string_view delimiter, std::string_view suffix)
 	{
 		return join(container.begin(), container.end(), prefix, delimiter, suffix);
 	}

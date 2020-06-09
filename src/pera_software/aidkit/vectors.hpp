@@ -18,7 +18,6 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/cpp/string_ref.hpp>
 #include "containers.hpp"
 #include <vector>
 #include <algorithm>

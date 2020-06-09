@@ -21,7 +21,7 @@
 #include <string>
 #include <algorithm>
 #include <functional>
-#include <pera_software/aidkit/cpp/string_ref.hpp>
+#include <string_view>
 
 namespace pera_software::aidkit {
 
@@ -35,13 +35,13 @@ namespace pera_software::aidkit {
 					return value_;
 				}
 
-				cpp::string_ref name() const noexcept {
+				std::string_view name() const noexcept {
 					return name_;
 				}
 
 				// Some find functions for searching via a name or a value:
 
-				static std::vector< T > find( cpp::string_ref name ) {
+				static std::vector< T > find( std::string_view name ) {
 					std::vector< T > foundEnums;
 
 					for_each([ & ]( const T &other ) {

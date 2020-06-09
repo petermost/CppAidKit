@@ -81,8 +81,6 @@ add_library(AidKit
 	src/pera_software/aidkit/cpp/memory.cpp
 	src/pera_software/aidkit/cpp/stdlib.hpp
 	src/pera_software/aidkit/cpp/stdlib.cpp
-	src/pera_software/aidkit/cpp/string_ref.hpp
-	src/pera_software/aidkit/cpp/string_ref.cpp
 
 	src/pera_software/aidkit/concurrent/data_mutex.hpp
 	src/pera_software/aidkit/concurrent/data_mutex.cpp

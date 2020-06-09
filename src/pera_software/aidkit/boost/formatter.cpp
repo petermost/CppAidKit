@@ -19,15 +19,14 @@
 
 namespace pera_software::aidkit::boost {
 
-using namespace cpp;
 using namespace std;
 using namespace ::boost::io;
 
-formatter::formatter(string_ref formatString) noexcept
-    : format_(nullptr)
+formatter::formatter(string_view formatString) noexcept
+	: format_(nullptr)
 {
-    format_.exceptions(format_error_bits::no_error_bits);
-    format_.parse(string(formatString));
+	format_.exceptions(format_error_bits::no_error_bits);
+	format_.parse(string(formatString));
 }
 
 string formatter::str() const noexcept

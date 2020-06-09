@@ -18,7 +18,7 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/cpp/string_ref.hpp>
+#include <string_view>
 #include <boost/format.hpp>
 #include <string>
 
@@ -31,7 +31,7 @@ namespace pera_software::aidkit::boost {
 
     class AIDKIT_API formatter {
         public:
-            formatter( cpp::string_ref formatString ) noexcept;
+            formatter( std::string_view formatString ) noexcept;
 
             template< class T >
                 formatter &operator % ( T &&x ) {
