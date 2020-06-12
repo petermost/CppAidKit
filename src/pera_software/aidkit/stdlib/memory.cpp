@@ -15,23 +15,26 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <gtest/gtest.h>
-#include <pera_software/aidkit/cpp/memory.hpp>
+#include "memory.hpp"
 
-namespace pera_software::aidkit::cpp {
+namespace pera_software::aidkit::stdlib {
 
 using namespace std;
 
-static constexpr size_t MAX_SIZE(static_cast<size_t>(-1));
-
-TEST(MemoryTest, testMakeUniqueMemoryPtr)
-{
-	ASSERT_THROW(make_unique_memory_ptr(MAX_SIZE), bad_alloc);
+shared_memory_ptr make_shared_memory_ptr(size_t size) {
+    shared_memory_ptr ptr(malloc(size), free);
+    if (!ptr) {
+        throw bad_alloc();
+    }
+    return ptr;
 }
 
-TEST(MemoryTest, testMakeSharedMemoryPtr)
-{
-	ASSERT_THROW(make_shared_memory_ptr(MAX_SIZE), bad_alloc);
+unique_memory_ptr make_unique_memory_ptr(size_t size) {
+    unique_memory_ptr ptr(malloc(size));
+    if (!ptr) {
+        throw bad_alloc();
+    }
+    return ptr;
 }
 
 }

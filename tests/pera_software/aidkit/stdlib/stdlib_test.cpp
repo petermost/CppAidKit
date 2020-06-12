@@ -1,4 +1,4 @@
-// Copyright 2019 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,26 +15,39 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "memory.hpp"
+#include <gtest/gtest.h>
+#include <iterator>
+#include <pera_software/aidkit/stdlib/stdlib.hpp>
+#include <vector>
 
-namespace pera_software::aidkit::cpp {
+namespace pera_software::aidkit::stdlib {
 
 using namespace std;
 
-shared_memory_ptr make_shared_memory_ptr(size_t size) {
-    shared_memory_ptr ptr(malloc(size), free);
-    if (!ptr) {
-        throw bad_alloc();
-    }
-    return ptr;
+TEST(StdLibTest, testCountOf)
+{
+	int ints[] = {1, 2, 2, 2, 3};
+
+	ASSERT_EQ(countof(ints), size_t(5));
 }
 
-unique_memory_ptr make_unique_memory_ptr(size_t size) {
-    unique_memory_ptr ptr(malloc(size));
-    if (!ptr) {
-        throw bad_alloc();
-    }
-    return ptr;
+TEST(StdLibTest, testSize)
+{
+	vector<int> ints = {1, 2, 3};
+
+	ASSERT_EQ(std::size(ints), size_t(3));
+}
+
+TEST(StdLibTest, testIntCastTooLarge)
+{
+	const long l = std::numeric_limits<int>::max() + 1l;
+	ASSERT_THROW(int_cast<int>(l), out_of_range);
+}
+
+TEST(StdLibTest, testIntCastTooSmall)
+{
+	const long l = std::numeric_limits<int>::min() - 1l;
+	ASSERT_THROW(int_cast<int>(l), out_of_range);
 }
 
 }

@@ -15,6 +15,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-namespace pera_software::aidkit::cpp {
+#pragma once
+
+#include <pera_software/aidkit/aidkit.hpp>
+#include <memory>
+
+namespace pera_software::aidkit::stdlib {
+
+    struct free_deleter {
+        void operator ()(void *memory) const noexcept {
+            std::free(memory);
+        }
+    };
+
+    using unique_memory_ptr = std::unique_ptr<void, free_deleter>;
+    unique_memory_ptr AIDKIT_API make_unique_memory_ptr(std::size_t size);
+
+    using shared_memory_ptr = std::shared_ptr<void>;
+    shared_memory_ptr AIDKIT_API make_shared_memory_ptr(std::size_t size);
 
 }

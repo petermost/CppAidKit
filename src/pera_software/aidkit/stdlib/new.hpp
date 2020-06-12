@@ -17,21 +17,13 @@
 
 #pragma once
 
-#include <pera_software/aidkit/aidkit.hpp>
-#include <memory>
+namespace pera_software::aidkit::stdlib {
 
-namespace pera_software::aidkit::cpp {
-
-    struct free_deleter {
-        void operator ()(void *memory) const noexcept {
-            std::free(memory);
-        }
-    };
-
-    using unique_memory_ptr = std::unique_ptr<void, free_deleter>;
-    unique_memory_ptr AIDKIT_API make_unique_memory_ptr(std::size_t size);
-
-    using shared_memory_ptr = std::shared_ptr<void>;
-    shared_memory_ptr AIDKIT_API make_shared_memory_ptr(std::size_t size);
+	struct placement_new_deleter {
+		template <typename T>
+			void operator ()(T *pointer) const {
+			pointer->~T();
+		}
+	};
 
 }

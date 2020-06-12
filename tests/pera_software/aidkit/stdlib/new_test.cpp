@@ -17,9 +17,9 @@
 
 #include <gtest/gtest.h>
 #include <memory>
-#include <pera_software/aidkit/cpp/new.hpp>
+#include <pera_software/aidkit/stdlib/new.hpp>
 
-namespace pera_software::aidkit::cpp {
+namespace pera_software::aidkit::stdlib {
 
 using namespace std;
 

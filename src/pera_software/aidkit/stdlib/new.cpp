@@ -15,15 +15,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-namespace pera_software::aidkit::cpp {
-
-	struct placement_new_deleter {
-		template <typename T>
-			void operator ()(T *pointer) const {
-			pointer->~T();
-		}
-	};
+namespace pera_software::aidkit::stdlib {
 
 }

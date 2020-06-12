@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2019 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -16,38 +16,22 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include <gtest/gtest.h>
-#include <iterator>
-#include <pera_software/aidkit/cpp/stdlib.hpp>
-#include <vector>
+#include <pera_software/aidkit/stdlib/memory.hpp>
 
-namespace pera_software::aidkit::cpp {
+namespace pera_software::aidkit::stdlib {
 
 using namespace std;
 
-TEST(StdLibTest, testCountOf)
-{
-	int ints[] = {1, 2, 2, 2, 3};
+static constexpr size_t MAX_SIZE(static_cast<size_t>(-1));
 
-	ASSERT_EQ(countof(ints), size_t(5));
+TEST(MemoryTest, testMakeUniqueMemoryPtr)
+{
+	ASSERT_THROW(make_unique_memory_ptr(MAX_SIZE), bad_alloc);
 }
 
-TEST(StdLibTest, testSize)
+TEST(MemoryTest, testMakeSharedMemoryPtr)
 {
-	vector<int> ints = {1, 2, 3};
-
-	ASSERT_EQ(std::size(ints), size_t(3));
-}
-
-TEST(StdLibTest, testIntCastTooLarge)
-{
-	const long l = std::numeric_limits<int>::max() + 1l;
-	ASSERT_THROW(int_cast<int>(l), out_of_range);
-}
-
-TEST(StdLibTest, testIntCastTooSmall)
-{
-	const long l = std::numeric_limits<int>::min() - 1l;
-	ASSERT_THROW(int_cast<int>(l), out_of_range);
+	ASSERT_THROW(make_shared_memory_ptr(MAX_SIZE), bad_alloc);
 }
 
 }

@@ -75,12 +75,12 @@ add_library(AidKit
 	src/pera_software/aidkit/io/system_error.hpp
 	src/pera_software/aidkit/io/system_error.cpp
 
-	src/pera_software/aidkit/cpp/new.hpp
-	src/pera_software/aidkit/cpp/new.cpp
-	src/pera_software/aidkit/cpp/memory.hpp
-	src/pera_software/aidkit/cpp/memory.cpp
-	src/pera_software/aidkit/cpp/stdlib.hpp
-	src/pera_software/aidkit/cpp/stdlib.cpp
+	src/pera_software/aidkit/stdlib/new.hpp
+	src/pera_software/aidkit/stdlib/new.cpp
+	src/pera_software/aidkit/stdlib/memory.hpp
+	src/pera_software/aidkit/stdlib/memory.cpp
+	src/pera_software/aidkit/stdlib/stdlib.hpp
+	src/pera_software/aidkit/stdlib/stdlib.cpp
 
 	src/pera_software/aidkit/concurrent/data_mutex.hpp
 	src/pera_software/aidkit/concurrent/data_mutex.cpp
@@ -133,9 +133,9 @@ add_executable(testAidKit
 	tests/pera_software/aidkit/io/file_test.cpp
 	tests/pera_software/aidkit/io/file_ptr_test.cpp
 
-	tests/pera_software/aidkit/cpp/new_test.cpp
-	tests/pera_software/aidkit/cpp/memory_test.cpp
-	tests/pera_software/aidkit/cpp/stdlib_test.cpp
+	tests/pera_software/aidkit/stdlib/new_test.cpp
+	tests/pera_software/aidkit/stdlib/memory_test.cpp
+	tests/pera_software/aidkit/stdlib/stdlib_test.cpp
 )
 set_default_target_options(testAidKit)
 

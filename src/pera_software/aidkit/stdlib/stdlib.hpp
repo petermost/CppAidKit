@@ -21,7 +21,7 @@
 #include <iterator>
 #include <limits>
 
-namespace pera_software::aidkit::cpp {
+namespace pera_software::aidkit::stdlib {
 
 	// Make an 'alias function' from countof() to std::size():
 
