@@ -21,10 +21,11 @@
 namespace pera_software::aidkit::io {
 
 using namespace std;
+using namespace filesystem;
 
-static const char *makeTemporaryFilename()
+static path makeTemporaryFilename()
 {
-	return "pera_software.aidkit.io.file_test.cpp.dat";
+	return make_temporary_filename("file_test.dat");
 }
 
 class FileTest : public testing::Test {
@@ -35,6 +36,7 @@ class FileTest : public testing::Test {
 
 void FileTest::SetUp()
 {
+	// Try to remove the temporary file in the TearDown() method was not called:
 	remove_file_if_exists(makeTemporaryFilename());
 }
 

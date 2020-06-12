@@ -18,6 +18,7 @@
 #pragma once
 
 #include "basic_file.hpp"
+#include <filesystem>
 #include <pera_software/aidkit/aidkit.hpp>
 #include <string>
 
@@ -25,24 +26,26 @@ namespace pera_software::aidkit::io {
 
 	using file = basic_file<>;
 
-	AIDKIT_API bool remove_file( const char fileName[] );
-	AIDKIT_API bool remove_file( const char fileName[], std::error_code *errorCode ) noexcept;
+	AIDKIT_API bool remove_file(const std::filesystem::path &fileName);
+	AIDKIT_API bool remove_file(const std::filesystem::path &fileName, std::error_code *errorCode) noexcept;
 
-	AIDKIT_API void remove_file_if_exists( const char fileName[] );
+	AIDKIT_API void remove_file_if_exists(const std::filesystem::path &fileName);
+
+	AIDKIT_API std::filesystem::path make_temporary_filename(const std::filesystem::path &fileName);
 
 	// An RAII file deleter for deleting/cleaning up files:
 
 	class AIDKIT_API file_deleter {
 		public:
-			file_deleter( const std::string &fileName );
+			file_deleter(const std::filesystem::path &fileName);
 
 			// Destructors in C++11 are implicitly declared as noexcept, so we have to explicitly allow
 			// exceptions (http://en.cppreference.com/w/cpp/language/destructor#Exceptions):
 
-			~file_deleter() noexcept( false );
+			~file_deleter() noexcept(false);
 
 		private:
-			std::string fileName_;
+			std::filesystem::path fileName_;
 	};
 
 }
