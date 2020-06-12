@@ -118,6 +118,7 @@ target_include_directories(AidKit
 # Setup AidKit tests:
 
 add_executable(testAidKit
+	tests/pera_software/aidkit/test_main.hpp
 	tests/pera_software/aidkit/test_main.cpp
 
 	tests/pera_software/aidkit/containers_test.cpp
@@ -230,6 +231,8 @@ if (Qt5Core_FOUND)
 	)
 	target_sources(testAidKit
 		PRIVATE
+			tests/pera_software/aidkit/qt/TestFixture.hpp
+			tests/pera_software/aidkit/qt/TestFixture.cpp
 			tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
 			tests/pera_software/aidkit/qt/core/EndianTest.cpp
 	)

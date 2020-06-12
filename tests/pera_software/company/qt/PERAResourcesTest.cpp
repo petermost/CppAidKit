@@ -15,19 +15,34 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
+#include <QIcon>
+#include <gtest/gtest.h>
+#include <pera_software/aidkit/qt/TestFixture.hpp>
 #include <pera_software/aidkit/qt/gui/ResourcesTest.hpp>
 #include <pera_software/company/qt/PERAResources.hpp>
-#include <gtest/gtest.h>
-#include <QIcon>
 
 namespace pera_software::company::qt {
 
 using namespace std;
+using namespace pera_software::aidkit::qt;
 
-TEST(PERAResourcesTest, testLoadIcons)
+class PERAResourcesTest : public TestFixture {
+	public:
+		~PERAResourcesTest() override;
+};
+
+// Silence the warning:
+// "... has no out-of-line virtual method definitions; its vtable will be emitted in every
+// translation unit [-Wweak-vtables]"
+PERAResourcesTest::~PERAResourcesTest()
+{
+}
+
+TEST_F(PERAResourcesTest, testLoadIcons)
 {
 	ASSERT_IMAGE(PERAResources::icon());
 	ASSERT_IMAGE(PERAResources::logo());
 }
+
 
 }

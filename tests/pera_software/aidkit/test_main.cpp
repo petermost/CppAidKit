@@ -1,4 +1,4 @@
-#include <QApplication>
+#include "test_main.hpp"
 #include <exception>
 #include <gtest/gtest.h>
 #include <pera_software/aidkit/platform.hpp>
@@ -12,9 +12,15 @@ static void nullHandler(const wchar_t *, const wchar_t *, const wchar_t *, unsig
 }
 #endif
 
+int g_argc;
+char **g_argv;
+
 int main(int argc, char *argv[])
 {
 	printf("Running main() from %s\n", __FILE__);
+
+	g_argc = argc;
+	g_argv = argv;
 
 #if defined(AIDKIT_GCC_STDLIB)
 	set_terminate(__gnu_cxx::__verbose_terminate_handler);
@@ -25,11 +31,8 @@ int main(int argc, char *argv[])
 
 	_set_invalid_parameter_handler(nullHandler);
 #endif
-	// TODO: Move instantiation of QApplication to a QtTestFixture
 
-	QApplication application(argc, argv);
-
-	InitGoogleTest(&argc, argv);
+	InitGoogleTest(&g_argc, g_argv);
 
 	return RUN_ALL_TESTS();
 }

@@ -16,21 +16,34 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ResourcesTest.hpp"
-#include <gtest/gtest.h>
-#include <pera_software/aidkit/qt/gui/Resources.hpp>
 #include <QIcon>
+#include <gtest/gtest.h>
+#include <pera_software/aidkit/qt/TestFixture.hpp>
+#include <pera_software/aidkit/qt/gui/Resources.hpp>
 
 namespace pera_software::aidkit::qt {
 
 using namespace std;
 
-TEST(ResourcesTest, testMissingIcon)
+class ResourcesTest : public TestFixture {
+	public:
+		~ResourcesTest() override;
+};
+
+// Silence the warning:
+// "... has no out-of-line virtual method definitions; its vtable will be emitted in every
+// translation unit [-Wweak-vtables]"
+ResourcesTest::~ResourcesTest()
+{
+}
+
+TEST_F(ResourcesTest, testMissingIcon)
 {
 	QIcon missingIcon = loadIcon(QStringLiteral(":/missing.png"));
 	ASSERT_TRUE(missingIcon.isNull());
 }
 
-TEST(ResourcesTest, testLoadIcons)
+TEST_F(ResourcesTest, testLoadIcons)
 {
 	ASSERT_IMAGE(Resources::quitIcon());
 	ASSERT_IMAGE(Resources::debugIcon());
