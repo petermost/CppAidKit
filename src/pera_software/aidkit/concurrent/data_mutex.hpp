@@ -83,7 +83,7 @@ template <typename T, typename Mutex = std::mutex>
 // "'data_mutex_ptr' may not intend to support class template argument deduction [-Wctad-maybe-unsupported]"
 
 template <typename T, typename Mutex>
-	data_mutex_ptr(data_mutex<T, Mutex> *dataMutex) -> data_mutex_ptr<T, Mutex>;
+	data_mutex_ptr(data_mutex<T, Mutex>) -> data_mutex_ptr<T, Mutex>;
 
 template <typename T, typename Mutex = std::mutex>
 	class const_data_mutex_ptr {
@@ -121,5 +121,5 @@ template <typename T, typename Mutex = std::mutex>
 // "'const_data_mutex_ptr' may not intend to support class template argument deduction [-Wctad-maybe-unsupported]"
 
 template <typename T, typename Mutex>
-	const_data_mutex_ptr(const data_mutex<T, Mutex> *dataMutex) -> const_data_mutex_ptr<T, Mutex>;
+	const_data_mutex_ptr(data_mutex<T, Mutex>) -> const_data_mutex_ptr<T, Mutex>;
 }
