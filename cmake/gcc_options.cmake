@@ -1,5 +1,5 @@
 function(set_default_gcc_target_options targetName)
-	message("Setting default GCC options for target '${targetName}'")
+	report("Setting default gcc options for target '${targetName}'")
 
 	if (MINGW)
 		target_compile_definitions(${targetName}

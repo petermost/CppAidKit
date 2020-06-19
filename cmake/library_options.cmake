@@ -1,5 +1,5 @@
 function(set_default_library_target_options targetName)
-	message("Setting default library options for target '${targetName}'")
+	report("Setting default library options for target '${targetName}'")
 
 	# Hide symbols by default:
 	set_target_properties(${targetName}

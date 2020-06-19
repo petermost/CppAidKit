@@ -4,7 +4,7 @@
 # These debug switches must be set globally because they influence the generated code size!
 
 function(set_default_libstdcxx_target_options targetName)
-	message("Setting default libstdc++ options for '${targetName}'")
+	report("Setting default libstdc++ options for '${targetName}'")
 
 	target_compile_definitions(${targetName}
 		PUBLIC

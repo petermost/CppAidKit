@@ -13,7 +13,7 @@
 # https://stackoverflow.com/questions/38168725/cmake-trying-to-link-directory-as-an-executable-if-their-names-match
 
 function(set_default_output_target_options targetName)
-	message("Setting default output options for target '${targetName}")
+	report("Setting default output options for target '${targetName}")
 
 	set_target_properties(${targetName}
 		PROPERTIES

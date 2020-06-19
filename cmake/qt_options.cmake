@@ -1,17 +1,34 @@
 function(set_default_qt_target_options targetName)
-	message("Setting default Qt options for target '${targetName}")
+	report("Setting default qt options for target '${targetName}")
 
+	# Setting the Qt 'AUTO'-properties *after* the targets are already defined seems not to work i.e.:
+	# set(CMAKE_AUTOMOC ON)
+	# set(CMAKE_AUTORCC ON)
+	# set(CMAKE_AUTOUIC ON)
+	# According	to https://cmake.org/cmake/help/latest/prop_tgt/AUTOMOC.html:
+	# "This property is initialized by the value of the CMAKE_AUTOMOC variable *if it is set* when
+	# a target is created."
+
+	set_target_properties(${targetName}
+		PROPERTIES
+			AUTOMOC ON
+			AUTORCC ON
+	)
 	target_compile_definitions(${targetName}
 		PRIVATE
-			# If this macro is defined, the compiler will generate warnings if API declared as deprecated by Qt
-			# is used.
+			# Disable Qt specific keywords (slot, signal, emit etc.):
+			QT_NO_KEYWORDS
+
+			# "If this macro is defined, the compiler will generate warnings if API declared as
+			# deprecated by Qt is used."
 			QT_DEPRECATED_WARNINGS
 
-			# This macro can be defined in the project file to disable functions deprecated in a specified
-			# version of Qt or any earlier version.
-			QT_DISABLE_DEPRECATED_BEFORE=0x000000
+			# "This macro can be defined in the project file to disable functions deprecated in a
+			# specified version of Qt or any earlier version."
+			QT_DISABLE_DEPRECATED_BEFORE=0x060000 # 0x050C08
 	)
-	# Get rid of compile warning: 'warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+	# Get rid of compile warning: 'warning: empty expression statement has no effect; remove
+	# unnecessary ';' to silence this warning [-Wextra-semi-stmt]
 	# https://bugreports.qt.io/browse/QTBUG-82978 "Allow "-Wextra-semi-stmt" on Q_UNUSED"
 	# According to the comments in the bugreport, this will not be fixed before Qt6.
 	if (Qt5Core_VERSION VERSION_LESS 6)

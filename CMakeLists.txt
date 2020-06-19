@@ -186,19 +186,6 @@ endif()
 
 
 if (Qt5Core_FOUND)
-	# Setting the Qt 'AUTO'-properties *after* the targets are already defined seems not to work i.e.:
-	# set(CMAKE_AUTOMOC ON)
-	# set(CMAKE_AUTORCC ON)
-	# set(CMAKE_AUTOUIC ON)
-	# According	to https://cmake.org/cmake/help/latest/prop_tgt/AUTOMOC.html:
-	# "This property is initialized by the value of the CMAKE_AUTOMOC variable *if it is set* when
-	# a target is created."
-
-	set_target_properties(AidKit testAidKit
-		PROPERTIES
-			AUTOMOC ON
-			AUTORCC ON
-	)
 	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/qt/qt.cpp
@@ -235,11 +222,6 @@ if (Qt5Core_FOUND)
 			tests/pera_software/aidkit/qt/TestFixture.cpp
 			tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
 			tests/pera_software/aidkit/qt/core/EndianTest.cpp
-	)
-	# Disable the slot, signal, emit etc. keywords:
-	target_compile_definitions(AidKit
-		PRIVATE
-			QT_NO_KEYWORDS
 	)
 	target_link_libraries(AidKit
 		PUBLIC

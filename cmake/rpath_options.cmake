@@ -3,7 +3,7 @@
 # - chrpath <program>
 
 function(set_default_rpath_target_options targetName)
-	message("Setting default rpath options for target '${targetName}")
+	report("Setting default rpath options for target '${targetName}")
 
 	set(linkerRPathFlags "-Wl,--enable-new-dtags")
 
@@ -34,5 +34,4 @@ function(set_default_rpath_target_options targetName)
 			EXE_LINKER_FLAGS "${linkerRPathFlags}"
 			SHARED_LINKER_FLAGS "${linkerRPathFlags}"
 	)
-
 endfunction()

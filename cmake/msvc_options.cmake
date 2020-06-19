@@ -1,5 +1,5 @@
 function(set_default_msv_target_options targetName)
-	message("Setting default MSVC options for target '${targetName}")
+	report("Setting default msvc options for target '${targetName}")
 
 	# CMake appends /W3 by default, and having /W3 followed by /W4 will result in
 	# cl : Command line warning D9025 : overriding '/W3' with '/W4'.  Since this is

@@ -1,8 +1,4 @@
-message( "CMake version: ${CMAKE_VERSION}")
-# See https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_ID.html for a list of
-# compiler ids.
-message( "C++ compiler: " ${CMAKE_CXX_COMPILER_ID} ", version: " ${CMAKE_CXX_COMPILER_VERSION})
-
+include(${CMAKE_CURRENT_LIST_DIR}/report.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cpp_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/library_options.cmake)
@@ -15,9 +11,19 @@ include(${CMAKE_CURRENT_LIST_DIR}/msvc_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/libstdcxx_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/libcxx_options.cmake)
 
+
+set(BUILD_SHARED_LIBS      ON CACHE BOOL "Build shared library" FORCE)
+set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose Makefile" FORCE)
+
+report("CMAKE_VERSION: '${CMAKE_VERSION}'")
+
+# See https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_ID.html for a list of
+# compiler ids.
+report("CMAKE_CXX_COMPILER_ID: '${CMAKE_CXX_COMPILER_ID}', CMAKE_CXX_COMPILER_VERSION: '${CMAKE_CXX_COMPILER_VERSION}'")
+
 function(set_default_target_options targetName)
+	set_default_cmake_options()
 	set_default_cpp_target_options(${targetName})
-	set_default_qt_target_options(${targetName})
 	set_default_rpath_target_options(${targetName})
 	set_default_output_target_options(${targetName})
 	set_default_library_target_options(${targetName})
@@ -35,5 +41,8 @@ function(set_default_target_options targetName)
 	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 		set_default_msvc_target_options(${targetName})
 	endif()
-endfunction()
 
+	if (Qt5Core_FOUND)
+		set_default_qt_target_options(${targetName})
+	endif()
+endfunction()
