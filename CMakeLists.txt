@@ -31,7 +31,9 @@ find_package(Qt5 QUIET
 		Gui
 		Widgets
 )
-add_subdirectory(/usr/src/googletest googletest)
+if (NOT TARGET gtest AND NOT TARGET gtest_main)
+	add_subdirectory(/usr/src/googletest googletest)
+endif()
 
 ###############################################################################
 # Setup AidKit:
