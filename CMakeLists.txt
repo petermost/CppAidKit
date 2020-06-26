@@ -31,6 +31,21 @@ find_package(Qt5 QUIET
 		Gui
 		Widgets
 )
+report("CMAKE_VERSION: '${CMAKE_VERSION}'")
+
+set(CMAKE_WARN_DEPRECATED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+set(BUILD_SHARED_LIBS      ON CACHE BOOL "Build shared library" FORCE)
+set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose Makefile" FORCE)
+
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+	report("Enabling debug build" )
+	set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build Type" FORCE)
+	# Present a combobox in the cmake-gui (https://blog.kitware.com/cmake-and-the-default-build-type/):
+	set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
 if (NOT TARGET gtest AND NOT TARGET gtest_main)
 	add_subdirectory(/usr/src/googletest googletest)
 endif()
