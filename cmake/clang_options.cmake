@@ -15,5 +15,7 @@ function(set_default_clang_target_options targetName)
 			-Wno-switch-enum
 			-Wno-used-but-marked-unused
 			-Wno-missing-prototypes
+
+			-pipe
 	)
 endfunction()
