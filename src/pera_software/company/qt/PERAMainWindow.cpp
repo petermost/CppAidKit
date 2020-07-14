@@ -25,23 +25,41 @@
 #include <QSettings>
 #include <QString>
 
-#include <pera_software/company/qt/PERAResources.hpp>
 #include <pera_software/aidkit/qt/widgets/Actions.hpp>
 #include <pera_software/aidkit/qt/widgets/Widgets.hpp>
+#include <pera_software/company/qt/PERAResources.hpp>
 
 namespace pera_software::company::qt {
 
 using namespace aidkit::qt;
 
+template <typename A>
+	static A *createActionLazily(QAction **action, const std::function<void()> &slot, QObject *parent = nullptr)
+	{
+		if (*action == nullptr) {
+			*action = new A(parent);
+			QObject::connect(*action, &QAction::triggered, slot);
+		}
+		return static_cast<A *>(*action);
+	}
+
+static QMenu *createMenuLazily(QMenu **menu, const QString &title, QWidget *parent)
+{
+	if (*menu == nullptr) {
+		*menu = new QMenu(title, parent);
+	}
+	return *menu;
+}
+
 //==================================================================================================
 
-PERAMainWindow::PERAMainWindow( QWidget *parent )
-	: MainWindow( parent ) {
-
-	setWindowTitle( tr( "%1 - (c) by %2 - %3" )
-		.arg( QApplication::applicationName() )
-		.arg( QApplication::organizationName() )
-		.arg( QApplication::organizationDomain() ));
+PERAMainWindow::PERAMainWindow(QWidget *parent)
+	: MainWindow(parent)
+{
+	setWindowTitle(tr("%1 - (c) by %2 - %3")
+	   .arg(QApplication::applicationName())
+	   .arg(QApplication::organizationName())
+	   .arg(QApplication::organizationDomain()));
 
 	// I couldn't quite figure out the difference between QApplication::setWindowIcon(), QWidget::setWindowIcon()
 	// and QWindow::setIcon(), so for now we set the icon here, were it is probably most expected:
@@ -51,95 +69,90 @@ PERAMainWindow::PERAMainWindow( QWidget *parent )
 
 //==================================================================================================
 
-QMenu *PERAMainWindow::addFileMenu() {
-	fileMenu()->addAction( quitAction() );
+QMenu *PERAMainWindow::addFileMenu()
+{
+	fileMenu()->addAction(quitAction());
 
-	menuBar()->addMenu( fileMenu() );
+	menuBar()->addMenu(fileMenu());
 
 	return fileMenu();
 }
 
 //==================================================================================================
 
-QMenu *PERAMainWindow::addHelpMenu() {
-	helpMenu()->addAction( aboutPERAAction() );
-	helpMenu()->addAction( aboutQtAction() );
+QMenu *PERAMainWindow::addHelpMenu()
+{
+	helpMenu()->addAction(aboutPERAAction());
+	helpMenu()->addAction(aboutQtAction());
 
-	menuBar()->addMenu( helpMenu() );
+	menuBar()->addMenu(helpMenu());
 
 	return helpMenu();
 }
 
 //==================================================================================================
 
-QMenu *PERAMainWindow::fileMenu() {
-	if ( fileMenu_ == nullptr ) {
-		fileMenu_ = new QMenu( tr( "&File" ), this );
-	}
-	return fileMenu_;
+QMenu *PERAMainWindow::fileMenu()
+{
+	return createMenuLazily(&fileMenu_, tr("&File"), this);
 }
 
 //==================================================================================================
 
-QMenu *PERAMainWindow::helpMenu() {
-	if ( helpMenu_ == nullptr ) {
-		helpMenu_ = new QMenu( tr( "&Help" ));
-	}
-	return helpMenu_;
+QMenu *PERAMainWindow::helpMenu()
+{
+	return createMenuLazily(&helpMenu_, tr("&Help"), this);
 }
 
 //==================================================================================================
 
-QAction *PERAMainWindow::quitAction() {
-	if ( quitAction_ == nullptr ) {
-		quitAction_ = Actions::create< QuitAction >( this, QuitAction::DEFAULT_SLOT );
-	}
-	return quitAction_;
+QAction *PERAMainWindow::quitAction()
+{
+	return createActionLazily<QuitAction>(&quitAction_, QuitAction::DEFAULT_SLOT, this);
 }
 
 //==================================================================================================
 
-QAction *PERAMainWindow::aboutPERAAction() {
-	if ( aboutPERAAction_ == nullptr ) {
-		aboutPERAAction_ = Actions::create< AboutPERAAction >( this, AboutPERAAction::DEFAULT_SLOT );
-	}
-	return aboutPERAAction_;
+QAction *PERAMainWindow::aboutPERAAction()
+{
+	return createActionLazily<AboutPERAAction>(&aboutPERAAction_, AboutPERAAction::DEFAULT_SLOT, this);
 }
 
 //==================================================================================================
 
-QAction *PERAMainWindow::aboutQtAction() {
-	if ( aboutQtAction_ == nullptr ) {
-		aboutQtAction_ = Actions::create< AboutQtAction >( this, AboutQtAction::DEFAULT_SLOT );
-	}
-	return aboutQtAction_;
+QAction *PERAMainWindow::aboutQtAction()
+{
+	return createActionLazily<AboutQtAction>(&aboutQtAction_, AboutQtAction::DEFAULT_SLOT, this);
 }
 
 //==================================================================================================
 
-void PERAMainWindow::readSettings( QSettings *settings ) noexcept {
+void PERAMainWindow::readSettings(QSettings *settings) noexcept
+{
 	Widgets::readGeometry(this, settings);
 }
 
 //==================================================================================================
 
-void PERAMainWindow::writeSettings( QSettings *settings ) const noexcept {
+void PERAMainWindow::writeSettings(QSettings *settings) const noexcept
+{
 	Widgets::writeGeometry(this, settings);
 }
 
 //==================================================================================================
 
-void PERAMainWindow::aboutPERA() {
-	aboutPERA( this );
+void PERAMainWindow::aboutPERA()
+{
+	aboutPERA(this);
 }
 
 //==================================================================================================
 
-void PERAMainWindow::aboutPERA( QWidget *parent ) {
-	PERAAboutDialog aboutPERADialog( parent );
+void PERAMainWindow::aboutPERA(QWidget *parent)
+{
+	PERAAboutDialog aboutPERADialog(parent);
 
 	aboutPERADialog.exec();
 }
-
 
 }

@@ -10,6 +10,23 @@ include(${CMAKE_CURRENT_LIST_DIR}/msvc_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/libstdcxx_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/libcxx_options.cmake)
 
+report("CMAKE_VERSION: '${CMAKE_VERSION}'")
+
+set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
+
+# Make Ninja build verbose as well (https://github.com/ninja-build/ninja/issues/900):
+set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose Makefile" FORCE)
+
+# Set default build type:
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+	set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build Type" FORCE)
+	# Present a combobox in the cmake-gui (https://blog.kitware.com/cmake-and-the-default-build-type/):
+	set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
+set(CMAKE_WARN_DEPRECATED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 function(set_default_target_options targetName)
 	set_default_cpp_target_options(${targetName})
 	set_default_rpath_target_options(${targetName})

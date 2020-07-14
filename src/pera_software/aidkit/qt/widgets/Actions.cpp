@@ -26,26 +26,26 @@ using namespace std;
 
 //==================================================================================================
 
-const function< void() > QuitAction::DEFAULT_SLOT = &QApplication::quit;
+const function<void()> QuitAction::DEFAULT_SLOT = &QApplication::quit;
 
-QuitAction::QuitAction( QObject *parent )
-	: QAction( parent ) {
-
-	setText( QObject::tr( "&Quit" ));
-	setIcon( Resources::quitIcon() );
-	setShortcut( QKeySequence::Quit );
-	setMenuRole( QAction::MenuRole::QuitRole );
+QuitAction::QuitAction(QObject *parent)
+	: QAction(parent)
+{
+	setText(QObject::tr("&Quit"));
+	setIcon(Resources::quitIcon());
+	setShortcut(QKeySequence::Quit);
+	setMenuRole(QAction::MenuRole::QuitRole);
 }
 
 //==================================================================================================
 
-const function< void() > AboutQtAction::DEFAULT_SLOT = &QApplication::aboutQt;
+const function<void()> AboutQtAction::DEFAULT_SLOT = &QApplication::aboutQt;
 
-AboutQtAction::AboutQtAction( QObject *parent )
-	: QAction( parent ) {
-
-	setText( QObject::tr( "About &Qt..." ));
-	setMenuRole( QAction::MenuRole::AboutQtRole );
+AboutQtAction::AboutQtAction(QObject *parent)
+	: QAction(parent)
+{
+	setText(QObject::tr("About &Qt..."));
+	setMenuRole(QAction::MenuRole::AboutQtRole);
 }
 
 }

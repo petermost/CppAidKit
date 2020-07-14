@@ -28,7 +28,7 @@ namespace pera_software::company::qt {
 	class AIDKIT_API PERAMainWindow : public aidkit::qt::MainWindow, public aidkit::qt::Persistable {
 		Q_OBJECT
 		public:
-			PERAMainWindow( QWidget *parent = nullptr );
+			PERAMainWindow(QWidget *parent = nullptr);
 
 			QMenu *addFileMenu();
 			QMenu *addHelpMenu();
@@ -42,11 +42,11 @@ namespace pera_software::company::qt {
 
 		public Q_SLOTS:
 			void aboutPERA();
-			static void aboutPERA( QWidget *parent );
+			static void aboutPERA(QWidget *parent);
 
 		protected:
-			void readSettings( QSettings *settings ) noexcept override;
-			void writeSettings( QSettings *settings ) const noexcept override;
+			void readSettings(QSettings *settings) noexcept override;
+			void writeSettings(QSettings *settings) const noexcept override;
 
 		private:
 			QMenu *fileMenu_ = nullptr;
@@ -55,7 +55,8 @@ namespace pera_software::company::qt {
 			QAction *quitAction_ = nullptr;
 			QAction *aboutPERAAction_ = nullptr;
 			QAction *aboutQtAction_ = nullptr;
+
+
 	};
 
 }
-

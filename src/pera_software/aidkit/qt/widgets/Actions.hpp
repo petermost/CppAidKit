@@ -25,34 +25,18 @@ namespace pera_software::aidkit::qt {
 
 	class AIDKIT_API QuitAction : public QAction {
 		Q_OBJECT
-
 		public:
-			static const std::function< void() > DEFAULT_SLOT;
+			static const std::function<void()> DEFAULT_SLOT;
 
-			explicit QuitAction( QObject *parent = nullptr );
+			explicit QuitAction(QObject *parent = nullptr);
 	};
 
 	class AIDKIT_API AboutQtAction : public QAction {
 		Q_OBJECT
-
 		public:
-			static const std::function< void() > DEFAULT_SLOT;
+			static const std::function<void()> DEFAULT_SLOT;
 
-			explicit AboutQtAction( QObject *parent = nullptr );
-	};
-
-	class AIDKIT_API Actions {
-		public:
-			Actions() = delete;
-
-			template < typename Action >
-				static Action *create( QObject *parent, const std::function< void() > &slot = std::function< void() >() ) {
-					auto *action = new Action( parent );
-					if ( slot )
-						QObject::connect( action, &QAction::triggered, slot );
-
-					return action;
-				}
+			explicit AboutQtAction(QObject *parent = nullptr);
 	};
 
 }
