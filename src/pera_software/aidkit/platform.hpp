@@ -46,7 +46,7 @@
 #if defined(_MSC_VER)
 	#define AIDKIT_MSVC
 #endif
-#if defined(__GNUC__)
+#if defined(__GNUC__) && !defined(__clang__)
 	#define AIDKIT_GCC
 	#if defined(__MINGW32__) || defined(__MINGW64__)
 		// MinGW is a GCC variant so we define it additional to the AIDKIT_GCC symbol
@@ -63,14 +63,14 @@
 // Determine the used library:
 
 #if defined(__GLIBCXX__)
-	#define AIDKIT_GCC_STDLIB
+	#define AIDKIT_GCC_LIB
 #endif
 #if defined(_LIBCPP_VERSION)
-	#define AIDKIT_CLANG_STDLIB
+	#define AIDKIT_CLANG_LIB
 #endif
 #if defined(_CPPLIB_VER)
-	#define AIDKIT_MSVC_STDLIB
+	#define AIDKIT_MSVC_LIB
 #endif
-#if !defined(AIDKIT_GCC_STDLIB) && !defined(AIDKIT_CLANG_STDLIB) && !defined(AIDKIT_MSVC_STDLIB)
+#if !defined(AIDKIT_GCC_LIB) && !defined(AIDKIT_CLANG_LIB) && !defined(AIDKIT_MSVC_LIB)
 	#error Cannot determine compiler library!
 #endif

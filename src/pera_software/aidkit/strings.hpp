@@ -22,8 +22,8 @@
 #include <functional>
 #include <pera_software/aidkit/io/errno.hpp>
 
-#define STRINGIZE( name ) #name
-#define STRINGIZE_SYMBOL( symbol ) STRINGIZE( symbol )
+#define AIDKIT_STRINGIZE( name ) #name
+#define AIDKIT_STRINGIZE_SYMBOL( symbol ) STRINGIZE( symbol )
 
 namespace pera_software::aidkit {
 

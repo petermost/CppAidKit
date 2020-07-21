@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	g_argc = argc;
 	g_argv = argv;
 
-#if defined(AIDKIT_GCC_STDLIB)
+#if defined(AIDKIT_GCC_LIB)
 	set_terminate(__gnu_cxx::__verbose_terminate_handler);
 #endif
 
