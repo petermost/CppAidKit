@@ -16,8 +16,8 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "PERAAboutDialog.hpp"
-#include <pera_software/company/PERA.hpp>
-#include <pera_software/company/qt/PERAResources.hpp>
+#include <pera_software/PERA.hpp>
+#include <pera_software/aidkit/qt/gui/PERAResources.hpp>
 #include <QFile>
 #include <QLabel>
 #include <QPixmap>
@@ -26,7 +26,7 @@
 #include <QPushButton>
 #include <QDialogButtonBox>
 
-namespace pera_software::company::qt {
+namespace pera_software::aidkit::qt {
 
 PERAAboutDialog::PERAAboutDialog( QWidget *parent )
 	: QDialog( parent ) {

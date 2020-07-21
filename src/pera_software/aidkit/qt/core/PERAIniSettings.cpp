@@ -1,4 +1,4 @@
-// Copyright 2019 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,27 +15,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "PERAResources.hpp"
-#include <QString>
-#include <QFile>
-#include <QIcon>
+#include "PERAIniSettings.hpp"
+#include <pera_software/PERA.hpp>
+#include <pera_software/aidkit/qt/widgets/PERAApplication.hpp>
 
-namespace pera_software::company::qt {
+namespace pera_software::aidkit::qt {
 
-using namespace aidkit::qt;
-
-static const QString PREFIX(QStringLiteral(":/pera_software/company/resources/"));
-
-static QString prependPrefix(const QString &iconName) {
-	return PREFIX + iconName;
+PERAIniSettings::PERAIniSettings(const QString &applicationName, QObject *parent)
+	: IniSettings( PERA::NAME, applicationName, parent ){
 }
 
-QIcon PERAResources::icon() {
-	return loadIcon(prependPrefix(QStringLiteral("Icon.png")));
-}
-
-QPixmap PERAResources::logo() {
-	return QPixmap(prependPrefix(QStringLiteral("Logo.png")));
+PERAIniSettings::~PERAIniSettings() {
 }
 
 }

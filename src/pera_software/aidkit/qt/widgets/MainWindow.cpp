@@ -30,6 +30,8 @@ MainWindow::MainWindow( QWidget *parent )
 void MainWindow::showEvent( QShowEvent *showEvent ) {
 	QMainWindow::showEvent( showEvent );
 
+	// TODO: Change to 'shown' signal?
+
 	Q_EMIT visibleChanged( true );
 }
 
@@ -38,8 +40,9 @@ void MainWindow::showEvent( QShowEvent *showEvent ) {
 void MainWindow::hideEvent( QHideEvent *hideEvent ) {
 	QMainWindow::hideEvent( hideEvent );
 
-	Q_EMIT visibleChanged( false );
+	// TODO: Change to 'hidden' signal?
 
+	Q_EMIT visibleChanged( false );
 }
 
 //==================================================================================================

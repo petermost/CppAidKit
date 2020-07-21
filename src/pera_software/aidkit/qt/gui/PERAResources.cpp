@@ -1,4 +1,4 @@
-// Copyright 2014 Peter Most, PERA Software Solutions GmbH
+// Copyright 2019 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,19 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "PERAResources.hpp"
+#include <QIcon>
 
-#include <pera_software/aidkit/aidkit.hpp>
+#define PREFIX ":/pera_software/resources/"
 
-namespace pera_software::company {
+namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API PERA {
-		public:
-			static const char NAME[];
-			static const char FULL_NAME[];
-
-			static const char DOMAIN_NAME[];
-			static const char FULL_DOMAIN_NAME[];
-	};
+QIcon PERAResources::icon()
+{
+	return loadIcon(PREFIX "PERAIcon.png");
 }
 
+QPixmap PERAResources::logo()
+{
+	return QPixmap(PREFIX "PERALogo.png");
+}
+
+}

@@ -1,4 +1,4 @@
-// Copyright 2019 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -18,16 +18,15 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/qt/gui/Resources.hpp>
+#include <pera_software/aidkit/qt/core/IniSettings.hpp>
 
-class QPixmap;
+namespace pera_software::aidkit::qt {
 
-namespace pera_software::company::qt {
-
-	class AIDKIT_API PERAResources : public pera_software::aidkit::qt::Resources {
+	class AIDKIT_API PERAIniSettings : public aidkit::qt::IniSettings {
 		public:
-			static QIcon icon();
-			static QPixmap logo();
+			PERAIniSettings( const QString &applicationName, QObject *parent = nullptr );
+			~PERAIniSettings() override;
 	};
 
 }
+

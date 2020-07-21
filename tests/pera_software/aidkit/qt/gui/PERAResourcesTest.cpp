@@ -1,4 +1,4 @@
-// Copyright 2017 Peter Most, PERA Software Solutions GmbH
+// Copyright 2019 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,23 +15,28 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "PERAActions.hpp"
-#include "PERAApplication.hpp"
-#include <QAction>
+#include <QIcon>
+#include <gtest/gtest.h>
+#include <pera_software/aidkit/compiler.hpp>
+#include <pera_software/aidkit/qt/TestFixture.hpp>
+#include <pera_software/aidkit/qt/gui/ResourcesTest.hpp>
+#include <pera_software/aidkit/qt/gui/PERAResources.hpp>
 
-namespace pera_software::company::qt {
+AIDKIT_WARNING_DISABLE_CLANG("-Wweak-vtables")
+
+namespace pera_software::aidkit::qt {
 
 using namespace std;
+using namespace pera_software::aidkit::qt;
 
-//==================================================================================================
+class PERAResourcesTest : public TestFixture {
+};
 
-const function< void() > AboutPERAAction::DEFAULT_SLOT = &PERAApplication::aboutPERA;
-
-AboutPERAAction::AboutPERAAction( QObject *parent )
-	: QAction( parent ) {
-
-	setText( QObject::tr( "About &PERA..." ));
-	setMenuRole( QAction::MenuRole::AboutRole );
+TEST_F(PERAResourcesTest, testLoadIcons)
+{
+	ASSERT_IMAGE(PERAResources::icon());
+	ASSERT_IMAGE(PERAResources::logo());
 }
+
 
 }

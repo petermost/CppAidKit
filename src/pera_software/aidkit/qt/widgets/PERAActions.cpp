@@ -15,21 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <pera_software/aidkit/aidkit.hpp>
+#include "PERAActions.hpp"
+#include "PERAApplication.hpp"
 #include <QAction>
-#include <functional>
 
-namespace pera_software::company::qt {
+namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API AboutPERAAction : public QAction {
-		Q_OBJECT
+using namespace std;
 
-		public:
-			static const std::function< void() > DEFAULT_SLOT;
+const function<void()> AboutPERAAction::DEFAULT_SLOT = &PERAApplication::aboutPERA;
 
-			explicit AboutPERAAction( QObject *parent = nullptr );
-	};
+AboutPERAAction::AboutPERAAction(QObject *parent)
+	: QAction(parent)
+{
+	setText(tr("About &PERA..."));
+	setMenuRole(QAction::MenuRole::AboutRole);
+}
 
 }

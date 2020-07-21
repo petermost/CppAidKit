@@ -18,28 +18,27 @@
 #include "ResourcesTest.hpp"
 #include <QIcon>
 #include <gtest/gtest.h>
+#include <pera_software/aidkit/compiler.hpp>
 #include <pera_software/aidkit/qt/TestFixture.hpp>
 #include <pera_software/aidkit/qt/gui/Resources.hpp>
+
+AIDKIT_WARNING_DISABLE_CLANG("-Wweak-vtables")
 
 namespace pera_software::aidkit::qt {
 
 using namespace std;
 
-class ResourcesTest : public TestFixture {
+class TestResources : public Resources {
 	public:
-		~ResourcesTest() override;
+		using Resources::loadIcon;
 };
 
-// Silence the warning:
-// "... has no out-of-line virtual method definitions; its vtable will be emitted in every
-// translation unit [-Wweak-vtables]"
-ResourcesTest::~ResourcesTest()
-{
-}
+class ResourcesTest : public TestFixture {
+};
 
 TEST_F(ResourcesTest, testMissingIcon)
 {
-	QIcon missingIcon = loadIcon(QStringLiteral(":/missing.png"));
+	QIcon missingIcon = TestResources::loadIcon(QStringLiteral(":/missing.png"));
 	ASSERT_TRUE(missingIcon.isNull());
 }
 

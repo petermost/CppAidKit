@@ -30,6 +30,7 @@ find_package(Qt5 QUIET
 		Core
 		Gui
 		Widgets
+		LinguistTools
 )
 
 if (NOT TARGET gtest AND NOT TARGET gtest_main)
@@ -42,10 +43,13 @@ endif()
 # BUILD_SHARED_LIBS variable!
 
 add_library(AidKit
-	src/pera_software/pera_software.cpp
+	src/pera_software/PERA.hpp
+	src/pera_software/PERA.cpp
+
 	src/pera_software/aidkit/aidkit.hpp
 	src/pera_software/aidkit/aidkit.cpp
 	src/pera_software/aidkit/bit_cast.hpp
+	src/pera_software/aidkit/compiler.hpp
 	src/pera_software/aidkit/containers.hpp
 	src/pera_software/aidkit/containers.cpp
 	src/pera_software/aidkit/debug.hpp
@@ -87,9 +91,6 @@ add_library(AidKit
 
 	src/pera_software/aidkit/concurrent/data_mutex.hpp
 	src/pera_software/aidkit/concurrent/data_mutex.cpp
-
-	src/pera_software/company/PERA.hpp
-	src/pera_software/company/PERA.cpp
 )
 set_default_target_options(AidKit)
 
@@ -169,6 +170,7 @@ if (Boost_FOUND)
 	target_sources(testAidKit
 		PRIVATE
 			tests/pera_software/aidkit/boost/formatter_test.cpp
+			tests/pera_software/aidkit/boost/directory_guide_test.cpp
 	)
 	target_compile_definitions(AidKit
 		PRIVATE
@@ -191,8 +193,6 @@ endif()
 if (Qt5Core_FOUND)
 	target_sources(AidKit
 		PRIVATE
-			src/pera_software/aidkit/qt/qt.cpp
-
 			src/pera_software/aidkit/qt/core/Chrono.hpp
 			src/pera_software/aidkit/qt/core/Chrono.cpp
 			src/pera_software/aidkit/qt/core/Console.hpp
@@ -210,14 +210,14 @@ if (Qt5Core_FOUND)
 			src/pera_software/aidkit/qt/core/Socket.hpp
 			src/pera_software/aidkit/qt/core/Socket.cpp
 
-			src/pera_software/company/qt/ForwardDeclarations.hpp
-			src/pera_software/company/qt/PERAIniSettings.cpp
-			src/pera_software/company/qt/PERAIniSettings.hpp
+			src/pera_software/aidkit/qt/PERAForwardDeclarations.hpp
+			src/pera_software/aidkit/qt/core/PERAIniSettings.cpp
+			src/pera_software/aidkit/qt/core/PERAIniSettings.hpp
 
 			# Resources:
 
 			resources/pera_software/aidkit/AidKitResources.qrc
-			resources/pera_software/company/CompanyResources.qrc
+			resources/pera_software/PERAResources.qrc
 	)
 	target_sources(testAidKit
 		PRIVATE
@@ -242,13 +242,16 @@ if (Qt5Gui_FOUND)
 			src/pera_software/aidkit/qt/gui/MessagesModel.hpp
 			src/pera_software/aidkit/qt/gui/Resources.hpp
 			src/pera_software/aidkit/qt/gui/Resources.cpp
+			src/pera_software/aidkit/qt/gui/PERAResources.hpp
+			src/pera_software/aidkit/qt/gui/PERAResources.cpp
+
 	)
 	target_sources(testAidKit
 		PRIVATE
 			tests/pera_software/aidkit/qt/gui/ResourcesTest.hpp
 			tests/pera_software/aidkit/qt/gui/ResourcesTest.cpp
 
-			tests/pera_software/company/qt/PERAResourcesTest.cpp
+			tests/pera_software/aidkit/qt/gui/PERAResourcesTest.cpp
 	)
 	target_link_libraries(AidKit
 		PUBLIC
@@ -261,6 +264,8 @@ endif()
 if (Qt5Widgets_FOUND)
 	target_sources(AidKit
 		PRIVATE
+			src/pera_software/aidkit/qt/widgets/Application.hpp
+			src/pera_software/aidkit/qt/widgets/Application.cpp
 			src/pera_software/aidkit/qt/widgets/Actions.hpp
 			src/pera_software/aidkit/qt/widgets/Actions.cpp
 			src/pera_software/aidkit/qt/widgets/ForwardDeclarations.hpp
@@ -275,16 +280,14 @@ if (Qt5Widgets_FOUND)
 			src/pera_software/aidkit/qt/widgets/Widgets.hpp
 			src/pera_software/aidkit/qt/widgets/Widgets.cpp
 
-			src/pera_software/company/qt/PERAAboutDialog.hpp
-			src/pera_software/company/qt/PERAAboutDialog.cpp
-			src/pera_software/company/qt/PERAActions.hpp
-			src/pera_software/company/qt/PERAActions.cpp
-			src/pera_software/company/qt/PERAApplication.hpp
-			src/pera_software/company/qt/PERAApplication.cpp
-			src/pera_software/company/qt/PERAMainWindow.hpp
-			src/pera_software/company/qt/PERAMainWindow.cpp
-			src/pera_software/company/qt/PERAResources.hpp
-			src/pera_software/company/qt/PERAResources.cpp
+			src/pera_software/aidkit/qt/widgets/PERAAboutDialog.hpp
+			src/pera_software/aidkit/qt/widgets/PERAAboutDialog.cpp
+			src/pera_software/aidkit/qt/widgets/PERAActions.hpp
+			src/pera_software/aidkit/qt/widgets/PERAActions.cpp
+			src/pera_software/aidkit/qt/widgets/PERAApplication.hpp
+			src/pera_software/aidkit/qt/widgets/PERAApplication.cpp
+			src/pera_software/aidkit/qt/widgets/PERAMainWindow.hpp
+			src/pera_software/aidkit/qt/widgets/PERAMainWindow.cpp
 	)
 	target_link_libraries(AidKit
 		PUBLIC
@@ -294,6 +297,27 @@ else()
 	message(WARNING "Qt5 Widgets not found, building without it!")
 endif()
 
+if (Qt5LinguistTools_FOUND)
+	configure_file(translations/AidKitTranslations.qrc ${CMAKE_BINARY_DIR} COPYONLY)
+	qt5_create_translation(AIDKIT_TRANSLATION_FILES ${CMAKE_SOURCE_DIR} translations/AidKitTranslations_de.ts)
+
+	target_sources(AidKit
+		PRIVATE
+			src/pera_software/aidkit/qt/core/Translator.hpp
+			src/pera_software/aidkit/qt/core/Translator.cpp
+			# translations/AidKitTranslations.qrc
+			translations/AidKitTranslations_de.ts
+			${AIDKIT_TRANSLATION_FILES}
+			${CMAKE_BINARY_DIR}/AidKitTranslations.qrc
+	)
+
+	target_sources(testAidKit
+		PRIVATE
+			tests/pera_software/aidkit/qt/core/TranslatorTest.cpp
+	)
+else()
+	message(WARNING "Qt5 LinguistTools not found, building without it!")
+endif()
 
 ###############################################################################
 # Installing

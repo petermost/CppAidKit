@@ -15,29 +15,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "PERAApplication.hpp"
-#include "PERAMainWindow.hpp"
-#include <pera_software/company/PERA.hpp>
-#include <QSettings>
+#pragma once
 
-namespace pera_software::company::qt {
+#include <pera_software/aidkit/aidkit.hpp>
 
-using namespace aidkit::qt;
+namespace pera_software {
 
-PERAApplication::PERAApplication( const QString &applicationName, int &argc, char *argv[] )
-	: QApplication( argc, argv ) {
+	class AIDKIT_API PERA {
+		public:
+			static const char NAME[];
+			static const char FULL_NAME[];
 
-	setApplicationName( applicationName ); // This sets also the system tray entry label!
-	setOrganizationName( PERA::NAME );
-	setOrganizationDomain( PERA::DOMAIN_NAME );
-
-	// If we use the PERAApplication then we want the IniFormat as the default format:
-
-	QSettings::setDefaultFormat( QSettings::IniFormat );
+			static const char DOMAIN_NAME[];
+			static const char FULL_DOMAIN_NAME[];
+	};
 }
 
-void PERAApplication::aboutPERA() {
-	PERAMainWindow::aboutPERA( activeWindow() );
-}
-
-}

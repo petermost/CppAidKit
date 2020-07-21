@@ -1,4 +1,4 @@
-// Copyright 2014 Peter Most, PERA Software Solutions GmbH
+// Copyright 2020 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -18,18 +18,23 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <QDialog>
+#include <pera_software/aidkit/qt/core/Translator.hpp>
+#include <QApplication>
 
-namespace pera_software::company::qt {
+namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API PERAAboutDialog : public QDialog {
+	class AIDKIT_API Application : public QApplication {
 		Q_OBJECT
 		public:
-			explicit PERAAboutDialog( QWidget *parent = nullptr );
+			Application(const QString &applicationName, int *argc, char *argv[]);
+			~Application() override;
 
 		Q_SIGNALS:
 
 		public Q_SLOTS:
+
+		private:
+			Translator translator_;
 	};
 
 }

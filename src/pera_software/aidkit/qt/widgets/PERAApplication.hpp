@@ -15,14 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "PERA.hpp"
+#pragma once
 
-namespace pera_software::company {
+#include <pera_software/aidkit/qt/widgets/Application.hpp>
 
-const char PERA::NAME[] = "PERA Software Solutions";
-const char PERA::FULL_NAME[] = "PERA Software Solutions GmbH";
+namespace pera_software::aidkit::qt {
 
-const char PERA::DOMAIN_NAME[] = "PERA-Software.com";
-const char PERA::FULL_DOMAIN_NAME[] = "http://www.PERA-Software.com";
+	class AIDKIT_API PERAApplication : public Application {
+		Q_OBJECT
+		public:
+			PERAApplication(const QString &applicationName, int *argc, char *argv[]);
+
+		Q_SIGNALS:
+
+		public Q_SLOTS:
+			static void aboutPERA();
+	};
 
 }

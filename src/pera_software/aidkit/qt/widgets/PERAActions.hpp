@@ -17,16 +17,18 @@
 
 #pragma once
 
-/// Most of the time only widgets pointers are used and a simple forward declaration would be enough.
-/// The AidKit widgets however are in nested namespaces and it involves a lot of typing for 'manual
-/// forward declarations', so we provide this header.
+#include <pera_software/aidkit/aidkit.hpp>
+#include <QAction>
+#include <functional>
 
-namespace pera_software::company::qt {
+namespace pera_software::aidkit::qt {
 
-	class PERAAboutDialog;
-	class AboutPERAAction;
-	class PERAApplication;
-	class PERAIniSettings;
-	class PERAMainWindow;
+	class AIDKIT_API AboutPERAAction : public QAction {
+		Q_OBJECT
+		public:
+			static const std::function<void()> DEFAULT_SLOT;
+
+			explicit AboutPERAAction(QObject *parent = nullptr);
+	};
 
 }

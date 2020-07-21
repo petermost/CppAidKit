@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2020 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -18,27 +18,14 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-
-class QIcon;
-class QString;
+#include <QTranslator>
 
 namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API Resources {
+	class AIDKIT_API Translator : public QTranslator {
+		Q_OBJECT
 		public:
-			Resources() = delete;
-
-			static QIcon quitIcon();
-
-			static QIcon debugIcon();
-			static QIcon warningIcon();
-			static QIcon informationIcon();
-			static QIcon errorIcon();
-
-			static QIcon clockIcon();
-			static QIcon settingsIcon();
-
-		protected:
-			static QIcon loadIcon(const QString &iconName);
+			bool load();
 	};
+
 }

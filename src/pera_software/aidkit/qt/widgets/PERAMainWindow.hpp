@@ -23,9 +23,9 @@
 
 class QSettings;
 
-namespace pera_software::company::qt {
+namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API PERAMainWindow : public aidkit::qt::MainWindow, public aidkit::qt::Persistable {
+	class AIDKIT_API PERAMainWindow : public MainWindow, public Persistable {
 		Q_OBJECT
 		public:
 			PERAMainWindow(QWidget *parent = nullptr);

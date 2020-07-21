@@ -1,0 +1,7 @@
+<RCC>
+	<qresource prefix="/pera_software/resources/">
+		<file>PERAIcon.ico</file>
+		<file>PERAIcon.png</file>
+		<file>PERALogo.png</file>
+	</qresource>
+</RCC>

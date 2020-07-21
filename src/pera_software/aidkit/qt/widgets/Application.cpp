@@ -1,4 +1,4 @@
-// Copyright 2014 Peter Most, PERA Software Solutions GmbH
+// Copyright 2020 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,22 +15,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "Application.hpp"
+#include <QDebug>
 
-#include <pera_software/aidkit/aidkit.hpp>
-#include <QApplication>
+namespace pera_software::aidkit::qt {
 
-namespace pera_software::company::qt {
+Application::Application(const QString &applicationName, int *argc, char *argv[])
+	: QApplication(*argc, argv)
+{
+	setApplicationName(applicationName); // This sets also the system tray entry label!
 
-	class AIDKIT_API PERAApplication : public QApplication {
-		Q_OBJECT
-		public:
-			PERAApplication( const QString &applicationName, int &argc, char *argv[] );
+	if (!translator_.load())
+		qWarning() << "Loading AidKit translations failed!";
 
-		Q_SIGNALS:
+	installTranslator(&translator_);
+}
 
-		public Q_SLOTS:
-			static void aboutPERA();
-	};
+Application::~Application()
+{
+	removeTranslator(&translator_);
+}
 
 }

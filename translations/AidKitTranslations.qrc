@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/pera_software/aidkit/translations" lang="de">
+        <file alias="AidKitTranslations.qm">AidKitTranslations_de.qm</file>
+    </qresource>
+</RCC>

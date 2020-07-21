@@ -16,54 +16,56 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "Resources.hpp"
-#include <QString>
 #include <QFile>
 #include <QIcon>
 
 // The icons are from 'Oxygen'.
 
+#define PREFIX ":/pera_software/aidkit/resources/"
+
 namespace pera_software::aidkit::qt {
 
-static const QString PREFIX(QStringLiteral(":/pera_software/aidkit/resources/"));
+QIcon Resources::quitIcon()
+{
+	return loadIcon(PREFIX "system-shutdown-16x16.png");
+}
 
-QIcon loadIcon(const QString &iconName) {
+QIcon Resources::debugIcon()
+{
+	return loadIcon(PREFIX "Debug.png");
+}
+
+QIcon Resources::warningIcon()
+{
+	return loadIcon(PREFIX "dialog-warning-16x16.png");
+}
+
+QIcon Resources::informationIcon()
+{
+	return loadIcon(PREFIX "dialog-information-16x16.png");
+}
+
+QIcon Resources::errorIcon()
+{
+	return loadIcon(PREFIX "dialog-error-16x16.png");
+}
+
+QIcon Resources::clockIcon()
+{
+	return loadIcon(PREFIX "clock-16x16.png");
+}
+
+QIcon Resources::settingsIcon()
+{
+	return loadIcon(PREFIX "configure-16x16.png");
+}
+
+QIcon Resources::loadIcon(const QString &iconName)
+{
 	if (QFile::exists(iconName))
 		return QIcon(iconName);
 	else
 		return QIcon();
 }
-
-static QString prependPrefix(const QString &iconName) {
-	return PREFIX + iconName;
-}
-
-QIcon Resources::quitIcon() {
-	return loadIcon(prependPrefix(QStringLiteral("system-shutdown-16x16.png")));
-}
-
-QIcon Resources::debugIcon() {
-	return loadIcon(prependPrefix(QStringLiteral("Debug.png")));
-}
-
-QIcon Resources::warningIcon() {
-	return loadIcon(prependPrefix(QStringLiteral("dialog-warning-16x16.png")));
-}
-
-QIcon Resources::informationIcon() {
-	return loadIcon(prependPrefix(QStringLiteral("dialog-information-16x16.png")));
-}
-
-QIcon Resources::errorIcon() {
-	return loadIcon(prependPrefix(QStringLiteral("dialog-error-16x16.png")));
-}
-
-QIcon Resources::clockIcon() {
-	return loadIcon(prependPrefix(QStringLiteral("clock-16x16.png")));
-}
-
-QIcon Resources::settingsIcon() {
-	return loadIcon(prependPrefix(QStringLiteral("configure-16x16.png")));
-}
-
 
 }

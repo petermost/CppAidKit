@@ -31,7 +31,7 @@ const function<void()> QuitAction::DEFAULT_SLOT = &QApplication::quit;
 QuitAction::QuitAction(QObject *parent)
 	: QAction(parent)
 {
-	setText(QObject::tr("&Quit"));
+	setText(tr("&Quit"));
 	setIcon(Resources::quitIcon());
 	setShortcut(QKeySequence::Quit);
 	setMenuRole(QAction::MenuRole::QuitRole);
@@ -44,7 +44,7 @@ const function<void()> AboutQtAction::DEFAULT_SLOT = &QApplication::aboutQt;
 AboutQtAction::AboutQtAction(QObject *parent)
 	: QAction(parent)
 {
-	setText(QObject::tr("About &Qt..."));
+	setText(tr("About &Qt..."));
 	setMenuRole(QAction::MenuRole::AboutQtRole);
 }
 

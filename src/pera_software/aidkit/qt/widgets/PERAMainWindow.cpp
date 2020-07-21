@@ -27,11 +27,9 @@
 
 #include <pera_software/aidkit/qt/widgets/Actions.hpp>
 #include <pera_software/aidkit/qt/widgets/Widgets.hpp>
-#include <pera_software/company/qt/PERAResources.hpp>
+#include <pera_software/aidkit/qt/gui/PERAResources.hpp>
 
-namespace pera_software::company::qt {
-
-using namespace aidkit::qt;
+namespace pera_software::aidkit::qt {
 
 template <typename A>
 	static A *createActionLazily(QAction **action, const std::function<void()> &slot, QObject *parent = nullptr)

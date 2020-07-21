@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2014 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,30 +15,27 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <pera_software/aidkit/aidkit.hpp>
-
-class QIcon;
-class QString;
+#include "PERAApplication.hpp"
+#include "PERAMainWindow.hpp"
+#include <pera_software/PERA.hpp>
+#include <QSettings>
 
 namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API Resources {
-		public:
-			Resources() = delete;
+PERAApplication::PERAApplication(const QString &applicationName, int *argc, char *argv[])
+	: Application(applicationName, argc, argv)
+{
+	setOrganizationName(PERA::NAME);
+	setOrganizationDomain(PERA::DOMAIN_NAME);
 
-			static QIcon quitIcon();
+	// If we use the PERAApplication then we want the IniFormat as the default format:
 
-			static QIcon debugIcon();
-			static QIcon warningIcon();
-			static QIcon informationIcon();
-			static QIcon errorIcon();
+	QSettings::setDefaultFormat( QSettings::IniFormat );
+}
 
-			static QIcon clockIcon();
-			static QIcon settingsIcon();
+void PERAApplication::aboutPERA()
+{
+	PERAMainWindow::aboutPERA(activeWindow());
+}
 
-		protected:
-			static QIcon loadIcon(const QString &iconName);
-	};
 }

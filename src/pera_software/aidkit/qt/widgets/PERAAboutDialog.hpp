@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2014 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -18,15 +18,18 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/qt/core/IniSettings.hpp>
+#include <QDialog>
 
-namespace pera_software::company::qt {
+namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API PERAIniSettings : public aidkit::qt::IniSettings {
+	class AIDKIT_API PERAAboutDialog : public QDialog {
+		Q_OBJECT
 		public:
-			PERAIniSettings( const QString &applicationName, QObject *parent = nullptr );
-			~PERAIniSettings() override;
+			explicit PERAAboutDialog( QWidget *parent = nullptr );
+
+		Q_SIGNALS:
+
+		public Q_SLOTS:
 	};
 
 }
-
