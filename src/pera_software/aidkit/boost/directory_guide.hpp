@@ -17,25 +17,26 @@
 
 #pragma once
 
+#include <pera_software/aidkit/aidkit.hpp>
 #include <vector>
 #include <string>
 #include <boost/filesystem.hpp>
 
 namespace pera_software::aidkit::boost {
 
-class directory_visitor {
-    public:
-        virtual ~directory_visitor();
+class AIDKIT_API directory_visitor {
+	public:
+		virtual ~directory_visitor();
 
-        virtual void on_directory( const ::boost::filesystem::directory_entry &entry ) = 0;
-        virtual void on_file( const ::boost::filesystem::directory_entry &entry ) = 0;
+		virtual void on_directory(const ::boost::filesystem::directory_entry &entry) = 0;
+		virtual void on_file(const ::boost::filesystem::directory_entry &entry) = 0;
 };
 
-class directory_guide {
-    public:
-        void walk( const ::boost::filesystem::path &directoryPath, directory_visitor *visitor );
+class AIDKIT_API directory_guide {
+	public:
+		void walk(const ::boost::filesystem::path &directoryPath, directory_visitor *visitor);
 };
 
-std::vector< std::string > queryDirectoryEntries( const ::boost::filesystem::path &directoryPath );
+std::vector<::boost::filesystem::path> AIDKIT_API queryDirectoryEntries(const ::boost::filesystem::path &directoryPath);
 
 }
