@@ -22,7 +22,7 @@
 #include <pera_software/aidkit/qt/gui/ResourcesTest.hpp>
 #include <pera_software/aidkit/qt/gui/PERAResources.hpp>
 
-AIDKIT_WARNING_DISABLE_CLANG("-Wweak-vtables")
+AIDKIT_WARNING_DISABLE_CLANG(-Wweak-vtables)
 
 namespace pera_software::aidkit::qt {
 
