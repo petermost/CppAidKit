@@ -16,6 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "PERAResources.hpp"
+#include <pera_software/aidkit/qt/core/Strings.hpp>
 #include <QIcon>
 
 #define PREFIX ":/pera_software/resources/"
@@ -24,12 +25,12 @@ namespace pera_software::aidkit::qt {
 
 QIcon PERAResources::icon()
 {
-	return loadIcon(PREFIX "PERAIcon.png");
+	return loadIcon(PREFIX "PERAIcon.png"_qs);
 }
 
 QPixmap PERAResources::logo()
 {
-	return QPixmap(PREFIX "PERALogo.png");
+	return QPixmap(PREFIX "PERALogo.png"_qs);
 }
 
 }

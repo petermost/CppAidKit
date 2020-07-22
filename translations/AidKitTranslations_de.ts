@@ -18,6 +18,19 @@
     </message>
 </context>
 <context>
+    <name>pera_software::aidkit::qt::MessagesModel</name>
+    <message>
+        <location filename="../src/pera_software/aidkit/qt/gui/MessagesModel.cpp" line="46"/>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/pera_software/aidkit/qt/gui/MessagesModel.cpp" line="46"/>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>pera_software::aidkit::qt::PERAMainWindow</name>
     <message>
         <location filename="../src/pera_software/aidkit/qt/widgets/PERAMainWindow.cpp" line="57"/>

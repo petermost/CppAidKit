@@ -43,7 +43,7 @@ static QList<QStandardItem *> makeRowItems(const QIcon &icon, const QString &mes
 MessagesModel::MessagesModel( QObject *parent )
 	: QStandardItemModel( parent ) {
 
-	setHorizontalHeaderLabels(QList<QString>({"Time", "Text"}));
+	setHorizontalHeaderLabels(QList<QString>({tr("Time"), tr("Text")}));
 }
 
 void MessagesModel::setMaximumItemCount( int maximumItemCount ) {

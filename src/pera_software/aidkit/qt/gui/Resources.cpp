@@ -16,6 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "Resources.hpp"
+#include <pera_software/aidkit/qt/core/Strings.hpp>
 #include <QFile>
 #include <QIcon>
 
@@ -27,37 +28,37 @@ namespace pera_software::aidkit::qt {
 
 QIcon Resources::quitIcon()
 {
-	return loadIcon(PREFIX "system-shutdown-16x16.png");
+	return loadIcon(PREFIX "system-shutdown-16x16.png"_qs);
 }
 
 QIcon Resources::debugIcon()
 {
-	return loadIcon(PREFIX "Debug.png");
+	return loadIcon(PREFIX "Debug.png"_qs);
 }
 
 QIcon Resources::warningIcon()
 {
-	return loadIcon(PREFIX "dialog-warning-16x16.png");
+	return loadIcon(PREFIX "dialog-warning-16x16.png"_qs);
 }
 
 QIcon Resources::informationIcon()
 {
-	return loadIcon(PREFIX "dialog-information-16x16.png");
+	return loadIcon(PREFIX "dialog-information-16x16.png"_qs);
 }
 
 QIcon Resources::errorIcon()
 {
-	return loadIcon(PREFIX "dialog-error-16x16.png");
+	return loadIcon(PREFIX "dialog-error-16x16.png"_qs);
 }
 
 QIcon Resources::clockIcon()
 {
-	return loadIcon(PREFIX "clock-16x16.png");
+	return loadIcon(PREFIX "clock-16x16.png"_qs);
 }
 
 QIcon Resources::settingsIcon()
 {
-	return loadIcon(PREFIX "configure-16x16.png");
+	return loadIcon(PREFIX "configure-16x16.png"_qs);
 }
 
 QIcon Resources::loadIcon(const QString &iconName)

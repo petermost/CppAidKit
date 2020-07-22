@@ -33,8 +33,18 @@ find_package(Qt5 QUIET
 		LinguistTools
 )
 
-if (NOT TARGET gtest AND NOT TARGET gtest_main)
-	add_subdirectory(/usr/src/googletest googletest)
+# Prepare GoogleTest targets:
+
+if (EXISTS /usr/src/googletest)
+	if (NOT TARGET gtest AND NOT TARGET gtest_main)
+		add_subdirectory(/usr/src/googletest googletest)
+	endif()
+	# Create the same targets/variables which FindGTest would have done:
+	set(GTEST_FOUND TRUE)
+	add_library(GTest::GTest ALIAS gtest)
+	add_library(GTest::Main ALIAS gtest_main)
+else()
+	message(WARNING "GoogleTest not found, building without it!")
 endif()
 
 ###############################################################################
@@ -145,17 +155,17 @@ set_default_target_options(testAidKit)
 
 target_include_directories(testAidKit
 	PUBLIC
-		src/
 		tests/
 )
 
-target_link_libraries(testAidKit
-	PRIVATE
-		AidKit
-		gtest
-		# gtest_main
-)
-
+if (GTEST_FOUND)
+	target_link_libraries(testAidKit
+		PRIVATE
+			AidKit
+			GTest::GTest
+			# GTest::Main
+	)
+endif()
 
 ###############################################################################
 
@@ -209,6 +219,8 @@ if (Qt5Core_FOUND)
 			src/pera_software/aidkit/qt/core/Persistable.cpp
 			src/pera_software/aidkit/qt/core/Socket.hpp
 			src/pera_software/aidkit/qt/core/Socket.cpp
+			src/pera_software/aidkit/qt/core/Strings.hpp
+			src/pera_software/aidkit/qt/core/Strings.cpp
 
 			src/pera_software/aidkit/qt/PERAForwardDeclarations.hpp
 			src/pera_software/aidkit/qt/core/PERAIniSettings.cpp

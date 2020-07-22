@@ -24,7 +24,7 @@ namespace pera_software::aidkit::qt {
 
 	class AIDKIT_API PERAIniSettings : public aidkit::qt::IniSettings {
 		public:
-			PERAIniSettings( const QString &applicationName, QObject *parent = nullptr );
+			PERAIniSettings(const QString &applicationName, QObject *parent = nullptr);
 			~PERAIniSettings() override;
 	};
 

@@ -15,33 +15,26 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <QString>
 #include <gtest/gtest.h>
 #include <pera_software/aidkit/qt/core/Console.hpp>
 
 namespace pera_software::aidkit::qt {
 
-// This is more of a compile test then runtime test
+// Test whether cout, cerr and cin are globally available:
 
-TEST(ConsoleTest, DISABLED_testOutStream)
+TEST(ConsoleTest, testCoutAvailable)
 {
-	QString text("");
-
-	cout << text;
+	ASSERT_NE(&cout, nullptr);
 }
 
-TEST(ConsoleTest, DISABLED_testErrStream)
+TEST(ConsoleTest, testCerrAvailable)
 {
-	QString text("");
-
-	cerr << text;
+	ASSERT_NE(&cerr, nullptr);
 }
 
-TEST(ConsoleTest, DISABLED_testInStream)
+TEST(ConsoleTest, testCinAvailable)
 {
-	QString text;
-
-	cin >> text;
+	ASSERT_NE(&cin, nullptr);
 }
 
 }

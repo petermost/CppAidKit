@@ -17,6 +17,8 @@ function(set_default_qt_target_options targetName)
 	target_compile_definitions(${targetName}
 		PRIVATE
 			# TODO: Define QT_NO_CAST_FROM_ASCII, QT_RESTRICTED_CAST_FROM_ASCII and QT_NO_CAST_TO_ASCII ?
+			QT_NO_CAST_TO_ASCII
+			QT_NO_CAST_FROM_ASCII
 
 			# Disable Qt specific keywords (slot, signal, emit etc.):
 			QT_NO_KEYWORDS

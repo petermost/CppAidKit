@@ -39,10 +39,10 @@
 #endif
 
 #if defined(AIDKIT_MSVC)
-	#define AIDKIT_WARNING_PUSH() _Pragma(AIDKIT_STRINGIZE(warning(push))
-	#define AIDKIT_WARNING_POP()  _Pragma(AIDKIT_STRINGIZE(warning(pop))
+	#define AIDKIT_WARNING_PUSH() _Pragma(AIDKIT_STRINGIZE(warning(push)))
+	#define AIDKIT_WARNING_POP()  _Pragma(AIDKIT_STRINGIZE(warning(pop)))
 
-	#define AIDKIT_WARNING_DISABLE_MSVC(number) _Pragma(AIDKIT_STRINGIZE(warning(disable: number))
+	#define AIDKIT_WARNING_DISABLE_MSVC(number) _Pragma(AIDKIT_STRINGIZE(warning(disable: number)))
 	#define AIDKIT_WARNING_DISABLE_GCC(text)
 	#define AIDKIT_WARNING_DISABLE_CLANG(text)
 #endif

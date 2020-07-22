@@ -25,12 +25,12 @@ namespace pera_software::aidkit::qt {
 PERAApplication::PERAApplication(const QString &applicationName, int *argc, char *argv[])
 	: Application(applicationName, argc, argv)
 {
-	setOrganizationName(PERA::NAME);
-	setOrganizationDomain(PERA::DOMAIN_NAME);
+	setOrganizationName(QString::fromUtf8(PERA::NAME));
+	setOrganizationDomain(QString::fromUtf8(PERA::DOMAIN_NAME));
 
 	// If we use the PERAApplication then we want the IniFormat as the default format:
 
-	QSettings::setDefaultFormat( QSettings::IniFormat );
+	QSettings::setDefaultFormat(QSettings::IniFormat);
 }
 
 void PERAApplication::aboutPERA()

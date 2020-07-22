@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2020 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,19 +15,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "PERAIniSettings.hpp"
-#include <pera_software/PERA.hpp>
-#include <pera_software/aidkit/qt/widgets/PERAApplication.hpp>
+#include "Strings.hpp"
+#include <QString>
 
 namespace pera_software::aidkit::qt {
 
-PERAIniSettings::PERAIniSettings(const QString &applicationName, QObject *parent)
-	: IniSettings(QString::fromUtf8(PERA::NAME), applicationName, parent)
+QString AIDKIT_API operator ""_qs(const char *str, size_t len)
 {
-}
-
-PERAIniSettings::~PERAIniSettings()
-{
+	return QString::fromUtf8(str, static_cast<int>(len));
 }
 
 }

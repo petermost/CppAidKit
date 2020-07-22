@@ -14,15 +14,15 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
+
 #include "Translator.hpp"
+#include <pera_software/aidkit/qt/core/Strings.hpp>
 
 namespace pera_software::aidkit::qt {
 
-static const char TRANSLATION_FILENAME[] = ":/pera_software/aidkit/translations/AidKitTranslations.qm";
-
 bool Translator::load()
 {
-	return QTranslator::load(TRANSLATION_FILENAME);
+	return QTranslator::load(":/pera_software/aidkit/translations/AidKitTranslations.qm"_qs);
 }
 
 }

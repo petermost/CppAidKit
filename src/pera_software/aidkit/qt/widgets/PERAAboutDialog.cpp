@@ -18,6 +18,7 @@
 #include "PERAAboutDialog.hpp"
 #include <pera_software/PERA.hpp>
 #include <pera_software/aidkit/qt/gui/PERAResources.hpp>
+#include <pera_software/aidkit/qt/core/Strings.hpp>
 #include <QFile>
 #include <QLabel>
 #include <QPixmap>
@@ -28,27 +29,28 @@
 
 namespace pera_software::aidkit::qt {
 
-PERAAboutDialog::PERAAboutDialog( QWidget *parent )
-	: QDialog( parent ) {
-
+PERAAboutDialog::PERAAboutDialog(QWidget *parent)
+	: QDialog(parent)
+{
 	QLabel *peraLogo = new QLabel;
-	peraLogo->setAlignment( Qt::AlignHCenter );
+	peraLogo->setAlignment(Qt::AlignHCenter);
 	peraLogo->setPixmap(PERAResources::logo());
 
 	auto peraUrl = new QLabel;
-	peraUrl->setOpenExternalLinks( true );
-	peraUrl->setAlignment( Qt::AlignHCenter );
-	peraUrl->setText( QString( "<a href=\"%1\">%2</a>" ).arg( PERA::FULL_DOMAIN_NAME ).arg( PERA::FULL_NAME ));
+	peraUrl->setOpenExternalLinks(true);
+	peraUrl->setAlignment(Qt::AlignHCenter);
+	peraUrl->setText("<a href=\"%1\">%2</a>"_qs
+		.arg(QString::fromUtf8(PERA::FULL_DOMAIN_NAME)).arg(QString::fromUtf8(PERA::FULL_NAME)));
 
-	auto buttons = new QDialogButtonBox( QDialogButtonBox::Ok );
-	connect( buttons, &QDialogButtonBox::accepted, this, &QDialog::accept );
+	auto buttons = new QDialogButtonBox(QDialogButtonBox::Ok);
+	connect(buttons, &QDialogButtonBox::accepted, this, &QDialog::accept);
 
-	auto layout = new QVBoxLayout( this );
-	layout->addWidget( peraLogo );
-	layout->addWidget( peraUrl );
-	layout->addWidget( buttons );
+	auto layout = new QVBoxLayout(this);
+	layout->addWidget(peraLogo);
+	layout->addWidget(peraUrl);
+	layout->addWidget(buttons);
 
-	setLayout( layout );
+	setLayout(layout);
 }
 
 }

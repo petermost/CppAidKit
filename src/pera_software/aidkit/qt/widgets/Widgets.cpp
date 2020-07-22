@@ -23,27 +23,30 @@ namespace pera_software::aidkit::qt {
 
 // Colons (':') would be stored as %3A so we replace them with a dot ('.'):
 
-static const QLatin1Literal COLONS( "::" );
-static const QLatin1Literal DOT( "." );
+static const QString COLONS(QStringLiteral("::"));
+static const QString DOT(QStringLiteral("."));
 
-static const QString SIZE_KEY( QStringLiteral( "size" ));
-static const QString POSITION_KEY( QStringLiteral( "position" ));
+static const QString SIZE_KEY(QStringLiteral("size"));
+static const QString POSITION_KEY(QStringLiteral("position"));
 
-QString Widgets::makeGroupName(const QObject *object) {
-	return QString( object->metaObject()->className() ).replace( COLONS, DOT );
+QString Widgets::makeGroupName(const QObject *object)
+{
+	return QString::fromUtf8(object->metaObject()->className()).replace(COLONS, DOT);
 }
 
-void Widgets::readGeometry(QWidget *widget, QSettings *settings) noexcept {
-	settings->beginGroup( makeGroupName( widget ));
-		widget->resize( settings->value( SIZE_KEY, widget->size() ).toSize() );
-		widget->move( settings->value( POSITION_KEY, widget->pos() ).toPoint() );
+void Widgets::readGeometry(QWidget *widget, QSettings *settings) noexcept
+{
+	settings->beginGroup(makeGroupName(widget));
+		widget->resize(settings->value(SIZE_KEY, widget->size()).toSize());
+		widget->move(settings->value(POSITION_KEY, widget->pos()).toPoint());
 	settings->endGroup();
 }
 
-void Widgets::writeGeometry(const QWidget *widget, QSettings *settings) noexcept {
-	settings->beginGroup( makeGroupName( widget ));
-		settings->setValue( SIZE_KEY, widget->size() );
-		settings->setValue( POSITION_KEY, widget->pos() );
+void Widgets::writeGeometry(const QWidget *widget, QSettings *settings) noexcept
+{
+	settings->beginGroup(makeGroupName(widget));
+		settings->setValue(SIZE_KEY, widget->size());
+		settings->setValue(POSITION_KEY, widget->pos());
 	settings->endGroup();
 }
 
