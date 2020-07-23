@@ -20,29 +20,30 @@
 #include "platform.hpp"
 #include "strings.hpp"
 
+// Macros to handle warnings (push,pop,disable) in a more or less crossplatform way.
+// Adapted from https://www.boost.org/doc/libs/release/boost/compute/detail/diagnostic.hpp
+
+#define AIDKIT_PRAGMA(text) _Pragma(#text)
+
 #if defined(AIDKIT_GCC)
-	#define AIDKIT_WARNING_PUSH() _Pragma(AIDKIT_STRINGIFY(GCC diagnostic push))
-	#define AIDKIT_WARNING_POP()  _Pragma(AIDKIT_STRINGIFY(GCC diagnostic pop))
+	// Clang is suppose to be compatible with GCC so we don't define extra macros for it!
+	#define AIDKIT_PRAGMA_GCC_DIAGNOSTIC(text)      AIDKIT_PRAGMA(GCC diagnostic text)
+	#define AIDKIT_PRAGMA_WARNING_PUSH()            AIDKIT_PRAGMA_GCC_DIAGNOSTIC(push)
+	#define AIDKIT_PRAGMA_WARNING_POP()             AIDKIT_PRAGMA_GCC_DIAGNOSTIC(pop)
+	#define AIDKIT_PRAGMA_GCC_WARNING_DISABLE(text) AIDKIT_PRAGMA_GCC_DIAGNOSTIC(ignored AIDKIT_JOIN_STRINGIFY(-W, text))
+	#define AIDKIT_PRAGMA_GCC_WARNING_ENABLE(text)  AIDKIT_PRAGMA_GCC_DIAGNOSTIC(warning AIDKIT_JOIN_STRINGIFY(-W, text))
 
-	#define AIDKIT_WARNING_DISABLE_GCC(text) _Pragma(AIDKIT_STRINGIFY(GCC diagnostic ignored #text))
-	#define AIDKIT_WARNING_DISABLE_CLANG(text)
-	#define AIDKIT_WARNING_DISABLE_MSVC(number)
-#endif
-
-#if defined(AIDKIT_CLANG)
-	#define AIDKIT_WARNING_PUSH() _Pragma(AIDKIT_STRINGIFY(clang diagnostic push))
-	#define AIDKIT_WARNING_POP()  _Pragma(AIDKIT_STRINGIFY(clang diagnostic pop))
-
-	#define AIDKIT_WARNING_DISABLE_CLANG(text) _Pragma(AIDKIT_STRINGIFY(clang diagnostic ignored #text))
-	#define AIDKIT_WARNING_DISABLE_GCC(text)
-	#define AIDKIT_WARNING_DISABLE_MSVC(number)
+	#define AIDKIT_PRAGMA_MSVC_WARNING_DISABLE(number)
+	#define AIDKIT_PRAGMA_MSVC_WARNING_ENABLE(number)
 #endif
 
 #if defined(AIDKIT_MSVC)
-	#define AIDKIT_WARNING_PUSH() _Pragma(AIDKIT_STRINGIFY(warning(push)))
-	#define AIDKIT_WARNING_POP()  _Pragma(AIDKIT_STRINGIFY(warning(pop)))
+	#define AIDKIT_PRAGMA_MSVC_DIAGNOSTIC(text)        AIDKIT_PRAGMA(warning(text))
+	#define AIDKIT_PRAGMA_WARNING_PUSH()               AIDKIT_PRAGMA_MSVC_DIAGNOSTIC(push)
+	#define AIDKIT_PRAGMA_WARNING_POP()                AIDKIT_PRAGMA_MSVC_DIAGNOSTIC(pop)
+	#define AIDKIT_PRAGMA_MSVC_WARNING_DISABLE(number) AIDKIT_PRAGMA_MSVC_DIAGNOSTIC(disable: number)
+	#define AIDKIT_PRAGMA_MSVC_WARNING_ENABLE(number)  AIDKIT_PRAGMA_MSVC_DIAGNOSTIC(default: number)
 
-	#define AIDKIT_WARNING_DISABLE_MSVC(number) _Pragma(AIDKIT_STRINGIFY(warning(disable: number)))
-	#define AIDKIT_WARNING_DISABLE_GCC(text)
-	#define AIDKIT_WARNING_DISABLE_CLANG(text)
+	#define AIDKIT_PRAGMA_GCC_WARNING_DISABLE(text)
+	#define AIDKIT_PRAGMA_GCC_WARNING_DISABLE(text)
 #endif

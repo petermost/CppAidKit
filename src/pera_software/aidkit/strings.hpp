@@ -22,8 +22,11 @@
 #include <functional>
 #include <pera_software/aidkit/io/errno.hpp>
 
-#define AIDKIT_STRINGIFY( name ) #name
-#define AIDKIT_STRINGIFY_SYMBOL( symbol ) STRINGIZE( symbol )
+#define AIDKIT_STRINGIFY(name) #name
+#define AIDKIT_STRINGIFY_MACRO(macro) AIDKIT_STRINGIFY(macro)
+
+#define AIDKIT_JOIN(x,y) x##y
+#define AIDKIT_JOIN_STRINGIFY(x,y) AIDKIT_STRINGIFY(x##y)
 
 namespace pera_software::aidkit {
 

@@ -22,7 +22,7 @@
 #include <pera_software/aidkit/qt/TestFixture.hpp>
 #include <pera_software/aidkit/qt/gui/Resources.hpp>
 
-AIDKIT_WARNING_DISABLE_CLANG(-Wweak-vtables)
+AIDKIT_PRAGMA_GCC_WARNING_DISABLE(weak-vtables)
 
 namespace pera_software::aidkit::qt {
 

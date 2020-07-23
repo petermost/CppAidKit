@@ -31,22 +31,19 @@
 
 // Determine the operating system:
 
-#if defined(_WIN32) || defined(WIN32)
-	#define AIDKIT_WINDOWS
-#endif
 #if defined(__linux__)
 	#define AIDKIT_LINUX
 #endif
-#if !defined(AIDKIT_WINDOWS) && !defined(AIDKIT_LINUX)
+#if defined(_WIN32) || defined(WIN32)
+	#define AIDKIT_WINDOWS
+#endif
+#if !defined(AIDKIT_LINUX) && !defined(AIDKIT_WINDOWS)
 	#error Cannot determine operating system!
 #endif
 
 // Determine the compiler:
 
-#if defined(_MSC_VER)
-	#define AIDKIT_MSVC
-#endif
-#if defined(__GNUC__) && !defined(__clang__)
+#if defined(__GNUC__)
 	#define AIDKIT_GCC
 	#if defined(__MINGW32__) || defined(__MINGW64__)
 		// MinGW is a GCC variant so we define it additional to the AIDKIT_GCC symbol
@@ -54,9 +51,13 @@
 	#endif
 #endif
 #if defined(__clang__)
+	// Clang is suppose to be compatible with GCC so we don't try to distinguish between those two!
 	#define AIDKIT_CLANG
 #endif
-#if !defined(AIDKIT_MSVC) && !defined(AIDKIT_GCC) && !defined(AIDKIT_CLANG)
+#if defined(_MSC_VER)
+	#define AIDKIT_MSVC
+#endif
+#if !defined(AIDKIT_GCC) && !defined(AIDKIT_CLANG) && !defined(AIDKIT_MSVC)
 	#error Cannot determine compiler!
 #endif
 

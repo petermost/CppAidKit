@@ -135,13 +135,13 @@ add_executable(testAidKit
 	tests/pera_software/aidkit/test_main.hpp
 	tests/pera_software/aidkit/test_main.cpp
 
+	tests/pera_software/aidkit/compiler_test.cpp
 	tests/pera_software/aidkit/containers_test.cpp
 	tests/pera_software/aidkit/enum_class_test.cpp
 	tests/pera_software/aidkit/enum_flags_test.cpp
 	tests/pera_software/aidkit/strings_test.cpp
 	tests/pera_software/aidkit/vectors_test.cpp
 	tests/pera_software/aidkit/unicode_test.cpp
-
 	tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
 
 	tests/pera_software/aidkit/io/file_test.cpp

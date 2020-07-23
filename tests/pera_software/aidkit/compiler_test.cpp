@@ -1,4 +1,4 @@
-// Copyright 2019 Peter Most, PERA Software Solutions GmbH
+// Copyright 2020 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,28 +15,22 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <QIcon>
 #include <gtest/gtest.h>
 #include <pera_software/aidkit/compiler.hpp>
-#include <pera_software/aidkit/qt/TestFixture.hpp>
-#include <pera_software/aidkit/qt/gui/ResourcesTest.hpp>
-#include <pera_software/aidkit/qt/gui/PERAResources.hpp>
 
-AIDKIT_PRAGMA_GCC_WARNING_DISABLE(weak-vtables)
+AIDKIT_PRAGMA_WARNING_PUSH()
 
-namespace pera_software::aidkit::qt {
+AIDKIT_PRAGMA_GCC_WARNING_DISABLE(unused-parameter)
+AIDKIT_PRAGMA_GCC_WARNING_DISABLE(unused-function)
+AIDKIT_PRAGMA_GCC_WARNING_DISABLE(unused-variable)
 
-using namespace std;
-using namespace pera_software::aidkit::qt;
-
-class PERAResourcesTest : public TestFixture {
-};
-
-TEST_F(PERAResourcesTest, testLoadIcons)
+static void unusedFunction(int unusedParameter)
 {
-	ASSERT_IMAGE(PERAResources::icon());
-	ASSERT_IMAGE(PERAResources::logo());
 }
 
-
+TEST(CompilerTest, testPragmaMacros)
+{
+	int unusedVariable;
 }
+
+AIDKIT_PRAGMA_WARNING_POP()
