@@ -310,8 +310,8 @@ else()
 endif()
 
 if (Qt5LinguistTools_FOUND)
-	configure_file(translations/AidKitTranslations.qrc ${CMAKE_BINARY_DIR} COPYONLY)
-	qt5_create_translation(AIDKIT_TRANSLATION_FILES ${CMAKE_SOURCE_DIR} translations/AidKitTranslations_de.ts)
+	configure_file(translations/AidKitTranslations.qrc ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+	qt5_create_translation(AIDKIT_TRANSLATION_FILES ${CMAKE_CURRENT_SOURCE_DIR} translations/AidKitTranslations_de.ts)
 
 	target_sources(AidKit
 		PRIVATE
@@ -320,7 +320,7 @@ if (Qt5LinguistTools_FOUND)
 			# translations/AidKitTranslations.qrc
 			translations/AidKitTranslations_de.ts
 			${AIDKIT_TRANSLATION_FILES}
-			${CMAKE_BINARY_DIR}/AidKitTranslations.qrc
+			${CMAKE_CURRENT_BINARY_DIR}/AidKitTranslations.qrc
 	)
 
 	target_sources(testAidKit
