@@ -17,14 +17,19 @@
 
 #pragma once
 
-#include <pera_software/aidkit/aidkit.hpp>
-#include <cstddef>
-
-class QString;
+#include <QString>
 
 namespace pera_software::aidkit::qt {
 
-	QString AIDKIT_API operator ""_qs(const char *str, std::size_t len);
+	inline QChar operator ""_qc(char c)
+	{
+		return QChar(static_cast<ushort>(c));
+	}
+
+	inline QString operator ""_qs(const char *str, std::size_t len)
+	{
+		return QString::fromUtf8(str, static_cast<int>(len));
+	}
 
 }
 

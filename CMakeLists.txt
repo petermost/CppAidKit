@@ -310,6 +310,10 @@ else()
 endif()
 
 if (Qt5LinguistTools_FOUND)
+	# Embed translation files as a resource:
+	# From "The missing example to use cmake qt5_create_translation"
+	# (https://gist.github.com/giraldeau/546ba5512a74dfe9d8ea0862d66db412)
+
 	configure_file(translations/AidKitTranslations.qrc ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 	qt5_create_translation(AIDKIT_TRANSLATION_FILES ${CMAKE_CURRENT_SOURCE_DIR} translations/AidKitTranslations_de.ts)
 

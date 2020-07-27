@@ -16,13 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "Strings.hpp"
-#include <QString>
 
 namespace pera_software::aidkit::qt {
-
-QString AIDKIT_API operator ""_qs(const char *str, size_t len)
-{
-	return QString::fromUtf8(str, static_cast<int>(len));
-}
 
 }
