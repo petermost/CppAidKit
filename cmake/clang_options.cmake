@@ -7,6 +7,7 @@ function(set_default_clang_target_options targetName)
 			-Weverything
 
 			-Wno-c++98-compat -Wno-c++98-compat-pedantic
+			-Wno-c++20-compat -Wno-c++20-compat-pedantic
 			-Wno-format-nonliteral
 			-Wno-exit-time-destructors -Wno-global-constructors
 			-Wno-padded

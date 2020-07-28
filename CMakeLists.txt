@@ -16,7 +16,7 @@
 # along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.13)
-project(AidKit VERSION 1.0.0.0)
+project(AidKit VERSION 1.1.0.0)
 
 include(GenerateExportHeader)
 include(cmake/all_options.cmake)
@@ -106,7 +106,7 @@ set_default_target_options(AidKit)
 
 set_target_properties(AidKit
 	PROPERTIES
-		SOVERSION ${PROJECT_VERSION}
+		SOVERSION ${AidKit_VERSION}
 )
 
 # Generate the 'export header' and add the generated file to the library as well:

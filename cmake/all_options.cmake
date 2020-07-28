@@ -14,8 +14,10 @@ report("CMAKE_VERSION: '${CMAKE_VERSION}'")
 
 set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
 
-# Make Ninja build verbose as well (https://github.com/ninja-build/ninja/issues/900):
-set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose Makefile" FORCE)
+if (CMAKE_VERBOSE_MAKEFILE)
+	# Make Ninja build verbose as well (https://github.com/ninja-build/ninja/issues/900):
+	set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose Makefile" FORCE)
+endif()
 
 # Set default build type:
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
