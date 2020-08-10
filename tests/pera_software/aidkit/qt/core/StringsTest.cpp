@@ -1,4 +1,4 @@
-// Copyright 2020 Peter Most, PERA Software Solutions GmbH
+// Copyright 2015 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,16 +15,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <pera_software/aidkit/aidkit.hpp>
-#include <QString>
-
-// For Google Test:
-AIDKIT_API void PrintTo(const QString &qstring, std::ostream *output);
+#include <gtest/gtest.h>
+#include <pera_software/aidkit/qt/core/Strings.hpp>
+#include <sstream>
 
 namespace pera_software::aidkit::qt {
-	AIDKIT_API QChar operator ""_qc(char c);
-	AIDKIT_API QString operator ""_qs(const char *str, std::size_t len);
-	AIDKIT_API std::ostream &operator<<(std::ostream &output, const QString &qstring);
+
+using namespace std;
+
+TEST(StringsTest, streamOperator)
+{
+	ostringstream stream;
+	stream << "QString"_qs;
+	ASSERT_EQ(stream.str(), "QString");
+}
+
 }
