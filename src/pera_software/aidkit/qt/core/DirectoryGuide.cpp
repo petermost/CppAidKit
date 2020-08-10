@@ -21,59 +21,44 @@
 
 namespace pera_software::aidkit::qt {
 
-DirectoryGuide::DirectoryGuide( QObject *parent )
-	: QObject( parent ) {
+DirectoryGuide::DirectoryGuide(QObject *parent)
+	: QObject(parent)
+{
 }
 
-void DirectoryGuide::walk( const QFileInfo &parentDirectory, DirectoryVisitor *visitor ) {
-	const QDir::Filters FILTERS = QDir::Files | QDir::Dirs | QDir::Hidden | QDir::System
+void DirectoryGuide::walk(const QFileInfo &parentDirectory)
+{
+	constexpr QDir::Filters FILTERS = QDir::Files | QDir::Dirs | QDir::Hidden | QDir::System
 		| QDir::NoDotAndDotDot | QDir::NoSymLinks;
 
-	QDirIterator directoryIterator( parentDirectory.filePath(), FILTERS, QDirIterator::NoIteratorFlags );
-	while ( directoryIterator.hasNext() ) {
+	bool stop = false;
+	QDirIterator directoryIterator(parentDirectory.filePath(), FILTERS, QDirIterator::NoIteratorFlags);
+	while (directoryIterator.hasNext()) {
 		directoryIterator.next();
 		auto currentFileInfo = directoryIterator.fileInfo();
 
 		// Visit either a directory or everything else is considered to be a file:
 
-		if ( currentFileInfo.isDir() ) {
-			if ( !visitor->visitDirectory( parentDirectory, currentFileInfo )) {
+		if (currentFileInfo.isDir()) {
+			Q_EMIT directoryVisited(parentDirectory, currentFileInfo, &stop);
+			if (stop) {
 				// Skip this directory
 				continue;
 			}
-			walk( currentFileInfo, visitor );
-			if ( !visitor->leaveDirectory( parentDirectory, currentFileInfo )) {
+			walk(currentFileInfo);
+			Q_EMIT directoryLeft(parentDirectory, currentFileInfo, &stop);
+			if (stop) {
 				// Skip the remaining entries in the same directory
 				continue;
 			}
 		} else {
-			if ( !visitor->visitFile( parentDirectory, currentFileInfo )) {
+			Q_EMIT fileVisited(parentDirectory, currentFileInfo, &stop);
+			if (stop) {
 				// Skip the remaining files in the same directory
 				continue;
 			}
 		}
 	}
-}
-
-
-
-DirectoryVisitor::DirectoryVisitor( QObject *parent )
-	: QObject( parent ) {
-}
-
-DirectoryVisitor::~DirectoryVisitor() {
-}
-
-bool DirectoryVisitor::visitDirectory( const QFileInfo & /* parentDirectory */, const QFileInfo & /*currentDirectory */ ) {
-	return true;
-}
-
-bool DirectoryVisitor::visitFile( const QFileInfo & /* parentDirectory */, const QFileInfo &/* currentFile */ ) {
-	return true;
-}
-
-bool DirectoryVisitor::leaveDirectory( const QFileInfo &/* parentDirectory */, const QFileInfo & /* currentDirectory */ ) {
-	return true;
 }
 
 }

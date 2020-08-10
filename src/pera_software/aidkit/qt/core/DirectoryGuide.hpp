@@ -28,28 +28,15 @@ namespace pera_software::aidkit::qt {
 	class AIDKIT_API DirectoryGuide : public QObject {
 		Q_OBJECT
 		public:
-			explicit DirectoryGuide( QObject *parent = nullptr );
-			void walk( const QFileInfo &parentDirectory, class DirectoryVisitor *visitor );
+			explicit DirectoryGuide(QObject *parent = nullptr);
+			void walk(const QFileInfo &parentDirectory);
 
 		Q_SIGNALS:
-			// We could have used signals here, but signals can't return a value and so the
-			// feature to cancel the directory walking wouldn't have been possible.
+			void directoryVisited(const QFileInfo &parentDirectory, const QFileInfo &currentDirectory, bool *stop);
+			void fileVisited(const QFileInfo &parentDirectory, const QFileInfo &currentDirectory, bool *stop);
+			void directoryLeft(const QFileInfo &parentDirectory, const QFileInfo &currentDirectory, bool *stop);
 
 		public Q_SLOTS:
-	};
-
-	class AIDKIT_API DirectoryVisitor : public QObject {
-		Q_OBJECT
-		public:
-			explicit DirectoryVisitor( QObject *parent = nullptr );
-			~DirectoryVisitor() override;
-
-		protected:
-			friend DirectoryGuide;
-
-			virtual bool visitDirectory( const QFileInfo &parentDirectory, const QFileInfo &currentDirectory );
-			virtual bool visitFile( const QFileInfo &parentDirectory, const QFileInfo &currentFile );
-			virtual bool leaveDirectory( const QFileInfo &parentDirectory, const QFileInfo &currentDirectory );
 	};
 
 }
