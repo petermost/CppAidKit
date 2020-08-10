@@ -26,7 +26,6 @@
 #include <QString>
 
 #include <pera_software/aidkit/qt/widgets/Actions.hpp>
-#include <pera_software/aidkit/qt/widgets/Widgets.hpp>
 #include <pera_software/aidkit/qt/gui/PERAResources.hpp>
 
 namespace pera_software::aidkit::qt {
@@ -51,8 +50,8 @@ static QMenu *createMenuLazily(QMenu **menu, const QString &title, QWidget *pare
 
 //==================================================================================================
 
-PERAMainWindow::PERAMainWindow(QWidget *parent)
-	: MainWindow(parent)
+PERAMainWindow::PERAMainWindow(QSharedPointer<PERASettings> settings, QWidget *parent)
+	: MainWindow(parent), settings_(settings)
 {
 	setWindowTitle(tr("%1 - (c) by %2 - %3")
 	   .arg(QApplication::applicationName())
@@ -63,6 +62,13 @@ PERAMainWindow::PERAMainWindow(QWidget *parent)
 	// and QWindow::setIcon(), so for now we set the icon here, were it is probably most expected:
 
 	setWindowIcon(PERAResources::icon());
+
+	settings_->readWidgetGeometry(this);
+}
+
+PERAMainWindow::~PERAMainWindow()
+{
+	settings_->writeWidgetGeometry(this);
 }
 
 //==================================================================================================
@@ -121,20 +127,6 @@ QAction *PERAMainWindow::aboutPERAAction()
 QAction *PERAMainWindow::aboutQtAction()
 {
 	return createActionLazily<AboutQtAction>(&aboutQtAction_, AboutQtAction::DEFAULT_SLOT, this);
-}
-
-//==================================================================================================
-
-void PERAMainWindow::readSettings(QSettings *settings) noexcept
-{
-	Widgets::readGeometry(this, settings);
-}
-
-//==================================================================================================
-
-void PERAMainWindow::writeSettings(QSettings *settings) const noexcept
-{
-	Widgets::writeGeometry(this, settings);
 }
 
 //==================================================================================================

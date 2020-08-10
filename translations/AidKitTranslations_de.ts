@@ -33,17 +33,17 @@
 <context>
     <name>pera_software::aidkit::qt::PERAMainWindow</name>
     <message>
-        <location filename="../src/pera_software/aidkit/qt/widgets/PERAMainWindow.cpp" line="57"/>
+        <location filename="../src/pera_software/aidkit/qt/widgets/PERAMainWindow.cpp" line="56"/>
         <source>%1 - (c) by %2 - %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/pera_software/aidkit/qt/widgets/PERAMainWindow.cpp" line="95"/>
+        <location filename="../src/pera_software/aidkit/qt/widgets/PERAMainWindow.cpp" line="101"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/pera_software/aidkit/qt/widgets/PERAMainWindow.cpp" line="102"/>
+        <location filename="../src/pera_software/aidkit/qt/widgets/PERAMainWindow.cpp" line="108"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>

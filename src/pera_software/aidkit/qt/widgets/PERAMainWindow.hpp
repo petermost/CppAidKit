@@ -19,16 +19,17 @@
 
 #include <pera_software/aidkit/aidkit.hpp>
 #include <pera_software/aidkit/qt/widgets/MainWindow.hpp>
-#include <pera_software/aidkit/qt/core/Persistable.hpp>
+#include <pera_software/aidkit/qt/core/PERASettings.hpp>
 
 class QSettings;
 
 namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API PERAMainWindow : public MainWindow, public Persistable {
+	class AIDKIT_API PERAMainWindow : public MainWindow {
 		Q_OBJECT
 		public:
-			PERAMainWindow(QWidget *parent = nullptr);
+			PERAMainWindow(QSharedPointer<PERASettings> settings, QWidget *parent = nullptr);
+			~PERAMainWindow();
 
 			QMenu *addFileMenu();
 			QMenu *addHelpMenu();
@@ -44,10 +45,6 @@ namespace pera_software::aidkit::qt {
 			void aboutPERA();
 			static void aboutPERA(QWidget *parent);
 
-		protected:
-			void readSettings(QSettings *settings) noexcept override;
-			void writeSettings(QSettings *settings) const noexcept override;
-
 		private:
 			QMenu *fileMenu_ = nullptr;
 			QMenu *helpMenu_ = nullptr;
@@ -56,7 +53,7 @@ namespace pera_software::aidkit::qt {
 			QAction *aboutPERAAction_ = nullptr;
 			QAction *aboutQtAction_ = nullptr;
 
-
+			QSharedPointer<PERASettings> settings_;
 	};
 
 }

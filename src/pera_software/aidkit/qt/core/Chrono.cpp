@@ -50,6 +50,8 @@ int MetaTypeRegistration::s_registrationCounter = 0;
 
 //==================================================================================================
 
+// TODO: Move implementation of 'Schwarz Counter' to its own class
+
 MetaTypeRegistration::MetaTypeRegistration() {
 	if ( s_registrationCounter++ == 0 ) {
 		qRegisterMetaType< std::chrono::milliseconds >();

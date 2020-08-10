@@ -26,7 +26,7 @@ namespace pera_software::aidkit::qt {
 	class PERAAboutDialog;
 	class AboutPERAAction;
 	class PERAApplication;
-	class PERAIniSettings;
+	class PERASettings;
 	class PERAMainWindow;
 
 }

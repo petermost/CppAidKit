@@ -1,4 +1,4 @@
-// Copyright 2017 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,9 +15,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "Widgets.hpp"
+#include "PERASettings.hpp"
+
+#include <pera_software/PERA.hpp>
+
 #include <QWidget>
-#include <QSettings>
 
 namespace pera_software::aidkit::qt {
 
@@ -29,25 +31,31 @@ static const QString DOT(QStringLiteral("."));
 static const QString SIZE_KEY(QStringLiteral("size"));
 static const QString POSITION_KEY(QStringLiteral("position"));
 
-QString Widgets::makeGroupName(const QObject *object)
+
+PERASettings::PERASettings(const QString &applicationName, QObject *parent)
+	: iniFile_(QSettings::Format::IniFormat, QSettings::Scope::UserScope, QString::fromUtf8(PERA::NAME), applicationName, parent)
+{
+}
+
+void PERASettings::writeWidgetGeometry(const QWidget *widget)
+{
+	iniFile_.beginGroup(makeGroupName(widget));
+		iniFile_.setValue(SIZE_KEY, widget->size());
+		iniFile_.setValue(POSITION_KEY, widget->pos());
+	iniFile_.endGroup();
+}
+
+void PERASettings::readWidgetGeometry(QWidget *widget)
+{
+	iniFile_.beginGroup(makeGroupName(widget));
+		widget->resize(iniFile_.value(SIZE_KEY, widget->size()).toSize());
+		widget->move(iniFile_.value(POSITION_KEY, widget->pos()).toPoint());
+	iniFile_.endGroup();
+}
+
+QString PERASettings::makeGroupName(const QObject *object)
 {
 	return QString::fromUtf8(object->metaObject()->className()).replace(COLONS, DOT);
-}
-
-void Widgets::readGeometry(QWidget *widget, QSettings *settings) noexcept
-{
-	settings->beginGroup(makeGroupName(widget));
-		widget->resize(settings->value(SIZE_KEY, widget->size()).toSize());
-		widget->move(settings->value(POSITION_KEY, widget->pos()).toPoint());
-	settings->endGroup();
-}
-
-void Widgets::writeGeometry(const QWidget *widget, QSettings *settings) noexcept
-{
-	settings->beginGroup(makeGroupName(widget));
-		settings->setValue(SIZE_KEY, widget->size());
-		settings->setValue(POSITION_KEY, widget->pos());
-	settings->endGroup();
 }
 
 }

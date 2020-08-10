@@ -1,4 +1,4 @@
-// Copyright 2017 Peter Most, PERA Software Solutions GmbH
+// Copyright 2016 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -18,22 +18,25 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <QString>
 
-class QObject;
+#include <QSettings>
+
 class QWidget;
-class QSettings;
 
 namespace pera_software::aidkit::qt {
 
-class AIDKIT_API Widgets final
-{
-	public:
-		Widgets() = delete;
+	class AIDKIT_API PERASettings {
+		public:
+			PERASettings(const QString &applicationName, QObject *parent = nullptr);
 
-		static QString makeGroupName(const QObject *object);
-		static void readGeometry(QWidget *widget, QSettings *settings) noexcept;
-		static void writeGeometry(const QWidget *widget, QSettings *settings) noexcept;
-};
+			void writeWidgetGeometry(const QWidget *widget);
+			void readWidgetGeometry(QWidget *widget);
+
+		protected:
+			QString makeGroupName(const QObject *object);
+
+			QSettings iniFile_;
+	};
 
 }
+
