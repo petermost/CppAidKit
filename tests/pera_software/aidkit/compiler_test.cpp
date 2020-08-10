@@ -18,11 +18,12 @@
 #include <gtest/gtest.h>
 #include <pera_software/aidkit/compiler.hpp>
 
-AIDKIT_PRAGMA_WARNING_PUSH()
+AIDKIT_PRAGMA_GCC_WARNING_PUSH()
 
 AIDKIT_PRAGMA_GCC_WARNING_DISABLE(unused-parameter)
 AIDKIT_PRAGMA_GCC_WARNING_DISABLE(unused-function)
 AIDKIT_PRAGMA_GCC_WARNING_DISABLE(unused-variable)
+AIDKIT_PRAGMA_GCC_WARNING_DISABLE(shadow-uncaptured-local)
 
 static void unusedFunction(int unusedParameter)
 {
@@ -31,6 +32,7 @@ static void unusedFunction(int unusedParameter)
 TEST(CompilerTest, testPragmaMacros)
 {
 	int unusedVariable;
+	auto lambda = [](int unusedVariable){};
 }
 
-AIDKIT_PRAGMA_WARNING_POP()
+AIDKIT_PRAGMA_GCC_WARNING_POP()
