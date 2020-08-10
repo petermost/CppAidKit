@@ -33,19 +33,7 @@ find_package(Qt5 QUIET
 		LinguistTools
 )
 
-# Prepare GoogleTest targets:
-
-if (EXISTS /usr/src/googletest)
-	if (NOT TARGET gtest AND NOT TARGET gtest_main)
-		add_subdirectory(/usr/src/googletest googletest)
-	endif()
-	# Create the same targets/variables which FindGTest would have done:
-	set(GTEST_FOUND TRUE)
-	add_library(GTest::GTest ALIAS gtest)
-	add_library(GTest::Main ALIAS gtest_main)
-else()
-	message(WARNING "GoogleTest not found, building without it!")
-endif()
+add_googletest_subdirectory()
 
 ###############################################################################
 # Setup AidKit:
@@ -115,6 +103,7 @@ generate_export_header(AidKit
 	EXPORT_FILE_NAME aidkit_api.hpp
 	INCLUDE_GUARD_NAME AIDKIT_API_HPP
 	EXPORT_MACRO_NAME AIDKIT_API
+	STATIC_DEFINE AIDKIT_STATIC_LIBRARY
 )
 target_sources(AidKit
 	PRIVATE
@@ -165,6 +154,8 @@ if (GTEST_FOUND)
 			GTest::GTest
 			# GTest::Main
 	)
+else()
+	message(WARNING "GoogleTest not found, building without it!")
 endif()
 
 ###############################################################################
@@ -213,18 +204,14 @@ if (Qt5Core_FOUND)
 			src/pera_software/aidkit/qt/core/Endian.cpp
 			src/pera_software/aidkit/qt/core/Enums.hpp
 			src/pera_software/aidkit/qt/core/Enums.cpp
-			src/pera_software/aidkit/qt/core/IniSettings.hpp
-			src/pera_software/aidkit/qt/core/IniSettings.cpp
-			src/pera_software/aidkit/qt/core/Persistable.hpp
-			src/pera_software/aidkit/qt/core/Persistable.cpp
 			src/pera_software/aidkit/qt/core/Socket.hpp
 			src/pera_software/aidkit/qt/core/Socket.cpp
 			src/pera_software/aidkit/qt/core/Strings.hpp
 			src/pera_software/aidkit/qt/core/Strings.cpp
 
 			src/pera_software/aidkit/qt/PERAForwardDeclarations.hpp
-			src/pera_software/aidkit/qt/core/PERAIniSettings.cpp
-			src/pera_software/aidkit/qt/core/PERAIniSettings.hpp
+			src/pera_software/aidkit/qt/core/PERASettings.cpp
+			src/pera_software/aidkit/qt/core/PERASettings.hpp
 
 			# Resources:
 
@@ -237,6 +224,7 @@ if (Qt5Core_FOUND)
 			tests/pera_software/aidkit/qt/TestFixture.cpp
 			tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
 			tests/pera_software/aidkit/qt/core/EndianTest.cpp
+			tests/pera_software/aidkit/qt/core/StringsTest.cpp
 	)
 	target_link_libraries(AidKit
 		PUBLIC
@@ -289,8 +277,6 @@ if (Qt5Widgets_FOUND)
 			src/pera_software/aidkit/qt/widgets/MessagesView.hpp
 			src/pera_software/aidkit/qt/widgets/MessagesWidget.cpp
 			src/pera_software/aidkit/qt/widgets/MessagesWidget.hpp
-			src/pera_software/aidkit/qt/widgets/Widgets.hpp
-			src/pera_software/aidkit/qt/widgets/Widgets.cpp
 
 			src/pera_software/aidkit/qt/widgets/PERAAboutDialog.hpp
 			src/pera_software/aidkit/qt/widgets/PERAAboutDialog.cpp

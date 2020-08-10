@@ -1,0 +1,11 @@
+function(add_googletest_subdirectory)
+	if (EXISTS /usr/src/googletest)
+		if (NOT TARGET gtest AND NOT TARGET gtest_main)
+			add_subdirectory(/usr/src/googletest googletest)
+		endif()
+		# Create the same targets/variables which FindGTest would have done:
+		set(GTEST_FOUND TRUE PARENT_SCOPE)
+		add_library(GTest::GTest ALIAS gtest)
+		add_library(GTest::Main ALIAS gtest_main)
+	endif()
+endfunction()

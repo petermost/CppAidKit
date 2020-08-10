@@ -9,6 +9,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/clang_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/msvc_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/libstdcxx_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/libcxx_options.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/googletest.cmake)
 
 report("CMAKE_VERSION: '${CMAKE_VERSION}'")
 
