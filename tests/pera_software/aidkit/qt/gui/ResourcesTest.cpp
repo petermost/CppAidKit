@@ -26,31 +26,24 @@ AIDKIT_PRAGMA_GCC_WARNING_DISABLE(weak-vtables)
 
 namespace pera_software::aidkit::qt {
 
-using namespace std;
-
-class TestResources : public Resources {
-	public:
-		using Resources::loadIcon;
-};
-
-class ResourcesTest : public TestFixture {
+class ResourcesTest : public qt::TestFixture {
 };
 
 TEST_F(ResourcesTest, testMissingIcon)
 {
-	QIcon missingIcon = TestResources::loadIcon(QStringLiteral(":/missing.png"));
+	QIcon missingIcon = loadIcon(QStringLiteral(":/missing.png"));
 	ASSERT_TRUE(missingIcon.isNull());
 }
 
 TEST_F(ResourcesTest, testLoadIcons)
 {
-	ASSERT_IMAGE(Resources::quitIcon());
-	ASSERT_IMAGE(Resources::debugIcon());
-	ASSERT_IMAGE(Resources::warningIcon());
-	ASSERT_IMAGE(Resources::informationIcon());
-	ASSERT_IMAGE(Resources::errorIcon());
-	ASSERT_IMAGE(Resources::clockIcon());
-	ASSERT_IMAGE(Resources::settingsIcon());
+	ASSERT_IMAGE(Resources::instance().quitIcon());
+	ASSERT_IMAGE(Resources::instance().debugIcon());
+	ASSERT_IMAGE(Resources::instance().warningIcon());
+	ASSERT_IMAGE(Resources::instance().informationIcon());
+	ASSERT_IMAGE(Resources::instance().errorIcon());
+	ASSERT_IMAGE(Resources::instance().clockIcon());
+	ASSERT_IMAGE(Resources::instance().settingsIcon());
 }
 
 }

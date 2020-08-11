@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2020 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,35 +15,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "StringPrinter.hpp"
+#include <pera_software/aidkit/qt/core/Strings.hpp>
 
-#include <pera_software/aidkit/aidkit.hpp>
+using namespace	std;
+using pera_software::aidkit::qt::operator<<;
 
-class QIcon;
-class QString;
+void PrintTo(const QString &qstring, ostream *output)
+{
+	*output << qstring;
+}
 
 namespace pera_software::aidkit::qt {
-
-	AIDKIT_API QIcon loadIcon(const QString &iconName);
-
-	class AIDKIT_API Resources {
-		public:
-			static Resources &instance();
-
-			QIcon quitIcon();
-
-			QIcon debugIcon();
-			QIcon warningIcon();
-			QIcon informationIcon();
-			QIcon errorIcon();
-
-			QIcon clockIcon();
-			QIcon settingsIcon();
-
-		private:
-			Resources();
-			~Resources();
-
-			static Resources instance_;
-	};
 }

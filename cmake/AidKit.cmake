@@ -13,8 +13,6 @@ include(${CMAKE_CURRENT_LIST_DIR}/googletest.cmake)
 
 report("CMAKE_VERSION: '${CMAKE_VERSION}'")
 
-set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries" FORCE)
-
 if (CMAKE_VERBOSE_MAKEFILE)
 	# Make Ninja build verbose as well (https://github.com/ninja-build/ninja/issues/900):
 	set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "Verbose Makefile" FORCE)

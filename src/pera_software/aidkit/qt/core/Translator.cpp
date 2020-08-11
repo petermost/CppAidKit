@@ -18,7 +18,27 @@
 #include "Translator.hpp"
 #include <pera_software/aidkit/qt/core/Strings.hpp>
 
+static inline void initResource()
+{
+	Q_INIT_RESOURCE(AidKitTranslations);
+}
+
+static inline void cleanupResource()
+{
+	Q_CLEANUP_RESOURCE(AidKitTranslations);
+}
+
 namespace pera_software::aidkit::qt {
+
+Translator::Translator()
+{
+	initResource();
+}
+
+Translator::~Translator()
+{
+	cleanupResource();
+}
 
 bool Translator::load()
 {

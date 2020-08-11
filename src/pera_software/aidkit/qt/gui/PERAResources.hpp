@@ -18,18 +18,24 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-#include <pera_software/aidkit/qt/gui/Resources.hpp>
 
+class QIcon;
 class QPixmap;
 
 namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API PERAResources : public pera_software::aidkit::qt::Resources {
+	class AIDKIT_API PERAResources {
 		public:
-			PERAResources() = delete;
+			static PERAResources &instance();
 
-			static QIcon icon();
-			static QPixmap logo();
+			QIcon icon();
+			QPixmap logo();
+
+		private:
+			PERAResources();
+			~PERAResources();
+
+			static PERAResources instance_;
 	};
 
 }

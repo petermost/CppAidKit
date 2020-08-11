@@ -17,17 +17,9 @@
 
 #include "Strings.hpp"
 
-using namespace	std;
-
-void PrintTo(const QString &qstring, ostream *output)
-{
-	// TODO: Move to seperate AidKitTesting library?
-	using pera_software::aidkit::qt::operator<<;
-
-	*output << qstring;
-}
-
 namespace pera_software::aidkit::qt {
+
+using namespace	std;
 
 QChar operator ""_qc(char c)
 {

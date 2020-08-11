@@ -22,9 +22,45 @@
 
 // The icons are from 'Oxygen'.
 
-#define PREFIX ":/pera_software/aidkit/resources/"
+static inline void initResource()
+{
+	Q_INIT_RESOURCE(AidKitResources);
+}
+
+static inline void cleanupResource()
+{
+	Q_CLEANUP_RESOURCE(AidKitResources);
+}
 
 namespace pera_software::aidkit::qt {
+
+#define PREFIX ":/pera_software/aidkit/resources/"
+
+QIcon loadIcon(const QString &iconName)
+{
+	if (QFile::exists(iconName))
+		return QIcon(iconName);
+	else
+		return QIcon();
+}
+
+Resources Resources::instance_;
+
+Resources &Resources::instance()
+{
+	return instance_;
+}
+
+Resources::Resources()
+{
+	initResource();
+}
+
+Resources::~Resources()
+{
+	cleanupResource();
+}
+
 
 QIcon Resources::quitIcon()
 {
@@ -61,12 +97,5 @@ QIcon Resources::settingsIcon()
 	return loadIcon(PREFIX "configure-16x16.png"_qs);
 }
 
-QIcon Resources::loadIcon(const QString &iconName)
-{
-	if (QFile::exists(iconName))
-		return QIcon(iconName);
-	else
-		return QIcon();
-}
 
 }

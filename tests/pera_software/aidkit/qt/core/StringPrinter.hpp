@@ -1,4 +1,4 @@
-// Copyright 2016 Peter Most, PERA Software Solutions GmbH
+// Copyright 2020 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -18,32 +18,10 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
+#include <QString>
 
-class QIcon;
-class QString;
+// For Google Test:
+AIDKIT_API void PrintTo(const QString &qstring, std::ostream *output);
 
 namespace pera_software::aidkit::qt {
-
-	AIDKIT_API QIcon loadIcon(const QString &iconName);
-
-	class AIDKIT_API Resources {
-		public:
-			static Resources &instance();
-
-			QIcon quitIcon();
-
-			QIcon debugIcon();
-			QIcon warningIcon();
-			QIcon informationIcon();
-			QIcon errorIcon();
-
-			QIcon clockIcon();
-			QIcon settingsIcon();
-
-		private:
-			Resources();
-			~Resources();
-
-			static Resources instance_;
-	};
 }

@@ -19,7 +19,7 @@ cmake_minimum_required(VERSION 3.13)
 project(AidKit VERSION 1.1.0.0)
 
 include(GenerateExportHeader)
-include(cmake/all_options.cmake)
+include(cmake/AidKit.cmake)
 
 find_package(Boost QUIET
 	COMPONENTS
@@ -103,7 +103,6 @@ generate_export_header(AidKit
 	EXPORT_FILE_NAME aidkit_api.hpp
 	INCLUDE_GUARD_NAME AIDKIT_API_HPP
 	EXPORT_MACRO_NAME AIDKIT_API
-	STATIC_DEFINE AIDKIT_STATIC_LIBRARY
 )
 target_sources(AidKit
 	PRIVATE
@@ -118,12 +117,34 @@ target_include_directories(AidKit
 )
 
 ###############################################################################
+# Setup AidKitTest:
+
+add_library(AidKitTest
+	tests/pera_software/aidkit/test_main.hpp
+	tests/pera_software/aidkit/test_main.cpp
+)
+set_default_target_options(AidKitTest)
+
+target_include_directories(AidKitTest
+	PUBLIC
+		tests/
+)
+
+if (GTEST_FOUND)
+	target_link_libraries(AidKitTest
+		PUBLIC
+			AidKit
+			GTest::GTest
+			# GTest::Main
+	)
+else()
+	message(WARNING "GoogleTest not found, building without it!")
+endif()
+
+###############################################################################
 # Setup AidKit tests:
 
 add_executable(testAidKit
-	tests/pera_software/aidkit/test_main.hpp
-	tests/pera_software/aidkit/test_main.cpp
-
 	tests/pera_software/aidkit/compiler_test.cpp
 	tests/pera_software/aidkit/containers_test.cpp
 	tests/pera_software/aidkit/enum_class_test.cpp
@@ -140,56 +161,13 @@ add_executable(testAidKit
 	tests/pera_software/aidkit/stdlib/memory_test.cpp
 	tests/pera_software/aidkit/stdlib/stdlib_test.cpp
 )
+
 set_default_target_options(testAidKit)
 
-target_include_directories(testAidKit
-	PUBLIC
-		tests/
+target_link_libraries(testAidKit
+	PRIVATE
+		AidKitTest
 )
-
-if (GTEST_FOUND)
-	target_link_libraries(testAidKit
-		PRIVATE
-			AidKit
-			GTest::GTest
-			# GTest::Main
-	)
-else()
-	message(WARNING "GoogleTest not found, building without it!")
-endif()
-
-###############################################################################
-
-if (Boost_FOUND)
-	target_sources(AidKit
-		PRIVATE
-			src/pera_software/aidkit/boost/formatter.hpp
-			src/pera_software/aidkit/boost/formatter.cpp
-			src/pera_software/aidkit/boost/directory_guide.hpp
-			src/pera_software/aidkit/boost/directory_guide.cpp
-	)
-	target_sources(testAidKit
-		PRIVATE
-			tests/pera_software/aidkit/boost/formatter_test.cpp
-			tests/pera_software/aidkit/boost/directory_guide_test.cpp
-	)
-	target_compile_definitions(AidKit
-		PRIVATE
-			BOOST_ALL_DYN_LINK
-			BOOST_ASIO_NO_DEPRECATED
-			BOOST_FILESYSTEM_NO_DEPRECATED
-	)
-	target_link_libraries(AidKit
-		PUBLIC
-			Boost::dynamic_linking
-			Boost::disable_autolinking
-			Boost::boost
-			Boost::filesystem
-	)
-else()
-	message(WARNING "Boost not found, building without it!")
-endif()
-
 
 if (Qt5Core_FOUND)
 	target_sources(AidKit
@@ -218,10 +196,13 @@ if (Qt5Core_FOUND)
 			resources/pera_software/aidkit/AidKitResources.qrc
 			resources/pera_software/PERAResources.qrc
 	)
+	target_sources(AidKitTest
+		PRIVATE
+			tests/pera_software/aidkit/qt/core/StringPrinter.hpp
+			tests/pera_software/aidkit/qt/core/StringPrinter.cpp
+	)
 	target_sources(testAidKit
 		PRIVATE
-			tests/pera_software/aidkit/qt/TestFixture.hpp
-			tests/pera_software/aidkit/qt/TestFixture.cpp
 			tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
 			tests/pera_software/aidkit/qt/core/EndianTest.cpp
 			tests/pera_software/aidkit/qt/core/StringsTest.cpp
@@ -245,6 +226,11 @@ if (Qt5Gui_FOUND)
 			src/pera_software/aidkit/qt/gui/PERAResources.hpp
 			src/pera_software/aidkit/qt/gui/PERAResources.cpp
 
+	)
+	target_sources(AidKitTest
+		PRIVATE
+			tests/pera_software/aidkit/qt/TestFixture.hpp
+			tests/pera_software/aidkit/qt/TestFixture.cpp
 	)
 	target_sources(testAidKit
 		PRIVATE
@@ -319,6 +305,38 @@ if (Qt5LinguistTools_FOUND)
 	)
 else()
 	message(WARNING "Qt5 LinguistTools not found, building without it!")
+endif()
+
+###############################################################################
+
+if (Boost_FOUND)
+	target_sources(AidKit
+		PRIVATE
+			src/pera_software/aidkit/boost/formatter.hpp
+			src/pera_software/aidkit/boost/formatter.cpp
+			src/pera_software/aidkit/boost/directory_guide.hpp
+			src/pera_software/aidkit/boost/directory_guide.cpp
+	)
+	target_sources(testAidKit
+		PRIVATE
+			tests/pera_software/aidkit/boost/formatter_test.cpp
+			tests/pera_software/aidkit/boost/directory_guide_test.cpp
+	)
+	target_compile_definitions(AidKit
+		PRIVATE
+			BOOST_ALL_DYN_LINK
+			BOOST_ASIO_NO_DEPRECATED
+			BOOST_FILESYSTEM_NO_DEPRECATED
+	)
+	target_link_libraries(AidKit
+		PUBLIC
+			Boost::dynamic_linking
+			Boost::disable_autolinking
+			Boost::boost
+			Boost::filesystem
+	)
+else()
+	message(WARNING "Boost not found, building without it!")
 endif()
 
 ###############################################################################

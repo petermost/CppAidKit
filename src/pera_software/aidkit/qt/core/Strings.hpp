@@ -20,9 +20,6 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QString>
 
-// For Google Test:
-AIDKIT_API void PrintTo(const QString &qstring, std::ostream *output);
-
 namespace pera_software::aidkit::qt {
 	AIDKIT_API QChar operator ""_qc(char c);
 	AIDKIT_API QString operator ""_qs(const char *str, std::size_t len);

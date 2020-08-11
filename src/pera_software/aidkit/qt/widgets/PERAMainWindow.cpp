@@ -61,7 +61,7 @@ PERAMainWindow::PERAMainWindow(QSharedPointer<PERASettings> settings, QWidget *p
 	// I couldn't quite figure out the difference between QApplication::setWindowIcon(), QWidget::setWindowIcon()
 	// and QWindow::setIcon(), so for now we set the icon here, were it is probably most expected:
 
-	setWindowIcon(PERAResources::icon());
+	setWindowIcon(PERAResources::instance().icon());
 
 	settings_->readWidgetGeometry(this);
 }

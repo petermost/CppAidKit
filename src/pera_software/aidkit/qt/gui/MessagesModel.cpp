@@ -34,7 +34,7 @@ static QStandardItem *disableFeatures(QStandardItem *item) {
 static QList<QStandardItem *> makeRowItems(const QIcon &icon, const QString &message) {
 	QList<QStandardItem *> rowItems;
 
-	rowItems.append(disableFeatures(new QStandardItem(Resources::clockIcon(), QTime::currentTime().toString())));
+	rowItems.append(disableFeatures(new QStandardItem(Resources::instance().clockIcon(), QTime::currentTime().toString())));
 	rowItems.append(disableFeatures(new QStandardItem(icon, message)));
 
 	return rowItems;
@@ -51,19 +51,19 @@ void MessagesModel::setMaximumItemCount( int maximumItemCount ) {
 }
 
 void MessagesModel::showInformation( const QString &message ) {
-	showItem( makeRowItems( Resources::informationIcon(), message ));
+	showItem( makeRowItems( Resources::instance().informationIcon(), message ));
 }
 
 void MessagesModel::showWarning( const QString &message ) {
-	showItem( makeRowItems( Resources::warningIcon(), message ));
+	showItem( makeRowItems( Resources::instance().warningIcon(), message ));
 }
 
 void MessagesModel::showError( const QString &message ) {
-	showItem( makeRowItems( Resources::errorIcon(), message ));
+	showItem( makeRowItems( Resources::instance().errorIcon(), message ));
 }
 
 void MessagesModel::showDebug(const QString &message) {
-	showItem( makeRowItems( Resources::debugIcon(), message ));
+	showItem( makeRowItems( Resources::instance().debugIcon(), message ));
 }
 
 void MessagesModel::showItem(const QList<QStandardItem *> items ) {

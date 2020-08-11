@@ -23,7 +23,7 @@ namespace pera_software::aidkit::qt {
 
 using namespace std;
 
-TEST(StringsTest, streamOperator)
+TEST(QStringsTest, streamOperator)
 {
 	ostringstream stream;
 	stream << "QString"_qs;

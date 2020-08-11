@@ -25,6 +25,9 @@ namespace pera_software::aidkit::qt {
 	class AIDKIT_API Translator : public QTranslator {
 		Q_OBJECT
 		public:
+			Translator();
+			~Translator();
+
 			bool load();
 	};
 

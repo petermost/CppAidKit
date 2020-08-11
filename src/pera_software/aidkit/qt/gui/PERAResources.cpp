@@ -17,11 +17,40 @@
 
 #include "PERAResources.hpp"
 #include <pera_software/aidkit/qt/core/Strings.hpp>
+#include <pera_software/aidkit/qt/gui/Resources.hpp>
 #include <QIcon>
+
+static inline void initResource()
+{
+	Q_INIT_RESOURCE(PERAResources);
+}
+
+static inline void cleanupResource()
+{
+	Q_CLEANUP_RESOURCE(PERAResources);
+}
+
+namespace pera_software::aidkit::qt {
 
 #define PREFIX ":/pera_software/resources/"
 
-namespace pera_software::aidkit::qt {
+PERAResources PERAResources::instance_;
+
+PERAResources &PERAResources::instance()
+{
+	return instance_;
+}
+
+PERAResources::PERAResources()
+{
+	initResource();
+}
+
+PERAResources::~PERAResources()
+{
+	cleanupResource();
+}
+
 
 QIcon PERAResources::icon()
 {

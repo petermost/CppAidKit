@@ -32,7 +32,7 @@ QuitAction::QuitAction(QObject *parent)
 	: QAction(parent)
 {
 	setText(tr("&Quit"));
-	setIcon(Resources::quitIcon());
+	setIcon(Resources::instance().quitIcon());
 	setShortcut(QKeySequence::Quit);
 	setMenuRole(QAction::MenuRole::QuitRole);
 }

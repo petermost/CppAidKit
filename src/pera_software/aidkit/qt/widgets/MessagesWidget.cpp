@@ -33,19 +33,19 @@ void MessagesWidget::setMaximumItemCount( int maximumItemCount ) {
 }
 
 void MessagesWidget::showInformation( const QString &message ) {
-	showItem( new QListWidgetItem( Resources::informationIcon(), message ));
+	showItem( new QListWidgetItem( Resources::instance().informationIcon(), message ));
 }
 
 void MessagesWidget::showWarning( const QString &message ) {
-	showItem( new QListWidgetItem( Resources::warningIcon(), message ));
+	showItem( new QListWidgetItem( Resources::instance().warningIcon(), message ));
 }
 
 void MessagesWidget::showError( const QString &message ) {
-	showItem( new QListWidgetItem( Resources::errorIcon(), message ));
+	showItem( new QListWidgetItem( Resources::instance().errorIcon(), message ));
 }
 
 void MessagesWidget::showDebug(const QString &message) {
-	showItem( new QListWidgetItem( Resources::debugIcon(), message ));
+	showItem( new QListWidgetItem( Resources::instance().debugIcon(), message ));
 }
 
 void MessagesWidget::showItem( QListWidgetItem *item ) {

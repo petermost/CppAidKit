@@ -26,16 +26,13 @@ AIDKIT_PRAGMA_GCC_WARNING_DISABLE(weak-vtables)
 
 namespace pera_software::aidkit::qt {
 
-using namespace std;
-using namespace pera_software::aidkit::qt;
-
-class PERAResourcesTest : public TestFixture {
+class PERAResourcesTest : public qt::TestFixture {
 };
 
 TEST_F(PERAResourcesTest, testLoadIcons)
 {
-	ASSERT_IMAGE(PERAResources::icon());
-	ASSERT_IMAGE(PERAResources::logo());
+	ASSERT_IMAGE(PERAResources::instance().icon());
+	ASSERT_IMAGE(PERAResources::instance().logo());
 }
 
 

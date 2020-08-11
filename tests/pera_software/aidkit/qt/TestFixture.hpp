@@ -17,12 +17,13 @@
 
 #pragma once
 
+#include <pera_software/aidkit/aidkit.hpp>
 #include <gtest/gtest.h>
 #include <QApplication>
 
 namespace pera_software::aidkit::qt {
 
-class TestFixture : public testing::Test {
+class AIDKIT_API TestFixture : public testing::Test {
 	public:
 		TestFixture();
 		~TestFixture() override;

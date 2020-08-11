@@ -34,7 +34,7 @@ PERAAboutDialog::PERAAboutDialog(QWidget *parent)
 {
 	QLabel *peraLogo = new QLabel;
 	peraLogo->setAlignment(Qt::AlignHCenter);
-	peraLogo->setPixmap(PERAResources::logo());
+	peraLogo->setPixmap(PERAResources::instance().logo());
 
 	auto peraUrl = new QLabel;
 	peraUrl->setOpenExternalLinks(true);

@@ -17,15 +17,6 @@
 
 #include "aidkit.hpp"
 
-#ifndef AidKit_EXPORTS
-    // If this symbol isn't defined, then the code in cmake_generated_aidkit_api.hpp will not work correctly!
-    #error AIDKIT_EXPORTS is not defined!
-#endif
-
-/*!
-\namespace pera_software::aidkit
-*/
-
 namespace pera_software::aidkit {
 
 }
