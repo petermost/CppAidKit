@@ -119,18 +119,18 @@ target_include_directories(AidKit
 ###############################################################################
 # Setup AidKitTest:
 
-add_library(AidKitTest
-	tests/pera_software/aidkit/test_main.hpp
-	tests/pera_software/aidkit/test_main.cpp
-)
-set_default_target_options(AidKitTest)
+if (TARGET GTest::GTest)
+	add_library(AidKitTest
+		tests/pera_software/aidkit/test_main.hpp
+		tests/pera_software/aidkit/test_main.cpp
+	)
+	set_default_target_options(AidKitTest)
 
-target_include_directories(AidKitTest
-	PUBLIC
-		tests/
-)
+	target_include_directories(AidKitTest
+		PUBLIC
+			tests/
+	)
 
-if (GTEST_FOUND)
 	target_link_libraries(AidKitTest
 		PUBLIC
 			AidKit
@@ -144,32 +144,34 @@ endif()
 ###############################################################################
 # Setup AidKit tests:
 
-add_executable(testAidKit
-	tests/pera_software/aidkit/compiler_test.cpp
-	tests/pera_software/aidkit/containers_test.cpp
-	tests/pera_software/aidkit/enum_class_test.cpp
-	tests/pera_software/aidkit/enum_flags_test.cpp
-	tests/pera_software/aidkit/strings_test.cpp
-	tests/pera_software/aidkit/vectors_test.cpp
-	tests/pera_software/aidkit/unicode_test.cpp
-	tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
+if (TARGET AidKitTest)
+	add_executable(testAidKit
+		tests/pera_software/aidkit/compiler_test.cpp
+		tests/pera_software/aidkit/containers_test.cpp
+		tests/pera_software/aidkit/enum_class_test.cpp
+		tests/pera_software/aidkit/enum_flags_test.cpp
+		tests/pera_software/aidkit/strings_test.cpp
+		tests/pera_software/aidkit/vectors_test.cpp
+		tests/pera_software/aidkit/unicode_test.cpp
+		tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
 
-	tests/pera_software/aidkit/io/file_test.cpp
-	tests/pera_software/aidkit/io/file_ptr_test.cpp
+		tests/pera_software/aidkit/io/file_test.cpp
+		tests/pera_software/aidkit/io/file_ptr_test.cpp
 
-	tests/pera_software/aidkit/stdlib/new_test.cpp
-	tests/pera_software/aidkit/stdlib/memory_test.cpp
-	tests/pera_software/aidkit/stdlib/stdlib_test.cpp
-)
+		tests/pera_software/aidkit/stdlib/new_test.cpp
+		tests/pera_software/aidkit/stdlib/memory_test.cpp
+		tests/pera_software/aidkit/stdlib/stdlib_test.cpp
+	)
 
-set_default_target_options(testAidKit)
+	set_default_target_options(testAidKit)
 
-target_link_libraries(testAidKit
-	PRIVATE
-		AidKitTest
-)
+	target_link_libraries(testAidKit
+		PRIVATE
+			AidKitTest
+	)
+endif()
 
-if (Qt5Core_FOUND)
+if (TARGET Qt5::Core)
 	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/qt/core/Chrono.hpp
@@ -188,34 +190,38 @@ if (Qt5Core_FOUND)
 			src/pera_software/aidkit/qt/core/Strings.cpp
 
 			src/pera_software/aidkit/qt/PERAForwardDeclarations.hpp
-			src/pera_software/aidkit/qt/core/PERASettings.cpp
-			src/pera_software/aidkit/qt/core/PERASettings.hpp
+			src/pera_software/aidkit/qt/core/PERASettingsStorage.cpp
+			src/pera_software/aidkit/qt/core/PERASettingsStorage.hpp
 
 			# Resources:
 
 			resources/pera_software/aidkit/AidKitResources.qrc
 			resources/pera_software/PERAResources.qrc
 	)
-	target_sources(AidKitTest
-		PRIVATE
-			tests/pera_software/aidkit/qt/core/StringPrinter.hpp
-			tests/pera_software/aidkit/qt/core/StringPrinter.cpp
-	)
-	target_sources(testAidKit
-		PRIVATE
-			tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
-			tests/pera_software/aidkit/qt/core/EndianTest.cpp
-			tests/pera_software/aidkit/qt/core/StringsTest.cpp
-	)
-	target_link_libraries(AidKit
-		PUBLIC
-			Qt5::Core
-	)
+	if (TARGET AidKitTest)
+		target_sources(AidKitTest
+			PRIVATE
+				tests/pera_software/aidkit/qt/core/StringPrinter.hpp
+				tests/pera_software/aidkit/qt/core/StringPrinter.cpp
+		)
+	endif()
+	if (TARGET testAidKit)
+		target_sources(testAidKit
+			PRIVATE
+				tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
+				tests/pera_software/aidkit/qt/core/EndianTest.cpp
+				tests/pera_software/aidkit/qt/core/StringsTest.cpp
+		)
+		target_link_libraries(AidKit
+			PUBLIC
+				Qt5::Core
+		)
+	endif()
 else()
 	message(WARNING "Qt5 Core not found, building without it!")
 endif()
 
-if (Qt5Gui_FOUND)
+if (TARGET Qt5::Gui)
 	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/qt/gui/ForwardDeclarations.hpp
@@ -227,18 +233,22 @@ if (Qt5Gui_FOUND)
 			src/pera_software/aidkit/qt/gui/PERAResources.cpp
 
 	)
-	target_sources(AidKitTest
-		PRIVATE
-			tests/pera_software/aidkit/qt/TestFixture.hpp
-			tests/pera_software/aidkit/qt/TestFixture.cpp
-	)
-	target_sources(testAidKit
-		PRIVATE
-			tests/pera_software/aidkit/qt/gui/ResourcesTest.hpp
-			tests/pera_software/aidkit/qt/gui/ResourcesTest.cpp
+	if (TARGET AidKitTest)
+		target_sources(AidKitTest
+			PRIVATE
+				tests/pera_software/aidkit/qt/TestFixture.hpp
+				tests/pera_software/aidkit/qt/TestFixture.cpp
+		)
+	endif()
+	if (TARGET testAidKit)
+		target_sources(testAidKit
+			PRIVATE
+				tests/pera_software/aidkit/qt/gui/ResourcesTest.hpp
+				tests/pera_software/aidkit/qt/gui/ResourcesTest.cpp
 
-			tests/pera_software/aidkit/qt/gui/PERAResourcesTest.cpp
-	)
+				tests/pera_software/aidkit/qt/gui/PERAResourcesTest.cpp
+		)
+	endif()
 	target_link_libraries(AidKit
 		PUBLIC
 			Qt5::Gui
@@ -247,7 +257,7 @@ else()
 	message(WARNING "Qt5 Gui not found, building without it!")
 endif()
 
-if (Qt5Widgets_FOUND)
+if (TARGET Qt5::Widgets)
 	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/qt/widgets/Application.hpp
@@ -299,17 +309,19 @@ if (Qt5LinguistTools_FOUND)
 			${CMAKE_CURRENT_BINARY_DIR}/AidKitTranslations.qrc
 	)
 
-	target_sources(testAidKit
-		PRIVATE
-			tests/pera_software/aidkit/qt/core/TranslatorTest.cpp
-	)
+	if (TARGET testAidKit)
+		target_sources(testAidKit
+			PRIVATE
+				tests/pera_software/aidkit/qt/core/TranslatorTest.cpp
+		)
+	endif()
 else()
 	message(WARNING "Qt5 LinguistTools not found, building without it!")
 endif()
 
 ###############################################################################
 
-if (Boost_FOUND)
+if (TARGET Boost::boost)
 	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/boost/formatter.hpp
@@ -317,11 +329,13 @@ if (Boost_FOUND)
 			src/pera_software/aidkit/boost/directory_guide.hpp
 			src/pera_software/aidkit/boost/directory_guide.cpp
 	)
-	target_sources(testAidKit
-		PRIVATE
-			tests/pera_software/aidkit/boost/formatter_test.cpp
-			tests/pera_software/aidkit/boost/directory_guide_test.cpp
-	)
+	if (TARGET testAidKit)
+		target_sources(testAidKit
+			PRIVATE
+				tests/pera_software/aidkit/boost/formatter_test.cpp
+				tests/pera_software/aidkit/boost/directory_guide_test.cpp
+		)
+	endif()
 	target_compile_definitions(AidKit
 		PRIVATE
 			BOOST_ALL_DYN_LINK

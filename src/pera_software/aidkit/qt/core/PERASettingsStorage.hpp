@@ -18,22 +18,29 @@
 #pragma once
 
 #include <pera_software/aidkit/aidkit.hpp>
-
 #include <QSettings>
 
 class QWidget;
 
 namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API PERASettings {
+	class AIDKIT_API PERASettingsStorage {
 		public:
-			PERASettings(const QString &applicationName, QObject *parent = nullptr);
+			PERASettingsStorage(const QString &applicationName, QObject *parent = nullptr);
 
-			void writeWidgetGeometry(const QWidget *widget);
-			void readWidgetGeometry(QWidget *widget);
+			void writeGeometry(const QWidget *widget);
+			void readGeometry(QWidget *widget);
+
+			void writeSize(const QWidget *widget);
+			void readSize(QWidget *widget);
+
+			void writePosition(const QWidget *widget);
+			void readPosition(QWidget *widget);
+
+			QString fileName() const;
 
 		protected:
-			QString makeGroupName(const QObject *object);
+			static QString makeGroupName(const QObject *object);
 
 			QSettings iniFile_;
 	};

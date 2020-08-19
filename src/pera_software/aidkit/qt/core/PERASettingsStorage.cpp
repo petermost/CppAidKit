@@ -15,10 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "PERASettings.hpp"
-
+#include "PERASettingsStorage.hpp"
 #include <pera_software/PERA.hpp>
-
 #include <QWidget>
 
 namespace pera_software::aidkit::qt {
@@ -32,28 +30,57 @@ static const QString SIZE_KEY(QStringLiteral("size"));
 static const QString POSITION_KEY(QStringLiteral("position"));
 
 
-PERASettings::PERASettings(const QString &applicationName, QObject *parent)
-	: iniFile_(QSettings::Format::IniFormat, QSettings::Scope::UserScope, QString::fromUtf8(PERA::NAME), applicationName, parent)
+PERASettingsStorage::PERASettingsStorage(const QString &applicationName, QObject *parent)
+	:iniFile_(QSettings::Format::IniFormat, QSettings::Scope::UserScope, QString::fromUtf8(PERA::NAME), applicationName, parent)
 {
 }
 
-void PERASettings::writeWidgetGeometry(const QWidget *widget)
+void PERASettingsStorage::writeGeometry(const QWidget *widget)
+{
+	writeSize(widget);
+	writePosition(widget);
+}
+
+void PERASettingsStorage::readGeometry(QWidget *widget)
+{
+	readSize(widget);
+	readPosition(widget);
+}
+
+void PERASettingsStorage::writeSize(const QWidget *widget)
 {
 	iniFile_.beginGroup(makeGroupName(widget));
 		iniFile_.setValue(SIZE_KEY, widget->size());
+	iniFile_.endGroup();
+}
+
+void PERASettingsStorage::readSize(QWidget *widget)
+{
+	iniFile_.beginGroup(makeGroupName(widget));
+		widget->resize(iniFile_.value(SIZE_KEY, widget->size()).toSize());
+	iniFile_.endGroup();
+}
+
+void PERASettingsStorage::writePosition(const QWidget *widget)
+{
+	iniFile_.beginGroup(makeGroupName(widget));
 		iniFile_.setValue(POSITION_KEY, widget->pos());
 	iniFile_.endGroup();
 }
 
-void PERASettings::readWidgetGeometry(QWidget *widget)
+void PERASettingsStorage::readPosition(QWidget *widget)
 {
 	iniFile_.beginGroup(makeGroupName(widget));
-		widget->resize(iniFile_.value(SIZE_KEY, widget->size()).toSize());
 		widget->move(iniFile_.value(POSITION_KEY, widget->pos()).toPoint());
 	iniFile_.endGroup();
 }
 
-QString PERASettings::makeGroupName(const QObject *object)
+QString PERASettingsStorage::fileName() const
+{
+	return iniFile_.fileName();
+}
+
+QString PERASettingsStorage::makeGroupName(const QObject *object)
 {
 	return QString::fromUtf8(object->metaObject()->className()).replace(COLONS, DOT);
 }
