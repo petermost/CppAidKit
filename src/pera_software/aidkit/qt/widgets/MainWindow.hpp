@@ -25,18 +25,19 @@ namespace pera_software::aidkit::qt {
 	class AIDKIT_API MainWindow : public QMainWindow {
 		Q_OBJECT
 		public:
-			explicit MainWindow( QWidget *parent = nullptr );
+			explicit MainWindow(QWidget *parent = nullptr);
 
 		Q_SIGNALS:
-			void visibleChanged( bool isVisible );
+			void shown();
+			void hidden();
 			void closed();
 
 		public Q_SLOTS:
 
 		protected:
-			void showEvent( QShowEvent *showEvent ) override;
-			void hideEvent( QHideEvent *hideEvent ) override;
-			void closeEvent( QCloseEvent *closeEvent ) override;
+			void showEvent(QShowEvent *showEvent) override;
+			void hideEvent(QHideEvent *hideEvent) override;
+			void closeEvent(QCloseEvent *closeEvent) override;
 	};
 
 }

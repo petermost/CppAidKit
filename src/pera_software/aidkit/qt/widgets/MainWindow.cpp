@@ -21,34 +21,34 @@ namespace pera_software::aidkit::qt {
 
 //==================================================================================================
 
-MainWindow::MainWindow( QWidget *parent )
-	: QMainWindow( parent ) {
+MainWindow::MainWindow(QWidget *parent)
+	: QMainWindow(parent)
+{
 }
 
 //==================================================================================================
 
-void MainWindow::showEvent( QShowEvent *showEvent ) {
-	QMainWindow::showEvent( showEvent );
+void MainWindow::showEvent(QShowEvent *showEvent)
+{
+	QMainWindow::showEvent(showEvent);
 
-	// TODO: Change to 'shown' signal?
-
-	Q_EMIT visibleChanged( true );
+	Q_EMIT shown();
 }
 
 //==================================================================================================
 
-void MainWindow::hideEvent( QHideEvent *hideEvent ) {
-	QMainWindow::hideEvent( hideEvent );
+void MainWindow::hideEvent(QHideEvent *hideEvent)
+{
+	QMainWindow::hideEvent(hideEvent);
 
-	// TODO: Change to 'hidden' signal?
-
-	Q_EMIT visibleChanged( false );
+	Q_EMIT hidden();
 }
 
 //==================================================================================================
 
-void MainWindow::closeEvent( QCloseEvent *closeEvent ) {
-	QMainWindow::closeEvent( closeEvent );
+void MainWindow::closeEvent(QCloseEvent *closeEvent)
+{
+	QMainWindow::closeEvent(closeEvent);
 
 	Q_EMIT closed();
 }

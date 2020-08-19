@@ -50,8 +50,8 @@ static QMenu *createMenuLazily(QMenu **menu, const QString &title, QWidget *pare
 
 //==================================================================================================
 
-PERAMainWindow::PERAMainWindow(QSharedPointer<PERASettings> settings, QWidget *parent)
-	: MainWindow(parent), settings_(settings)
+PERAMainWindow::PERAMainWindow(QSharedPointer<PERASettingsStorage> settingsStorage, QWidget *parent)
+	: MainWindow(parent), settingsStorage_(settingsStorage)
 {
 	setWindowTitle(tr("%1 - (c) by %2 - %3")
 	   .arg(QApplication::applicationName())
@@ -63,12 +63,12 @@ PERAMainWindow::PERAMainWindow(QSharedPointer<PERASettings> settings, QWidget *p
 
 	setWindowIcon(PERAResources::instance().icon());
 
-	settings_->readWidgetGeometry(this);
+	settingsStorage_->readGeometry(this);
 }
 
 PERAMainWindow::~PERAMainWindow()
 {
-	settings_->writeWidgetGeometry(this);
+	settingsStorage_->writeGeometry(this);
 }
 
 //==================================================================================================

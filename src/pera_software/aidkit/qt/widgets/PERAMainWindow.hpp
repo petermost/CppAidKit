@@ -19,7 +19,7 @@
 
 #include <pera_software/aidkit/aidkit.hpp>
 #include <pera_software/aidkit/qt/widgets/MainWindow.hpp>
-#include <pera_software/aidkit/qt/core/PERASettings.hpp>
+#include <pera_software/aidkit/qt/core/PERASettingsStorage.hpp>
 
 class QSettings;
 
@@ -28,7 +28,7 @@ namespace pera_software::aidkit::qt {
 	class AIDKIT_API PERAMainWindow : public MainWindow {
 		Q_OBJECT
 		public:
-			PERAMainWindow(QSharedPointer<PERASettings> settings, QWidget *parent = nullptr);
+			PERAMainWindow(QSharedPointer<PERASettingsStorage> settingsStorage, QWidget *parent = nullptr);
 			~PERAMainWindow();
 
 			QMenu *addFileMenu();
@@ -53,7 +53,7 @@ namespace pera_software::aidkit::qt {
 			QAction *aboutPERAAction_ = nullptr;
 			QAction *aboutQtAction_ = nullptr;
 
-			QSharedPointer<PERASettings> settings_;
+			QSharedPointer<PERASettingsStorage> settingsStorage_;
 	};
 
 }
