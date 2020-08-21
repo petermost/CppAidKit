@@ -138,7 +138,7 @@ if (TARGET GTest::GTest)
 			# GTest::Main
 	)
 else()
-	message(WARNING "GoogleTest not found, building without it!")
+	message(AUTHOR_WARNING "GoogleTest not found, building without it!")
 endif()
 
 ###############################################################################
@@ -218,7 +218,7 @@ if (TARGET Qt5::Core)
 		)
 	endif()
 else()
-	message(WARNING "Qt5 Core not found, building without it!")
+	message(AUTHOR_WARNING "Qt5 Core not found, building without it!")
 endif()
 
 if (TARGET Qt5::Gui)
@@ -254,7 +254,7 @@ if (TARGET Qt5::Gui)
 			Qt5::Gui
 	)
 else()
-	message(WARNING "Qt5 Gui not found, building without it!")
+	message(AUTHOR_WARNING "Qt5 Gui not found, building without it!")
 endif()
 
 if (TARGET Qt5::Widgets)
@@ -288,7 +288,7 @@ if (TARGET Qt5::Widgets)
 			Qt5::Widgets
 	)
 else()
-	message(WARNING "Qt5 Widgets not found, building without it!")
+	message(AUTHOR_WARNING "Qt5 Widgets not found, building without it!")
 endif()
 
 if (Qt5LinguistTools_FOUND)
@@ -316,12 +316,12 @@ if (Qt5LinguistTools_FOUND)
 		)
 	endif()
 else()
-	message(WARNING "Qt5 LinguistTools not found, building without it!")
+	message(AUTHOR_WARNING "Qt5 LinguistTools not found, building without it!")
 endif()
 
 ###############################################################################
 
-if (TARGET Boost::boost)
+if (TARGET Boost::filesystem)
 	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/boost/formatter.hpp
@@ -346,11 +346,11 @@ if (TARGET Boost::boost)
 		PUBLIC
 			Boost::dynamic_linking
 			Boost::disable_autolinking
-			Boost::boost
+			Boost::headers
 			Boost::filesystem
 	)
 else()
-	message(WARNING "Boost not found, building without it!")
+	message(AUTHOR_WARNING "Boost filesysstem not found, building without it!")
 endif()
 
 ###############################################################################
