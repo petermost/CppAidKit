@@ -190,8 +190,8 @@ if (TARGET Qt5::Core)
 			src/pera_software/aidkit/qt/core/Strings.cpp
 
 			src/pera_software/aidkit/qt/PERAForwardDeclarations.hpp
-			src/pera_software/aidkit/qt/core/PERASettingsStorage.cpp
-			src/pera_software/aidkit/qt/core/PERASettingsStorage.hpp
+			src/pera_software/aidkit/qt/core/PERASettings.cpp
+			src/pera_software/aidkit/qt/core/PERASettings.hpp
 
 			# Resources:
 

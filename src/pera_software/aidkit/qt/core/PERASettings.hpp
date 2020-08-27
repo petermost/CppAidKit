@@ -24,9 +24,9 @@ class QWidget;
 
 namespace pera_software::aidkit::qt {
 
-	class AIDKIT_API PERASettingsStorage {
+	class AIDKIT_API PERASettings {
 		public:
-			PERASettingsStorage(const QString &applicationName, QObject *parent = nullptr);
+			PERASettings(const QString &applicationName, QObject *parent = nullptr);
 
 			void writeGeometry(const QWidget *widget);
 			void readGeometry(QWidget *widget);
