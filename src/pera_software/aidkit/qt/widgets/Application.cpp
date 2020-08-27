@@ -26,7 +26,7 @@ Application::Application(const QString &applicationName, int *argc, char *argv[]
 	setApplicationName(applicationName); // This sets also the system tray entry label!
 
 	if (!translator_.load())
-		qWarning() << "Loading AidKit translations failed!";
+		qWarning() << "Application::Application: Loading AidKit translations failed!";
 
 	installTranslator(&translator_);
 }
