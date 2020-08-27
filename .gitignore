@@ -1,4 +1,4 @@
-build/*
+# build/*
 
-#QtCtreator CMake
-CMakeLists.txt.user*
+# QtCtreator CMake
+# CMakeLists.txt.user*
