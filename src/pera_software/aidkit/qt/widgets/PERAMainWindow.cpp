@@ -50,7 +50,7 @@ static QMenu *createMenuLazily(QMenu **menu, const QString &title, QWidget *pare
 
 //==================================================================================================
 
-PERAMainWindow::PERAMainWindow(QSharedPointer<PERASettingsStorage> settingsStorage, QWidget *parent)
+PERAMainWindow::PERAMainWindow(QSharedPointer<PERASettings> settingsStorage, QWidget *parent)
 	: MainWindow(parent), settingsStorage_(settingsStorage)
 {
 	setWindowTitle(tr("%1 - (c) by %2 - %3")

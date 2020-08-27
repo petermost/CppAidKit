@@ -32,6 +32,8 @@ namespace pera_software::aidkit::qt {
 PERAAboutDialog::PERAAboutDialog(QWidget *parent)
 	: QDialog(parent)
 {
+	setWindowIcon(PERAResources::instance().icon());
+
 	QLabel *peraLogo = new QLabel;
 	peraLogo->setAlignment(Qt::AlignHCenter);
 	peraLogo->setPixmap(PERAResources::instance().logo());

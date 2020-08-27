@@ -22,7 +22,12 @@ endif()
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build Type" FORCE)
 	# Present a combobox in the cmake-gui (https://blog.kitware.com/cmake-and-the-default-build-type/):
-	set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+	set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
+endif()
+
+# Set default library build type:
+if (NOT BUILD_SHARED_LIBS)
+	set(BUILD_SHARED_LIBS ON CACHE BOOL "Build Shared Libraries" FORCE)
 endif()
 
 set(CMAKE_WARN_DEPRECATED ON)
