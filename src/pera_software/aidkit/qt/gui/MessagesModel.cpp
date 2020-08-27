@@ -66,9 +66,7 @@ void MessagesModel::showDebug(const QString &message) {
 	showItem( makeRowItems( Resources::instance().debugIcon(), message ));
 }
 
-void MessagesModel::showItem(const QList<QStandardItem *> items ) {
-	QList<QStandardItem *> rowItems;
-
+void MessagesModel::showItem(const QList<QStandardItem *> &items ) {
 	appendRow( items );
 
 	if ( maximumItemCount_.has_value() ) {
