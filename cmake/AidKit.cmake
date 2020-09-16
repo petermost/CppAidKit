@@ -1,3 +1,13 @@
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	set(AIDKIT_CMAKE_GCC TRUE)
+endif()
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	set(AIDKIT_CMAKE_CLANG TRUE)
+endif()
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	set(AIDKIT_CMAKE_MSVC TRUE)
+endif()
+
 include(${CMAKE_CURRENT_LIST_DIR}/report.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cpp_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/library_options.cmake)
@@ -12,6 +22,9 @@ include(${CMAKE_CURRENT_LIST_DIR}/libcxx_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/googletest.cmake)
 
 report("CMAKE_VERSION: '${CMAKE_VERSION}'")
+
+set(CMAKE_WARN_DEPRECATED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if (CMAKE_VERBOSE_MAKEFILE)
 	# Make Ninja build verbose as well (https://github.com/ninja-build/ninja/issues/900):
@@ -30,9 +43,6 @@ if (NOT BUILD_SHARED_LIBS)
 	set(BUILD_SHARED_LIBS ON CACHE BOOL "Build Shared Libraries" FORCE)
 endif()
 
-set(CMAKE_WARN_DEPRECATED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 function(set_default_target_options targetName)
 	set_default_cpp_target_options(${targetName})
 	set_default_rpath_target_options(${targetName})
@@ -41,17 +51,17 @@ function(set_default_target_options targetName)
 
 	# See https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_ID.html for a list of # compiler ids.
 	# report("CMAKE_CXX_COMPILER_ID: '${CMAKE_CXX_COMPILER_ID}', CMAKE_CXX_COMPILER_VERSION: '${CMAKE_CXX_COMPILER_VERSION}'")
-	if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-		if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	if (AIDKIT_CMAKE_GCC OR AIDKIT_CMAKE_CLANG)
+		if (AIDKIT_CMAKE_GCC)
 			set_default_gcc_target_options(${targetName})
-		elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+		elseif(AIDKIT_CMAKE_CLANG)
 			set_default_clang_target_options(${targetName})
 		endif()
 		# GCC and Clang link to the libstdc++, so we set the options for both:
 		set_default_libstdcxx_target_options(${targetName})
 		# But in case libc++ (clang) is being used, set those options:
 		set_default_libcxx_target_options(${targetName})
-	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	elseif(AIDKIT_CMAKE_MSVC)
 		set_default_msvc_target_options(${targetName})
 	endif()
 

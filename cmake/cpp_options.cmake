@@ -4,6 +4,7 @@ function(set_default_cpp_target_options targetName)
 	target_compile_features(${targetName}
 		PRIVATE
 			cxx_std_20
+			# $<IF:$<BOOL:AIDKIT_CMAKE_MSVC>,cxx_std_17,cxx_std_20>
 	)
 	set_target_properties(${targetName}
 		PROPERTIES
