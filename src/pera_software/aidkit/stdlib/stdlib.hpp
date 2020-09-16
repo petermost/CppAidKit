@@ -20,6 +20,7 @@
 #include <cstdlib>
 #include <iterator>
 #include <limits>
+#include <stdexcept>
 
 namespace pera_software::aidkit::stdlib {
 

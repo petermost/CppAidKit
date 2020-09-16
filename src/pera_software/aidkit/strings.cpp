@@ -16,8 +16,11 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "strings.hpp"
+#include "compiler.hpp"
 #include <locale>
 #include <algorithm>
+
+AIDKIT_MSVC_DISABLE_WARNING(4459) // declaration of '...' hides global declaration
 
 namespace pera_software::aidkit {
 
