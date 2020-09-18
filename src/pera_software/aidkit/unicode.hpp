@@ -20,6 +20,7 @@
 #include <pera_software/aidkit/aidkit.hpp>
 #include <string>
 #include <string_view>
+#include <ostream>
 
 namespace pera_software::aidkit {
 

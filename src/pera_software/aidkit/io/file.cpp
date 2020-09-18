@@ -36,7 +36,7 @@ bool remove_file(const path &fileName)
 // set the <errorCode>! So keep the AidKit versions to be able to detect this error.
 bool remove_file(const path &fileName, error_code *errorCode) noexcept
 {
-	auto result = ::remove(fileName.c_str());
+	auto result = ::remove(fileName.string().c_str());
 	bool success = (result == 0);
 
 	*errorCode = get_file_error_code(success);

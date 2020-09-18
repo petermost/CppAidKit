@@ -40,14 +40,14 @@ wstring from_utf8(string_view s)
 {
 	wstring_utf8_converter converter;
 
-	return converter.from_bytes(s.begin(), s.end());
+	return converter.from_bytes(&*s.begin(), &*s.end());
 }
 
 string to_utf8(wstring_view s)
 {
 	wstring_utf8_converter converter;
 
-	return converter.to_bytes(s.begin(), s.end());
+	return converter.to_bytes(&*s.begin(), &*s.end());
 }
 
 //==================================================================================================

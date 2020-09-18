@@ -19,6 +19,7 @@
 
 #include <pera_software/aidkit/aidkit.hpp>
 #include <QString>
+#include <ostream>
 
 namespace pera_software::aidkit::qt {
 	AIDKIT_API QChar operator ""_qc(char c);

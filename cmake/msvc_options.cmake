@@ -1,4 +1,4 @@
-function(set_default_msv_target_options targetName)
+function(set_default_msvc_target_options targetName)
 	report("Setting default msvc options for target '${targetName}")
 
 	# CMake appends /W3 by default, and having /W3 followed by /W4 will result in
@@ -12,11 +12,15 @@ function(set_default_msv_target_options targetName)
 	target_compile_definitions(${targetName}
 		PRIVATE
 			_CRT_SECURE_NO_WARNINGS
+			_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 	)
 
 	target_compile_options(${targetName}
 		PRIVATE
 			/W4 /permissive-
+
+			/wd4251 # '...' needs to have dll-interface to be used by clients of class '...''
+			/wd4275 # non dll-interface-class '...' used as base for dll-interface class '...'
 	)
 endfunction()
 
