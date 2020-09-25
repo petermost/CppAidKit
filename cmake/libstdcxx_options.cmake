@@ -8,7 +8,7 @@ function(set_default_libstdcxx_target_options targetName)
 
 	target_compile_definitions(${targetName}
 		PUBLIC
-			$<$<CONFIG:Debug>:_GLIBCXX_DEBUG$<SEMICOLON>_GLIBCXX_DEBUG_PEDANTIC>
+			$<$<CONFIG:Debug>:_GLIBCXX_ASSERTIONS _GLIBCXX_DEBUG _GLIBCXX_DEBUG_PEDANTIC _GLIBCXX_SANITIZE_VECTOR>
 	)
 	target_compile_options(${targetName}
 		PUBLIC

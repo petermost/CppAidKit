@@ -21,43 +21,43 @@
 
 #include <ciso646>
 
-// Determine what kind (DEBUG|RELEASE) build it is:
+// Determine what build type it is:
 
-#if defined(_DEBUG) || defined(DEBUG) || !defined(NDEBUG)
-	#define AIDKIT_DEBUG
-#else
+#if defined(NDEBUG)
 	#define AIDKIT_RELEASE
+#else
+	#define AIDKIT_DEBUG
+#endif
+
+// Determine what library type it is:
+
+#if !defined(AIDKIT_SHARED_LIBRARY) && !defined(AIDKIT_STATIC_LIBRARY)
+	#error Cannot determine library build type!
 #endif
 
 // Determine the operating system:
 
 #if defined(__linux__)
 	#define AIDKIT_LINUX
-#endif
-#if defined(_WIN32) || defined(WIN32)
+#elif defined(_WIN32) || defined(_WIN64)
 	#define AIDKIT_WINDOWS
-#endif
-#if !defined(AIDKIT_LINUX) && !defined(AIDKIT_WINDOWS)
+#else
 	#error Cannot determine operating system!
 #endif
 
-// Determine the compiler:
+// Determine the compiler (take into account that clang is masquerading as other compilers):
 
-#if defined(__GNUC__)
+#if defined(__clang__)
+	#define AIDKIT_CLANG
+#elif defined(__GNUC__)
 	#define AIDKIT_GCC
 	#if defined(__MINGW32__) || defined(__MINGW64__)
 		// MinGW is a GCC variant so we define it additional to the AIDKIT_GCC symbol
 		#define AIDKIT_MINGW
 	#endif
-#endif
-#if defined(__clang__)
-	// Clang is suppose to be compatible with GCC so we don't try to distinguish between those two!
-	#define AIDKIT_CLANG
-#endif
-#if defined(_MSC_VER)
+#elif defined(_MSC_VER)
 	#define AIDKIT_MSVC
-#endif
-#if !defined(AIDKIT_GCC) && !defined(AIDKIT_CLANG) && !defined(AIDKIT_MSVC)
+#else
 	#error Cannot determine compiler!
 #endif
 
@@ -65,13 +65,10 @@
 
 #if defined(__GLIBCXX__)
 	#define AIDKIT_GCC_LIB
-#endif
-#if defined(_LIBCPP_VERSION)
+#elif defined(_LIBCPP_VERSION)
 	#define AIDKIT_CLANG_LIB
-#endif
-#if defined(_CPPLIB_VER)
+#elif defined(_CPPLIB_VER)
 	#define AIDKIT_MSVC_LIB
-#endif
-#if !defined(AIDKIT_GCC_LIB) && !defined(AIDKIT_CLANG_LIB) && !defined(AIDKIT_MSVC_LIB)
+#else
 	#error Cannot determine compiler library!
 #endif

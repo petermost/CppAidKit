@@ -23,7 +23,12 @@ AIDKIT_GCC_PUSH_WARNINGS()
 AIDKIT_GCC_DISABLE_WARNING(unused-parameter)
 AIDKIT_GCC_DISABLE_WARNING(unused-function)
 AIDKIT_GCC_DISABLE_WARNING(unused-variable)
-AIDKIT_GCC_DISABLE_WARNING(shadow-uncaptured-local)
+AIDKIT_GCC_DISABLE_WARNING(unused-but-set-variable)
+
+AIDKIT_CLANG_DISABLE_WARNING(unused-parameter)
+AIDKIT_CLANG_DISABLE_WARNING(unused-function)
+AIDKIT_CLANG_DISABLE_WARNING(unused-variable)
+AIDKIT_CLANG_DISABLE_WARNING(shadow-uncaptured-local)
 
 static void unusedFunction(int unusedParameter)
 {

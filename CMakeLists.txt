@@ -18,7 +18,6 @@
 cmake_minimum_required(VERSION 3.13)
 project(AidKit VERSION 1.1.0.0)
 
-include(GenerateExportHeader)
 include(cmake/AidKit.cmake)
 
 find_package(Boost QUIET
@@ -92,27 +91,18 @@ add_library(AidKit
 )
 set_default_target_options(AidKit)
 
+target_compile_definitions(AidKit
+	PUBLIC
+		$<IF:$<BOOL:${BUILD_SHARED_LIBS}>,AIDKIT_SHARED_LIBRARY,AIDKIT_STATIC_LIBRARY>
+)
 set_target_properties(AidKit
 	PROPERTIES
 		SOVERSION ${AidKit_VERSION}
 )
 
-# Generate the 'export header' and add the generated file to the library as well:
-
-generate_export_header(AidKit
-	EXPORT_FILE_NAME aidkit_api.hpp
-	INCLUDE_GUARD_NAME AIDKIT_API_HPP
-	EXPORT_MACRO_NAME AIDKIT_API
-)
-target_sources(AidKit
-	PRIVATE
-		${CMAKE_CURRENT_BINARY_DIR}/aidkit_api.hpp
-)
-
 target_include_directories(AidKit
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src/>
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDE_DIR}>
 )
 

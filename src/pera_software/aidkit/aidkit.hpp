@@ -17,27 +17,40 @@
 
 #pragma once
 
-// Include the cmake generated file. See generate_export_header() in the master CMakeLists.txt.
-#include "aidkit_api.hpp"
+#include "platform.hpp"
 
-#ifndef AIDKIT_API
-    // Fail early if this symbol isn't defined.
-    #error AIDKIT_API is not defined!
+#if defined(AIDKIT_LINUX)
+	#define AIDKIT_EXPORT __attribute__((visibility("default")))
+	#define AIDKIT_IMPORT __attribute__((visibility("default")))
+
+	#define AIDKIT_API_DEPRECATED __attribute__ ((__deprecated__))
+#elif defined(AIDKIT_WINDOWS)
+	#define AIDKIT_EXPORT __declspec(dllexport)
+	#define AIDKIT_IMPORT __declspec(dllimport)
+
+	#define AIDKIT_API_DEPRECATED __declspec(deprecated)
 #endif
 
-//#if defined( AIDKIT_GCC )
-//	#define AIDKIT_DECLARE_EXPORT __attribute__(( visibility( "default" )))
-//	#define AIDKIT_DECLARE_IMPORT __attribute__(( visibility( "default" )))
-//#elif defined( AIDKIT_MSVC )
-//	#define AIDKIT_DECLARE_EXPORT __declspec( dllexport )
-//	#define AIDKIT_DECLARE_IMPORT __declspec( dllimport )
-//#endif
+#if defined(AIDKIT_SHARED_LIBRARY)
+	// Will be defined by cmake for shared libraries
+	// (https://cmake.org/cmake/help/latest/prop_tgt/DEFINE_SYMBOL.html)
+	#if defined(AidKit_EXPORTS)
+		#define AIDKIT_API AIDKIT_EXPORT
+	#else
+		#define AIDKIT_API AIDKIT_IMPORT
+	#endif
+#elif defined(AIDKIT_STATIC_LIBRARY)
+	#define AIDKIT_API
+#endif
 
-//#if defined( AidKit_EXPORTS ) // Will be defined by cmake
-//	#define AIDKIT_API AIDKIT_DECLARE_EXPORT
-//#else
-//	#define AIDKIT_API AIDKIT_DECLARE_IMPORT
-//#endif
+// Could have ben generated with cmake i.e.:
+// include(GenerateExportHeader)
+// generate_export_header(AidKit
+//     EXPORT_FILE_NAME aidkit_api.hpp
+//     INCLUDE_GUARD_NAME AIDKIT_API_HPP
+//     EXPORT_MACRO_NAME AIDKIT_API
+// )
+// But I didn't want to rely too much on cmake ;-)
 
 namespace pera_software::aidkit {
 

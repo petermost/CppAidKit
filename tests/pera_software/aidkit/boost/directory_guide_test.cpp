@@ -24,7 +24,7 @@ namespace pera_software::aidkit::boost {
 using namespace std;
 using namespace ::boost::filesystem;
 
-AIDKIT_GCC_DISABLE_WARNING(weak-vtables)
+AIDKIT_CLANG_DISABLE_WARNING(weak-vtables)
 
 struct DirectoryVisitor : public directory_visitor {
 	vector<path> files;

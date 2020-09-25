@@ -1,13 +1,4 @@
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	set(AIDKIT_CMAKE_GCC TRUE)
-endif()
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	set(AIDKIT_CMAKE_CLANG TRUE)
-endif()
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-	set(AIDKIT_CMAKE_MSVC TRUE)
-endif()
-
+include(${CMAKE_CURRENT_LIST_DIR}/platform.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/report.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cpp_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/library_options.cmake)
@@ -20,8 +11,6 @@ include(${CMAKE_CURRENT_LIST_DIR}/libstdcxx_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/libcxx_options.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/googletest.cmake)
 
-report("CMAKE_VERSION: '${CMAKE_VERSION}'")
-
 set(CMAKE_WARN_DEPRECATED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -32,24 +21,26 @@ endif()
 
 # Set default build type:
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+	report("Setting CMAKE_BUILD_TYPE to 'Debug'")
 	set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build Type" FORCE)
 	# Present a combobox in the cmake-gui (https://blog.kitware.com/cmake-and-the-default-build-type/):
 	set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
 endif()
 
 # Set default library build type:
-if (NOT BUILD_SHARED_LIBS)
+if (NOT DEFINED BUILD_SHARED_LIBS)
+	report("Setting BUILD_SHARED_LIBS to 'ON'")
 	set(BUILD_SHARED_LIBS ON CACHE BOOL "Build Shared Libraries" FORCE)
 endif()
 
 function(set_default_target_options targetName)
 	set_default_cpp_target_options(${targetName})
-	set_default_rpath_target_options(${targetName})
 	set_default_output_target_options(${targetName})
 	set_default_library_target_options(${targetName})
 
-	# See https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_ID.html for a list of # compiler ids.
-	# report("CMAKE_CXX_COMPILER_ID: '${CMAKE_CXX_COMPILER_ID}', CMAKE_CXX_COMPILER_VERSION: '${CMAKE_CXX_COMPILER_VERSION}'")
+	if (AIDKIT_CMAKE_LINUX)
+		set_default_rpath_target_options(${targetName})
+	endif()
 	if (AIDKIT_CMAKE_GCC OR AIDKIT_CMAKE_CLANG)
 		if (AIDKIT_CMAKE_GCC)
 			set_default_gcc_target_options(${targetName})

@@ -22,7 +22,7 @@
 #include <pera_software/aidkit/qt/gui/ResourcesTest.hpp>
 #include <pera_software/aidkit/qt/gui/PERAResources.hpp>
 
-AIDKIT_GCC_DISABLE_WARNING(weak-vtables)
+AIDKIT_CLANG_DISABLE_WARNING(weak-vtables)
 
 namespace pera_software::aidkit::qt {
 
