@@ -16,7 +16,7 @@
 # along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.13)
-project(AidKit VERSION 1.1.0.0)
+project(AidKit VERSION 1.2.0.0)
 
 include(cmake/AidKit.cmake)
 
@@ -29,13 +29,14 @@ find_package(Qt5 QUIET
 		Core
 		Gui
 		Widgets
+		Test
 		LinguistTools
 )
 
 add_googletest_subdirectory()
 
 ###############################################################################
-# Setup AidKit:
+# Setup 'AidKit':
 # If no type is specified (SHARED or STATIC) then the user can define the type with the
 # BUILD_SHARED_LIBS variable!
 
@@ -107,7 +108,7 @@ target_include_directories(AidKit
 )
 
 ###############################################################################
-# Setup AidKitTest:
+# Setup 'AidKitTest' a helper library to support tests:
 
 if (TARGET GTest::GTest)
 	add_library(AidKitTest
@@ -132,7 +133,7 @@ else()
 endif()
 
 ###############################################################################
-# Setup AidKit tests:
+# Setup 'testAidKit', the tests for the AidKit library:
 
 if (TARGET AidKitTest)
 	add_executable(testAidKit
@@ -161,7 +162,7 @@ if (TARGET AidKitTest)
 	)
 endif()
 
-if (TARGET Qt5::Core)
+if (TARGET Qt5::Widgets)
 	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/qt/core/Chrono.hpp
@@ -183,37 +184,6 @@ if (TARGET Qt5::Core)
 			src/pera_software/aidkit/qt/core/PERASettings.cpp
 			src/pera_software/aidkit/qt/core/PERASettings.hpp
 
-			# Resources:
-
-			resources/pera_software/aidkit/AidKitResources.qrc
-			resources/pera_software/PERAResources.qrc
-	)
-	if (TARGET AidKitTest)
-		target_sources(AidKitTest
-			PRIVATE
-				tests/pera_software/aidkit/qt/core/StringPrinter.hpp
-				tests/pera_software/aidkit/qt/core/StringPrinter.cpp
-		)
-	endif()
-	if (TARGET testAidKit)
-		target_sources(testAidKit
-			PRIVATE
-				tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
-				tests/pera_software/aidkit/qt/core/EndianTest.cpp
-				tests/pera_software/aidkit/qt/core/StringsTest.cpp
-		)
-		target_link_libraries(AidKit
-			PUBLIC
-				Qt5::Core
-		)
-	endif()
-else()
-	message(AUTHOR_WARNING "Qt5 Core not found, building without it!")
-endif()
-
-if (TARGET Qt5::Gui)
-	target_sources(AidKit
-		PRIVATE
 			src/pera_software/aidkit/qt/gui/ForwardDeclarations.hpp
 			src/pera_software/aidkit/qt/gui/MessagesModel.cpp
 			src/pera_software/aidkit/qt/gui/MessagesModel.hpp
@@ -222,34 +192,6 @@ if (TARGET Qt5::Gui)
 			src/pera_software/aidkit/qt/gui/PERAResources.hpp
 			src/pera_software/aidkit/qt/gui/PERAResources.cpp
 
-	)
-	if (TARGET AidKitTest)
-		target_sources(AidKitTest
-			PRIVATE
-				tests/pera_software/aidkit/qt/TestFixture.hpp
-				tests/pera_software/aidkit/qt/TestFixture.cpp
-		)
-	endif()
-	if (TARGET testAidKit)
-		target_sources(testAidKit
-			PRIVATE
-				tests/pera_software/aidkit/qt/gui/ResourcesTest.hpp
-				tests/pera_software/aidkit/qt/gui/ResourcesTest.cpp
-
-				tests/pera_software/aidkit/qt/gui/PERAResourcesTest.cpp
-		)
-	endif()
-	target_link_libraries(AidKit
-		PUBLIC
-			Qt5::Gui
-	)
-else()
-	message(AUTHOR_WARNING "Qt5 Gui not found, building without it!")
-endif()
-
-if (TARGET Qt5::Widgets)
-	target_sources(AidKit
-		PRIVATE
 			src/pera_software/aidkit/qt/widgets/Application.hpp
 			src/pera_software/aidkit/qt/widgets/Application.cpp
 			src/pera_software/aidkit/qt/widgets/Actions.hpp
@@ -272,9 +214,58 @@ if (TARGET Qt5::Widgets)
 			src/pera_software/aidkit/qt/widgets/PERAApplication.cpp
 			src/pera_software/aidkit/qt/widgets/PERAMainWindow.hpp
 			src/pera_software/aidkit/qt/widgets/PERAMainWindow.cpp
+
+			src/pera_software/aidkit/qt/properties/Bindings.hpp
+			src/pera_software/aidkit/qt/properties/Bindings.cpp
+			src/pera_software/aidkit/qt/properties/Property.hpp
+			src/pera_software/aidkit/qt/properties/Property.cpp
+			src/pera_software/aidkit/qt/properties/BooleanProperty.hpp
+			src/pera_software/aidkit/qt/properties/BooleanProperty.cpp
+			src/pera_software/aidkit/qt/properties/IntegerProperty.hpp
+			src/pera_software/aidkit/qt/properties/IntegerProperty.cpp
+			src/pera_software/aidkit/qt/properties/StringProperty.hpp
+			src/pera_software/aidkit/qt/properties/StringProperty.cpp
+
+			# Resources:
+
+			resources/pera_software/aidkit/AidKitResources.qrc
+			resources/pera_software/PERAResources.qrc
+
 	)
+	if (TARGET AidKitTest AND TARGET Qt5::Test)
+		target_sources(AidKitTest
+			PRIVATE
+				tests/pera_software/aidkit/qt/core/StringPrinter.hpp
+				tests/pera_software/aidkit/qt/core/StringPrinter.cpp
+
+				tests/pera_software/aidkit/qt/TestFixture.hpp
+				tests/pera_software/aidkit/qt/TestFixture.cpp
+		)
+		target_link_libraries(AidKitTest
+			PUBLIC
+				Qt5::Test
+		)
+	endif()
+
+	if (TARGET testAidKit)
+		target_sources(testAidKit
+			PRIVATE
+				tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
+				tests/pera_software/aidkit/qt/core/EndianTest.cpp
+				tests/pera_software/aidkit/qt/core/StringsTest.cpp
+
+				tests/pera_software/aidkit/qt/gui/ResourcesTest.hpp
+				tests/pera_software/aidkit/qt/gui/ResourcesTest.cpp
+				tests/pera_software/aidkit/qt/gui/PERAResourcesTest.cpp
+
+				tests/pera_software/aidkit/qt/properties/PropertiesTest.cpp
+		)
+	endif()
+
 	target_link_libraries(AidKit
 		PUBLIC
+			Qt5::Core
+			Qt5::Gui
 			Qt5::Widgets
 	)
 else()
