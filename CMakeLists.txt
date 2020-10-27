@@ -149,6 +149,8 @@ if (TARGET AidKitTest)
 		tests/pera_software/aidkit/io/file_test.cpp
 		tests/pera_software/aidkit/io/file_ptr_test.cpp
 
+		tests/pera_software/aidkit/stdlib/InstanceCounter.hpp
+		tests/pera_software/aidkit/stdlib/InstanceCounter.cpp
 		tests/pera_software/aidkit/stdlib/new_test.cpp
 		tests/pera_software/aidkit/stdlib/memory_test.cpp
 		tests/pera_software/aidkit/stdlib/stdlib_test.cpp
@@ -175,6 +177,8 @@ if (TARGET Qt5::Widgets)
 			src/pera_software/aidkit/qt/core/Endian.cpp
 			src/pera_software/aidkit/qt/core/Enums.hpp
 			src/pera_software/aidkit/qt/core/Enums.cpp
+			src/pera_software/aidkit/qt/core/Pointer.hpp
+			src/pera_software/aidkit/qt/core/Pointer.cpp
 			src/pera_software/aidkit/qt/core/Socket.hpp
 			src/pera_software/aidkit/qt/core/Socket.cpp
 			src/pera_software/aidkit/qt/core/Strings.hpp

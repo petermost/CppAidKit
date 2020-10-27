@@ -1,4 +1,4 @@
-// Copyright 2019 Peter Most, PERA Software Solutions GmbH
+// Copyright 2020 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -14,17 +14,21 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
-
 #pragma once
+
+#include <new>
 
 namespace pera_software::aidkit::stdlib {
 
-	struct placement_new_deleter {
-		template <typename T>
-			void operator ()(T *pointer) const noexcept
-			{
-				pointer->~T();
-			}
+	class InstanceCounter final {
+		public:
+			static void operator delete(void *pointer, std::size_t size);
+
+			InstanceCounter(int *counter);
+			~InstanceCounter();
+
+		private:
+			int *const counter_;
 	};
 
 }

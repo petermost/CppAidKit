@@ -22,16 +22,23 @@
 
 namespace pera_software::aidkit::stdlib {
 
-    struct free_deleter {
-        void operator ()(void *memory) const noexcept {
-            std::free(memory);
-        }
-    };
+	struct null_deleter {
+		template <typename T>
+			void operator()(T *) const noexcept
+			{
+			}
+	};
 
-    using unique_memory_ptr = std::unique_ptr<void, free_deleter>;
-    unique_memory_ptr AIDKIT_API make_unique_memory_ptr(std::size_t size);
+	struct free_deleter {
+		void operator ()(void *memory) const noexcept {
+			std::free(memory);
+		}
+	};
 
-    using shared_memory_ptr = std::shared_ptr<void>;
-    shared_memory_ptr AIDKIT_API make_shared_memory_ptr(std::size_t size);
+	using unique_memory_ptr = std::unique_ptr<void, free_deleter>;
+	unique_memory_ptr AIDKIT_API make_unique_memory_ptr(std::size_t size);
+
+	using shared_memory_ptr = std::shared_ptr<void>;
+	shared_memory_ptr AIDKIT_API make_shared_memory_ptr(std::size_t size);
 
 }

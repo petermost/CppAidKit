@@ -15,8 +15,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include <gtest/gtest.h>
+#include "InstanceCounter.hpp"
 #include <pera_software/aidkit/stdlib/memory.hpp>
+#include <gtest/gtest.h>
+#include <memory>
+#include <string>
 
 namespace pera_software::aidkit::stdlib {
 
@@ -32,6 +35,28 @@ TEST(MemoryTest, testMakeUniqueMemoryPtr)
 TEST(MemoryTest, testMakeSharedMemoryPtr)
 {
 	ASSERT_THROW(make_shared_memory_ptr(MAX_SIZE), bad_alloc);
+}
+
+TEST(MemoryTest, testSharedPtrNullDeleter)
+{
+	int instances = 0;
+	InstanceCounter counter(&instances);
+	ASSERT_EQ(instances, 1);
+	{
+		shared_ptr<InstanceCounter> sharedPtr(&counter, null_deleter());
+	}
+	ASSERT_EQ(instances, 1);
+}
+
+TEST(MemoryTest, testUniquePtrNullDeleter)
+{
+	int instances = 0;
+	InstanceCounter counter(&instances);
+	ASSERT_EQ(instances, 1);
+	{
+		unique_ptr<InstanceCounter, null_deleter> uniquePtr(&counter);
+	}
+	ASSERT_EQ(instances, 1);
 }
 
 }

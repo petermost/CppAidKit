@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
+#include "InstanceCounter.hpp"
 #include <gtest/gtest.h>
 #include <memory>
 #include <pera_software/aidkit/stdlib/new.hpp>
@@ -22,23 +23,6 @@
 namespace pera_software::aidkit::stdlib {
 
 using namespace std;
-
-class InstanceCounter {
-	public:
-		InstanceCounter(int *counter)
-			: counter_(counter)
-		{
-			++(*counter_);
-		}
-
-		~InstanceCounter()
-		{
-			--(*counter_);
-		}
-
-	private:
-		int *const counter_;
-};
 
 static constexpr size_t MEMORY_SIZE = 100;
 static_assert(MEMORY_SIZE >= sizeof(InstanceCounter), "MEMORY_SIZE isn't big enough!");
