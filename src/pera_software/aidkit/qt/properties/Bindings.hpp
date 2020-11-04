@@ -42,6 +42,7 @@ void AIDKIT_API bindWidgetClickedSignal(QAbstractButton *button, QAction *action
 // Bind a widget to a property:
 
 void AIDKIT_API bindWidgetEnabledProperty(QWidget *widget, BooleanProperty *property);
+void AIDKIT_API bindWidgetVisibleProperty(QWidget *widget, BooleanProperty *property);
 void AIDKIT_API bindSpinBoxValueProperty(QSpinBox *spinBox, IntegerProperty *property);
 void AIDKIT_API bindLineEditTextProperty(QLineEdit *lineEdit, StringProperty *property);
 

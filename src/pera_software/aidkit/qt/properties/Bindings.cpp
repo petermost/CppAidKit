@@ -79,6 +79,13 @@ void bindWidgetClickedSignal(QAbstractButton *button, QAction *action)
 // Bind a widget to a property:
 //
 
+void bindWidgetVisibleProperty(QWidget *widget, BooleanProperty *property)
+{
+	widget->setVisible(property->value());
+
+	BooleanProperty::connect(property, &BooleanProperty::valueChanged, widget, &QWidget::setVisible);
+}
+
 void bindWidgetEnabledProperty(QWidget *widget, BooleanProperty *property)
 {
 	widget->setEnabled(property->value());
