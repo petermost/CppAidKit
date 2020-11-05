@@ -31,7 +31,7 @@ class AIDKIT_API StringProperty : public Property<QString>
 		using Property<QString>::operator=;
 
 	Q_SIGNALS:
-		void valueChanged(QString newValue) override;
+		void valueChanged(QString newValue);
 
 	protected:
 		void emitValueChanged(QString value) override;

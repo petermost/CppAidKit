@@ -30,7 +30,7 @@ class AIDKIT_API BooleanProperty : public Property<bool>
 		using Property<bool>::operator=;
 
 	Q_SIGNALS:
-		void valueChanged(bool newValue) override;
+		void valueChanged(bool newValue);
 
 	protected:
 		void emitValueChanged(bool value) override;

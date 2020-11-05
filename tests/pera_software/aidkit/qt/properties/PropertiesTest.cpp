@@ -29,6 +29,7 @@ TEST(IntegerPropertyTest, testMethods)
 {
 	IntegerProperty property;
 	QSignalSpy spy(&property, &IntegerProperty::valueChanged);
+	ASSERT_TRUE(spy.isValid());
 	ASSERT_EQ(property.value(), 0);
 
 	property.setValue(13);
@@ -42,6 +43,7 @@ TEST(IntegerPropertyTest, testOperators)
 {
 	IntegerProperty property(10);
 	QSignalSpy spy(&property, &IntegerProperty::valueChanged);
+	ASSERT_TRUE(spy.isValid());
 	ASSERT_EQ(property.value(), 10);
 
 	property = 13;
@@ -55,6 +57,7 @@ TEST(StringPropertyTest, testMethods)
 {
 	StringProperty property;
 	QSignalSpy spy(&property, &StringProperty::valueChanged);
+	ASSERT_TRUE(spy.isValid());
 	ASSERT_TRUE(property.value().isEmpty());
 
 	property.setValue("13"_qs);
@@ -68,6 +71,7 @@ TEST(StringPropertyTest, testOperators)
 {
 	StringProperty property("10"_qs);
 	QSignalSpy spy(&property, &StringProperty::valueChanged);
+	ASSERT_TRUE(spy.isValid());
 	ASSERT_EQ(property.value(), "10"_qs);
 
 	property = "13"_qs;

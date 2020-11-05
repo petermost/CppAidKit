@@ -67,9 +67,6 @@ template <typename T>
 				}
 			}
 
-		Q_SIGNALS:
-			virtual void valueChanged(T newValue) = 0;
-
 		protected:
 			virtual void emitValueChanged(T value) = 0;
 

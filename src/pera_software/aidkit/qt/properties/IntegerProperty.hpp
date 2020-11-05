@@ -30,7 +30,7 @@ class AIDKIT_API IntegerProperty : public Property<int>
 		using Property<int>::operator=;
 
 	Q_SIGNALS:
-		void valueChanged(int newValue) override;
+		void valueChanged(int newValue);
 
 	protected:
 		void emitValueChanged(int value) override;
