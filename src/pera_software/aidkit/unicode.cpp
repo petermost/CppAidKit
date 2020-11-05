@@ -39,15 +39,17 @@ using wstring_utf8_converter = wstring_convert<codecvt_utf8<wchar_t>, wchar_t>;
 wstring from_utf8(string_view s)
 {
 	wstring_utf8_converter converter;
-
-	return converter.from_bytes(&*s.begin(), &*s.end());
+	const char *begin = &(*s.begin());
+	const char *end = begin + s.size();
+	return converter.from_bytes(begin, end);
 }
 
 string to_utf8(wstring_view s)
 {
 	wstring_utf8_converter converter;
-
-	return converter.to_bytes(&*s.begin(), &*s.end());
+	const wchar_t *begin = &(*s.begin());
+	const wchar_t *end = begin + s.size();
+	return converter.to_bytes(begin, end);
 }
 
 //==================================================================================================
