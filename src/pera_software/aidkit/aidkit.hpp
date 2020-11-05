@@ -32,9 +32,7 @@
 #endif
 
 #if defined(AIDKIT_SHARED_LIBRARY)
-	// Will be defined by cmake for shared libraries
-	// (https://cmake.org/cmake/help/latest/prop_tgt/DEFINE_SYMBOL.html)
-	#if defined(AidKit_EXPORTS)
+	#if defined(AIDKIT_EXPORTING)
 		#define AIDKIT_API AIDKIT_EXPORT
 	#else
 		#define AIDKIT_API AIDKIT_IMPORT

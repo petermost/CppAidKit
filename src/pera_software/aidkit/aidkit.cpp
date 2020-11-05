@@ -17,6 +17,10 @@
 
 #include "aidkit.hpp"
 
+#if !defined(AIDKIT_EXPORTING)
+	#error AIDKIT_EXPORTING not defined!
+#endif
+
 namespace pera_software::aidkit {
 
 }

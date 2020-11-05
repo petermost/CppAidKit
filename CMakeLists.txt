@@ -93,9 +93,13 @@ add_library(AidKit
 set_default_target_options(AidKit)
 
 target_compile_definitions(AidKit
+	PRIVATE
+		AIDKIT_EXPORTING
+
 	PUBLIC
 		$<IF:$<BOOL:${BUILD_SHARED_LIBS}>,AIDKIT_SHARED_LIBRARY,AIDKIT_STATIC_LIBRARY>
 )
+
 set_target_properties(AidKit
 	PROPERTIES
 		SOVERSION ${AidKit_VERSION}
@@ -116,6 +120,11 @@ if (TARGET GTest::GTest)
 		tests/pera_software/aidkit/test_main.cpp
 	)
 	set_default_target_options(AidKitTest)
+
+	target_compile_definitions(AidKitTest
+		PRIVATE
+			AIDKIT_EXPORTING
+	)
 
 	target_include_directories(AidKitTest
 		PUBLIC
