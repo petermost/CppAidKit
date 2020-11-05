@@ -30,6 +30,10 @@ AIDKIT_CLANG_DISABLE_WARNING(unused-function)
 AIDKIT_CLANG_DISABLE_WARNING(unused-variable)
 AIDKIT_CLANG_DISABLE_WARNING(shadow-uncaptured-local)
 
+AIDKIT_MSVC_DISABLE_WARNING(4101) // '...': unreferenced local variable
+AIDKIT_MSVC_DISABLE_WARNING(4100) // '...': unreferenced formal parameter
+AIDKIT_MSVC_DISABLE_WARNING(4505) // '...': unreferenced local function has been removed
+
 static void unusedFunction(int unusedParameter)
 {
 }
