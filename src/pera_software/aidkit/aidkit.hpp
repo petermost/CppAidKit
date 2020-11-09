@@ -21,7 +21,7 @@
 
 #if defined(AIDKIT_LINUX)
 	#define AIDKIT_EXPORT __attribute__((visibility("default")))
-	#define AIDKIT_IMPORT __attribute__((visibility("default")))
+	#define AIDKIT_IMPORT
 
 	#define AIDKIT_API_DEPRECATED __attribute__ ((__deprecated__))
 #elif defined(AIDKIT_WINDOWS)

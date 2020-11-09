@@ -40,14 +40,14 @@ TEST(StdLibTest, testSize)
 
 TEST(StdLibTest, testIntCastTooLarge)
 {
-	const long l = std::numeric_limits<int>::max() + 1l;
-	ASSERT_THROW(int_cast<int>(l), out_of_range);
+	constexpr long l = std::numeric_limits<int>::max() + 1l;
+	ASSERT_THROW(int_cast<short>(l), out_of_range);
 }
 
 TEST(StdLibTest, testIntCastTooSmall)
 {
-	const long l = std::numeric_limits<int>::min() - 1l;
-	ASSERT_THROW(int_cast<int>(l), out_of_range);
+	constexpr long l = std::numeric_limits<int>::min() - 1l;
+	ASSERT_THROW(int_cast<short>(l), out_of_range);
 }
 
 }

@@ -17,6 +17,7 @@
 
 #include <gtest/gtest.h>
 #include <pera_software/aidkit/io/file.hpp>
+#include <pera_software/aidkit/platform.hpp>
 
 namespace pera_software::aidkit::io {
 
@@ -36,7 +37,7 @@ class FileTest : public testing::Test {
 
 void FileTest::SetUp()
 {
-	// Try to remove the temporary file in the TearDown() method was not called:
+	// Try to remove the temporary file, if the TearDown() method was not called:
 	remove_file_if_exists(makeTemporaryFilename());
 }
 
@@ -122,10 +123,10 @@ TEST_F(FileTest, testInvalidClose)
 TEST_F(FileTest, testInvalidCloseAndClose)
 {
 	expectError(make_error_code(errc::invalid_argument), [&] {
-		string fileName = makeTemporaryFilename();
+		path fileName = makeTemporaryFilename();
 		file_deleter fileDeleter(fileName);
 
-		file file(fileName.c_str(), WRITE_ACCESS);
+		file file(fileName, WRITE_ACCESS);
 		file.close();
 		file.close();
 	});
@@ -137,8 +138,8 @@ TEST_F(FileTest, testOpenFailed)
 {
 	expectError(make_error_code(errc::no_such_file_or_directory), [&] {
 		file file;
-		string fileName = makeTemporaryFilename();
-		file.open(fileName.c_str(), file::open_mode::read);
+		path fileName = makeTemporaryFilename();
+		file.open(fileName, file::open_mode::read);
 	});
 }
 
@@ -147,11 +148,11 @@ TEST_F(FileTest, testOpenFailed)
 TEST_F(FileTest, testOpenSucceeded)
 {
 	expectSuccess([&] {
-		string fileName = makeTemporaryFilename();
+		path fileName = makeTemporaryFilename();
 		file_deleter fileDeleter(fileName);
 
 		file file;
-		file.open(fileName.c_str(), file::open_mode::write);
+		file.open(fileName, file::open_mode::write);
 	});
 }
 
@@ -160,10 +161,10 @@ TEST_F(FileTest, testOpenSucceeded)
 TEST_F(FileTest, testGetCharReturnsEof)
 {
 	expectError(make_error_code(file_error::eof), [&] {
-		string fileName = makeTemporaryFilename();
+		path fileName = makeTemporaryFilename();
 		file_deleter fileDeleter(fileName);
 
-		file file(fileName.c_str(), WRITE_ACCESS);
+		file file(fileName, WRITE_ACCESS);
 		file.get();
 	});
 }
@@ -173,10 +174,10 @@ TEST_F(FileTest, testGetCharReturnsEof)
 TEST_F(FileTest, testGetStringReturnsEof)
 {
 	expectError(make_error_code(file_error::eof), [&] {
-		string fileName = makeTemporaryFilename();
+		path fileName = makeTemporaryFilename();
 		file_deleter fileDeleter(fileName);
 
-		file file(fileName.c_str(), WRITE_ACCESS);
+		file file(fileName, WRITE_ACCESS);
 
 		char str[100];
 		file.get(str, 10);
@@ -188,10 +189,10 @@ TEST_F(FileTest, testGetStringReturnsEof)
 TEST_F(FileTest, testReadReturnsEof)
 {
 	expectError(make_error_code(file_error::eof), [&] {
-		string fileName = makeTemporaryFilename();
+		path fileName = makeTemporaryFilename();
 		file_deleter fileDeleter(fileName);
 
-		file file(fileName.c_str(), WRITE_ACCESS);
+		file file(fileName, WRITE_ACCESS);
 
 		char buffer[100];
 		file.read(buffer, sizeof(buffer), 1);
@@ -203,10 +204,10 @@ TEST_F(FileTest, testReadReturnsEof)
 TEST_F(FileTest, testCloseAndDestructor)
 {
 	expectSuccess([&] {
-		string fileName = makeTemporaryFilename();
+		path fileName = makeTemporaryFilename();
 		file_deleter fileDeleter(fileName);
 
-		file file(fileName.c_str(), WRITE_ACCESS);
+		file file(fileName, WRITE_ACCESS);
 		file.close();
 	});
 }
@@ -215,11 +216,16 @@ TEST_F(FileTest, testCloseAndDestructor)
 
 TEST_F(FileTest, testOpenReadWrite)
 {
-	expectError(make_error_code(errc::no_such_file_or_directory), [&] {
-		string fileName = makeTemporaryFilename();
+	#if defined(AIDKIT_MSVC)
+		constexpr errc EXPECTED_ERRC(errc::invalid_argument);
+	#elif defined(AIDKIT_GCC)
+		constexpr errc EXPECTED_ERRC(errc::no_such_file_or_directory);
+	#endif
+	expectError(make_error_code(EXPECTED_ERRC), [&] {
+		path fileName = makeTemporaryFilename();
 		file_deleter fileDeleter(fileName);
 
-		file file(fileName.c_str(), file::open_modes(file::open_mode::write) | file::open_mode::read);
+		file file(fileName, file::open_modes(file::open_mode::write) | file::open_mode::read);
 	});
 }
 

@@ -272,7 +272,7 @@ template <typename Category = file_locked_category, typename Functions = basic_f
 
 				// Open the file:
 
-				file_ = Functions::do_open(fileName.c_str(), modeString.c_str());
+				file_ = Functions::do_open(fileName.string().c_str(), modeString.c_str());
 				bool success = (file_ != nullptr);
 
 				*errorCode = get_error_code(success);
