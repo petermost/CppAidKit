@@ -34,7 +34,12 @@ template <typename T>
 			{
 			}
 
-			Property &operator = (const Property<T> &other)
+			Property(const Property &other)
+				: Property(other.parent())
+			{
+			}
+
+			Property<T> &operator = (const Property<T> &other)
 			{
 				setValue(other.value());
 

@@ -30,6 +30,9 @@ class AIDKIT_API StringProperty : public Property<QString>
 		using Property<QString>::Property;
 		using Property<QString>::operator=;
 
+		StringProperty(const StringProperty &) = default;
+		StringProperty &operator = (const StringProperty &) = default;
+
 	Q_SIGNALS:
 		void valueChanged(QString newValue);
 

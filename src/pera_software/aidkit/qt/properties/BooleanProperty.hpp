@@ -29,6 +29,9 @@ class AIDKIT_API BooleanProperty : public Property<bool>
 		using Property<bool>::Property;
 		using Property<bool>::operator=;
 
+		BooleanProperty(const BooleanProperty &) = default;
+		BooleanProperty &operator =(const BooleanProperty &) = default;
+
 	Q_SIGNALS:
 		void valueChanged(bool newValue);
 

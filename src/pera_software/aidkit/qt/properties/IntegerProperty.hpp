@@ -29,6 +29,9 @@ class AIDKIT_API IntegerProperty : public Property<int>
 		using Property<int>::Property;
 		using Property<int>::operator=;
 
+		IntegerProperty(const IntegerProperty &) = default;
+		IntegerProperty &operator = (const IntegerProperty &) = default;
+
 	Q_SIGNALS:
 		void valueChanged(int newValue);
 
