@@ -29,7 +29,7 @@ using namespace std;
 //#########################################################################################################
 
 // Explicit template instantiation to detect syntax errors:
-template data_mutex<vector<string>>;
+template class data_mutex<vector<string>>;
 
 using StringVectorDataMutex = data_mutex<vector<string>>;
 

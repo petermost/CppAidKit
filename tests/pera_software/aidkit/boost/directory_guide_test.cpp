@@ -46,8 +46,9 @@ TEST(DirectoryGuideTest, testWalk)
 	DirectoryVisitor visitor;
 	directory_guide guide;
 	guide.walk(current_path(), &visitor);
-	ASSERT_GT(visitor.files.size(), 0);
-	ASSERT_GT(visitor.directories.size(), 0);
+	// The AidKit library creates at least 3 targets (AidKit, AidKitTest, testAidKit)
+	ASSERT_GE(visitor.files.size(), 3);
+	ASSERT_EQ(visitor.directories.size(), 0);
 }
 
 }
