@@ -37,9 +37,9 @@ function(set_default_clang_target_options targetName)
 			-Weverything
 
 			-Wno-c++98-compat -Wno-c++98-compat-pedantic #-Wno-c++98-extensions
-			-Wno-c++14-compat -Wno-c++14-compat-pedantic -Wno-c++14-extensions
-			-Wno-c++17-compat -Wno-c++17-compat-pedantic -Wno-c++17-extensions
-			-Wno-c++20-compat -Wno-c++20-compat-pedantic -Wno-c++20-extensions
+			-Wno-c++14-compat #-Wno-c++14-compat-pedantic -Wno-c++14-extensions
+			-Wno-c++17-compat #-Wno-c++17-compat-pedantic -Wno-c++17-extensions
+			#-Wno-c++20-compat -Wno-c++20-compat-pedantic -Wno-c++20-extensions
 			-Wno-covered-switch-default
 			-Wno-exit-time-destructors -Wno-global-constructors
 			-Wno-format-nonliteral
