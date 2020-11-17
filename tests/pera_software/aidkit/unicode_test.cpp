@@ -151,7 +151,7 @@ TEST(UnicodeTest, testFromUtf8)
 // Q: Why do these tests throw std::range_error under Linux?
 // A: The encoding of the umlaute is in ISO-8859-1 (Latin-1)!
 
-#if defined(AIDKIT_GCC)
+#if defined(AIDKIT_GCC_LIB)
 TEST(UnicodeTest, testIso_8859_1_FromMbs)
 #else
 TEST(UnicodeTest, DISABLED_testIso_8859_1_FromMbs)
@@ -165,7 +165,7 @@ TEST(UnicodeTest, DISABLED_testIso_8859_1_FromMbs)
 	}
 }
 
-#if defined(AIDKIT_GCC)
+#if defined(AIDKIT_GCC_LIB)
 TEST(UnicodeTest, testIso_8859_1_ToMbs)
 #else
 TEST(UnicodeTest, DISABLED_testIso_8859_1_ToMbs)

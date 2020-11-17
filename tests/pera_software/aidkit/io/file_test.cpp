@@ -216,9 +216,9 @@ TEST_F(FileTest, testCloseAndDestructor)
 
 TEST_F(FileTest, testOpenReadWrite)
 {
-	#if defined(AIDKIT_MSVC)
+	#if defined(AIDKIT_MSVC_LIB)
 		constexpr errc EXPECTED_ERRC(errc::invalid_argument);
-	#elif defined(AIDKIT_GCC)
+	#elif defined(AIDKIT_GCC_LIB)
 		constexpr errc EXPECTED_ERRC(errc::no_such_file_or_directory);
 	#endif
 	expectError(make_error_code(EXPECTED_ERRC), [&] {

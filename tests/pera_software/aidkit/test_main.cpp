@@ -20,17 +20,17 @@ static void enableVerboseTerminateHandler()
 #endif
 }
 
-#if defined(AIDKIT_MINGW) || defined(AIDKIT_MSVC)
-static void nullInvalidParameterHandler(const wchar_t * /* expression */, const wchar_t * /* function */, 
+#if defined(AIDKIT_MSVC_LIB)
+static void nullInvalidParameterHandler(const wchar_t * /* expression */, const wchar_t * /* function */,
 	const wchar_t * /* file */, unsigned int /* line */, uintptr_t /* pReserved */)
 {
 }
 #endif
 
 
-static void disableInvalidParameterHandler() 
+static void disableInvalidParameterHandler()
 {
-#if defined(AIDKIT_MSVC) || defined(AIDKIT_MINGW)
+#if defined(AIDKIT_MSVC_LIB)
 	_set_invalid_parameter_handler(nullInvalidParameterHandler);
 #endif
 }
@@ -41,7 +41,7 @@ static void disableInvalidParameterHandler()
 // _CrtSetReportMode(_CRT_WARN, 0);
 // _CrtSetReportMode(_CRT_ERROR, 0);
 // _CrtSetReportMode(_CRT_ASSERT, 0);
-   
+
 // _CrtSetReportFile(_CRT_WARN, nullFile);
 // _CrtSetReportFile(_CRT_ERROR, nullFile);
 // _CrtSetReportFile(_CRT_ASSERT, nullFile);
