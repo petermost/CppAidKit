@@ -17,11 +17,19 @@ function(set_default_msvc_target_options targetName)
 
 	target_compile_options(${targetName}
 		PRIVATE
-			/W4 /permissive-
+			/EHsc				# Make the exception support standard conform
+			/permissive-        # Make the language support standard conform
+			/Zc:__cplusplus     # Enable updated __cplusplus macro
+			/Zc:externConstexpr # Enable extern constexpr variables
+			/Zc:inline          # Remove unreferenced COMDAT
+			/Zc:preprocessor	# Enable preprocessor conformance mode
+			/Zc:rvalueCast      # Enforce type conversion rules
+			/Zc:strictStrings   # Disable string literal type conversion
+			/Zc:ternary         # (Enforce conditional operator rules
+			/Zc:throwingNew     # Assume operator new throws
 
+			/W4
 			/wd4251 # '...' needs to have dll-interface to be used by clients of class '...''
 			/wd4275 # non dll-interface-class '...' used as base for dll-interface class '...'
 	)
 endfunction()
-
-
