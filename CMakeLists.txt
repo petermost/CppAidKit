@@ -18,7 +18,11 @@
 cmake_minimum_required(VERSION 3.13)
 project(AidKit VERSION 1.2.0.0)
 
+include(CTest)
+include(GoogleTest)
 include(cmake/AidKit.cmake)
+
+enable_testing()
 
 find_package(Boost QUIET
 	COMPONENTS
@@ -170,6 +174,9 @@ if (TARGET AidKitTest)
 	target_link_libraries(testAidKit
 		PRIVATE
 			AidKitTest
+	)
+	gtest_discover_tests(testAidKit
+		WORKING_DIRECTORY bin
 	)
 endif()
 
