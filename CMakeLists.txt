@@ -116,26 +116,26 @@ target_include_directories(AidKit
 )
 
 ###############################################################################
-# Setup 'AidKitTest' a helper library to support tests:
+# Setup 'AidKitTestSupport':
 
 if (TARGET GTest::GTest)
-	add_library(AidKitTest
+	add_library(AidKitTestSupport
 		tests/pera_software/aidkit/test_main.hpp
 		tests/pera_software/aidkit/test_main.cpp
 	)
-	set_default_target_options(AidKitTest)
+	set_default_target_options(AidKitTestSupport)
 
-	target_compile_definitions(AidKitTest
+	target_compile_definitions(AidKitTestSupport
 		PRIVATE
 			AIDKIT_EXPORTING
 	)
 
-	target_include_directories(AidKitTest
+	target_include_directories(AidKitTestSupport
 		PUBLIC
 			tests/
 	)
 
-	target_link_libraries(AidKitTest
+	target_link_libraries(AidKitTestSupport
 		PUBLIC
 			AidKit
 			GTest::GTest
@@ -146,10 +146,10 @@ else()
 endif()
 
 ###############################################################################
-# Setup 'testAidKit', the tests for the AidKit library:
+# Setup 'AidKitTests':
 
-if (TARGET AidKitTest)
-	add_executable(testAidKit
+if (TARGET AidKitTestSupport)
+	add_executable(AidKitTests
 		tests/pera_software/aidkit/compiler_test.cpp
 		tests/pera_software/aidkit/containers_test.cpp
 		tests/pera_software/aidkit/enum_class_test.cpp
@@ -169,13 +169,13 @@ if (TARGET AidKitTest)
 		tests/pera_software/aidkit/stdlib/stdlib_test.cpp
 	)
 
-	set_default_target_options(testAidKit)
+	set_default_target_options(AidKitTests)
 
-	target_link_libraries(testAidKit
+	target_link_libraries(AidKitTests
 		PRIVATE
-			AidKitTest
+			AidKitTestSupport
 	)
-	gtest_discover_tests(testAidKit
+	gtest_discover_tests(AidKitTests
 		WORKING_DIRECTORY bin
 	)
 endif()
@@ -252,8 +252,8 @@ if (TARGET Qt5::Widgets)
 			resources/pera_software/PERAResources.qrc
 
 	)
-	if (TARGET AidKitTest AND TARGET Qt5::Test)
-		target_sources(AidKitTest
+	if (TARGET AidKitTestSupport AND TARGET Qt5::Test)
+		target_sources(AidKitTestSupport
 			PRIVATE
 				tests/pera_software/aidkit/qt/core/StringPrinter.hpp
 				tests/pera_software/aidkit/qt/core/StringPrinter.cpp
@@ -261,14 +261,14 @@ if (TARGET Qt5::Widgets)
 				tests/pera_software/aidkit/qt/TestFixture.hpp
 				tests/pera_software/aidkit/qt/TestFixture.cpp
 		)
-		target_link_libraries(AidKitTest
+		target_link_libraries(AidKitTestSupport
 			PUBLIC
 				Qt5::Test
 		)
 	endif()
 
-	if (TARGET testAidKit)
-		target_sources(testAidKit
+	if (TARGET AidKitTests)
+		target_sources(AidKitTests
 			PRIVATE
 				tests/pera_software/aidkit/qt/core/ConsoleTest.cpp
 				tests/pera_software/aidkit/qt/core/EndianTest.cpp
@@ -310,8 +310,8 @@ if (Qt5LinguistTools_FOUND)
 			${CMAKE_CURRENT_BINARY_DIR}/AidKitTranslations.qrc
 	)
 
-	if (TARGET testAidKit)
-		target_sources(testAidKit
+	if (TARGET AidKitTests)
+		target_sources(AidKitTests
 			PRIVATE
 				tests/pera_software/aidkit/qt/core/TranslatorTest.cpp
 		)
@@ -330,8 +330,8 @@ if (TARGET Boost::filesystem)
 			src/pera_software/aidkit/boost/directory_guide.hpp
 			src/pera_software/aidkit/boost/directory_guide.cpp
 	)
-	if (TARGET testAidKit)
-		target_sources(testAidKit
+	if (TARGET AidKitTests)
+		target_sources(AidKitTests
 			PRIVATE
 				tests/pera_software/aidkit/boost/formatter_test.cpp
 				tests/pera_software/aidkit/boost/directory_guide_test.cpp
