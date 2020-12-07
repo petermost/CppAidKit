@@ -15,7 +15,7 @@
 function(set_default_output_target_options targetName)
 	report("Setting default output options for target '${targetName}")
 
-	set(outputDirectory ${CMAKE_BINARY_DIR}/bin)
+	set(outputDirectory ${CMAKE_BINARY_DIR}/bin/$<CONFIG>)
 
 	set_target_properties(${targetName}
 		PROPERTIES
