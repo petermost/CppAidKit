@@ -176,7 +176,7 @@ if (TARGET AidKitTestSupport)
 			AidKitTestSupport
 	)
 	gtest_discover_tests(AidKitTests
-		WORKING_DIRECTORY bin
+		# WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIG>
 	)
 endif()
 
@@ -322,7 +322,7 @@ endif()
 
 ###############################################################################
 
-if (TARGET Boost::filesystem)
+if (TARGET Boost::headers AND TARGET Boost::filesystem)
 	target_sources(AidKit
 		PRIVATE
 			src/pera_software/aidkit/boost/formatter.hpp
@@ -340,15 +340,16 @@ if (TARGET Boost::filesystem)
 	target_compile_definitions(AidKit
 		PRIVATE
 			BOOST_ALL_DYN_LINK
+			BOOST_NO_DEPRECATED # Does this switch exist?
 			BOOST_ASIO_NO_DEPRECATED
 			BOOST_FILESYSTEM_NO_DEPRECATED
 	)
 	target_link_libraries(AidKit
 		PUBLIC
-			Boost::dynamic_linking
-			Boost::disable_autolinking
 			Boost::headers
 			Boost::filesystem
+			Boost::dynamic_linking
+			Boost::disable_autolinking
 	)
 else()
 	message(AUTHOR_WARNING "Boost filesysstem not found, building without it!")
