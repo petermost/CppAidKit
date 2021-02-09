@@ -22,6 +22,8 @@ namespace pera_software::aidkit::boost {
 using namespace std;
 using namespace ::boost::io;
 
+#if BOOST_VERSION > 107100
+
 formatter::formatter(string_view formatString) noexcept
 	: format_(nullptr)
 {
@@ -33,5 +35,10 @@ string formatter::str() const noexcept
 {
 	return format_.str();
 }
+
+#else
+	// Compilation failes under C++20" (https://github.com/boostorg/format/issues/73)
+	#pragma message("Disabling 'formatter' class!")
+#endif
 
 }

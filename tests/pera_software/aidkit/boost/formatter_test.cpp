@@ -22,6 +22,8 @@ namespace pera_software::aidkit::boost {
 
 using namespace std;
 
+#if BOOST_VERSION > 107100
+
 TEST(FormatterTest, testBadFormatString)
 {
 	formatter("%q") % "1.";
@@ -37,4 +39,5 @@ TEST(FormatterTest, testTooManyArguments)
 	formatter("%s") % "1." % "2." % "3.";
 }
 
+#endif
 }
