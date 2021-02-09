@@ -48,6 +48,7 @@ function(set_default_clang_target_options targetName)
 			-Wno-redundant-parens
 			-Wno-switch-enum
 			-Wno-used-but-marked-unused
+			-Wno-suggest-destructor-override
 	)
 endfunction()
 
