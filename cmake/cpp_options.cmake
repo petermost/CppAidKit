@@ -1,5 +1,5 @@
 function(set_default_cpp_target_options targetName)
-	report("Setting default C++ options for target '${targetName}")
+	report("Setting default C++ options for target '${targetName}'")
 
 	target_compile_features(${targetName}
 		PRIVATE

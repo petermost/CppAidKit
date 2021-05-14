@@ -1,15 +1,18 @@
+include(FetchContent)
+
 function(add_googletest_subdirectory)
 	if (NOT TARGET gtest AND NOT TARGET gtest_main)
 		if (EXISTS /usr/src/googletest)
 			add_subdirectory(/usr/src/googletest googletest)
 		else()
-			include(FetchContent)
+			message(CHECK_START "Downloading 'googletest'")
 			FetchContent_Declare(googletest
 				GIT_REPOSITORY https://github.com/google/googletest.git
-				GIT_TAG        release-1.10.0
+				# GIT_TAG        release-1.10.0
+				GIT_TAG        e7e591764baba0a0c3c9ad0014430e7a27331d16
 			)
 			FetchContent_MakeAvailable(googletest)
-			add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+			message(CHECK_PASS "finished")
 		endif()
 		# Create the same targets/variables which FindGTest would have done:
 		set(GTEST_FOUND TRUE PARENT_SCOPE)

@@ -1,5 +1,5 @@
 function(set_default_qt_target_options targetName)
-	report("Setting default qt options for target '${targetName}")
+	report("Setting default qt options for target '${targetName}'")
 
 	# Setting the Qt 'AUTO'-properties *after* the targets are already defined seems not to work i.e.:
 	# set(CMAKE_AUTOMOC ON)

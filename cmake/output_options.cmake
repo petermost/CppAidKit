@@ -13,7 +13,7 @@
 # https://stackoverflow.com/questions/38168725/cmake-trying-to-link-directory-as-an-executable-if-their-names-match
 
 function(set_default_output_target_options targetName)
-	report("Setting default output options for target '${targetName}")
+	report("Setting default output options for target '${targetName}'")
 
 	set(outputDirectory ${CMAKE_BINARY_DIR}/bin/$<CONFIG>)
 
