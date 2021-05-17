@@ -1,39 +1,45 @@
 {
-    "version": 1,
-    "cmakeMinimumRequired": {
-        "major": 3,
-        "minor": 19
-    },
-    "configurePresets": [
-        {
-            "name": "defaults",
-            "hidden": true,
-            "generator": "Ninja",
-            "binaryDir": "${sourceParentDir}/build/${presetName}"
-        },
-        {
-            "name": "Debug",
-            "displayName": "Debug Config",
-            "description": "Debug build using Ninja generator",
-            "inherits": "defaults",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": {
-                    "type": "STRING",
-                    "value": "Debug"
-                }
-            }
-        },
-        {
-            "name": "Release",
-            "displayName": "Release Config",
-            "description": "Release build using Ninja generator",
-            "inherits": "defaults",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": {
-                    "type": "STRING",
-                    "value": "Release"
-                }
-            }
-        }
-    ]
+	"version": 1,
+	"cmakeMinimumRequired": {
+		"major": 3,
+		"minor": 19
+	},
+	"configurePresets": [
+		{
+			"name": "defaults",
+			"hidden": true,
+			"generator": "Ninja",
+			"binaryDir": "${sourceParentDir}/build/${presetName}",
+			"cacheVariables": {
+				"CMAKE_VERBOSE_MAKEFILE": {
+					"type": "BOOL",
+					"value": "TRUE"
+				}
+			}
+		},
+		{
+			"name": "Debug",
+			"displayName": "Debug Config",
+			"description": "Debug build using Ninja generator",
+			"inherits": "defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": {
+					"type": "STRING",
+					"value": "Debug"
+				}
+			}
+		},
+		{
+			"name": "Release",
+			"displayName": "Release Config",
+			"description": "Release build using Ninja generator",
+			"inherits": "defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": {
+					"type": "STRING",
+					"value": "Release"
+				}
+			}
+		}
+	]
 }
