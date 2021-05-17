@@ -3,6 +3,8 @@
     "version": "1.0.0",
     "dependencies": [
         "gtest",
-        "boost-filesystem"
+        "boost-filesystem",
+        "boost-format",
+        "qt5"
     ]
 }

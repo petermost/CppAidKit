@@ -25,6 +25,7 @@ include(cmake/AidKit.cmake)
 find_package(Boost QUIET
 	COMPONENTS
 		filesystem
+		# 'format' is a header-only library
 )
 find_package(Qt5 QUIET
 	COMPONENTS
@@ -35,7 +36,7 @@ find_package(Qt5 QUIET
 		LinguistTools
 )
 
-find_package(GTest QUIET)
+find_package(GTest CONFIG QUIET)
 
 ###############################################################################
 # Setup 'AidKit':
@@ -116,7 +117,7 @@ target_include_directories(AidKit
 ###############################################################################
 # Setup 'AidKitTestSupport':
 
-if (TARGET GTest::GTest)
+if (TARGET GTest::gtest) # GTest::GTest
 	add_library(AidKitTestSupport
 		tests/pera_software/aidkit/test_main.hpp
 		tests/pera_software/aidkit/test_main.cpp
@@ -136,8 +137,8 @@ if (TARGET GTest::GTest)
 	target_link_libraries(AidKitTestSupport
 		PUBLIC
 			AidKit
-			GTest::GTest
-			# GTest::Main
+			GTest::gtest
+			# GTest::gtest_main # GTest::Main
 	)
 else()
 	message(AUTHOR_WARNING "GoogleTest not found, building without it!")
