@@ -1,0 +1,8 @@
+{
+    "name": "aidkit",
+    "version": "1.0.0",
+    "dependencies": [
+        "gtest",
+        "boost-filesystem"
+    ]
+}

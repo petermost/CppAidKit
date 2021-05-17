@@ -15,14 +15,12 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.13)
+set(CMAKE_TOOLCHAIN_FILE vcpkg/scripts/buildsystems/vcpkg.cmake CACHE FILEPATH "Path to vcpkg submodule" FORCE)
+
+cmake_minimum_required(VERSION 3.19)
 project(AidKit VERSION 1.2.0.0)
 
-include(CTest)
-include(GoogleTest)
 include(cmake/AidKit.cmake)
-
-enable_testing()
 
 find_package(Boost QUIET
 	COMPONENTS
@@ -37,7 +35,7 @@ find_package(Qt5 QUIET
 		LinguistTools
 )
 
-add_googletest_subdirectory()
+find_package(GTest QUIET)
 
 ###############################################################################
 # Setup 'AidKit':
@@ -175,9 +173,6 @@ if (TARGET AidKitTestSupport)
 		PRIVATE
 			AidKitTestSupport
 	)
-	gtest_discover_tests(AidKitTests
-		# WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin/$<CONFIG>
-	)
 endif()
 
 if (TARGET Qt5::Widgets)
@@ -298,7 +293,7 @@ if (Qt5LinguistTools_FOUND)
 	# (https://gist.github.com/giraldeau/546ba5512a74dfe9d8ea0862d66db412)
 
 	configure_file(translations/AidKitTranslations.qrc ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
-	qt5_create_translation(AIDKIT_TRANSLATION_FILES ${CMAKE_CURRENT_SOURCE_DIR} translations/AidKitTranslations_de.ts)
+	qt5_create_translation(AIDKIT_TRANSLATION_FILES src translations/AidKitTranslations_de.ts)
 
 	target_sources(AidKit
 		PRIVATE
