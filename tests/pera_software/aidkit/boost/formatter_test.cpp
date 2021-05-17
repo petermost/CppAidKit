@@ -22,7 +22,7 @@ namespace pera_software::aidkit::boost {
 
 using namespace std;
 
-#if BOOST_VERSION > 107100
+#if BOOST_VERSION > 107600
 
 TEST(FormatterTest, testBadFormatString)
 {

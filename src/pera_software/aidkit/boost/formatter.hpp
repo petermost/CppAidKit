@@ -24,7 +24,7 @@
 
 namespace pera_software::aidkit::boost {
 
-#if BOOST_VERSION > 107100
+#if BOOST_VERSION >= 107600
 	// A small wrapper class which disables the exceptions in boost::format otherwise:
 	// - The constructor might throw a bad_format_string exception.
 	// - The operator % () might throw a too_many_args exception.
@@ -47,7 +47,8 @@ namespace pera_software::aidkit::boost {
 			::boost::format format_;
 	};
 #else
-	// Compilation failes under C++20" (https://github.com/boostorg/format/issues/73)
+	// "Compilation failes under C++20" (https://github.com/boostorg/format/issues/73)
+	// "Direct use of Allocator::allocate is deprecated in C++17" (https://github.com/boostorg/format/issues/67)
 	#pragma message("Disabling 'formatter' class!")
 #endif
 }
