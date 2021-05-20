@@ -13,6 +13,16 @@ endif()
 function(set_default_msvc_target_options targetName)
 	report("Setting default msvc options for target '${targetName}'")
 
+	# Do we need to handle the shared library case? According to
+	# https://cmake.org/cmake/help/latest/variable/CMAKE_MSVC_RUNTIME_LIBRARY.html
+	# the default value already is "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"!
+	# Note: set_target_property doesn't support generator expressions!
+
+	set_property(TARGET ${targetName}
+		PROPERTY
+		    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>$<$<BOOL:${BUILD_SHARED_LIBS}>:DLL>"
+	)
+
 	target_compile_definitions(${targetName}
 		PRIVATE
 			_CRT_SECURE_NO_WARNINGS

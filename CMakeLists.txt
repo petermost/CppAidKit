@@ -38,6 +38,12 @@ find_package(Qt5 QUIET
 
 find_package(GTest CONFIG QUIET)
 
+if (BUILD_SHARED_LIBS)
+	report("Building shared library")
+else()
+	report("Building static library")
+endif()
+
 ###############################################################################
 # Setup 'AidKit':
 # If no type is specified (SHARED or STATIC) then the user can define the type with the
@@ -117,7 +123,7 @@ target_include_directories(AidKit
 ###############################################################################
 # Setup 'AidKitTestSupport':
 
-if (TARGET GTest::gtest) # GTest::GTest
+if (TARGET GTest::gtest)
 	add_library(AidKitTestSupport
 		tests/pera_software/aidkit/test_main.hpp
 		tests/pera_software/aidkit/test_main.cpp
@@ -138,10 +144,10 @@ if (TARGET GTest::gtest) # GTest::GTest
 		PUBLIC
 			AidKit
 			GTest::gtest
-			# GTest::gtest_main # GTest::Main
+			# GTest::gtest_main
 	)
 else()
-	message(AUTHOR_WARNING "GoogleTest not found, building without it!")
+	reportMissing("GoogleTest")
 endif()
 
 ###############################################################################
@@ -285,7 +291,7 @@ if (TARGET Qt5::Widgets)
 			Qt5::Widgets
 	)
 else()
-	message(AUTHOR_WARNING "Qt5 Widgets not found, building without it!")
+	reportMissing("Qt5 Widgets")
 endif()
 
 if (Qt5LinguistTools_FOUND)
@@ -313,7 +319,7 @@ if (Qt5LinguistTools_FOUND)
 		)
 	endif()
 else()
-	message(AUTHOR_WARNING "Qt5 LinguistTools not found, building without it!")
+	reportMissing("Qt5 LinguistTools")
 endif()
 
 ###############################################################################
@@ -348,7 +354,7 @@ if (TARGET Boost::headers AND TARGET Boost::filesystem)
 			Boost::disable_autolinking
 	)
 else()
-	message(AUTHOR_WARNING "Boost filesysstem not found, building without it!")
+	reportMissing("Boost filesysstem")
 endif()
 
 ###############################################################################

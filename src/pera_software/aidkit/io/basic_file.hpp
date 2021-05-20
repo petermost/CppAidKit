@@ -230,7 +230,7 @@ template <typename Category = file_locked_category, typename Functions = basic_f
 			basic_file(const basic_file &) = delete;
 			basic_file &operator=(const basic_file &) = delete;
 
-			basic_file(const std::filesystem::path &fileName, const enum_flags<open_mode> mode)
+			basic_file(const std::filesystem::path &fileName, const open_modes mode)
 			{
 				open(fileName, mode);
 			}

@@ -27,12 +27,6 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
 endif()
 
-# Set default library build type:
-if (NOT DEFINED BUILD_SHARED_LIBS)
-	report("Setting BUILD_SHARED_LIBS to 'ON'")
-	set(BUILD_SHARED_LIBS ON CACHE BOOL "Build Shared Libraries" FORCE)
-endif()
-
 function(set_default_target_options targetName)
 	set_default_cpp_target_options(${targetName})
 	set_default_output_target_options(${targetName})
