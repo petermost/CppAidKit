@@ -4,7 +4,6 @@
     "dependencies": [
         "gtest",
         "boost-filesystem",
-        "boost-format",
-        "qt5"
+        "boost-format"
     ]
 }
