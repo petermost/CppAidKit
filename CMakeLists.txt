@@ -20,6 +20,8 @@ include(cmake/vcpkg_options.cmake)
 cmake_minimum_required(VERSION 3.19)
 project(AidKit VERSION 1.2.0.0)
 
+include(CTest)
+include(GoogleTest)
 include(cmake/AidKit.cmake)
 
 find_package(Boost QUIET
@@ -180,6 +182,7 @@ if (TARGET AidKitTestSupport)
 		PRIVATE
 			AidKitTestSupport
 	)
+	gtest_discover_tests(AidKitTests)
 endif()
 
 if (TARGET Qt5::Widgets)
