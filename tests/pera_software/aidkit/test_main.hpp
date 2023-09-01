@@ -16,10 +16,3 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
-
-#include <pera_software/aidkit/aidkit.hpp>
-
-extern int g_argc;
-extern char **g_argv;
-
-int AIDKIT_API main(int argc, char *argv[]);

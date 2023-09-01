@@ -1,6 +1,7 @@
-#include "test_main.hpp"
 #include <exception>
 #include <gtest/gtest.h>
+#include <pera_software/aidkit/aidkit.hpp>
+#include <pera_software/aidkit/main.hpp>
 #include <pera_software/aidkit/platform.hpp>
 #if defined(AIDKIT_MSVC)
 	#include <io.h>
@@ -8,10 +9,9 @@
 #endif
 
 using namespace std;
+using namespace filesystem;
 using namespace testing;
-
-int g_argc;
-char **g_argv;
+using namespace pera_software::aidkit;
 
 static void enableVerboseTerminateHandler()
 {
@@ -47,17 +47,14 @@ static void disableInvalidParameterHandler()
 // _CrtSetReportFile(_CRT_ASSERT, nullFile);
 // didn't help.
 
-int main(int argc, char *argv[])
+extern "C" exit_result aidkit_main(path name, vector<string> arguments /*, vector<pair<string, string>> environment */)
 {
 	printf("Running main() from %s\n", __FILE__);
-
-	g_argc = argc;
-	g_argv = argv;
 
 	InitGoogleTest(&g_argc, g_argv);
 
 	enableVerboseTerminateHandler();
 	disableInvalidParameterHandler();
 
-	return RUN_ALL_TESTS();
+	return static_cast<exit_result>(RUN_ALL_TESTS());
 }

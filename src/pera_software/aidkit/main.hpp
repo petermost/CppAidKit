@@ -1,4 +1,4 @@
-// Copyright 2017 Peter Most, PERA Software Solutions GmbH
+// Copyright 2021 Peter Most, PERA Software Solutions GmbH
 //
 // This file is part of the CppAidKit library.
 //
@@ -15,23 +15,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-#include "formatter.hpp"
+#pragma once
 
-namespace pera_software::aidkit::boost {
+#include <cstdlib>
+#include <vector>
+#include <string>
+#include <filesystem>
 
-using namespace std;
-using namespace ::boost::io;
+namespace pera_software::aidkit {
 
-formatter::formatter(string_view formatString) noexcept
-	: format_(nullptr)
-{
-	format_.exceptions(format_error_bits::no_error_bits);
-	format_.parse(string(formatString));
-}
+	extern int g_argc;
+	extern char **g_argv;
 
-string formatter::str() const noexcept
-{
-	return format_.str();
-}
+	enum class exit_result {
+		success = EXIT_SUCCESS,
+		failure = EXIT_FAILURE
+	};
 
 }

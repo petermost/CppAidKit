@@ -1,44 +1,86 @@
 {
-	"version": 1,
-	"cmakeMinimumRequired": {
-		"major": 3,
-		"minor": 19
-	},
+	"version": 3,
 	"configurePresets": [
 		{
-			"name": "defaults",
 			"hidden": true,
-			"generator": "Ninja",
+			"name": "defaults",
+			"warnings": {
+				"dev": false,
+				"uninitialized": false
+			},
 			"binaryDir": "${sourceParentDir}/build/${presetName}",
 			"cacheVariables": {
-				"CMAKE_VERBOSE_MAKEFILE": {
-					"type": "BOOL",
-					"value": "TRUE"
-				}
+				"CMAKE_VERBOSE_MAKEFILE": "TRUE",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "TRUE"
 			}
 		},
 		{
-			"name": "Debug",
-			"displayName": "Debug Config",
-			"description": "Debug build using Ninja generator",
+			"hidden": true,
+			"name": "vcpkg-defaults",
 			"inherits": "defaults",
+			"generator": "Ninja",
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": {
-					"type": "STRING",
-					"value": "Debug"
-				}
+				"CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
 			}
 		},
 		{
-			"name": "Release",
-			"displayName": "Release Config",
-			"description": "Release build using Ninja generator",
-			"inherits": "defaults",
+			"name": "vcpkg-ninja-debug",
+			"displayName": "Vcpkg Ninja Debug Build",
+			"inherits": "vcpkg-defaults",
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": {
-					"type": "STRING",
-					"value": "Release"
-				}
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "vcpkg-ninja-release",
+			"displayName": "Vcpkg Ninja Release Build",
+			"inherits": "vcpkg-defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
+			"name": "vcpkg-ninja-relwithdebinfo",
+			"displayName": "Vcpkg Ninja RelWithDebInfo Build",
+			"inherits": "vcpkg-defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "RelWithDebInfo"
+			}
+		},
+
+
+
+
+		{
+			"hidden": true,
+			"name": "system-defaults",
+			"inherits": "defaults",
+			"generator": "Ninja",
+			"cacheVariables": {
+			}
+		},
+		{
+			"name": "system-ninja-debug",
+			"displayName": "System Ninja Debug Build",
+			"inherits": "system-defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "system-ninja-release",
+			"displayName": "System Ninja Release Build",
+			"inherits": "system-defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
+			"name": "system-ninja-relwithdebinfo",
+			"displayName": "System Ninja RelWithDebInfo Build",
+			"inherits": "system-defaults",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "RelWithDebInfo"
 			}
 		}
 	]

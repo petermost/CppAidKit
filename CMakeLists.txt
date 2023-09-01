@@ -15,20 +15,35 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
-include(cmake/vcpkg_options.cmake)
-
 cmake_minimum_required(VERSION 3.19)
+
+include(cmake/AidKit.cmake)
+
 project(AidKit VERSION 1.2.0.0)
 
 include(CTest)
 include(GoogleTest)
-include(cmake/AidKit.cmake)
+
+#
+# Boost
+#
+
+set(Boost_NO_WARN_NEW_VERSIONS ON)
+if (AIDKIT_VCPKG_BUILD)
+	set(Boost_NO_SYSTEM_PATHS ON)
+endif()
 
 find_package(Boost QUIET
 	COMPONENTS
 		filesystem
 		# 'format' is a header-only library
 )
+report("Found Boost ${Boost_VERSION_STRING}")
+
+#
+# Qt
+#
+
 find_package(Qt5 QUIET
 	COMPONENTS
 		Core
@@ -38,7 +53,19 @@ find_package(Qt5 QUIET
 		LinguistTools
 )
 
+report("Found Qt ${Qt5Widgets_VERSION_STRING}")
+
+#
+# Google Test
+#
+
 find_package(GTest CONFIG QUIET)
+report("Found GTest ${GTest_VERSION_STRING}")
+
+###############################################################################
+# Setup 'AidKit':
+# If no type is specified (SHARED or STATIC) then the user can define the type with the
+# BUILD_SHARED_LIBS variable!
 
 if (BUILD_SHARED_LIBS)
 	report("Building shared library")
@@ -46,15 +73,18 @@ else()
 	report("Building static library")
 endif()
 
-###############################################################################
-# Setup 'AidKit':
-# If no type is specified (SHARED or STATIC) then the user can define the type with the
-# BUILD_SHARED_LIBS variable!
+if (AIDKIT_VCPKG_BUILD)
+	report("Building with vcpkg packages")
+else()
+	report("Building with system packages")
+endif()
 
 add_library(AidKit
 	src/pera_software/PERA.hpp
 	src/pera_software/PERA.cpp
 
+	src/pera_software/aidkit/main.hpp
+	src/pera_software/aidkit/main.cpp
 	src/pera_software/aidkit/aidkit.hpp
 	src/pera_software/aidkit/aidkit.cpp
 	src/pera_software/aidkit/bit_cast.hpp
@@ -180,6 +210,7 @@ if (TARGET AidKitTestSupport)
 
 	target_link_libraries(AidKitTests
 		PRIVATE
+			AidKit
 			AidKitTestSupport
 	)
 	gtest_discover_tests(AidKitTests)
@@ -364,24 +395,24 @@ endif()
 # Installing
 # For testing: make DESTDIR=<directory> install
 
-include(GNUInstallDirs)
-install(TARGETS AidKit EXPORT exportName
-	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
-install(EXPORT exportName
-	DESTINATION cmake
-	FILE AidKitConfig.cmake
-)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/aidkit_api.hpp
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/pera_software/aidkit/
-)
-install(DIRECTORY src/
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-	FILES_MATCHING PATTERN "*.hpp"
-)
+#include(GNUInstallDirs)
+#install(TARGETS AidKit EXPORT exportName
+#	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+#	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+#)
+#install(EXPORT exportName
+#	DESTINATION cmake
+#	FILE AidKitConfig.cmake
+#)
+#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/aidkit_api.hpp
+#	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/pera_software/aidkit/
+#)
+#install(DIRECTORY src/
+#	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+#	FILES_MATCHING PATTERN "*.hpp"
+#)
 
 ###############################################################################
 # Packaging

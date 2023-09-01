@@ -1,3 +1,11 @@
+# Detect which packages should be used:
+
+if (CMAKE_TOOLCHAIN_FILE MATCHES "vcpkg.cmake$")
+	set(AIDKIT_VCPKG_BUILD TRUE)
+else()
+	set(AIDKIT_VCPKG_BUILD FALSE)
+endif()
+
 # Detect which compiler is in use:
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")

@@ -16,7 +16,7 @@
 // along with CppAidKit. If not, see <http://www.gnu.org/licenses/>.
 
 #include "TestFixture.hpp"
-#include <pera_software/aidkit/test_main.hpp>
+#include <pera_software/aidkit/main.hpp>
 
 namespace pera_software::aidkit::qt {
 
