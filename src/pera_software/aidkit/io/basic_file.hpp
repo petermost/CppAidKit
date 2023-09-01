@@ -223,17 +223,15 @@ template <typename Category = file_locked_category, typename Functions = basic_f
 				file_ = nullptr;
 			}
 
-			// For now we forbid copying, becaue what should happen if two instances 'point' to
-			// the same file? Should the first close be ignored and only the second close actually
-			// closes the file? Or should the first close succeed and the second close then fails?
-
-			basic_file(const basic_file &) = delete;
-			basic_file &operator=(const basic_file &) = delete;
-
 			basic_file(const std::filesystem::path &fileName, const open_modes mode)
 			{
 				open(fileName, mode);
 			}
+
+			// Copying is forbidden. If a file needs to be shared then use a std::shared_ptr<pera_software::aidkit::io::file> ;-)
+
+			basic_file(const basic_file &) = delete;
+			basic_file &operator=(const basic_file &) = delete;
 
 			~basic_file() noexcept
 			{

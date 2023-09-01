@@ -23,7 +23,7 @@
 namespace pera_software::aidkit::io {
 
 	struct file_ptr_deleter {
-		void operator ()(std::FILE *file) const {
+		void operator ()(std::FILE *file) const noexcept {
 			std::fclose(file);
 		}
 	};
