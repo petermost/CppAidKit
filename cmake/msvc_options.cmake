@@ -1,4 +1,4 @@
-if(AIDKIT_CMAKE_MSVC)
+if (AIDKIT_MSVC)
 	# CMake appends /W3 by default, and having /W3 followed by /W4 will result in
 	# cl : Command line warning D9025 : overriding '/W3' with '/W4'.  Since this is
 	# a command line warning and not a compiler warning, it cannot be suppressed except

@@ -88,6 +88,7 @@ add_library(AidKit
 	src/pera_software/aidkit/aidkit.hpp
 	src/pera_software/aidkit/aidkit.cpp
 	src/pera_software/aidkit/bit_cast.hpp
+	src/pera_software/aidkit/overload_cast.hpp
 	src/pera_software/aidkit/compiler.hpp
 	src/pera_software/aidkit/containers.hpp
 	src/pera_software/aidkit/containers.cpp
@@ -127,10 +128,24 @@ add_library(AidKit
 	src/pera_software/aidkit/stdlib/memory.cpp
 	src/pera_software/aidkit/stdlib/stdlib.hpp
 	src/pera_software/aidkit/stdlib/stdlib.cpp
+	src/pera_software/aidkit/stdlib/string_ref.hpp
+	src/pera_software/aidkit/stdlib/string_ref.cpp
+
 
 	src/pera_software/aidkit/concurrent/data_mutex.hpp
 	src/pera_software/aidkit/concurrent/data_mutex.cpp
+	src/pera_software/aidkit/concurrent/blocking_queue.hpp
+	src/pera_software/aidkit/concurrent/blocking_queue.cpp
 )
+if (AIDKIT_MSVC)
+	target_sources(AidKit
+		PRIVATE
+			src/pera_software/aidkit/msvc/crtdbg.hpp
+			src/pera_software/aidkit/msvc/crtdebug_heap.hpp
+			src/pera_software/aidkit/msvc/crtdebug_heap.cpp
+	)
+endif()
+
 set_default_target_options(AidKit)
 
 target_compile_definitions(AidKit
@@ -195,6 +210,7 @@ if (TARGET AidKitTestSupport)
 		tests/pera_software/aidkit/vectors_test.cpp
 		tests/pera_software/aidkit/unicode_test.cpp
 		tests/pera_software/aidkit/concurrent/data_mutex_test.cpp
+		tests/pera_software/aidkit/concurrent/blocking_queue_test.cpp
 
 		tests/pera_software/aidkit/io/file_test.cpp
 		tests/pera_software/aidkit/io/file_ptr_test.cpp
@@ -204,6 +220,7 @@ if (TARGET AidKitTestSupport)
 		tests/pera_software/aidkit/stdlib/new_test.cpp
 		tests/pera_software/aidkit/stdlib/memory_test.cpp
 		tests/pera_software/aidkit/stdlib/stdlib_test.cpp
+		tests/pera_software/aidkit/stdlib/string_ref_test.cpp
 	)
 
 	set_default_target_options(AidKitTests)

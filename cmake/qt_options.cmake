@@ -36,13 +36,13 @@ function(set_default_qt_target_options targetName)
 	# https://bugreports.qt.io/browse/QTBUG-82978 "Allow "-Wextra-semi-stmt" on Q_UNUSED"
 	# According to the comments in the bugreport, this will not be fixed before Qt6.
 	if (Qt5Core_VERSION VERSION_LESS 6)
-		if (AIDKIT_CMAKE_CLANG)
+		if (AIDKIT_CLANG)
 			set_source_files_properties("${targetName}_autogen/mocs_compilation.cpp"
 				PROPERTIES
 					COMPILE_OPTIONS "-Wno-extra-semi-stmt"
 			)
 		endif()
-		if (AIDKIT_CMAKE_GCC)
+		if (AIDKIT_GCC)
 			set_source_files_properties("${targetName}_autogen/mocs_compilation.cpp"
 				PROPERTIES
 					COMPILE_OPTIONS "-Wno-useless-cast"
