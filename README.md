@@ -1,7 +1,7 @@
-CppAidKit
-=========
+C++ AidKit
+==========
 
-A C++ library which contains C++11/Qt/CMake aid classes/scripts. The documentation is somewhat lacking, but all classes have unittests and should therefore function as documentation.
+A C++ library which contains C++20/Qt/CMake aid classes/scripts. The documentation is somewhat lacking, but all classes have unittests and should therefore function as documentation.
 
 If somebody else, besides me :wink:, should actually use the AidKit-library, let me know and I start working on the documentation.
 
